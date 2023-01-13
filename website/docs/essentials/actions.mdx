@@ -119,7 +119,8 @@ keyword to get precisely typed methods.
 :::
 
 You can now use the extended enhancers and runners without calling
-`use` or `run`.
+`use` or `run`. Every enhancers and runners of FuncClient provide a
+`.extension` property which is extendable by an action instance.
 
 ```javascript
 import action from './action';
@@ -131,7 +132,7 @@ await action()
 ```
 
 You may `extends` your action with any enhancers or runners extensions
-manually. Otherwise, you can also use prebuild extensions packs.
+manually. Otherwise, you may also use **prebuild extensions packs**.
 Those provide multiple extensions in one exported variable allowing you
 to `extends` multiple extensions at one time!
 
