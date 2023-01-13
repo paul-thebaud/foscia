@@ -1,4 +1,4 @@
-import { FunctionTransform } from '@/core/transforms/types';
+import { FunctionTransform } from '@/core/transformers/types';
 import { isNone } from '@/utilities';
 
 export default function toNumber(): FunctionTransform<number | undefined, unknown> {

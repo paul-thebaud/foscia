@@ -1,3 +1,38 @@
+import Action from '@/core/actions/action';
+import context from '@/core/actions/context/enhancers/context';
+import create from '@/core/actions/context/enhancers/crud/create';
+import destroy from '@/core/actions/context/enhancers/crud/destroy';
+import find from '@/core/actions/context/enhancers/crud/find';
+import instanceData from '@/core/actions/context/enhancers/crud/instanceData';
+import save from '@/core/actions/context/enhancers/crud/save';
+import update from '@/core/actions/context/enhancers/crud/update';
+import withAdapter from '@/core/actions/context/enhancers/dependency/withAdapter';
+import withCache from '@/core/actions/context/enhancers/dependency/withCache';
+import withDeserializer from '@/core/actions/context/enhancers/dependency/withDeserializer';
+import withRegistry from '@/core/actions/context/enhancers/dependency/withRegistry';
+import withSerializer from '@/core/actions/context/enhancers/dependency/withSerializer';
+import forId from '@/core/actions/context/enhancers/forId';
+import onError from '@/core/actions/context/enhancers/hooks/onError';
+import onFinally from '@/core/actions/context/enhancers/hooks/onFinally';
+import onPreparing from '@/core/actions/context/enhancers/hooks/onPreparing';
+import onRunning from '@/core/actions/context/enhancers/hooks/onRunning';
+import onSuccess from '@/core/actions/context/enhancers/hooks/onSuccess';
+import include from '@/core/actions/context/enhancers/include';
+import instance from '@/core/actions/context/enhancers/instance';
+import model from '@/core/actions/context/enhancers/model';
+import target from '@/core/actions/context/enhancers/target';
+import all from '@/core/actions/context/runners/all';
+import allUsing from '@/core/actions/context/runners/allUsing';
+import cached from '@/core/actions/context/runners/cached';
+import cachedOr from '@/core/actions/context/runners/cachedOr';
+import cachedOrFail from '@/core/actions/context/runners/cachedOrFail';
+import none from '@/core/actions/context/runners/none';
+import one from '@/core/actions/context/runners/one';
+import oneOr from '@/core/actions/context/runners/oneOr';
+import oneOrCurrent from '@/core/actions/context/runners/oneOrCurrent';
+import oneOrFail from '@/core/actions/context/runners/oneOrFail';
+import raw from '@/core/actions/context/runners/raw';
+import when from '@/core/actions/when';
 import RefsCache from '@/core/cache/refsCache';
 import weakRefCacheMode from '@/core/cache/weakRefCacheMode';
 import AdapterError from '@/core/errors/adapterError';
@@ -34,20 +69,18 @@ import loaded from '@/core/model/utilities/loaded';
 import reset from '@/core/model/utilities/reset';
 import syncOriginal from '@/core/model/utilities/syncOriginal';
 import MapRegistry from '@/core/registry/mapRegistry';
-import toBoolean from '@/core/transforms/toBoolean';
-import toDate from '@/core/transforms/toDate';
-import toNumber from '@/core/transforms/toNumber';
-import toString from '@/core/transforms/toString';
-import useTransform from '@/core/transforms/useTransform';
+import toBoolean from '@/core/transformers/toBoolean';
+import toDate from '@/core/transformers/toDate';
+import toNumber from '@/core/transformers/toNumber';
+import toString from '@/core/transformers/toString';
+import useTransform from '@/core/transformers/useTransform';
 
 export * from '@/core/actions/types';
 export * from '@/core/cache/types';
 export * from '@/core/hooks/types';
 export * from '@/core/model/types';
-export * from '@/core/transforms/types';
+export * from '@/core/transformers/types';
 export * from '@/core/types';
-
-export * from '@/core/actions';
 
 export {
   AdapterError,
@@ -90,5 +123,40 @@ export {
   registerHook,
   unregisterHook,
   withoutHooks,
+  all,
+  allUsing,
+  none,
+  one,
+  oneOr,
+  oneOrFail,
+  oneOrCurrent,
+  cached,
+  cachedOr,
+  cachedOrFail,
+  raw,
+  find,
+  create,
+  update,
+  save,
+  destroy,
+  withAdapter,
+  withDeserializer,
+  withSerializer,
+  withRegistry,
+  withCache,
+  context,
+  forId,
+  instance,
+  model,
+  target,
+  include,
+  instanceData,
+  when,
+  onPreparing,
+  onRunning,
+  onSuccess,
+  onError,
+  onFinally,
+  Action,
   logger,
 };

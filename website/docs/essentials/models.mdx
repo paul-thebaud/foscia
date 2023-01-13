@@ -250,9 +250,13 @@ the concerned model instance as the only provided argument.
 ```javascript
 import { onSaving } from 'func-client/core';
 
+// After this, the hook will run on each User instance saving.
 const unregisterThisHook = onSaving(User, async (user) => {
   // TODO Do something (a)sync with user instance before saving.
 });
+
+// After this, this hook will never run again.
+unregisterThisHook();
 ```
 
 :::info
@@ -266,7 +270,7 @@ function.
 ```javascript
 import { withoutHooks } from 'func-client/core';
 
-const resultOfCallback = await withoutHooks(User, async () => {
+const resultOfYourCallback = await withoutHooks(User, async () => {
   // TODO Do something (a)sync and return it.
 });
 ```

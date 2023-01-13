@@ -1,4 +1,11 @@
-import type { ActionContext, ActionHooksDefinition, ContextEnhancer, ContextRunner } from '@/core/actions/types';
+import type {
+  ActionContext,
+  ActionExtension,
+  ActionHooksDefinition,
+  ContextEnhancer,
+  ContextRunner,
+  InferActionWithExtensions,
+} from '@/core/actions/types';
 import runHook from '@/core/hooks/runHook';
 import { HooksRegistrar } from '@/core/hooks/types';
 import withoutHooks from '@/core/hooks/withoutHooks';
@@ -17,6 +24,16 @@ export default class Action<Context extends ActionContext> {
     this.$hooks = {};
   }
 
+  public extends<E extends readonly ActionExtension[]>(extensions: E & ThisType<this>) {
+    extensions.forEach((extension) => {
+      Object.defineProperty(this, extension.name, {
+        value: extension.method,
+      });
+    });
+
+    return this as this & InferActionWithExtensions<E>;
+  }
+
   public get context() {
     return (async () => {
       await this.dequeueEnhancements();
@@ -25,17 +42,19 @@ export default class Action<Context extends ActionContext> {
     })();
   }
 
-  public updateContext<NewContext extends ActionContext>(
+  public updateContext<PrevAction, NewContext extends ActionContext>(
+    this: Action<Context> & PrevAction,
     newContext: NewContext,
-  ): Action<NewContext> {
+  ): Action<NewContext> & PrevAction {
     this.$context = newContext as any;
 
     return this as any;
   }
 
-  public use<NewContext extends ActionContext = Context>(
+  public use<PrevAction, NewContext extends ActionContext = Context>(
+    this: Action<Context> & PrevAction,
     enhancer: ContextEnhancer<Context, NewContext>,
-  ): Action<NewContext> {
+  ): Action<NewContext> & PrevAction {
     this.$enhancementsQueue.push(enhancer);
 
     return this as any;

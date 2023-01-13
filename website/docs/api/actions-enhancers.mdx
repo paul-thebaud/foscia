@@ -224,7 +224,7 @@ action().use(sortByDesc('createdAt'));
 
 - `{string}` `key` the key for the sort
 
-### `paginateBy`
+### `paginate`
 
 <FunctionInfo only="JSON:API" />
 
@@ -236,54 +236,12 @@ anything used by your implementation.
 #### Example
 
 ```javascript
-import { paginateBy } from 'func-client/jsonapi';
+import { paginate } from 'func-client/jsonapi';
 
 
-action().use(paginateBy({ number: 1, size: 10 }));
+action().use(paginate({ number: 1, size: 10 }));
 ```
 
 #### Arguments
 
 - `{unknown}` `page` a pagination value which match your implementation
-
-### `rawFilterBy`
-
-<FunctionInfo only="JSON:API" />
-
-[Filter the JSON:API resource](https://jsonapi.org/format/#fetching-filtering)
-with a custom raw filter param.
-The new filter will replace the previous ones.
-
-#### Example
-
-```javascript
-import { rawFilterBy } from 'func-client/jsonapi';
-
-
-action().use(rawFilterBy({ isPublished: true }));
-```
-
-#### Arguments
-
-- `{unknown | undefined}` `filter` a raw filter value
-
-### `rawSortBy`
-
-<FunctionInfo only="JSON:API" />
-
-[Sort the JSON:API resource](https://jsonapi.org/format/#fetching-sorting)
-with a custom raw sort param.
-The new sort will replace the previous ones.
-
-#### Example
-
-```javascript
-import { rawSortBy } from 'func-client/jsonapi';
-
-
-action().use(rawSortBy('-createdAt,-updatedAt'));
-```
-
-#### Arguments
-
-- `{string | undefined}` `sort` a raw sort value

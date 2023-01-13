@@ -8,9 +8,7 @@ export default function changeInstanceExistence(
 ) {
   return <I extends ModelInstance, C extends ConsumeInstance<I>>(
     action: Action<C>,
-  ) => action.use(
-    onSuccess(({ context }) => {
-      context.instance.exists = willExists;
-    }),
-  );
+  ) => action.use(onSuccess(({ context }) => {
+    context.instance.exists = willExists;
+  }));
 }

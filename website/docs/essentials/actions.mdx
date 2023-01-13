@@ -17,6 +17,8 @@ to quickly create your own action factory.
 
 - Enhancing actions
 - Running actions
+- Extending actions for builder pattern calls
+- Conditionally enhancing and running
 - Registering hooks on actions
 
 :::
@@ -45,7 +47,7 @@ action()
 
 <Link
   className="button bg--primary-gradient"
-  to="/docs/essentials/models"
+  to="/docs/api/actions-enhancers"
 >
   Available enhancers API guide
 </Link>
@@ -75,10 +77,77 @@ action()
 
 <Link
   className="button bg--primary-gradient"
-  to="/docs/essentials/models"
+  to="/docs/api/actions-runners"
 >
   Available runners API guide
 </Link>
+
+## Extensions
+
+Sometimes, functional programming can be frustrating, because you must always
+rewrite the same words (e.g. `use`) to keep a builder pattern styled code.
+
+You may plug extensions to your actions to directly call an enhancer or
+a runner on the action without using `use` or `run`.
+
+The first step is to update your action factory in which you should `extends`
+your action with the extensions you want.
+
+```ts title="action.ts"
+import { model, include, all } from 'func-client/core';
+import { makeJsonApi } from 'func-client/blueprints';
+
+// "makeJsonApi" is only here for the example.
+// You may use any other action base factory.
+const { makeAction } = makeJsonApi();
+
+export default function action() {
+  return makeAction().extends([
+    model.extension,
+    include.extension,
+    all.extension,
+  ] as const);
+}
+```
+
+:::info
+Please note that the above code is done inside the action factory. This will
+provide the extension to all actions created using this factory.
+
+Please also note that when using TypeScript, you must use the `as const`
+keyword to get precisely typed methods.
+:::
+
+You can now use the extended enhancers and runners without calling
+`use` or `run`.
+
+```javascript
+import action from './action';
+
+await action()
+  .model(Post)
+  .include('tags')
+  .all();
+```
+
+You may `extends` your action with any enhancers or runners extensions
+manually. Otherwise, you can also use prebuild extensions packs.
+Those provide multiple extensions in one exported variable allowing you
+to `extends` multiple extensions at one time!
+
+<Link
+  className="button bg--primary-gradient margin-bottom--lg"
+  to="/docs/api/actions-extensions"
+>
+  Available extensions packs API guide
+</Link>
+
+:::caution
+
+Keep in mind that using extensions will avoid tree-shaking enhancers or
+runners functions, even when those are unused in your codebase.
+
+:::
 
 ## Conditionals
 
@@ -159,8 +228,10 @@ action().use(onFinally(({ context }) => /* ... */));
 ```
 
 :::info
+
 Hooks callback may be async and will be ran sequentially
 (one by one, not parallelized).
+
 :::
 
 You can disable hook execution on a given action instance by using the
@@ -169,14 +240,17 @@ You can disable hook execution on a given action instance by using the
 ```javascript
 import { withoutHooks } from 'func-client/core';
 
+// Retrieve a list of User instances without action hooks running.
 const users = await withoutHooks(action(), async (a) => {
   return await a.use(model(User)).run(all());
 });
 ```
 
 :::caution
+
 FuncClient may also register hooks internally when using some enhancers.
 Those provide some library features
 ([**models hooks**](/docs/essentials/models#hooks), etc.).
 Be careful running actions without hooks, as those hooks will also be disable.
+
 :::

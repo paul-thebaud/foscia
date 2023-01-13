@@ -1,4 +1,4 @@
-import { ObjectTransform } from '@/core/transforms/types';
+import { ObjectTransform } from '@/core/transformers/types';
 
 function dateFromUnix(unix: number): Date {
   const date = new Date();

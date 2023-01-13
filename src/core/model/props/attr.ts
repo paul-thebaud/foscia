@@ -1,5 +1,5 @@
 import { ModelAttribute, ModelProp } from '@/core/model/types';
-import { Transform } from '@/core/transforms/types';
+import { Transform } from '@/core/transformers/types';
 
 export type AttrConfig<T, S> = ModelProp<T> & {
   transformer?: Transform<T, S> | undefined;

@@ -22,6 +22,18 @@ export type ActionHooksDefinition<C extends ActionContext = any> = {
   finally: HookCallback<{ context: C; }>;
 };
 
+export type ActionExtension<
+  N extends string = string,
+  M extends (...args: any[]) => any = (...args: any[]) => any,
+> = {
+  name: N;
+  method: M;
+};
+
+export type InferActionWithExtensions<E extends readonly ActionExtension[]> = {
+  [I in Extract<keyof E, `${number}`> as E[I]['name']]: E[I]['method'];
+};
+
 export type ContextEnhancer<PC extends ActionContext, NC extends ActionContext> = (
   action: Action<PC>,
 ) => Awaitable<Action<NC> | void>;

@@ -2,7 +2,12 @@
 import { Hookable } from '@/core/hooks/types';
 import { Awaitable } from '@/utilities';
 
-export default async function withoutHooks<T extends Hookable<any>, R>(
+function withoutHooks<T extends Hookable<any>, R>(
+  hookable: T,
+  callback: (hookable: T) => R,
+): R;
+
+async function withoutHooks<T extends Hookable<any>, R>(
   hookable: T,
   callback: (hookable: T) => Awaitable<R>,
 ) {
@@ -16,3 +21,5 @@ export default async function withoutHooks<T extends Hookable<any>, R>(
     hookable.$hooks = hooksBackup;
   }
 }
+
+export default withoutHooks;

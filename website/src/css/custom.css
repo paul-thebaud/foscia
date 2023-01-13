@@ -91,6 +91,14 @@ div[class^="language-"] {
     --prism-background-color: var(--ifm-code-background) !important;
 }
 
+.code-tabs__wrapper {
+    background-color: var(--ifm-code-background);
+    border-radius: var(--ifm-code-border-radius);
+}
+.code-tabs__wrapper > .tabs-container > .margin-top--md {
+    margin-top: 0 !important;
+}
+
 aside, .table-of-contents__left-border {
     border: none !important;
 }

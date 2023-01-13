@@ -1,4 +1,3 @@
-import { Action, ActionContext } from '@/core';
 import { param } from '@/http';
 
 /**
@@ -11,6 +10,6 @@ import { param } from '@/http';
  *
  * @category Enhancers
  */
-export default function paginateBy(page: unknown) {
-  return <C extends ActionContext>(action: Action<C>) => action.use(param('page', page));
+export default function paginate(page: unknown) {
+  return param('page', page);
 }

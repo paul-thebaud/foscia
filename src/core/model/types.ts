@@ -1,5 +1,5 @@
 import { Hookable, HookCallback } from '@/core/hooks/types';
-import { Transform } from '@/core/transforms/types';
+import { Transform } from '@/core/transformers/types';
 import { Awaitable, Constructor, Dictionary, Prev } from '@/utilities';
 
 /**

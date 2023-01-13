@@ -100,7 +100,7 @@ const posts = await action().run(all());
 
 `{Promise<I[]>}` where `I` is an instance of the targeted model.
 
-### `allMeta`
+### `allDocument`
 
 <FunctionInfo requires="Adapter, Deserializer, Model" only="JSON:API" />
 
@@ -110,9 +110,9 @@ Also returns the JSON:API document meta.
 #### Example
 
 ```javascript
-import { allMeta } from 'func-client/jsonapi';
+import { allDocument } from 'func-client/jsonapi';
 
-const { instances, meta } = await action().run(allMeta());
+const { instances, meta } = await action().run(allDocument());
 ```
 
 #### Returns

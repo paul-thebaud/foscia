@@ -1,34 +1,12 @@
-import Action from '@/core/actions/action';
+import useInstanceContext from '@/core/actions/context/consumers/useInstanceContext';
 import oneOr from '@/core/actions/context/runners/oneOr';
-import {
-  ActionContext,
-  ConsumeAdapter,
-  ConsumeDeserializer,
-  ConsumeInstance,
-  ConsumeModel,
-} from '@/core/actions/types';
+import { ConsumeInstance } from '@/core/actions/types';
 import { Model } from '@/core/model/types';
-import { DeserializedData } from '@/core/types';
-
-type OneOrCurrentContext<
-  M extends Model,
-  I extends InstanceType<M>,
-  AD,
-  DD extends DeserializedData,
-> =
-  & ConsumeAdapter<AD>
-  & ConsumeDeserializer<AD, DD>
-  & ConsumeModel<M>
-  & ConsumeInstance<I>;
 
 export default function oneOrCurrent<
-  C extends ActionContext,
   M extends Model,
   I extends InstanceType<M>,
-  AD,
-  DD extends DeserializedData,
+  C extends ConsumeInstance<I>,
 >() {
-  return (
-    action: Action<C & OneOrCurrentContext<M, I, AD, DD>>,
-  ) => action.run(oneOr(async (a) => (await a.context).instance));
+  return oneOr<C, M, unknown, Promise<I>>((action) => useInstanceContext(action));
 }

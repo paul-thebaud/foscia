@@ -9,7 +9,7 @@ export default function save<AD, SD, D extends {}, I extends ModelInstance<D>>(
 ) {
   return <C extends ConsumeAdapter<AD> & ConsumeSerializer<SD>>(action: Action<C>) => (
     instance.exists
-      ? action.use(update(instance))
-      : action.use(create(instance))
+      ? (action as any).use(update(instance))
+      : (action as any).use(create(instance))
   ) as Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I>>;
 }

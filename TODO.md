@@ -3,9 +3,12 @@
 ## General features
 
 - [ ] Add @tag, @category or @group to enhancers, runners, etc.
+- [ ] Replace `extends ActionContext` by `{}` when available.
 - [ ] Manage `lid` on models
 - [ ] `useModelContext` and other contextual user with exception throwing
+- [ ] Receipts docs (client side generated ID, "first" enhancer)
 - [ ] Generic context (ID, etc.) should not be mentioned in ActionContext type
+- [ ] Prettier on docs to quickly format code
 - [ ] Model and relations metadata (missing, loading, etc.)
 - [ ] Manage errors when users are bypassing types (relations not found, etc.)
 - [ ] Tests using vitest

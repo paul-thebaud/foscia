@@ -30,10 +30,12 @@ export default class JsonApiAdapter extends HttpAdapter {
    * @inheritDoc
    */
   protected makeRequestURLParams(context: HttpActionContext) {
-    return optionalJoin([
+    const params = optionalJoin([
       super.makeRequestURLParams(context),
       this.makeIncludeParam(context),
     ], '&');
+
+    return isNone(params) ? undefined : params;
   }
 
   /**

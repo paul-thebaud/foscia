@@ -1,16 +1,17 @@
 import Action from '@/core/actions/action';
 import allUsing from '@/core/actions/context/runners/allUsing';
-import { ActionContext, ConsumeAdapter, ConsumeDeserializer, ConsumeModel } from '@/core/actions/types';
+import makeRunnerExtension from '@/core/actions/extensions/makeRunnerExtension';
+import { ActionExtension, ConsumeAdapter, ConsumeDeserializer, ConsumeModel } from '@/core/actions/types';
 import { Model } from '@/core/model/types';
-import { DeserializedData } from '@/core/types';
 
-export default function all<
-  C extends ActionContext,
-  M extends Model,
-  AD,
-  DD extends DeserializedData,
->() {
+export default function all<AD, M extends Model>() {
   return (
-    action: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD> & ConsumeModel<M>>,
-  ) => action.run(allUsing(({ data }) => data.instances));
+    action: Action<ConsumeAdapter<AD> & ConsumeDeserializer<AD> & ConsumeModel<M>>,
+  ) => action.run(allUsing(({ instances }) => instances));
 }
+
+type AllRunnerExtension = ActionExtension<'all', <AD, M extends Model>(
+  this: Action<ConsumeAdapter<AD> & ConsumeDeserializer<AD> & ConsumeModel<M>>,
+) => Promise<InstanceType<M>[]>>;
+
+all.extension = makeRunnerExtension({ all }) as AllRunnerExtension;

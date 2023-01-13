@@ -94,8 +94,8 @@ But, since we are not building the action factory for you, you must initialize
 this factory yourself with the things you need: an adapter, a serializer, etc.
 Don't worry, the process is still pretty simple thanks to blueprints.
 
-In addition, you cannot just use `action().model(Post).all()` because those
-function must be imported to be used. We are thinking of a way to simply extends
-the action with reusable function, but that's not currently possible regarding
-the way Typescript manage types (generics of context enhancers and runners
-would be lost).
+In addition, you will need a supplementary step to be able to use
+`action().model(Post).all()`, because those functions must be imported
+to be used. This is possible through actions' extensions, which will plug
+functions to your action instance and allow you to use a builder pattern
+call style.

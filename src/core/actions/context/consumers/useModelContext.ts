@@ -8,7 +8,9 @@ export default async function useModelContext<M extends Model>(
   return useRequiredContext(actionOrContext, 'model', [
     'model',
     'find',
+    'create',
     'update',
+    'save',
     'destroy',
     'instance',
     'target',

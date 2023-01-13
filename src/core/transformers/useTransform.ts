@@ -1,4 +1,4 @@
-import { ObjectTransform, Transform } from '@/core/transforms/types';
+import { ObjectTransform, Transform } from '@/core/transformers/types';
 
 // TODO Do not export this function.
 export default function useTransform(
