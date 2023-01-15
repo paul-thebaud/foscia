@@ -1,0 +1,274 @@
+---
+sidebar_position: 35
+description: Build actions, registering hooks, discover enhancers and runners.
+---
+
+import Link from '@docusaurus/Link';
+
+# Actions
+
+:::caution Requirements
+
+Before reading this guide, you should have a working action factory. You can
+read the [**getting started guide**](/docs/getting-started#your-first-actions)
+to quickly create your own action factory.
+
+:::
+
+:::tip What you'll learn
+
+-   Enhancing actions
+-   Running actions
+-   Extending actions for builder pattern calls
+-   Conditionally enhancing and running
+-   Registering hooks on actions
+
+:::
+
+## Instantiation
+
+As stated in the [getting started guide](/docs/getting-started#running-actions),
+actions are instantiated through your action factory. In this guide, we'll admit
+you have a setup action factory.
+
+## Enhancements
+
+An action instance may receive none to many enhancements, which will provide an
+appropriate context to run a request through data source.
+
+Each enhancer can be applied using the `use` action method. Note that those
+enhancers are not instantly applied to the action context, but during the action
+run step (or context computation).
+
+```javascript
+action()
+    // Enhance the action.
+    .use(model(Post))
+    .use(include('comments'));
+```
+
+<Link
+    className="button bg--primary-gradient"
+    to="/docs/api/actions-enhancers"
+>
+    Available enhancers API guide
+</Link>
+
+## Run
+
+An action instance can be run using the `run` method. The runner may use
+enhancers or runners internally.
+
+When an action run, it does 3 things:
+
+-   Dequeue all enhancers since the action instantiation and build context
+-   Execute the runner and each of its internal enhancers/runners (this may
+    update the context)
+-   Return the runner's result (might be any value, including void or an error
+    throwing)
+
+Internally, action running will also trigger [actions hooks](#hooks).
+
+```javascript
+action()
+    .use(model(Post))
+    .use(include('comments'))
+    // Run the action.
+    .run(all());
+```
+
+<Link
+    className="button bg--primary-gradient"
+    to="/docs/api/actions-runners"
+>
+    Available runners API guide
+</Link>
+
+## Extensions
+
+Sometimes, functional programming can be frustrating, because you must always
+rewrite the same words (e.g. `use`) to keep a builder pattern styled code.
+
+You may plug extensions to your actions to directly call an enhancer or a runner
+on the action without using `use` or `run`.
+
+The first step is to update your action factory in which you should `extends`
+your action with the extensions you want.
+
+```ts title="action.ts"
+import { model, include, all } from 'func-client/core';
+import { makeAction } from 'func-client/blueprints';
+
+export default function action() {
+    return makeAction().extends([
+        model.extension,
+        include.extension,
+        all.extension,
+    ] as const);
+}
+```
+
+:::info
+
+Please note that the above code is done inside the action factory. This will
+provide the extension to all actions created using this factory.
+
+Please also note that when using TypeScript, you must use the `as const` keyword
+to get precisely typed methods.
+
+:::
+
+You can now use the extended enhancers and runners without calling `use` or
+`run`. Every enhancers and runners of FuncClient provide a `.extension` property
+which is extendable by an action instance.
+
+```javascript
+import action from './action';
+
+await action().model(Post).include('tags').all();
+```
+
+You may `extends` your action with any enhancers or runners extensions manually.
+Otherwise, you may also use **prebuild extensions packs**. Those provide
+multiple extensions in one exported variable allowing you to `extends` multiple
+extensions at one time!
+
+<Link
+    className="button bg--primary-gradient margin-bottom--lg"
+    to="/docs/api/actions-extensions"
+>
+    Available extensions packs API guide
+</Link>
+
+:::caution
+
+Keep in mind that using extensions will avoid tree-shaking the extended
+enhancers or runners functions (even when those are unused in your codebase),
+because those are imported by their extensions.
+
+:::
+
+## Conditionals
+
+Sometimes, you may need to conditionally apply an enhancer or run an action. As
+an example, you may want to sort results differently based on the user's defined
+sort's direction. This can be done easily using the `when` helper:
+
+```javascript
+import { when } from 'func-client/core';
+import { sortByDesc } from 'func-client/jsonapi';
+
+action()
+    .use(model(Post))
+    .use(when(displayLatestFirst, sortByDesc('createdAt')));
+```
+
+`when` returns a new enhancer or runner depending on the given value's
+_truthiness_. It will execute the first enhancer/runner only if its value is
+_truthy_. You may pass the value as a factory function returning the value. You
+may also pass a second enhancer/runner which will only execute if the value is
+_falsy_. Each callback arguments will receive the action as their first argument
+and the value as their second argument. Each callback may also be async, as any
+enhancers and runners.
+
+Here are further examples:
+
+```javascript
+import { changed, create, oneOrFail, when } from 'func-client/core';
+
+const post = fill(new Post(), userInputData);
+
+action()
+    .use(create(post))
+    .use(when(
+        () => /* compute a special value */,
+        (a, specialTruthyValue) => /* do something */,
+        (a, specialFalsyValue) => /* do something */,
+    ))
+    .run(when(
+        changed(post),
+        oneOrFail(),
+        () => post,
+    ));
+```
+
+`when` is a powerful tool, but it comes with a constraint: when used with
+enhancers, the propagated context typing must be the same from the two
+enhancements if a _falsy_ callback is provided. For example, you cannot use
+when to do so if you want to avoid a TypeScript type error:
+
+```typescript
+import { when } from 'func-client/core';
+
+// This will lead to a "TS2345" error, because the two enhancements
+// types are incompatible.
+action().when(
+    something,
+    context({ foo: 'foo' }),
+    context({ bar: 'bar' }),
+);
+// To fix this error, you must make the context changes compatible.
+action().when(
+    something,
+    context({ foo: 'foo' } as { foo?: string; bar?: string; }),
+    context({ bar: 'bar' } as { foo?: string; bar?: string; }),
+);
+```
+
+## Hooks
+
+You may hook on multiple events which occurs on action instance using the hook
+registration function:
+
+-   `onPreparing`: before context computation through enhancers dequeueing.
+-   `onRunning`: after context computation, before context runner execution.
+-   `onSuccess`: after context runner successful execution (no error thrown).
+-   `onError`: after context runner failed execution (error thrown).
+-   `onFinally`: after context runner successful or failed execution.
+
+To register a hook callback, you must use the registration enhancer on your
+building action.
+
+```javascript
+import {
+    onPreparing,
+    onRunning,
+    onSuccess,
+    onError,
+    onFinally,
+} from 'func-client/core';
+
+action().use(onPreparing(() => /* ... */));
+action().use(onRunning(({ context }) => /* ... */));
+action().use(onSuccess(({ context, result }) => /* ... */));
+action().use(onError(({ context, error }) => /* ... */));
+action().use(onFinally(({ context }) => /* ... */));
+```
+
+:::info
+
+Hooks callback may be async and will be ran sequentially (one by one, not
+parallelized).
+
+:::
+
+You can disable hook execution on a given action instance by using the
+`withoutHooks` function.
+
+```javascript
+import { withoutHooks } from 'func-client/core';
+
+// Retrieve a list of User instances without action hooks running.
+const users = await withoutHooks(action(), async (a) => {
+    return await a.use(model(User)).run(all());
+});
+```
+
+:::caution
+
+FuncClient may also register hooks internally when using some enhancers. Those
+provide some library features
+([**models hooks**](/docs/models#hooks), etc.). Be careful running
+actions without hooks, as those hooks will also be disable.
+
+:::

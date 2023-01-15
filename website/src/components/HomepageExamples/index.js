@@ -8,39 +8,42 @@ import styles from './styles.module.css';
 
 const modelsExampleMeta = {
   title: 'Define your models',
-  link: { to: '/docs/essentials/models', text: 'Learn more about models' },
+  link: { to: '/docs/models', text: 'Learn more about models' },
   description: (
     <>
-      FuncClient provides a simple way to define your models, which may
-      combine attributes, relations or custom properties and methods.
+      FuncClient provides a simple and expressive way to define your models,
+      which may combine attributes, relations, custom properties/methods and
+      even composable definitions.
     </>
   ),
 };
 
 const modelsExampleCode = `
 import { makeModel, attr, hasOne } from 'func-client/core';
+import publishable from './composables/publishable';
 import type User from './User';
 import type Tag from './Tag';
 
 export default class Post extends makeModel('posts', {
-  title: attr<string>(),
-  content: attr<string>(),
-  author: hasOne<User>(),
-  tags: hasMany<Tag>(),
-  get titleWithAuthor() {
-    return \`\${this.title} by \${this.author.name}\`;
-  },
-}) {}
+    ...publishable,
+    title: attr<string>(),
+    content: attr<string>(),
+    author: hasOne<User>(),
+    tags: hasMany<Tag>(),
+}) {
+    get fullTitle() {
+        return \`\${this.title} by \${this.author.name} on \${this.publishedAt}\`;
+    },
+}
 `.trim();
 
 const playExampleMeta = {
   title: 'Play with your models',
-  link: { to: '/docs/essentials/actions', text: 'Learn more about actions' },
+  link: { to: '/docs/actions', text: 'Learn more about actions' },
   description: (
     <>
-      Once your models are ready, you can define an action factory which you
-      will use to run actions over your models.
-      <br />
+      The <code>action()</code> factory you will define provides an easy way to
+      interact with any data source.
       Possibilities are pretty infinite and provided set of functions is wide.
       <br />
       Not a fan of functional programming?
@@ -57,15 +60,15 @@ import action from './action';
 
 // The functional way!
 const post = await action()
-  .use(find(Post, 123))
-  .use(include('author', 'tags'))
-  .run(oneOrFail());
+    .use(find(Post, 123))
+    .use(include('author', 'tags'))
+    .run(oneOrFail());
 
 fill(post, { title: 'Hello World!' });
 
 const updatedPost = await action()
-  .use(update(post))
-  .run(oneOrCurrent());
+    .use(update(post))
+    .run(oneOrCurrent());
 `.trim();
 
 const playBuilderExampleCode = `
@@ -74,15 +77,15 @@ import action from './action';
 
 // The good old builder pattern way!
 const post = await action()
-  .find(Post, 123)
-  .include('author', 'tags')
-  .oneOrFail();
+    .find(Post, 123)
+    .include('author', 'tags')
+    .oneOrFail();
 
 fill(post, { title: 'Hello World!' });
 
 const updatedPost = await action()
-  .update(post)
-  .oneOrCurrent();
+    .update(post)
+    .oneOrCurrent();
 `.trim();
 
 function Example({ title, description, link, children }) {
@@ -116,23 +119,21 @@ export default function HomepageExamples() {
             <CodeBlock language="ts">{modelsExampleCode}</CodeBlock>
           </Example>
           <Example {...playExampleMeta}>
-            <div className="code-tabs__wrapper">
-              <Tabs groupId="actionStyle">
-                <TabItem
-                  value="builder"
-                  label="Builder pattern style"
-                  default
-                >
-                  <CodeBlock language="ts">{playBuilderExampleCode}</CodeBlock>
-                </TabItem>
-                <TabItem
-                  value="functional"
-                  label="Functional style"
-                >
-                  <CodeBlock language="ts">{playFunctionalExampleCode}</CodeBlock>
-                </TabItem>
-              </Tabs>
-            </div>
+            <Tabs groupId="actionStyle">
+              <TabItem
+                value="builder"
+                label="Builder pattern style"
+                default
+              >
+                <CodeBlock language="ts">{playBuilderExampleCode}</CodeBlock>
+              </TabItem>
+              <TabItem
+                value="functional"
+                label="Functional style"
+              >
+                <CodeBlock language="ts">{playFunctionalExampleCode}</CodeBlock>
+              </TabItem>
+            </Tabs>
           </Example>
         </div>
       </div>

@@ -2,7 +2,7 @@ import FuncClientError from '@/core/errors/funcClientError';
 import logger from '@/core/logger/logger';
 import isPropDef from '@/core/model/guards/isPropDef';
 import { Model, ModelConfig, ModelInstance, ModelSchema } from '@/core/model/types';
-import { Dictionary, value } from '@/utilities';
+import { Dictionary, eachDescriptors, isNil, value } from '@/utilities';
 
 export default function makeModelClass(config: ModelConfig): Model {
   function ModelClass(this: ModelInstance) {
@@ -42,21 +42,20 @@ export default function makeModelClass(config: ModelConfig): Model {
   ModelClass.$config = config;
   ModelClass.$schema = {} as Dictionary;
   ModelClass.$hooks = {};
-  ModelClass.extends = (extendsFrom?: object) => {
-    Object.entries(Object.getOwnPropertyDescriptors(extendsFrom ?? {}))
-      .forEach(([key, descriptor]) => {
-        if (['id', 'exists', 'type'].indexOf(key) !== -1) {
-          throw new FuncClientError(
-            `\`id\`, \`type\` and \`exists\` are forbidden as a definition keys (found \`${key}\`).`,
-          );
-        }
+  ModelClass.extends = (definition?: object) => {
+    eachDescriptors(definition ?? {}, (key, descriptor) => {
+      if (['id', 'lid', 'type', 'exists'].indexOf(key) !== -1) {
+        throw new FuncClientError(
+          `\`id\`, \`lid\`, \`type\` and \`exists\` are forbidden as a definition keys (found \`${key}\`).`,
+        );
+      }
 
-        if (descriptor.value && isPropDef(descriptor.value)) {
-          ModelClass.$schema[key] = descriptor.value;
-        } else {
-          Object.defineProperty(ModelClass.prototype, key, descriptor);
-        }
-      });
+      if (!isNil(descriptor.value) && isPropDef(descriptor.value)) {
+        ModelClass.$schema[key] = descriptor.value;
+      } else {
+        Object.defineProperty(ModelClass.prototype, key, descriptor);
+      }
+    });
 
     return ModelClass;
   };

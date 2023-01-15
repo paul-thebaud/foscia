@@ -5,6 +5,6 @@ export default function useContext<C extends ActionContext>(
   actionOrContext: ConsumableContext<C>,
 ) {
   return actionOrContext instanceof Action
-    ? actionOrContext.context
+    ? actionOrContext.computeContext()
     : Promise.resolve(actionOrContext);
 }

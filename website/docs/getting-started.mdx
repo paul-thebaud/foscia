@@ -1,5 +1,6 @@
 ---
-sidebar_position: 3
+sidebar_position: 20
+toc_max_heading_level: 4
 ---
 
 import Link from '@docusaurus/Link';
@@ -9,25 +10,27 @@ import Tabs from '@theme/Tabs';
 # Getting started
 
 :::tip What you'll learn
-- Creating your first model and using it through model instances
-- Creating your action factory using blueprints
-- Running basic actions on your models with your action factory
+
+-   Creating your first model and using it through model instances
+-   Creating your action factory using blueprints
+-   Running basic actions on your models with your action factory
+
 :::
 
 ## Your first model
 
 Models represent the structure of your data and are used to simplify and
-strongly type your backend interactions.
+strongly type interactions with your data source.
 
 ### Defining a model
 
-To declare a model, you just need to use the `makeModel` function.
-This function takes up to 2 arguments:
+To declare a model, you just need to use the `makeModel` function. This function
+takes up to 2 arguments:
 
-- The model `type`, which is used by other services to identify your model
-or interact with a data source.
-- The model `definition`, which contains your attributes/relations
-definitions and custom properties and methods.
+-   The model `type`, which is used by other services to identify your model or
+    interact with a data source.
+-   The model `definition`, which contains your attributes/relations definitions
+    and custom properties and methods.
 
 ```ts title="models/post.ts"
 // file: models/comment.ts noEmit
@@ -39,23 +42,24 @@ import { makeModel, attr, hasMany, toDate } from 'func-client/core';
 import type Comment from './comment';
 
 export default class Post extends makeModel('posts', {
-  title: attr<string>(),
-  description: attr<string>(),
-  publishedAt: attr<Date | undefined>(toDate()),
-  comments: hasMany<Comment>(),
-  get isDraft() {
-    return !this.publishedAt;
-  },
-}) {
-}
+    title: attr<string>(),
+    description: attr<string>(),
+    publishedAt: attr<Date | undefined>(toDate()),
+    comments: hasMany<Comment>(),
+    get published() {
+        return !!this.publishedAt;
+    },
+}) {}
 ```
 
 :::tip
-If you never need to import only a model's type (such as in Typescript to
-avoid circular deps), you can directly use the `makeModel` returned value
-instead of extending it: `export default makeModel('posts', {});`
+
+If you never need to import only a model's type (such as in Typescript to avoid
+circular deps), you can directly use the `makeModel` returned value instead of
+extending it: `export default makeModel('posts', {});`
 
 [**Read the FAQ to understand the why.**](/docs/faq#why-classes-are-used-for-models-in-typescript)
+
 :::
 
 ### Using models classes
@@ -67,27 +71,26 @@ definition.
 ```javascript
 const post = new Post();
 post.title = 'Hello World!';
+post.publishedAt = new Date();
 console.log(post.title); // "Hello World!"
-console.log(post.isDraft); // true
+console.log(post.published); // true
 console.log(post.exists); // false
 ```
 
-<Link
-  className="button bg--primary-gradient"
-  to="/docs/essentials/models"
->
-  Read the full guide on models
+<Link className="button bg--primary-gradient" to="/docs/models">
+    Read the full guide on models
 </Link>
 
 ## Your first actions
 
-### Action factory with blueprints
+### Action factory
 
-Once your models are set up, you will probably want to interact with a
-data source, such as an API.
-For this, you will need an action factory which initialize a preconfigured
-context for all your future actions.
-Running actions using this action factory will be seen in the
+#### With blueprints
+
+Once your models are set up, you will probably want to interact with a data
+source, such as an API. For this, you will need an action factory which
+initialize a preconfigured context for all your future actions. Running actions
+using this action factory will be seen in the
 [next part of this guide](#running-simple-actions).
 
 Blueprints provide a quick initialization of your action factory for different
@@ -101,13 +104,13 @@ blueprints: [JSON:API](https://jsonapi.org) or JSON REST.
     default
   >
 
-`makeJsonApi` is a blueprint to quickly initiate an action factory to
-interact with a normalized [JSON:API backend](https://jsonapi.org).
-It provides all the available tooling, such as a model registry, an instance
-cache, a serializer and deserializer and an adapter.
+`makeJsonApi` is a blueprint to quickly initiate an action factory to interact
+with a normalized [JSON:API backend](https://jsonapi.org). It provides all the
+available tooling, such as a model registry, an instance cache, a serializer and
+deserializer and an adapter.
 
 You can read more details on this implementation on the
-[JSON:API page](/docs/advanced/jsonapi).
+[JSON:API page](/docs/implementations/jsonapi).
 
 ```javascript title="action.js"
 import { makeJsonApi } from 'func-client/blueprints';
@@ -115,15 +118,15 @@ import Comment from './models/comment';
 import Post from './models/post';
 
 const { makeAction, registry } = makeJsonApi({
-  baseURL: 'https://example.com/api/v1',
+    baseURL: 'https://example.com/api/v1',
 });
 
 // We need to register the models to allow the deserializer to know
 // to which model it should deserialize from an API record.
-registry.register(Comment, Post, /* User, Tag */);
+registry.register(Comment, Post /* User, Tag */);
 
 export default function action() {
-  return makeAction();
+    return makeAction();
 }
 ```
 
@@ -133,13 +136,13 @@ export default function action() {
     label="JSON REST"
   >
 
-`makeJsonRest` is a blueprint to quickly initiate an action factory to
-interact with a normalized JSON REST backend.
-It provides all the available tooling, such as a model registry, an instance
-cache, a serializer and deserializer and an adapter.
+`makeJsonRest` is a blueprint to quickly initiate an action factory to interact
+with a normalized JSON REST backend. It provides all the available tooling, such
+as a model registry, an instance cache, a serializer and deserializer and an
+adapter.
 
 You can read more details on this implementation on the
-[JSON REST page](/docs/advanced/jsonrest).
+[JSON REST page](/docs/implementations/jsonrest).
 
 ```javascript title="action.js"
 import { makeJsonRest } from 'func-client/blueprints';
@@ -147,15 +150,15 @@ import Comment from './models/comment';
 import Post from './models/post';
 
 const { makeAction, registry } = makeJsonRest({
-  baseURL: 'https://example.com/api/v1',
+    baseURL: 'https://example.com/api/v1',
 });
 
 // We need to register the models to allow the deserializer to know
 // to which model it should deserialize from an API record.
-registry.register(Comment, Post, /* User, Tag */);
+registry.register(Comment, Post /* User, Tag */);
 
 export default function action() {
-  return makeAction();
+    return makeAction();
 }
 ```
 
@@ -165,67 +168,141 @@ export default function action() {
     label="Other"
   >
 
-:::danger Whoops
 For the moment, there is no other official implementation available besides
-JSON:API and JSON REST.
+JSON:API and JSON REST. You should therefore either:
 
-You should open an issue or a pull request on the
-[**GitHub repository**](https://github.com/paul-thebaud/func-client/issues)
-to submit your implementation idea.
-:::
+- [**Implement your own action's dependencies**](/docs/implementations/custom)
+- [**Open an issue or a pull request**](https://github.com/paul-thebaud/func-client/issues)
+
 
   </TabItem>
 </Tabs>
 
 #### Notice on blueprints
 
-Using blueprints is a simple and quick way to set up an action factory.
-However, it may have some downsides:
+Using blueprints is a simple and quick way to set up an action factory. However,
+it may have some downsides:
 
-- Only some implementations are available for now, so you may not found
-something which fits your needs
-- Some dependencies (e.g. serializer in a readonly context) may imported
-even if you don't use them, and it may increase your production bundle size;
-- Some behaviors may not be configurable;
+-   Only some implementations are available for now, so you may not found
+    something which fits your needs
+-   Some dependencies (e.g. serializer in a readonly context) may imported even
+    if you don't use them, and it may increase your production bundle size;
+-   Some behaviors may not be configurable;
 
-If you want more control over your action factory and its dependencies, you should read
+If you want more control over your action factory and its dependencies, you
+should read
 [**the advanced guide on custom action factory**](/docs/advanced/custom-action-factory).
+
+#### Builder pattern syntax
+
+If you want to use the builder pattern syntax (e.g. `action().model(Post)`
+instead of `action().use(model(Post))`), you should `extends` your action with
+the extensions packs you want to be available directly on your action.
+
+For this, you may `extends` the packs you want inside your `action` function:
+
+<Tabs groupId="implementation">
+  <TabItem
+    value="jsonapi"
+    label="JSON:API"
+    default
+  >
+
+```js
+import { coreExtensions, crudExtensions, jsonApiExtensions } from 'func-client/blueprints';
+
+export default action() {
+    return makeAction()
+        .extends(coreExtensions)
+        .extends(crudExtensions)
+        .extends(jsonApiExtensions);
+}
+```
+
+  </TabItem>
+  <TabItem
+    value="jsonrest"
+    label="JSON REST"
+  >
+
+```js
+import { coreExtensions, crudExtensions, jsonRestExtensions } from 'func-client/blueprints';
+
+export default action() {
+    return makeAction()
+        .extends(coreExtensions)
+        .extends(crudExtensions)
+        .extends(jsonRestExtensions);
+}
+```
+
+  </TabItem>
+  <TabItem
+    value="other"
+    label="Other"
+  >
+
+```js
+import { coreExtensions, crudExtensions } from 'func-client/blueprints';
+
+export default action() {
+    return makeAction()
+        .extends(coreExtensions)
+        .extends(crudExtensions);
+}
+```
+
+  </TabItem>
+</Tabs>
+
+You may [learn more about extensions](/docs/actions#extensions),
+check the [available extensions packs](/docs/api/actions-extensions) or import
+manually enhancers and runners extensions using the following code:
+
+```ts
+import { model, include, all } from 'func-client/core';
+import { makeAction } from 'func-client/blueprints';
+
+export default function action() {
+    return makeAction().extends([
+        model.extension,
+        include.extension,
+        all.extension,
+    ] as const);
+}
+```
 
 ### Running simple actions
 
-To run an action, you can initialize a new action instance by calling your factory.
-With this instance, you can call **context enhancers** through `use` to modify
-the action context.
-When you are ready, you can `run` the action with a given **context runner**.
+To run an action, you can initialize a new action instance by calling your
+factory. With this instance, you can call **context enhancers** through `use` to
+modify the action context. When you are ready, you can `run` the action with a
+given **context runner**.
 
 ```javascript
 import { all, model } from 'func-client/core';
 import Post from './models/post';
 import action from './action';
 
-const posts = await action()
-  .use(model(Post))
-  .run(all());
+const posts = await action().use(model(Post)).run(all());
 ```
 
 Generally in FuncClient, the context enhancers are doing the majority of work to
-customize the action you will run. Context runners only exists to tell how
-you wish to run the action and retrieve the result (raw result, model instance,
+customize the action you will run. Context runners only exists to tell how you
+wish to run the action and retrieve the result (raw result, model instance,
 etc.).
 
-A great example of this is when finding a model using its ID. You'll not use
-a `find` context runner. Instead, you will need to use a `find` context
-enhancer and a `oneOrFail` context runner. This way, you are able to do
-a find query and retrieve a raw result when needed.
+A great example of this is when finding a model using its ID. You'll not use a
+`find` context runner. Instead, you will need to use a `find` context enhancer
+and a `oneOrFail` context runner. This way, you are able to do a find query and
+retrieve a raw result when needed.
 
 ```javascript
 import { find, oneOrFail } from 'func-client/core';
 import Post from './models/post';
 import action from './action';
 
-const post = await action()
-  .use(find(Post, 'abc-123'))
-  .run(oneOrFail());
+const post = await action().use(find(Post, 'abc-123')).run(oneOrFail());
 ```
 
 This works the same to send write operations through actions. In the following
@@ -237,45 +314,40 @@ import Post from './models/post';
 import action from './action';
 
 const post = fill(new Post(), {
-  title: 'Hello World!',
-  description: 'Your first post',
+    title: 'Hello World!',
+    description: 'Your first post',
 });
 
-const response = await action()
-  .use(create(post))
-  .run(oneOrCurrent());
+const response = await action().use(create(post)).run(oneOrCurrent());
 ```
 
-<Link
-  className="button bg--primary-gradient"
-  to="/docs/essentials/actions"
->
-  Read the full guide on actions
+<Link className="button bg--primary-gradient" to="/docs/actions">
+    Read the full guide on actions
 </Link>
 
 ### Running HTTP custom actions
 
-Using JSON:API or JSON REST blueprints, you may also want to use FuncClient
-to make non-standard API calls.
+Using JSON:API or JSON REST blueprints, you may also want to use FuncClient to
+make non-standard API calls.
 
 ```javascript
 import { instance, raw } from 'func-client/core';
 import { makePost } from 'func-client/http';
 import action from './action';
 
-const post = await action()
-  .use(find(Post, 'abc-123'))
-  .run(oneOrFail());
+const post = await action().use(find(Post, 'abc-123')).run(oneOrFail());
 
 // Make a POST call to "https://example.com/api/v1/services/posts/1/publish"
 const response = await action()
-  .use(instance(post))
-  .use(makePost('publish', {
-    data: { publishedAt: new Date() },
-  }))
-  .run(raw());
+    .use(instance(post))
+    .use(
+        makePost('publish', {
+            data: { publishedAt: new Date() },
+        }),
+    )
+    .run(raw());
 
-// This is a raw fetch Response object.
+// This is a raw `fetch` Response object.
 console.log(response.status);
 ```
 

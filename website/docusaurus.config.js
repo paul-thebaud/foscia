@@ -60,6 +60,11 @@ const config = {
   themeConfig:
   /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      docs: {
+        sidebar: {
+          autoCollapseCategories: true,
+        },
+      },
       navbar: {
         title: 'FuncClient',
         items: [
@@ -72,6 +77,16 @@ const config = {
             to: '/docs/getting-started',
             position: 'left',
             label: 'Documentation',
+          },
+          {
+            to: '/docs/category/api',
+            position: 'right',
+            label: 'API',
+          },
+          {
+            to: '/docs/faq',
+            position: 'right',
+            label: 'FAQ',
           },
           {
             href: 'https://github.com/paul-thebaud/func-client',
@@ -94,12 +109,24 @@ const config = {
                 to: '/docs/getting-started',
               },
               {
-                label: 'Essentials',
-                to: '/docs/category/essentials',
+                label: 'Models',
+                to: '/docs/models',
+              },
+              {
+                label: 'Actions',
+                to: '/docs/actions',
               },
               {
                 label: 'Advanced',
                 to: '/docs/category/advanced',
+              },
+              {
+                label: 'Implementations',
+                to: '/docs/category/implementations',
+              },
+              {
+                label: 'API',
+                to: '/docs/category/api',
               },
               {
                 label: 'FAQ',

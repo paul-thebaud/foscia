@@ -1,6 +1,6 @@
 import { Hookable, HookCallback } from '@/core/hooks/types';
 import { Transform } from '@/core/transformers/types';
-import { Awaitable, Constructor, Dictionary, Prev } from '@/utilities';
+import { Awaitable, Constructor, DescriptorHolder, Dictionary, Prev } from '@/utilities';
 
 /**
  * Configuration of a model class.
@@ -90,6 +90,17 @@ export type ModelRelation<T = unknown> = ModelProp<T> & {
 };
 
 /**
+ * The parsed model definition with non attributes/relations properties'
+ * descriptors wrapped in holders.
+ */
+export type ModelParsedDefinition<D extends {} = {}> = {
+  [K in keyof D]: D[K] extends ModelAttribute<any, any>
+    ? D[K] : D[K] extends ModelRelation<any>
+      ? D[K] : D[K] extends DescriptorHolder<any>
+        ? D[K] : DescriptorHolder<D[K]>;
+};
+
+/**
  * Extract model's attributes and relations from the whole definition.
  */
 export type ModelSchema<D extends {} = {}> = {
@@ -167,7 +178,8 @@ export type ModelInstance<D extends {} = any> = {
 } & {
   [K in keyof D]: D[K] extends ModelAttribute<infer T, any>
     ? T : D[K] extends ModelRelation<infer T>
-      ? T : D[K];
+      ? T : D[K] extends DescriptorHolder<infer T>
+        ? T : D[K];
 };
 
 /**

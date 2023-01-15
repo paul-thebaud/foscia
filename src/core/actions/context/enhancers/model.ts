@@ -1,13 +1,13 @@
 import Action from '@/core/actions/action';
 import context from '@/core/actions/context/enhancers/context';
 import target from '@/core/actions/context/enhancers/target';
-import makeEnhancerExtension from '@/core/actions/extensions/makeEnhancerExtension';
-import { ActionExtension } from '@/core/actions/types';
+import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
+import { ActionContext, ActionParsedExtension } from '@/core/actions/types';
 import { Model, ModelInstance } from '@/core/model/types';
 
 /**
  * Target the given model.
- * Use its baseURL and type.
+ * Use its type and other applicable model's context.
  *
  * @param modelToUse
  *
@@ -25,9 +25,11 @@ export default function model<D extends {}, I extends ModelInstance<D>, M extend
     }));
 }
 
-type ModelEnhancerExtension = ActionExtension<'model', <A extends {}, C extends {}, M extends Model>(
-  this: Action<C> & A,
-  model: M,
-) => Action<C & { model: M; }> & A>;
+type ModelEnhancerExtension = ActionParsedExtension<{
+  model<C extends ActionContext, A extends Action<C>, M extends Model>(
+    this: Action<C> & A,
+    model: M,
+  ): Action<C & { model: M; type: string; }> & A;
+}>;
 
-model.extension = makeEnhancerExtension({ model }) as ModelEnhancerExtension;
+model.extension = makeEnhancersExtension({ model }) as ModelEnhancerExtension;

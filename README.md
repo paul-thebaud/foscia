@@ -11,13 +11,13 @@ This package is a work in progress. It is unstable, untested and not documented.
 Please see [CONTRIBUTING file](CONTRIBUTING.md) for more details.
 
 Informal discussion regarding bugs, new features, and implementation of existing
-features takes
-place in the
+features takes place in the
 [GitHub issue page of this repository](https://github.com/paul-thebaud/func-client/issues).
 
 ## Credits
 
-- [Paul Thébaud](https://github/paul-thebaud)
+- [Paul Thébaud](https://github.com/paul-thebaud)
+- [Mathieu Thébaud](https://github.com/mthebaud)
 - [All Contributors](https://github.com/paul-thebaud/func-client/graphs/contributors)
 
 ## License

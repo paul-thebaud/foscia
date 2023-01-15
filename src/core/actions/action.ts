@@ -1,15 +1,14 @@
 import type {
   ActionContext,
-  ActionExtension,
+  ActionExtended,
   ActionHooksDefinition,
   ContextEnhancer,
   ContextRunner,
-  InferActionWithExtensions,
 } from '@/core/actions/types';
 import runHook from '@/core/hooks/runHook';
 import { HooksRegistrar } from '@/core/hooks/types';
 import withoutHooks from '@/core/hooks/withoutHooks';
-import { sequentialTransform } from '@/utilities';
+import { eachDescriptors, sequentialTransform } from '@/utilities';
 
 export default class Action<Context extends ActionContext> {
   public $hooks: HooksRegistrar<ActionHooksDefinition> | null;
@@ -24,22 +23,18 @@ export default class Action<Context extends ActionContext> {
     this.$hooks = {};
   }
 
-  public extends<E extends readonly ActionExtension[]>(extensions: E & ThisType<this>) {
-    extensions.forEach((extension) => {
-      Object.defineProperty(this, extension.name, {
-        value: extension.method,
-      });
+  public extends<Extension extends {}>(extension: Extension & ThisType<this>) {
+    eachDescriptors(extension, (key, descriptor) => {
+      Object.defineProperty(this, key, descriptor);
     });
 
-    return this as this & InferActionWithExtensions<E>;
+    return this as this & ActionExtended<Extension>;
   }
 
-  public get context() {
-    return (async () => {
-      await this.dequeueEnhancements();
+  public async computeContext() {
+    await this.dequeueEnhancements();
 
-      return this.$context;
-    })();
+    return this.$context;
   }
 
   public updateContext<PrevAction, NewContext extends ActionContext>(
@@ -65,7 +60,7 @@ export default class Action<Context extends ActionContext> {
   ): Promise<Awaited<Result>> {
     await runHook(this, 'preparing', undefined);
 
-    const context = await this.context;
+    const context = await this.computeContext();
 
     await runHook(this, 'running', { context });
 

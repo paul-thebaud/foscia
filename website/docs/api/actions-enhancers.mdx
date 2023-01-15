@@ -52,11 +52,8 @@ the context to merge into the action's current context
 
 Only target the given model.
 
-This should only be used in special actions cases where we do not want to
-use the model type and base URL (understand "endpoint" in case of an API).
-
-**In most case, you should an alternative ([`model`](#model), [`find`](#find),
-[`update`](#update), etc.) instead.**
+In most cases, you should use ([`model`](#model), [`find`](#find) or any other
+model's enhancers instead of `target`.
 
 #### Example
 
@@ -74,7 +71,9 @@ action().use(target(Post));
 
 <FunctionInfo provides="Model" />
 
-Target the given model and use its type and base URL (if defined).
+Target the given model.
+
+Use its type and other applicable model's context.
 
 #### Example
 
@@ -169,6 +168,7 @@ field or a set of field to select for the given model
 
 [Filter the JSON:API resource](https://jsonapi.org/format/#fetching-filtering)
 by the given key and value.
+When key is an object, it will spread the object as a filter values map.
 The new filter will be merged with the previous ones.
 
 #### Example

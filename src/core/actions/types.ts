@@ -2,7 +2,7 @@ import type Action from '@/core/actions/action';
 import { HookCallback } from '@/core/hooks/types';
 import { Model, ModelId, ModelInstance } from '@/core/model/types';
 import { AdapterI, CacheI, DeserializedData, DeserializerI, RegistryI, SerializerI } from '@/core/types';
-import { Awaitable } from '@/utilities';
+import { Awaitable, DescriptorHolder } from '@/utilities';
 
 export type ActionContext = {
   action?: 'READ' | 'CREATE' | 'UPDATE' | 'DESTROY';
@@ -22,16 +22,20 @@ export type ActionHooksDefinition<C extends ActionContext = any> = {
   finally: HookCallback<{ context: C; }>;
 };
 
+export type ActionParsedExtension<E extends {} = {}> = {
+  [K in keyof E]: E[K] extends DescriptorHolder<any> ? E[K] : DescriptorHolder<E[K]>;
+};
+
+export type ActionExtended<E extends {}> = {
+  [K in keyof E]: E[K] extends DescriptorHolder<infer T> ? T : E[K];
+};
+
 export type ActionExtension<
   N extends string = string,
   M extends (...args: any[]) => any = (...args: any[]) => any,
 > = {
   name: N;
   method: M;
-};
-
-export type InferActionWithExtensions<E extends readonly ActionExtension[]> = {
-  [I in Extract<keyof E, `${number}`> as E[I]['name']]: E[I]['method'];
 };
 
 export type ContextEnhancer<PC extends ActionContext, NC extends ActionContext> = (

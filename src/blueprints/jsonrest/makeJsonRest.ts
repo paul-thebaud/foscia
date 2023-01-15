@@ -1,6 +1,7 @@
+import makeAction from '@/blueprints/makeAction';
 import makeCache from '@/blueprints/makeCache';
 import makeRegistry from '@/blueprints/makeRegistry';
-import { Action, withAdapter, withCache, withDeserializer, withRegistry, withSerializer } from '@/core';
+import { withAdapter, withCache, withDeserializer, withRegistry, withSerializer } from '@/core';
 import { JsonRestAdapter, JsonRestDeserializer, JsonRestSerializer } from '@/jsonrest';
 
 /**
@@ -24,21 +25,19 @@ export default function makeJsonRest(config: {
 
   const serializer = new JsonRestSerializer();
 
-  function makeAction() {
-    return new Action()
-      .use(withCache(cache))
-      .use(withRegistry(registry))
-      .use(withAdapter(adapter))
-      .use(withDeserializer(deserializer))
-      .use(withSerializer(serializer));
-  }
-
   return {
     cache,
     registry,
     adapter,
     deserializer,
     serializer,
-    makeAction,
+    makeAction() {
+      return makeAction()
+        .use(withCache(cache))
+        .use(withRegistry(registry))
+        .use(withAdapter(adapter))
+        .use(withDeserializer(deserializer))
+        .use(withSerializer(serializer));
+    },
   };
 }

@@ -1,19 +1,21 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 description: Blog articles with tags example. Model setup and action usage.
 ---
 
 # JSON:API blog CRUD
 
 :::tip What you'll learn
-- Defining blog and tag models
-- Use blog model for CRUD operations on a JSON:API backend
+
+-   Defining blog and tag models
+-   Use blog model for CRUD operations on a JSON:API backend
+
 :::
 
 This is a simple example to implement a blog content management using
-FuncClient. This example is framework-agnostic, so you'll only see
-examples of models or actions calls. You may use those examples inside
-any project (Vanilla JS, React, Vue, etc.).
+FuncClient. This example is framework-agnostic, so you'll only see examples of
+models or actions calls. You may use those examples inside any project (Vanilla
+JS, React, Vue, etc.).
 
 ## Models
 
@@ -25,10 +27,9 @@ import { attr, hasMany, makeModel } from 'func-client/core';
 import type Post from './post';
 
 export default class Tag extends makeModel('tags', {
-  name: attr<string>(),
-  posts: hasMany<Post>(),
-}) {
-}
+    name: attr<string>(),
+    posts: hasMany<Post>(),
+}) {}
 ```
 
 ```ts title="models/post.ts"
@@ -39,15 +40,14 @@ import { attr, hasMany, makeModel, toDate } from 'func-client/core';
 import type Tag from './tag';
 
 export default class Post extends makeModel('posts', {
-  title: attr<string>(),
-  description: attr<string>(),
-  publishedAt: attr(toDate()),
-  tags: hasMany<Tag>(),
-  get isDraft() {
-    return !this.publishedAt;
-  },
-}) {
-}
+    title: attr<string>(),
+    description: attr<string>(),
+    publishedAt: attr(toDate()),
+    tags: hasMany<Tag>(),
+    get published() {
+        return !!this.publishedAt;
+    },
+}) {}
 ```
 
 ## Classic CRUD
@@ -56,17 +56,22 @@ export default class Post extends makeModel('posts', {
 
 ```javascript
 import { model, when } from 'func-client/core';
-import { filterBy, sortByDesc, paginate, allDocument } from 'func-client/jsonapi';
+import {
+    filterBy,
+    sortByDesc,
+    paginate,
+    allDocument,
+} from 'func-client/jsonapi';
 import action from './action';
 import Post from './models/post';
 
 export default async function fetchAllPost(query = {}) {
-  return action()
-    .use(model(Post))
-    .use(when(query.search, (a, s) => a.use(filterBy('search', s))))
-    .use(sortByDesc('createdAt'))
-    .use(paginate({ number: query.page ?? 1 }))
-    .run(allDocument());
+    return action()
+        .use(model(Post))
+        .use(when(query.search, (a, s) => a.use(filterBy('search', s))))
+        .use(sortByDesc('createdAt'))
+        .use(paginate({ number: query.page ?? 1 }))
+        .run(allDocument());
 }
 
 const { instances, meta } = await fetchAllPost({ search: 'Hello' });
@@ -80,10 +85,7 @@ import action from './action';
 import Post from './models/post';
 
 export default async function fetchOnePost(id) {
-  return action()
-    .use(find(Post, id))
-    .use(include('tags'))
-    .run(oneOrFail());
+    return action().use(find(Post, id)).use(include('tags')).run(oneOrFail());
 }
 
 const post = await fetchOnePost('123-abc');
@@ -97,30 +99,32 @@ import action from './action';
 import Post from './models/post';
 
 export default async function savePost(post, values = {}) {
-  fill(post, values);
+    fill(post, values);
 
-  try {
-    await action()
-      .use(save(post))
-      .run(when(
-        !post.exists || changed(post),
-        oneOrCurrent(),
-        () => instance,
-      ));
-  } catch (error) {
-    reset(post);
+    try {
+        await action()
+            .use(save(post))
+            .run(
+                when(
+                    !post.exists || changed(post),
+                    oneOrCurrent(),
+                    () => instance,
+                ),
+            );
+    } catch (error) {
+        reset(post);
 
-    throw error;
-  }
+        throw error;
+    }
 
-  return post;
+    return post;
 }
 
 const post = new Post();
 
 await savePost(post, {
-  title: 'Hello World!',
-  publishedAt: new Date(),
+    title: 'Hello World!',
+    publishedAt: new Date(),
 });
 ```
 
@@ -132,9 +136,7 @@ import action from './action';
 import Post from './models/post';
 
 export default async function deletePost(post) {
-  await action()
-    .use(destroy(post))
-    .run(none());
+    await action().use(destroy(post)).run(none());
 }
 
 const post = new Post();
@@ -183,10 +185,12 @@ await publishPost(post);
 ```
 
 :::info
+
 `makeGet` or other custom request enhancers (`makePost`, etc.) will just append
-the given path if it is not an "absolute" (starting with `/`) path.
-This allows you to run non-standard actions scoped to an instance, etc.
+the given path if it is not an "absolute" (starting with `/`) path. This allows
+you to run non-standard actions scoped to an instance, etc.
 
 Your may also use an absolute (starting with `/`) path like `/some/magic/action`
 to ignore the configured base URL and run a non-standard action.
+
 :::

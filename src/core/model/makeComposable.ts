@@ -1,7 +1,13 @@
-import { ModelInstance } from '@/core/model/types';
+import makeDefinition from '@/core/model/makeDefinition';
+import { ModelInstance, ModelParsedDefinition } from '@/core/model/types';
 
+/**
+ * Create a composable definition which will be used by a model factory.
+ *
+ * @param rawDefinition
+ */
 export default function makeComposable<D extends {} = {}>(
-  extendsFrom?: D & ThisType<ModelInstance<D>>,
+  rawDefinition?: D & ThisType<ModelInstance<D>>,
 ) {
-  return extendsFrom ?? {} as D;
+  return makeDefinition(rawDefinition) as ModelParsedDefinition<D>;
 }

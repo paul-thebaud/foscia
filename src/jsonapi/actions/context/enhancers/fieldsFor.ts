@@ -1,4 +1,5 @@
 import { Action, ActionContext, Model, ModelKey } from '@/core';
+import useContext from '@/core/actions/context/consumers/useContext';
 import { param } from '@/http';
 import prevParams from '@/http/actions/context/utilities/prevParams';
 import mergeParamList from '@/jsonapi/actions/context/utilities/mergeParamList';
@@ -18,7 +19,7 @@ export default function fieldsFor<M extends Model>(
   ...fieldset: ArrayableVariadic<ModelKey<M>>
 ) {
   return async <C extends ActionContext>(action: Action<C>) => {
-    const prevFields = prevParams(await action.context)?.fields;
+    const prevFields = prevParams(await useContext(action))?.fields;
 
     return action.use(param('fields', {
       ...prevFields,

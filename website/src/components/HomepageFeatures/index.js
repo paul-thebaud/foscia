@@ -14,7 +14,7 @@ const FeatureList = [
         FuncClient comes with a set of tools to quickly integrate with a
         REST or JSON:API backend.
         <br />
-        You may also create your own adapters to integrate with any data sources
+        You may also create your own implementations to fit your needs
         (Soap, SQL, IndexedDB, etc.).
       </>
     ),
@@ -25,8 +25,8 @@ const FeatureList = [
     description: (
       <>
         With functional programming, FuncClient can be used in many ways
-        to fit your needs and unused functions can be tree-shaken from your
-        production build automatically.
+        and unused functions can be tree-shaken from your production build
+        automatically.
       </>
     ),
   },
@@ -36,7 +36,7 @@ const FeatureList = [
     description: (
       <>
         FuncClient was build at start with TypeScript to propose you
-        a secure and clean typings experience with consistent generic types.
+        a secure typing experience with consistent generic types and inference.
       </>
     ),
   },

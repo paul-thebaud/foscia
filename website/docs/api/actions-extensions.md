@@ -1,8 +1,8 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 description: Available actions extensions.
 ---
 
 # Actions extensions
 
-<span class="chip chip--primary">Work in progress</span>
+<span className="chip chip--primary">Work in progress</span>

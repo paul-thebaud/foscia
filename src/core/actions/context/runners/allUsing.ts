@@ -1,10 +1,10 @@
 import Action from '@/core/actions/action';
 import raw from '@/core/actions/context/runners/raw';
 import deserializeInstances, { DeserializedDataOf } from '@/core/actions/context/utilities/deserializeInstances';
-import makeRunnerExtension from '@/core/actions/extensions/makeRunnerExtension';
+import makeRunnersExtension from '@/core/actions/extensions/makeRunnersExtension';
 import {
   ActionContext,
-  ActionExtension,
+  ActionParsedExtension,
   ConsumeAdapter,
   ConsumeDeserializer,
   ConsumeModel,
@@ -41,9 +41,19 @@ export default function allUsing<
   };
 }
 
-type AllUsingRunnerExtension = ActionExtension<'allUsing', <A extends {}, C extends {}, M extends Model, I extends InstanceType<M>, AD, DD extends DeserializedData, ND>(
-  this: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD> & ConsumeModel<M>> & A,
-  transform: (data: AllUsingData<AD, DeserializedDataOf<I, DD>, I>) => Awaitable<ND>,
-) => Promise<ND>>;
+type AllUsingRunnerExtension = ActionParsedExtension<{
+  allUsing<
+    C extends ActionContext,
+    A extends Action<C>,
+    M extends Model,
+    I extends InstanceType<M>,
+    AD,
+    DD extends DeserializedData,
+    ND,
+  >(
+    this: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD> & ConsumeModel<M>> & A,
+    transform: (data: AllUsingData<AD, DeserializedDataOf<I, DD>, I>) => Awaitable<ND>,
+  ): Promise<ND>;
+}>;
 
-allUsing.extension = makeRunnerExtension({ allUsing }) as AllUsingRunnerExtension;
+allUsing.extension = makeRunnersExtension({ allUsing }) as AllUsingRunnerExtension;

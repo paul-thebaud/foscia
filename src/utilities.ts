@@ -1,3 +1,6 @@
+import eachDescriptors from '@/utilities/descriptors/eachDescriptors';
+import isDescriptorHolder from '@/utilities/descriptors/isDescriptorHolder';
+import makeDescriptorHolder from '@/utilities/descriptors/makeDescriptorHolder';
 import excludeNone from '@/utilities/excludeNone';
 import IdentifiersMap from '@/utilities/identifiersMap';
 import isNil from '@/utilities/isNil';
@@ -9,9 +12,13 @@ import value from '@/utilities/value';
 import wrap from '@/utilities/wrap';
 import wrapVariadic from '@/utilities/wrapVariadic';
 
+export * from '@/utilities/descriptors/types';
 export * from '@/utilities/types';
 
 export {
+  eachDescriptors,
+  isDescriptorHolder,
+  makeDescriptorHolder,
   excludeNone,
   isNil,
   isNone,
