@@ -6,11 +6,11 @@ import onPreparing from '@/core/actions/context/enhancers/hooks/onPreparing';
 import onSuccess from '@/core/actions/context/enhancers/hooks/onSuccess';
 import runInstanceHooks from '@/core/actions/context/enhancers/hooks/runInstanceHooks';
 import instance from '@/core/actions/context/enhancers/instance';
-import { ConsumeAdapter, ConsumeInstance, ConsumeSerializer } from '@/core/actions/types';
+import { ConsumeAdapter, ConsumeSerializer } from '@/core/actions/types';
 import { ModelInstance } from '@/core/model/types';
 
 export default function update<AD, SD, I extends ModelInstance>(instanceToUpdate: I) {
-  return <C extends ConsumeAdapter<AD> & ConsumeSerializer<SD> & ConsumeInstance<I>>(
+  return <C extends ConsumeAdapter<AD> & ConsumeSerializer<SD>>(
     action: Action<C>,
   ) => action
     .use(instance(instanceToUpdate))
