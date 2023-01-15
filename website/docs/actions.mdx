@@ -95,26 +95,23 @@ on the action without using `use` or `run`.
 The first step is to update your action factory in which you should `extends`
 your action with the extensions you want.
 
-```ts title="action.ts"
+```javascript title="action.js"
 import { model, include, all } from 'func-client/core';
 import { makeAction } from 'func-client/blueprints';
 
 export default function action() {
-    return makeAction().extends([
-        model.extension,
-        include.extension,
-        all.extension,
-    ] as const);
+    return makeAction().extends({
+        ...model.extension,
+        ...include.extension,
+        ...all.extension,
+    });
 }
 ```
 
 :::info
 
 Please note that the above code is done inside the action factory. This will
-provide the extension to all actions created using this factory.
-
-Please also note that when using TypeScript, you must use the `as const` keyword
-to get precisely typed methods.
+provide the extensions to all actions created using this factory.
 
 :::
 
@@ -163,13 +160,14 @@ action()
     .use(when(displayLatestFirst, sortByDesc('createdAt')));
 ```
 
-`when` returns a new enhancer or runner depending on the given value's
+`when` returns a new enhancer or runner based on the given value's
 _truthiness_. It will execute the first enhancer/runner only if its value is
-_truthy_. You may pass the value as a factory function returning the value. You
-may also pass a second enhancer/runner which will only execute if the value is
-_falsy_. Each callback arguments will receive the action as their first argument
-and the value as their second argument. Each callback may also be async, as any
-enhancers and runners.
+_truthy_. You may pass the value as a factory function returning the value,
+and even a promise value. You may also pass a second enhancer/runner which
+will only execute if the value is _falsy_.
+Each callback arguments will receive the action as their first argument
+and the value as their second argument. Each callback may also be async,
+as any enhancers and runners.
 
 Here are further examples:
 
@@ -190,29 +188,6 @@ action()
         oneOrFail(),
         () => post,
     ));
-```
-
-`when` is a powerful tool, but it comes with a constraint: when used with
-enhancers, the propagated context typing must be the same from the two
-enhancements if a _falsy_ callback is provided. For example, you cannot use
-when to do so if you want to avoid a TypeScript type error:
-
-```typescript
-import { when } from 'func-client/core';
-
-// This will lead to a "TS2345" error, because the two enhancements
-// types are incompatible.
-action().when(
-    something,
-    context({ foo: 'foo' }),
-    context({ bar: 'bar' }),
-);
-// To fix this error, you must make the context changes compatible.
-action().when(
-    something,
-    context({ foo: 'foo' } as { foo?: string; bar?: string; }),
-    context({ bar: 'bar' } as { foo?: string; bar?: string; }),
-);
 ```
 
 ## Hooks

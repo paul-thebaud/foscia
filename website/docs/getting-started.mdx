@@ -213,9 +213,11 @@ import { coreExtensions, crudExtensions, jsonApiExtensions } from 'func-client/b
 
 export default action() {
     return makeAction()
-        .extends(coreExtensions)
-        .extends(crudExtensions)
-        .extends(jsonApiExtensions);
+        .extends({
+            ...coreExtensions,
+            ...crudExtensions,
+            ...jsonApiExtensions,
+        );
 }
 ```
 
@@ -230,9 +232,11 @@ import { coreExtensions, crudExtensions, jsonRestExtensions } from 'func-client/
 
 export default action() {
     return makeAction()
-        .extends(coreExtensions)
-        .extends(crudExtensions)
-        .extends(jsonRestExtensions);
+        .extends({
+            ...coreExtensions,
+            ...crudExtensions,
+            ...jsonRestExtensions,
+        );
 }
 ```
 
@@ -247,8 +251,10 @@ import { coreExtensions, crudExtensions } from 'func-client/blueprints';
 
 export default action() {
     return makeAction()
-        .extends(coreExtensions)
-        .extends(crudExtensions);
+        .extends({
+            ...coreExtensions,
+            ...crudExtensions,
+        );
 }
 ```
 
@@ -259,16 +265,16 @@ You may [learn more about extensions](/docs/actions#extensions),
 check the [available extensions packs](/docs/api/actions-extensions) or import
 manually enhancers and runners extensions using the following code:
 
-```ts
+```javascript
 import { model, include, all } from 'func-client/core';
 import { makeAction } from 'func-client/blueprints';
 
 export default function action() {
-    return makeAction().extends([
-        model.extension,
-        include.extension,
-        all.extension,
-    ] as const);
+    return makeAction().extends({
+        ...model.extension,
+        ...include.extension,
+        ...all.extension,
+    });
 }
 ```
 

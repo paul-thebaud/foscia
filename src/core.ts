@@ -1,4 +1,14 @@
 import Action from '@/core/actions/action';
+import useAdapterContext from '@/core/actions/context/consumers/useAdapterContext';
+import useCacheContext from '@/core/actions/context/consumers/useCacheContext';
+import useContext from '@/core/actions/context/consumers/useContext';
+import useDeserializerContext from '@/core/actions/context/consumers/useDeserializerContext';
+import useIdContext from '@/core/actions/context/consumers/useIdContext';
+import useInstanceContext from '@/core/actions/context/consumers/useInstanceContext';
+import useModelContext from '@/core/actions/context/consumers/useModelContext';
+import useRequiredContext from '@/core/actions/context/consumers/useRequiredContext';
+import useSerializerContext from '@/core/actions/context/consumers/useSerializerContext';
+import useTypeContext from '@/core/actions/context/consumers/useTypeContext';
 import context from '@/core/actions/context/enhancers/context';
 import create from '@/core/actions/context/enhancers/crud/create';
 import destroy from '@/core/actions/context/enhancers/crud/destroy';
@@ -32,6 +42,7 @@ import oneOr from '@/core/actions/context/runners/oneOr';
 import oneOrCurrent from '@/core/actions/context/runners/oneOrCurrent';
 import oneOrFail from '@/core/actions/context/runners/oneOrFail';
 import raw from '@/core/actions/context/runners/raw';
+import rawUsing from '@/core/actions/context/runners/rawUsing';
 import when from '@/core/actions/when';
 import RefsCache from '@/core/cache/refsCache';
 import weakRefCacheMode from '@/core/cache/weakRefCacheMode';
@@ -134,6 +145,7 @@ export {
   cachedOr,
   cachedOrFail,
   raw,
+  rawUsing,
   find,
   create,
   update,
@@ -144,6 +156,16 @@ export {
   withSerializer,
   withRegistry,
   withCache,
+  useAdapterContext,
+  useCacheContext,
+  useContext,
+  useDeserializerContext,
+  useIdContext,
+  useInstanceContext,
+  useModelContext,
+  useRequiredContext,
+  useSerializerContext,
+  useTypeContext,
   context,
   forId,
   instance,

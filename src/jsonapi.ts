@@ -4,6 +4,7 @@ import filterBy from '@/jsonapi/actions/context/enhancers/filterBy';
 import paginate from '@/jsonapi/actions/context/enhancers/paginate';
 import sortBy from '@/jsonapi/actions/context/enhancers/sortBy';
 import sortByDesc from '@/jsonapi/actions/context/enhancers/sortByDesc';
+import usingDocument from '@/jsonapi/actions/context/runners/usingDocument';
 import JsonApiAdapter from '@/jsonapi/adapter/jsonApiAdapter';
 import JsonApiDeserializer from '@/jsonapi/deserializer/jsonApiDeserializer';
 import JsonApiSerializer from '@/jsonapi/serializer/jsonApiSerializer';
@@ -20,4 +21,5 @@ export {
   sortBy,
   sortByDesc,
   paginate,
+  usingDocument,
 };

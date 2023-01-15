@@ -1,15 +1,13 @@
 import fullPath from '@/http/actions/context/enhancers/fullPath';
 import httpContext from '@/http/actions/context/enhancers/httpContext';
-import param from '@/http/actions/context/enhancers/param';
-import params from '@/http/actions/context/enhancers/params';
-import path from '@/http/actions/context/enhancers/path';
 import makeDelete from '@/http/actions/context/enhancers/makeDelete';
 import makeGet from '@/http/actions/context/enhancers/makeGet';
 import makePatch from '@/http/actions/context/enhancers/makePatch';
 import makePost from '@/http/actions/context/enhancers/makePost';
 import makePut from '@/http/actions/context/enhancers/makePut';
 import makeRequest from '@/http/actions/context/enhancers/makeRequest';
-import rawJson from '@/http/actions/context/runners/rawJson';
+import param from '@/http/actions/context/enhancers/param';
+import path from '@/http/actions/context/enhancers/path';
 import deepParamsSerializer from '@/http/adapter/deepParamsSerializer';
 import HttpAdapter from '@/http/adapter/httpAdapter';
 import paramsSerializer from '@/http/adapter/paramsSerializer';
@@ -43,7 +41,6 @@ export {
   httpContext,
   fullPath,
   path,
-  params,
   param,
   makeRequest,
   makeGet,
@@ -51,5 +48,4 @@ export {
   makePut,
   makePatch,
   makeDelete,
-  rawJson,
 };

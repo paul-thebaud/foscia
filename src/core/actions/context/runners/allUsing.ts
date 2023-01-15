@@ -1,5 +1,5 @@
 import Action from '@/core/actions/action';
-import raw from '@/core/actions/context/runners/raw';
+import rawUsing from '@/core/actions/context/runners/rawUsing';
 import deserializeInstances, { DeserializedDataOf } from '@/core/actions/context/utilities/deserializeInstances';
 import makeRunnersExtension from '@/core/actions/extensions/makeRunnersExtension';
 import {
@@ -33,12 +33,11 @@ export default function allUsing<
 >(transform: (data: AllUsingData<AD, DeserializedDataOf<I, DD>, I>) => Awaitable<ND>) {
   return async (
     action: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD> & ConsumeModel<M>>,
-  ) => {
-    const data = await action.run(raw());
+  ) => action.run(rawUsing(async (data) => {
     const deserialized = await deserializeInstances<I, AD, DD>(action, data);
 
     return transform({ data, deserialized, instances: deserialized.instances });
-  };
+  }));
 }
 
 type AllUsingRunnerExtension = ActionParsedExtension<{
