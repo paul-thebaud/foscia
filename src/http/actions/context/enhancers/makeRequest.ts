@@ -1,12 +1,12 @@
-import { Action, ActionContext, ConsumeAdapter } from '@/core';
+import { Action, ConsumeAdapter } from '@/core';
 import httpContext from '@/http/actions/context/enhancers/httpContext';
-import { HttpRequestConfig } from '@/http/types';
+import { HttpActionContext, HttpRequestConfig } from '@/http/types';
 
-export default function makeRequest<AD>(
+export default function makeRequest(
   pathOrBaseURL: string,
   config?: HttpRequestConfig,
 ) {
-  return <C extends ActionContext>(action: Action<C & ConsumeAdapter<AD>>) => {
+  return <C extends HttpActionContext, AD>(action: Action<C & ConsumeAdapter<AD>>) => {
     const [baseURL, path] = pathOrBaseURL.startsWith('/')
       ? [pathOrBaseURL, undefined]
       : [undefined, pathOrBaseURL];

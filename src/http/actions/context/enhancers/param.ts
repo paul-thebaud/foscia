@@ -4,7 +4,7 @@ import prevParams from '@/http/actions/context/utilities/prevParams';
 import { HttpActionContext } from '@/http/types';
 import { Dictionary } from '@/utilities/types';
 
-export default function param(key: string | Dictionary, value: unknown) {
+export default function param(key: string | Dictionary, value?: unknown) {
   return async <C extends HttpActionContext>(action: Action<C>) => action.use(context({
     params: {
       ...prevParams(await useContext(action)),
