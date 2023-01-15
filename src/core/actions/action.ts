@@ -1,9 +1,9 @@
 import type {
   ActionContext,
-  ActionExtended,
   ActionHooksDefinition,
   ContextEnhancer,
   ContextRunner,
+  ExtendedAction,
 } from '@/core/actions/types';
 import runHook from '@/core/hooks/runHook';
 import { HooksRegistrar } from '@/core/hooks/types';
@@ -23,12 +23,13 @@ export default class Action<Context extends ActionContext> {
     this.$hooks = {};
   }
 
+  // TODO Static.
   public extends<Extension extends {}>(extension: Extension & ThisType<this>) {
     eachDescriptors(extension, (key, descriptor) => {
       Object.defineProperty(this, key, descriptor);
     });
 
-    return this as this & ActionExtended<Extension>;
+    return this as this & ExtendedAction<Extension>;
   }
 
   public async computeContext() {
@@ -37,7 +38,7 @@ export default class Action<Context extends ActionContext> {
     return this.$context;
   }
 
-  public updateContext<PrevAction = Action<Context>, NewContext extends ActionContext = {}>(
+  public updateContext<PrevAction, NewContext extends ActionContext = {}>(
     this: Action<Context> & PrevAction,
     newContext: NewContext,
   ): Action<NewContext> & PrevAction {
@@ -46,7 +47,7 @@ export default class Action<Context extends ActionContext> {
     return this as any;
   }
 
-  public use<PrevAction = Action<Context>, NewContext extends ActionContext = Context>(
+  public use<PrevAction, NewContext extends ActionContext = Context>(
     this: Action<Context> & PrevAction,
     enhancer: ContextEnhancer<Context, NewContext>,
   ): Action<NewContext> & PrevAction {

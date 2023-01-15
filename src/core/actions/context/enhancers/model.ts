@@ -16,7 +16,7 @@ import { Model, ModelInstance } from '@/core/model/types';
 export default function model<D extends {}, I extends ModelInstance<D>, M extends Model<D, I>>(
   modelToUse: M,
 ) {
-  return <C extends {}>(action: Action<C>) => action
+  return <C extends ActionContext>(action: Action<C>) => action
     .use(target<D, I, M>(modelToUse))
     .use(context({
       type: modelToUse.$config.type,

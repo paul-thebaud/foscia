@@ -7,9 +7,12 @@ import { Model, ModelClassInstance, ModelInstance } from '@/core/model/types';
 export default function save<AD, SD, D extends {}, I extends ModelInstance<D>>(
   instance: ModelClassInstance<D> & I,
 ) {
-  return <C extends ConsumeAdapter<AD> & ConsumeSerializer<SD>>(action: Action<C>) => (
+  // eslint-disable-next-line max-len
+  return <C extends ConsumeAdapter<AD> & ConsumeSerializer<SD> & ConsumeModel<Model<D, I>> & ConsumeInstance<I>>(
+    action: Action<C>,
+  ) => (
     instance.exists
-      ? (action as any).use(update(instance))
-      : (action as any).use(create(instance))
+      ? action.use(update(instance))
+      : action.use(create(instance))
   ) as Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I>>;
 }

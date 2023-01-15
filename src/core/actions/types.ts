@@ -26,16 +26,8 @@ export type ActionParsedExtension<E extends {} = {}> = {
   [K in keyof E]: E[K] extends DescriptorHolder<any> ? E[K] : DescriptorHolder<E[K]>;
 };
 
-export type ActionExtended<E extends {}> = {
+export type ExtendedAction<E extends {}> = {
   [K in keyof E]: E[K] extends DescriptorHolder<infer T> ? T : E[K];
-};
-
-export type ActionExtension<
-  N extends string = string,
-  M extends (...args: any[]) => any = (...args: any[]) => any,
-> = {
-  name: N;
-  method: M;
 };
 
 export type ContextEnhancer<PC extends ActionContext, NC extends ActionContext> = (
