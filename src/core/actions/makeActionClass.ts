@@ -15,7 +15,7 @@ export default function makeActionClass<Extension extends {} = {}>(extension?: E
 
     public static extends(newExtension?: Dictionary) {
       eachDescriptors(newExtension ?? {}, (key, descriptor) => {
-        Object.defineProperty(this, key, descriptor);
+        Object.defineProperty(this.prototype, key, descriptor);
       });
 
       return this;
