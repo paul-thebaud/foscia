@@ -5,7 +5,7 @@ import { CacheI } from '@/core/types';
 import { IdentifiersMap } from '@/utilities';
 
 export default class RefsCache implements CacheI {
-  private readonly instances: IdentifiersMap<unknown>;
+  private readonly instances: IdentifiersMap<string, ModelId, unknown>;
 
   private mode: RefsCacheMode<unknown> = weakRefCacheMode;
 

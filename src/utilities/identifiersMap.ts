@@ -1,19 +1,17 @@
-import type { ModelId } from '@/core';
-
-export default class IdentifiersMap<T> {
-  private readonly valuesByTypes: Map<string, Map<ModelId, T>>;
+export default class IdentifiersMap<Type, Id, T> {
+  private readonly valuesByTypes: Map<Type, Map<Id, T>>;
 
   public constructor() {
     this.valuesByTypes = new Map();
   }
 
-  public get(type: string, id: ModelId) {
+  public get(type: Type, id: Id) {
     const values = this.valuesByTypes.get(type);
 
     return values?.get(id) ?? null;
   }
 
-  public set(type: string, id: ModelId, value: T) {
+  public set(type: Type, id: Id, value: T) {
     let values = this.valuesByTypes.get(type);
     if (!values) {
       values = new Map();
@@ -23,11 +21,11 @@ export default class IdentifiersMap<T> {
     values.set(id, value);
   }
 
-  public delete(type: string, id: ModelId) {
+  public delete(type: Type, id: Id) {
     this.valuesByTypes.get(type)?.delete(id);
   }
 
-  public clear(type: string) {
+  public clear(type: Type) {
     this.valuesByTypes.delete(type);
   }
 }

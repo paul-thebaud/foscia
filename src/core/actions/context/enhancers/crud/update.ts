@@ -8,7 +8,7 @@ import instance from '@/core/actions/context/enhancers/instance';
 import { Action, ConsumeSerializer } from '@/core/actions/types';
 import { ModelClassInstance, ModelInstance } from '@/core/model/types';
 
-export default function create<
+export default function update<
   C extends {},
   SD,
   D extends {},

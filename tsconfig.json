@@ -26,8 +26,7 @@
   "exclude": [
     "node_modules",
     "dist",
-    "tests",
-    "vite.config.ts"
+    "tests"
   ],
   "typedocOptions": {
     "readme": "none"

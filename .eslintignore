@@ -1,2 +1,2 @@
-vite.config.ts
-vite.*.config.ts
+vite.config.js
+rollup.*.config.js

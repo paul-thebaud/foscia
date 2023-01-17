@@ -31,7 +31,7 @@ export default abstract class JsonDeserializer<
 > implements DeserializerI<AdapterData, Data> {
   public async deserialize(data: AdapterData, context: ActionContext) {
     const extractedData = await this.extractData(data, context);
-    const instancesMap = new IdentifiersMap<Promise<ModelInstance>>();
+    const instancesMap = new IdentifiersMap<string, ModelId, Promise<ModelInstance>>();
 
     return this.makeDeserializedData(
       await Promise.all(wrap(extractedData.resources).map(
@@ -63,7 +63,7 @@ export default abstract class JsonDeserializer<
 
   protected async deserializeResource(
     extractedData: Extract,
-    instancesMap: IdentifiersMap<Promise<ModelInstance>>,
+    instancesMap: IdentifiersMap<string, ModelId, Promise<ModelInstance>>,
     resource: Resource,
     context: ActionContext,
     parent?: ModelInstance,
@@ -383,7 +383,7 @@ export default abstract class JsonDeserializer<
 
   protected async deserializeRelationValue(
     extractedData: Extract,
-    instancesMap: IdentifiersMap<Promise<ModelInstance>>,
+    instancesMap: IdentifiersMap<string, ModelId, Promise<ModelInstance>>,
     instance: ModelInstance,
     key: string,
     def: ModelRelation,
