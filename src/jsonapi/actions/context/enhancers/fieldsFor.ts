@@ -1,4 +1,4 @@
-import { Action, ActionContext, Model, ModelKey } from '@/core';
+import { Action, Model, ModelKey } from '@/core';
 import useContext from '@/core/actions/context/consumers/useContext';
 import { param } from '@/http';
 import prevParams from '@/http/actions/context/utilities/prevParams';
@@ -14,11 +14,11 @@ import { ArrayableVariadic, wrapVariadic } from '@/utilities';
  *
  * @category Enhancers
  */
-export default function fieldsFor<M extends Model>(
+export default function fieldsFor<C extends {}, M extends Model>(
   model: M,
   ...fieldset: ArrayableVariadic<ModelKey<M>>
 ) {
-  return async <C extends ActionContext>(action: Action<C>) => {
+  return async (action: Action<C>) => {
     const prevFields = prevParams(await useContext(action))?.fields;
 
     return action.use(param('fields', {

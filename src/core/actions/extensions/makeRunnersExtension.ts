@@ -1,6 +1,5 @@
-import type Action from '@/core/actions/action';
 import makeExtension from '@/core/actions/extensions/makeExtension';
-import { ContextRunner } from '@/core/actions/types';
+import { Action, ContextRunner } from '@/core/actions/types';
 import { Dictionary } from '@/utilities';
 
 /**

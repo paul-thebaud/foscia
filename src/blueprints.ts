@@ -7,12 +7,10 @@ import readExtensions from '@/blueprints/extensions/readExtensions';
 import writeExtensions from '@/blueprints/extensions/writeExtensions';
 import makeJsonApi from '@/blueprints/jsonapi/makeJsonApi';
 import makeJsonRest from '@/blueprints/jsonrest/makeJsonRest';
-import makeAction from '@/blueprints/makeAction';
 import makeCache from '@/blueprints/makeCache';
 import makeRegistry from '@/blueprints/makeRegistry';
 
 export {
-  makeAction,
   makeCache,
   makeRegistry,
   makeJsonApi,

@@ -1,4 +1,4 @@
-import { Action, ActionContext, ConsumeModel, Model, ModelKey } from '@/core';
+import { Action, ConsumeModel, Model, ModelKey } from '@/core';
 import useModelContext from '@/core/actions/context/consumers/useModelContext';
 import fieldsFor from '@/jsonapi/actions/context/enhancers/fieldsFor';
 import { ArrayableVariadic } from '@/utilities';
@@ -12,7 +12,7 @@ import { ArrayableVariadic } from '@/utilities';
  *
  * @category Enhancers
  */
-export default function fields<C extends ActionContext, M extends Model>(
+export default function fields<C extends {}, M extends Model>(
   ...fieldset: ArrayableVariadic<ModelKey<M>>
 ) {
   return async (action: Action<C & ConsumeModel<M>>) => {

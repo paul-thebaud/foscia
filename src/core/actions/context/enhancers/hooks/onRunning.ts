@@ -1,10 +1,9 @@
-import Action from '@/core/actions/action';
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
-import { ActionContext, ActionParsedExtension } from '@/core/actions/types';
+import { Action, ActionParsedExtension } from '@/core/actions/types';
 import registerHook from '@/core/hooks/registerHook';
 import { Awaitable } from '@/utilities';
 
-export default function onRunning<C extends ActionContext>(
+export default function onRunning<C extends {}>(
   callback: (event: { context: C; }) => Awaitable<void>,
 ) {
   return (action: Action<C>) => {
@@ -13,10 +12,10 @@ export default function onRunning<C extends ActionContext>(
 }
 
 type OnRunningEnhancerExtension = ActionParsedExtension<{
-  onRunning<C extends ActionContext, A extends Action<C>>(
-    this: Action<C> & A,
+  onRunning<C extends {}, E extends {}>(
+    this: Action<C, E>,
     callback: (event: { context: C; }) => Awaitable<void>,
-  ): Action<C> & A;
+  ): Action<C, E>;
 }>;
 
 onRunning.extension = makeEnhancersExtension({ onRunning }) as OnRunningEnhancerExtension;

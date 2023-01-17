@@ -4,9 +4,9 @@ import { ConsumeInstance } from '@/core/actions/types';
 import { Model } from '@/core/model/types';
 
 export default function oneOrCurrent<
+  C extends ConsumeInstance<I>,
   M extends Model,
   I extends InstanceType<M>,
-  C extends ConsumeInstance<I>,
 >() {
   return oneOr<C, M, unknown, Promise<I>>((action) => useInstanceContext(action));
 }

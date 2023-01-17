@@ -196,10 +196,10 @@ should read
 #### Builder pattern syntax
 
 If you want to use the builder pattern syntax (e.g. `action().model(Post)`
-instead of `action().use(model(Post))`), you should `extends` your action with
-the extensions packs you want to be available directly on your action.
+instead of `action().use(model(Post))`), you should provide the extensions
+you want to use during your action factory creation.
 
-For this, you may `extends` the packs you want inside your `action` function:
+For this, you should provide an `extension` configuration option:
 
 <Tabs groupId="implementation">
   <TabItem
@@ -209,16 +209,16 @@ For this, you may `extends` the packs you want inside your `action` function:
   >
 
 ```js
-import { coreExtensions, crudExtensions, jsonApiExtensions } from 'func-client/blueprints';
+import { makeJsonApi, coreExtensions, crudExtensions, jsonApiExtensions } from 'func-client/blueprints';
 
-export default action() {
-    return makeAction()
-        .extends({
-            ...coreExtensions,
-            ...crudExtensions,
-            ...jsonApiExtensions,
-        );
-}
+const { makeAction, registry } = makeJsonApi({
+    extensions: {
+        // Spread any extensions you want to use here...
+        ...coreExtensions,
+        ...crudExtensions,
+        ...jsonApiExtensions,
+    },
+});
 ```
 
   </TabItem>
@@ -228,34 +228,16 @@ export default action() {
   >
 
 ```js
-import { coreExtensions, crudExtensions, jsonRestExtensions } from 'func-client/blueprints';
+import { makeJsonRest, coreExtensions, crudExtensions, jsonRestExtensions } from 'func-client/blueprints';
 
-export default action() {
-    return makeAction()
-        .extends({
-            ...coreExtensions,
-            ...crudExtensions,
-            ...jsonRestExtensions,
-        );
-}
-```
-
-  </TabItem>
-  <TabItem
-    value="other"
-    label="Other"
-  >
-
-```js
-import { coreExtensions, crudExtensions } from 'func-client/blueprints';
-
-export default action() {
-    return makeAction()
-        .extends({
-            ...coreExtensions,
-            ...crudExtensions,
-        );
-}
+const { makeAction, registry } = makeJsonRest({
+    extensions: {
+        // Spread any extensions you want to use here...
+        ...coreExtensions,
+        ...crudExtensions,
+        ...jsonRestExtensions,
+    },
+});
 ```
 
   </TabItem>
@@ -267,15 +249,15 @@ manually enhancers and runners extensions using the following code:
 
 ```javascript
 import { model, include, all } from 'func-client/core';
-import { makeAction } from 'func-client/blueprints';
+import { makeJsonApi } from 'func-client/blueprints';
 
-export default function action() {
-    return makeAction().extends({
+const { makeAction, registry } = makeJsonApi({
+    extensions: {
         ...model.extension,
         ...include.extension,
         ...all.extension,
-    });
-}
+    },
+});
 ```
 
 ### Running simple actions

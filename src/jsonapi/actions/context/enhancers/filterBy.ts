@@ -1,4 +1,4 @@
-import { Action, ActionContext } from '@/core';
+import { Action } from '@/core';
 import useContext from '@/core/actions/context/consumers/useContext';
 import { param } from '@/http';
 import prevParams from '@/http/actions/context/utilities/prevParams';
@@ -16,7 +16,7 @@ import { Dictionary } from '@/utilities';
  * @category Enhancers
  */
 export default function filterBy(key: string | Dictionary, value?: unknown) {
-  return async <C extends ActionContext>(action: Action<C>) => action.use(param('filter', {
+  return async <C extends {}>(action: Action<C>) => action.use(param('filter', {
     ...prevParams(await useContext(action))?.filter,
     ...(typeof key === 'string' ? { [key]: value } : key),
   }));

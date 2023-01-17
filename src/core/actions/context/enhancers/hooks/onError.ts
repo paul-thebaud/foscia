@@ -1,10 +1,9 @@
-import Action from '@/core/actions/action';
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
-import { ActionContext, ActionParsedExtension } from '@/core/actions/types';
+import { Action, ActionParsedExtension } from '@/core/actions/types';
 import registerHook from '@/core/hooks/registerHook';
 import { Awaitable } from '@/utilities';
 
-export default function onError<C extends ActionContext>(
+export default function onError<C extends {}>(
   callback: (event: { context: C; error: unknown; }) => Awaitable<void>,
 ) {
   return (action: Action<C>) => {
@@ -13,10 +12,10 @@ export default function onError<C extends ActionContext>(
 }
 
 type OnErrorEnhancerExtension = ActionParsedExtension<{
-  onError<C extends ActionContext, A extends Action<C>>(
-    this: Action<C> & A,
+  onError<C extends {}, E extends {}>(
+    this: Action<C, E>,
     callback: (event: { context: C; error: unknown; }) => Awaitable<void>,
-  ): Action<C> & A;
+  ): Action<C, E>;
 }>;
 
 onError.extension = makeEnhancersExtension({ onError }) as OnErrorEnhancerExtension;

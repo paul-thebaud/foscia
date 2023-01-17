@@ -1,7 +1,7 @@
-import makeAction from '@/blueprints/makeAction';
 import makeCache from '@/blueprints/makeCache';
 import makeRegistry from '@/blueprints/makeRegistry';
-import { withAdapter, withCache, withDeserializer, withRegistry, withSerializer } from '@/core';
+import { Action, withAdapter, withCache, withDeserializer, withRegistry, withSerializer } from '@/core';
+import makeActionClass from '@/core/actions/makeActionClass';
 import { JsonRestAdapter, JsonRestDeserializer, JsonRestSerializer } from '@/jsonrest';
 
 /**
@@ -10,20 +10,26 @@ import { JsonRestAdapter, JsonRestDeserializer, JsonRestSerializer } from '@/jso
  *
  * @param config
  */
-export default function makeJsonRest(config: {
+export default function makeJsonRest<Extension extends {} = {}>(config: {
   baseURL?: string;
+  extension?: Extension;
 } = {}) {
   const cache = makeCache();
-
   const registry = makeRegistry();
-
   const adapter = new JsonRestAdapter({
     baseURL: config.baseURL,
   });
-
   const deserializer = new JsonRestDeserializer();
-
   const serializer = new JsonRestSerializer();
+
+  const ActionClass = makeActionClass(config.extension);
+  const prepareAction = <C extends {}, E extends {}>(action: Action<C, E>) => action
+    .use(withCache(cache))
+    .use(withRegistry(registry))
+    .use(withAdapter(adapter))
+    .use(withDeserializer(deserializer))
+    .use(withSerializer(serializer));
+  const makeAction = () => new ActionClass().use(prepareAction);
 
   return {
     cache,
@@ -31,13 +37,7 @@ export default function makeJsonRest(config: {
     adapter,
     deserializer,
     serializer,
-    makeAction() {
-      return makeAction()
-        .use(withCache(cache))
-        .use(withRegistry(registry))
-        .use(withAdapter(adapter))
-        .use(withDeserializer(deserializer))
-        .use(withSerializer(serializer));
-    },
+    makeAction,
+    prepareAction,
   };
 }

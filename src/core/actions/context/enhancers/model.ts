@@ -1,8 +1,7 @@
-import Action from '@/core/actions/action';
 import context from '@/core/actions/context/enhancers/context';
 import target from '@/core/actions/context/enhancers/target';
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
-import { ActionContext, ActionParsedExtension } from '@/core/actions/types';
+import { Action, ActionParsedExtension, ConsumeModel, ConsumeType } from '@/core/actions/types';
 import { Model, ModelInstance } from '@/core/model/types';
 
 /**
@@ -13,10 +12,13 @@ import { Model, ModelInstance } from '@/core/model/types';
  *
  * @category Enhancers
  */
-export default function model<D extends {}, I extends ModelInstance<D>, M extends Model<D, I>>(
-  modelToUse: M,
-) {
-  return <C extends ActionContext>(action: Action<C>) => action
+export default function model<
+  C extends {},
+  D extends {},
+  I extends ModelInstance<D>,
+  M extends Model<D, I>,
+>(modelToUse: M) {
+  return (action: Action<C>) => action
     .use(target<D, I, M>(modelToUse))
     .use(context({
       type: modelToUse.$config.type,
@@ -26,10 +28,10 @@ export default function model<D extends {}, I extends ModelInstance<D>, M extend
 }
 
 type ModelEnhancerExtension = ActionParsedExtension<{
-  model<C extends ActionContext, A extends Action<C>, M extends Model>(
-    this: Action<C> & A,
+  model<C extends {}, E extends {}, M extends Model>(
+    this: Action<C, E>,
     model: M,
-  ): Action<C & { model: M; type: string; }> & A;
+  ): Action<C & ConsumeModel<M> & ConsumeType, E>;
 }>;
 
 model.extension = makeEnhancersExtension({ model }) as ModelEnhancerExtension;

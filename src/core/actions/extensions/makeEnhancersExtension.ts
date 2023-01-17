@@ -1,6 +1,5 @@
-import type Action from '@/core/actions/action';
 import makeExtension from '@/core/actions/extensions/makeExtension';
-import { ContextEnhancer } from '@/core/actions/types';
+import { Action, ContextEnhancer } from '@/core/actions/types';
 import { Dictionary } from '@/utilities';
 
 /**

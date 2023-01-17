@@ -1,4 +1,3 @@
-import Action from '@/core/actions/action';
 import useAdapterContext from '@/core/actions/context/consumers/useAdapterContext';
 import useCacheContext from '@/core/actions/context/consumers/useCacheContext';
 import useContext from '@/core/actions/context/consumers/useContext';
@@ -179,6 +178,5 @@ export {
   onSuccess,
   onError,
   onFinally,
-  Action,
   logger,
 };

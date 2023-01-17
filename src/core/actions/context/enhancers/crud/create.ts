@@ -1,4 +1,3 @@
-import Action from '@/core/actions/action';
 import context from '@/core/actions/context/enhancers/context';
 import instanceData from '@/core/actions/context/enhancers/crud/instanceData';
 import forId from '@/core/actions/context/enhancers/forId';
@@ -7,14 +6,17 @@ import onPreparing from '@/core/actions/context/enhancers/hooks/onPreparing';
 import onSuccess from '@/core/actions/context/enhancers/hooks/onSuccess';
 import runInstanceHooks from '@/core/actions/context/enhancers/hooks/runInstanceHooks';
 import instance from '@/core/actions/context/enhancers/instance';
-import { ConsumeAdapter, ConsumeSerializer } from '@/core/actions/types';
-import { ModelInstance } from '@/core/model/types';
+import { Action, ConsumeSerializer } from '@/core/actions/types';
+import { ModelClassInstance, ModelInstance } from '@/core/model/types';
 
-export default function create<AD, SD, I extends ModelInstance>(instanceToCreate: I) {
-  return <C extends ConsumeAdapter<AD> & ConsumeSerializer<SD>>(
-    action: Action<C>,
-  ) => action
-    .use(instance(instanceToCreate))
+export default function create<
+  C extends {},
+  SD,
+  D extends {},
+  I extends ModelInstance<D>,
+>(instanceToCreate: ModelClassInstance<D> & I) {
+  return (action: Action<C & ConsumeSerializer<SD>>) => action
+    .use(instance<C & ConsumeSerializer<SD>, D, I>(instanceToCreate))
     .use(instanceData(instanceToCreate))
     .use(forId(undefined))
     .use(context({ action: 'CREATE' }))

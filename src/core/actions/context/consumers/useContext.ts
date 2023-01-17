@@ -1,10 +1,11 @@
-import Action from '@/core/actions/action';
-import { ActionContext, ConsumableContext } from '@/core/actions/types';
+import { ConsumableContext } from '@/core/actions/types';
 
-export default function useContext<C extends ActionContext>(
+export default function useContext<C extends {}>(
   actionOrContext: ConsumableContext<C>,
-) {
-  return actionOrContext instanceof Action
-    ? actionOrContext.computeContext()
-    : Promise.resolve(actionOrContext);
+): Promise<C> {
+  return (
+    'computeContext' in actionOrContext
+      ? actionOrContext.computeContext()
+      : Promise.resolve(actionOrContext)
+  ) as any;
 }

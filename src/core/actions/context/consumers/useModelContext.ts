@@ -2,8 +2,8 @@ import useRequiredContext from '@/core/actions/context/consumers/useRequiredCont
 import { ConsumableContext, ConsumeModel } from '@/core/actions/types';
 import { Model } from '@/core/model/types';
 
-export default async function useModelContext<M extends Model>(
-  actionOrContext: ConsumableContext<ConsumeModel<M>>,
+export default async function useModelContext<C extends {}, M extends Model>(
+  actionOrContext: ConsumableContext<C & ConsumeModel<M>>,
 ) {
   return useRequiredContext(actionOrContext, 'model', [
     'model',

@@ -1,8 +1,7 @@
-import Action from '@/core/actions/action';
 import useAdapterContext from '@/core/actions/context/consumers/useAdapterContext';
 import allUsing, { AllUsingData } from '@/core/actions/context/runners/allUsing';
 import { DeserializedDataOf } from '@/core/actions/context/utilities/deserializeInstances';
-import { ActionContext, ConsumeAdapter, ConsumeDeserializer, ConsumeModel } from '@/core/actions/types';
+import { Action, ConsumeAdapter, ConsumeDeserializer, ConsumeModel } from '@/core/actions/types';
 import { Model, ModelInstance } from '@/core/model/types';
 import { DeserializedData } from '@/core/types';
 import { Awaitable } from '@/utilities';
@@ -16,7 +15,7 @@ export type OneUsingData<
 };
 
 export default function oneUsing<
-  C extends ActionContext,
+  C extends {},
   M extends Model,
   I extends InstanceType<M>,
   AD,

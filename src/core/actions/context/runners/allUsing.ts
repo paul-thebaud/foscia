@@ -1,9 +1,9 @@
-import Action from '@/core/actions/action';
 import rawUsing from '@/core/actions/context/runners/rawUsing';
 import deserializeInstances, { DeserializedDataOf } from '@/core/actions/context/utilities/deserializeInstances';
 import makeRunnersExtension from '@/core/actions/extensions/makeRunnersExtension';
 import {
   ActionContext,
+  Action,
   ActionParsedExtension,
   ConsumeAdapter,
   ConsumeDeserializer,
@@ -34,7 +34,7 @@ export default function allUsing<
   return async (
     action: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD> & ConsumeModel<M>>,
   ) => action.run(rawUsing(async (data) => {
-    const deserialized = await deserializeInstances<I, AD, DD>(action, data);
+    const deserialized = await deserializeInstances(action, data) as DeserializedDataOf<I, DD>;
 
     return transform({ data, deserialized, instances: deserialized.instances });
   }));
@@ -42,15 +42,14 @@ export default function allUsing<
 
 type AllUsingRunnerExtension = ActionParsedExtension<{
   allUsing<
-    C extends ActionContext,
-    A extends Action<C>,
+    C extends {},
     M extends Model,
     I extends InstanceType<M>,
     AD,
     DD extends DeserializedData,
     ND,
   >(
-    this: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD> & ConsumeModel<M>> & A,
+    this: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD> & ConsumeModel<M>>,
     transform: (data: AllUsingData<AD, DeserializedDataOf<I, DD>, I>) => Awaitable<ND>,
   ): Promise<ND>;
 }>;

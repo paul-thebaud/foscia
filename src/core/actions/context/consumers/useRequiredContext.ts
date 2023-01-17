@@ -1,9 +1,9 @@
 import useContext from '@/core/actions/context/consumers/useContext';
-import { ActionContext, ConsumableContext } from '@/core/actions/types';
+import { ConsumableContext } from '@/core/actions/types';
 import InvalidContextError from '@/core/errors/invalidContextError';
 import { isNil } from '@/utilities';
 
-export default async function useRequiredContext<C extends ActionContext, K extends keyof C>(
+export default async function useRequiredContext<C extends {}, K extends keyof C>(
   actionOrContext: ConsumableContext<C>,
   contextKey: K,
   prerequisites: string[] = [],

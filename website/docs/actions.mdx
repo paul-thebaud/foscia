@@ -89,35 +89,31 @@ action()
 Sometimes, functional programming can be frustrating, because you must always
 rewrite the same words (e.g. `use`) to keep a builder pattern styled code.
 
-You may plug extensions to your actions to directly call an enhancer or a runner
-on the action without using `use` or `run`.
+Extensions provide a set of properties or methods which will be added
+to your actions' instances. As an action, extensions can avoid you writing
+`use` or `run` by adding enhancers/runners methods on you action.
 
-The first step is to update your action factory in which you should `extends`
-your action with the extensions you want.
+The first step to use one or many extensions is to update your action factory
+in which you should provide an `extension` configuration option.
+If you are using a custom action factory, you should check the
+[custom action factory guide](/docs/advanced/custom-action-factory).
 
 ```javascript title="action.js"
 import { model, include, all } from 'func-client/core';
-import { makeAction } from 'func-client/blueprints';
+import { makeJsonApi } from 'func-client/blueprints';
 
-export default function action() {
-    return makeAction().extends({
+const { makeAction, registry } = makeJsonApi({
+    extensions: {
+        // Spread any extensions you want to use here...
         ...model.extension,
         ...include.extension,
         ...all.extension,
-    });
-}
+    },
+});
 ```
 
-:::info
-
-Please note that the above code is done inside the action factory. This will
-provide the extensions to all actions created using this factory.
-
-:::
-
 You can now use the extended enhancers and runners without calling `use` or
-`run`. Every enhancers and runners of FuncClient provide a `.extension` property
-which is extendable by an action instance.
+`run`:
 
 ```javascript
 import action from './action';
@@ -125,9 +121,12 @@ import action from './action';
 await action().model(Post).include('tags').all();
 ```
 
-You may `extends` your action with any enhancers or runners extensions manually.
+Every enhancers and runners of FuncClient provide a `.extension` property
+which is extendable by an action instance.
+
+You may extend your action with any enhancers or runners extensions manually.
 Otherwise, you may also use **prebuild extensions packs**. Those provide
-multiple extensions in one exported variable allowing you to `extends` multiple
+multiple extensions in one exported object allowing you to extend multiple
 extensions at one time!
 
 <Link

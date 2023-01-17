@@ -1,5 +1,3 @@
-import fullPath from '@/http/actions/context/enhancers/fullPath';
-import httpContext from '@/http/actions/context/enhancers/httpContext';
 import makeDelete from '@/http/actions/context/enhancers/makeDelete';
 import makeGet from '@/http/actions/context/enhancers/makeGet';
 import makePatch from '@/http/actions/context/enhancers/makePatch';
@@ -7,7 +5,6 @@ import makePost from '@/http/actions/context/enhancers/makePost';
 import makePut from '@/http/actions/context/enhancers/makePut';
 import makeRequest from '@/http/actions/context/enhancers/makeRequest';
 import param from '@/http/actions/context/enhancers/param';
-import path from '@/http/actions/context/enhancers/path';
 import deepParamsSerializer from '@/http/adapter/deepParamsSerializer';
 import HttpAdapter from '@/http/adapter/httpAdapter';
 import paramsSerializer from '@/http/adapter/paramsSerializer';
@@ -38,9 +35,6 @@ export {
   NotFoundError,
   ConflictError,
   TooManyRequestsError,
-  httpContext,
-  fullPath,
-  path,
   param,
   makeRequest,
   makeGet,

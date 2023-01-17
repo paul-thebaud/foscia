@@ -1,7 +1,6 @@
-import Action from '@/core/actions/action';
 import context from '@/core/actions/context/enhancers/context';
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
-import { ActionContext, ActionParsedExtension } from '@/core/actions/types';
+import { Action, ActionParsedExtension, ConsumeModel } from '@/core/actions/types';
 import { Model, ModelInstance } from '@/core/model/types';
 
 /**
@@ -9,23 +8,23 @@ import { Model, ModelInstance } from '@/core/model/types';
  * In most cases, you should use {@link model}, {@link find} or any other
  * model's enhancers instead of `target`.
  *
- * @param modelToUse
+ * @param model
  *
  * @category Enhancers
  */
-export default function target<D extends {}, I extends ModelInstance<D>, M extends Model<D, I>>(
-  modelToUse: M,
-) {
-  return <C extends ActionContext>(
-    action: Action<C>,
-  ) => action.use(context({ model: modelToUse }));
+export default function target<
+  D extends {},
+  I extends ModelInstance<D>,
+  M extends Model<D, I>,
+>(model: M) {
+  return context({ model });
 }
 
 type TargetEnhancerExtension = ActionParsedExtension<{
-  target<C extends ActionContext, A extends Action<C>, M extends Model>(
-    this: Action<C> & A,
+  target<C extends {}, E extends {}, M extends Model>(
+    this: Action<C, E>,
     model: M,
-  ): Action<C & { model: M; }> & A;
+  ): Action<C & ConsumeModel<M>, E>;
 }>;
 
 target.extension = makeEnhancersExtension({ target }) as TargetEnhancerExtension;

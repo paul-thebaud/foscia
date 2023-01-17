@@ -1,8 +1,8 @@
 import useRequiredContext from '@/core/actions/context/consumers/useRequiredContext';
-import { ActionContext, ConsumableContext } from '@/core/actions/types';
+import { ConsumableContext, ConsumeId } from '@/core/actions/types';
 
-export default async function useIdContext(
-  actionOrContext: ConsumableContext<ActionContext>,
+export default async function useIdContext<C extends {}>(
+  actionOrContext: ConsumableContext<C & ConsumeId>,
 ) {
   return useRequiredContext(actionOrContext, 'id', [
     'find',

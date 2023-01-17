@@ -1,25 +1,33 @@
-import Action from '@/core/actions/action';
 import context from '@/core/actions/context/enhancers/context';
 import forId from '@/core/actions/context/enhancers/forId';
 import model from '@/core/actions/context/enhancers/model';
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
-import { ActionContext, ActionParsedExtension } from '@/core/actions/types';
-import { Model, ModelClassInstance, ModelId, ModelInstance } from '@/core/model/types';
+import {
+  Action,
+  ActionParsedExtension,
+  ConsumeId,
+  ConsumeInstance,
+  ConsumeModel,
+  ConsumeType,
+} from '@/core/actions/types';
+import { Model, ModelClassInstance, ModelInstance } from '@/core/model/types';
 
-export default function instance<D extends {}, I extends ModelInstance<D>>(
-  instanceToUse: ModelClassInstance<D> & I,
-) {
-  return <C extends ActionContext>(action: Action<C>) => action
+export default function instance<
+  C extends {},
+  D extends {},
+  I extends ModelInstance<D>,
+>(instanceToUse: ModelClassInstance<D> & I) {
+  return (action: Action<C>) => action
     .use(model(instanceToUse.$model as Model<D, I>))
     .use(context({ instance: instanceToUse }))
     .use(forId(instanceToUse.id));
 }
 
 type InstanceEnhancerExtension = ActionParsedExtension<{
-  instance<C extends ActionContext, A extends Action<C>, D extends {}, I extends ModelInstance<D>>(
-    this: Action<C> & A,
+  instance<C extends {}, E extends {}, D extends {}, I extends ModelInstance<D>>(
+    this: Action<C, E>,
     instanceToUse: ModelClassInstance<D> & I,
-  ): Action<C & { model: Model<D, I>; instance: I; type: string; id: ModelId | undefined; }> & A;
+  ): Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeType & ConsumeId, E>;
 }>;
 
 instance.extension = makeEnhancersExtension({ instance }) as InstanceEnhancerExtension;
