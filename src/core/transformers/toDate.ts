@@ -13,7 +13,7 @@ export default function toDate(): ObjectTransform<Date | undefined, unknown> {
     serialize(value: Date | undefined) {
       return value?.toISOString();
     },
-    deserialize(value: string | undefined) {
+    deserialize(value: unknown) {
       if (typeof value === 'string') {
         return dateFromUnix(Date.parse(value));
       }
