@@ -8,17 +8,17 @@ function dateFromUnix(unix: number): Date {
   return date;
 }
 
-export default function toDate(): ObjectTransform<Date | undefined, unknown> {
+export default function toDate(): ObjectTransform<Date | null, unknown> {
   return {
-    serialize(value: Date | undefined) {
-      return value?.toISOString();
+    serialize(value: Date | null) {
+      return value ? value.toISOString() : null;
     },
     deserialize(value: unknown) {
       if (typeof value === 'string') {
         return dateFromUnix(Date.parse(value));
       }
 
-      return undefined;
+      return null;
     },
   };
 }

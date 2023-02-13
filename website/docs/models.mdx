@@ -116,7 +116,7 @@ import { attr, toDate } from 'func-client/core';
 
 attr<string>(); // Without config.
 attr(toDate()); // With a transformer.
-attr({ default: '', transformer: toDate() }); // With config.
+attr({ default: null, transformer: toDate() }); // With config.
 attr(toDate(), { readOnly: true }); // With a transformer and config.
 attr({ default: () => [] }); // With a factory default (required for objects props).
 ```

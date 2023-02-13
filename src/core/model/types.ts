@@ -69,7 +69,7 @@ export type ModelAttribute<T = unknown, S = unknown> = ModelProp<T> & {
    * Internal type identifier for FuncClient's type guards.
    */
   $MODEL_TYPE: 'attribute';
-  transformer?: Transform<T | undefined, S> | undefined;
+  transformer?: Transform<T | null, S> | undefined;
 };
 
 /**

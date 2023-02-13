@@ -3,8 +3,8 @@ import { isNone } from '@/utilities';
 
 export default function toBoolean(
   trueValues: unknown[] = [true, 1, '1', 'true', 'yes'],
-): FunctionTransform<boolean | undefined, unknown> {
+): FunctionTransform<boolean | null, unknown> {
   return (value: unknown) => (
-    isNone(value) ? undefined : trueValues.indexOf(value) !== -1
+    isNone(value) ? null : trueValues.indexOf(value) !== -1
   );
 }

@@ -2,14 +2,14 @@ import { ModelAttribute, ModelProp } from '@/core/model/types';
 import { Transform } from '@/core/transformers/types';
 
 export type AttrConfig<T, S> = ModelProp<T> & {
-  transformer?: Transform<T, S> | undefined;
+  transformer?: Transform<T | null, S> | undefined;
 };
 
 export type AttrConfigVariadic<T, S> =
   | []
   | [AttrConfig<T, S>]
-  | [Transform<T | undefined, S>]
-  | [Transform<T | undefined, S>, Omit<AttrConfig<T, S>, 'transformer'>];
+  | [Transform<T | null, S>]
+  | [Transform<T | null, S>, Omit<AttrConfig<T, S>, 'transformer'>];
 
 function attr<T, S = unknown>(
   ...config: AttrConfigVariadic<T, S>

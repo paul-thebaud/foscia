@@ -1,6 +1,8 @@
 import { ModelProp, ModelRelation, ModelRelationType } from '@/core/model/types';
 
-export type RelationConfig<T> = ModelProp<T>;
+export type RelationConfig<T> = ModelProp<T> & {
+  type?: string,
+};
 
 export default function relation<T>(
   relationType: ModelRelationType,
