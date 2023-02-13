@@ -13,7 +13,7 @@ export default function deepParamsSerializer(params: Dictionary<any>) {
     } else {
       const finalValue = value;
       if (finalValue !== undefined) {
-        urlSearchParams.set(key, String(finalValue));
+        urlSearchParams.append(key, String(finalValue));
       }
     }
   };
