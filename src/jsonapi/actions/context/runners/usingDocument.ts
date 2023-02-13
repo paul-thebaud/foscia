@@ -3,15 +3,14 @@ import { OneUsingData } from '@/core/actions/context/runners/oneUsing';
 import { ModelInstance } from '@/core/model/types';
 import { JsonApiDeserializedData } from '@/jsonapi/deserializer/jsonApiDeserializer';
 
-export default function usingDocument<
-  I extends ModelInstance,
-  DD extends JsonApiDeserializedData<I>,
-  D extends OneUsingData<Response, DD, I> | AllUsingData<Response, DD, I>,
->(data: D) {
-  return {
+// TODO Unify by returning document.
+export default function usingDocument() {
+  return <
+    I extends ModelInstance,
+    DD extends JsonApiDeserializedData<I>,
+    D extends OneUsingData<Response, DD, I> | AllUsingData<Response, DD, I>,
+  >(data: D) => ({
     ...data,
-    meta: data.deserialized.document.meta ?? {},
-    links: data.deserialized.document.links,
-    jsonapi: data.deserialized.document.jsonapi,
-  };
+    document: data.deserialized.document,
+  });
 }

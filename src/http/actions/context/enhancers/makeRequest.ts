@@ -1,13 +1,17 @@
 import { context } from '@/core';
 import { HttpRequestConfig } from '@/http/types';
 
+function decomposeURL(pathOrBaseURL: string) {
+  if (/^(\/|(https?|s?ftp):)/.test(pathOrBaseURL)) {
+    return { baseURL: pathOrBaseURL };
+  }
+
+  return { path: pathOrBaseURL };
+}
+
 export default function makeRequest(
   pathOrBaseURL: string,
   config?: HttpRequestConfig,
 ) {
-  const [baseURL, path] = pathOrBaseURL.startsWith('/')
-    ? [pathOrBaseURL, undefined]
-    : [undefined, pathOrBaseURL];
-
-  return context({ baseURL, path, ...config });
+  return context({ ...decomposeURL(pathOrBaseURL), ...config });
 }
