@@ -96,3 +96,13 @@ In addition, you will need a supplementary step to be able to use
 `action().model(Post).all()`, because those functions must be imported to be
 used. This is possible through actions' extensions, which will plug functions to
 your action instance and allow you to use a builder pattern call style.
+
+## Why is my IDE slow when using FuncClient?
+
+Due to generics usage and types inference, FuncClient may require more types
+computation for autocompletion than other librairies.
+
+-   **JetBrains's IDEs** seems to currently have a problem with TypeScript types
+    evaluation performance:
+    [you should check out this meta issue tracking CPU overwhelm when using TypeScript to get updates](https://youtrack.jetbrains.com/issue/WEB-52943/Meta-High-CPU-usage-on-resolve-or-types-evaluation-in-TypeScript).
+-   **VSCode** looks to quickly provide autocompletion without any problem.

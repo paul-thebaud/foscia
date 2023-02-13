@@ -117,7 +117,7 @@ import { makeJsonApi } from 'func-client/blueprints';
 import Comment from './models/comment';
 import Post from './models/post';
 
-const { makeAction, registry } = makeJsonApi({
+const { action, registry } = makeJsonApi({
     baseURL: 'https://example.com/api/v1',
 });
 
@@ -125,9 +125,7 @@ const { makeAction, registry } = makeJsonApi({
 // to which model it should deserialize from an API record.
 registry.register(Comment, Post /* User, Tag */);
 
-export default function action() {
-    return makeAction();
-}
+export default action;
 ```
 
   </TabItem>
@@ -149,7 +147,7 @@ import { makeJsonRest } from 'func-client/blueprints';
 import Comment from './models/comment';
 import Post from './models/post';
 
-const { makeAction, registry } = makeJsonRest({
+const { action, registry } = makeJsonRest({
     baseURL: 'https://example.com/api/v1',
 });
 
@@ -157,9 +155,7 @@ const { makeAction, registry } = makeJsonRest({
 // to which model it should deserialize from an API record.
 registry.register(Comment, Post /* User, Tag */);
 
-export default function action() {
-    return makeAction();
-}
+export default action;
 ```
 
   </TabItem>
@@ -211,7 +207,7 @@ For this, you should provide an `extension` configuration option:
 ```js
 import { makeJsonApi, coreExtensions, crudExtensions, jsonApiExtensions } from 'func-client/blueprints';
 
-const { makeAction, registry } = makeJsonApi({
+const { action, registry } = makeJsonApi({
     extensions: {
         // Spread any extensions you want to use here...
         ...coreExtensions,
@@ -230,7 +226,7 @@ const { makeAction, registry } = makeJsonApi({
 ```js
 import { makeJsonRest, coreExtensions, crudExtensions, jsonRestExtensions } from 'func-client/blueprints';
 
-const { makeAction, registry } = makeJsonRest({
+const { action, registry } = makeJsonRest({
     extensions: {
         // Spread any extensions you want to use here...
         ...coreExtensions,
@@ -251,7 +247,7 @@ manually enhancers and runners extensions using the following code:
 import { model, include, all } from 'func-client/core';
 import { makeJsonApi } from 'func-client/blueprints';
 
-const { makeAction, registry } = makeJsonApi({
+const { action, registry } = makeJsonApi({
     extensions: {
         ...model.extension,
         ...include.extension,

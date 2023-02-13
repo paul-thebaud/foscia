@@ -102,7 +102,7 @@ If you are using a custom action factory, you should check the
 import { model, include, all } from 'func-client/core';
 import { makeJsonApi } from 'func-client/blueprints';
 
-const { makeAction, registry } = makeJsonApi({
+const { action, registry } = makeJsonApi({
     extensions: {
         // Spread any extensions you want to use here...
         ...model.extension,

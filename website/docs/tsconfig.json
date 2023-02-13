@@ -19,22 +19,22 @@
     "baseUrl": "..",
     "paths": {
       "func-client/core": [
-        "src/core.ts"
+        "dist/core.d.ts"
       ],
       "func-client/http": [
-        "src/http.ts"
+        "dist/http.d.ts"
       ],
       "func-client/json": [
-        "src/json.ts"
+        "dist/json.d.ts"
       ],
       "func-client/jsonapi": [
-        "src/jsonapi.ts"
+        "dist/jsonapi.d.ts"
       ],
       "func-client/jsonrest": [
-        "src/jsonrest.ts"
+        "dist/jsonrest.d.ts"
       ],
       "func-client/blueprints": [
-        "src/blueprints.ts"
+        "dist/blueprints.d.ts"
       ]
     }
   }
