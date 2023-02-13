@@ -5,6 +5,7 @@
 - [ ] **MAJOR** Method of composable/models this context broken.
 - [ ] Action context should let any key be available.
 - [ ] Generics should be clearly named.
+- [ ] Store raw original attributes in model instances.
 - [ ] Add @tag, @category or @group to enhancers, runners, etc.
 - [ ] Replace `extends ActionContext` by `{}` when available.
 - [ ] Manage `lid` on models
