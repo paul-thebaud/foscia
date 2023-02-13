@@ -5,7 +5,7 @@ import withoutHooks from '@/core/hooks/withoutHooks';
 import { eachDescriptors, sequentialTransform } from '@/utilities';
 import { Dictionary } from '@/utilities/types';
 
-export default function makeActionClass<Extension extends {} = {}>(extension?: Extension) {
+export default function makeAction<Extension extends {} = {}>(extension?: Extension) {
   class QueuedAction {
     public $hooks: HooksRegistrar<ActionHooksDefinition> | null;
 

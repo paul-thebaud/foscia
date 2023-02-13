@@ -1,7 +1,7 @@
 import makeCache from '@/blueprints/makeCache';
 import makeRegistry from '@/blueprints/makeRegistry';
-import { Action, withAdapter, withCache, withDeserializer, withRegistry, withSerializer } from '@/core';
-import makeActionClass from '@/core/actions/makeActionClass';
+import { context } from '@/core/actions';
+import makeAction from '@/core/actions/makeAction';
 import { JsonRestAdapter, JsonRestDeserializer, JsonRestSerializer } from '@/jsonrest';
 
 /**
@@ -22,14 +22,10 @@ export default function makeJsonRest<Extension extends {} = {}>(config: {
   const deserializer = new JsonRestDeserializer();
   const serializer = new JsonRestSerializer();
 
-  const ActionClass = makeActionClass(config.extension);
-  const prepareAction = <C extends {}, E extends {}>(action: Action<C, E>) => action
-    .use(withCache(cache))
-    .use(withRegistry(registry))
-    .use(withAdapter(adapter))
-    .use(withDeserializer(deserializer))
-    .use(withSerializer(serializer));
-  const makeAction = () => new ActionClass().use(prepareAction);
+  const Action = makeAction(config.extension);
+  const withDependencies = context({
+    cache, registry, adapter, deserializer, serializer,
+  });
 
   return {
     cache,
@@ -37,7 +33,8 @@ export default function makeJsonRest<Extension extends {} = {}>(config: {
     adapter,
     deserializer,
     serializer,
-    makeAction,
-    prepareAction,
+    withDependencies,
+    Action,
+    action: () => new Action().use(withDependencies),
   };
 }

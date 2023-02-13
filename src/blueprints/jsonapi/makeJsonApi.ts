@@ -1,7 +1,7 @@
 import makeCache from '@/blueprints/makeCache';
 import makeRegistry from '@/blueprints/makeRegistry';
-import { Action, withAdapter, withCache, withDeserializer, withRegistry, withSerializer } from '@/core';
-import makeActionClass from '@/core/actions/makeActionClass';
+import { context } from '@/core/actions';
+import makeAction from '@/core/actions/makeAction';
 import { deepParamsSerializer } from '@/http';
 import { JsonApiAdapter, JsonApiDeserializer, JsonApiSerializer } from '@/jsonapi';
 
@@ -11,7 +11,9 @@ import { JsonApiAdapter, JsonApiDeserializer, JsonApiSerializer } from '@/jsonap
  *
  * @param config
  */
-export default function makeJsonApi<Extension extends {} = {}>(config: {
+export default function makeJsonApi<
+  Extension extends {} = {},
+>(config: {
   baseURL?: string;
   extension?: Extension;
 } = {}) {
@@ -24,14 +26,10 @@ export default function makeJsonApi<Extension extends {} = {}>(config: {
   const deserializer = new JsonApiDeserializer();
   const serializer = new JsonApiSerializer();
 
-  const ActionClass = makeActionClass(config.extension);
-  const prepareAction = <C extends {}, E extends {}>(action: Action<C, E>) => action
-    .use(withCache(cache))
-    .use(withRegistry(registry))
-    .use(withAdapter(adapter))
-    .use(withDeserializer(deserializer))
-    .use(withSerializer(serializer));
-  const makeAction = () => new ActionClass().use(prepareAction);
+  const Action = makeAction(config.extension);
+  const withDependencies = context({
+    cache, registry, adapter, deserializer, serializer,
+  });
 
   return {
     cache,
@@ -39,7 +37,8 @@ export default function makeJsonApi<Extension extends {} = {}>(config: {
     adapter,
     deserializer,
     serializer,
-    makeAction,
-    prepareAction,
+    withDependencies,
+    Action,
+    action: () => new Action().use(withDependencies),
   };
 }
