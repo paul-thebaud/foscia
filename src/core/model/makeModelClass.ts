@@ -1,7 +1,6 @@
 import FuncClientError from '@/core/errors/funcClientError';
 import logger from '@/core/logger/logger';
 import isPropDef from '@/core/model/guards/isPropDef';
-import isRelationDef from '@/core/model/guards/isRelationDef';
 import { Model, ModelConfig, ModelInstance, ModelSchema } from '@/core/model/types';
 import { Dictionary, eachDescriptors, isNil, value } from '@/utilities';
 
@@ -27,19 +26,9 @@ export default function makeModelClass(config: ModelConfig): Model {
     });
 
     Object.entries(ModelClass.$schema as ModelSchema<any>).forEach(([key, def]) => {
-      const isRelation = isRelationDef(def);
-
       Object.defineProperty(this, key, {
         enumerable: true,
-        get: () => {
-          if (isRelation && !this.$loaded[key]) {
-            logger.error(
-              `Retrieving non-loaded \`${this.$model.$config.type}.${key}\` relation's value is prohibited.`,
-            );
-          }
-
-          return this.$values[key];
-        },
+        get: () => this.$values[key],
         set: (newValue) => {
           this.$values[key] = newValue;
         },

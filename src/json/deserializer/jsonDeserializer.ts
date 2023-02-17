@@ -88,7 +88,14 @@ export default abstract class JsonDeserializer<
       instancesMap.set(
         identifier.type,
         await this.extractLocalId(resource, identifier, context),
-        Promise.resolve(context.instance),
+        this.deserializeResourceOnInstance(
+          extractedData,
+          instancesMap,
+          resource,
+          identifier,
+          context.instance,
+          context,
+        ),
       );
     }
   }
@@ -122,7 +129,28 @@ export default abstract class JsonDeserializer<
       instancePromise = this.findOrMakeInstance(resource, identifier, context),
     );
 
-    const instance = await instancePromise;
+    return this.deserializeResourceOnInstance(
+      extractedData,
+      instancesMap,
+      resource,
+      identifier,
+      await instancePromise,
+      context,
+    );
+  }
+
+  protected async deserializeResourceOnInstance(
+    extractedData: Extract,
+    instancesMap: IdentifiersMap<string, ModelId, Promise<ModelInstance>>,
+    resource: Resource,
+    identifier: JsonNormalizedIdentifier,
+    instance: ModelInstance,
+    context: ActionContext,
+  ) {
+    // eslint-disable-next-line no-param-reassign
+    instance.id = instance.id ?? identifier.id;
+    // eslint-disable-next-line no-param-reassign
+    instance.lid = instance.lid ?? identifier.lid;
 
     await Promise.all(eachAttributes(instance, async (key, def) => {
       const serializedKey = await this.deserializeAttributeKey(instance, key, def, context);
@@ -218,16 +246,8 @@ export default abstract class JsonDeserializer<
     identifier: JsonNormalizedIdentifier,
     context: ActionContext & Partial<ConsumeCache>,
   ) {
-    const foundInstance = await this.findInstance(resource, identifier, context);
-    if (foundInstance) {
-      return foundInstance;
-    }
-
-    const madeInstance = await this.makeInstance(resource, identifier, context);
-
-    madeInstance.id = identifier.id as ModelId;
-
-    return madeInstance;
+    return await this.findInstance(resource, identifier, context)
+      ?? await this.makeInstance(resource, identifier, context);
   }
 
   protected async findInstance(
