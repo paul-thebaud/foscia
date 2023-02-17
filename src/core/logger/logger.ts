@@ -1,5 +1,3 @@
-import { isNil, Optional } from '@/utilities';
-
 const LOGGER_LEVELS = {
   error: 'error',
   warn: 'warn',
@@ -15,25 +13,29 @@ const LOGGER_LEVELS_WEIGHTS = {
 type LoggerLevel = keyof typeof LOGGER_LEVELS;
 
 class Logger {
-  public level: Optional<LoggerLevel> = null;
+  public level: LoggerLevel | null = 'warn';
 
-  public error(message: string, ...data: any[]) {
-    this.message('warn', message, ...data);
+  private logs = new Set<string>();
+
+  public error(message: string) {
+    this.message('error', message);
   }
 
-  public warn(message: string, ...data: any[]) {
-    this.message('warn', message, ...data);
+  public warn(message: string) {
+    this.message('warn', message);
   }
 
-  public debug(message: string, ...data: any[]) {
-    this.message('warn', message, ...data);
+  public debug(message: string) {
+    this.message('debug', message);
   }
 
-  private message(level: LoggerLevel, message: string, ...data: any[]) {
-    if (!isNil(this.level)
-      && LOGGER_LEVELS_WEIGHTS[level] >= LOGGER_LEVELS_WEIGHTS[this.level]
-    ) {
-      console[level](`[func-client] ${message}`, ...data);
+  private message(level: LoggerLevel, message: string) {
+    if (this.level && LOGGER_LEVELS_WEIGHTS[level] >= LOGGER_LEVELS_WEIGHTS[this.level]) {
+      const log = `[${level}] ${message}`;
+      if (!this.logs.has(log)) {
+        this.logs.add(log);
+        console[level](`[func-client]${log}`);
+      }
     }
   }
 }

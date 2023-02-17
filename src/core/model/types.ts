@@ -171,7 +171,9 @@ export type ModelInstance<D extends {} = any> = {
   readonly $model: ModelClass<D>;
   // FIXME Should the model id be nullable in its type?
   id: ModelId;
+  lid?: ModelId;
   exists: boolean;
+  $raw: any;
   $loaded: Dictionary<true>;
   $original: Partial<ModelValues<ModelClass<D>>>;
   $values: Partial<ModelValues<ModelClass<D>>>;

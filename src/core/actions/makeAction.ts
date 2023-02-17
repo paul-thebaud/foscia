@@ -2,8 +2,7 @@ import { ActionClass, ActionHooksDefinition, ContextEnhancer, ContextRunner } fr
 import runHook from '@/core/hooks/runHook';
 import { HooksRegistrar } from '@/core/hooks/types';
 import withoutHooks from '@/core/hooks/withoutHooks';
-import { eachDescriptors, sequentialTransform } from '@/utilities';
-import { Dictionary } from '@/utilities/types';
+import { Dictionary, eachDescriptors, sequentialTransform } from '@/utilities';
 
 export default function makeAction<Extension extends {} = {}>(extension?: Extension) {
   class QueuedAction {

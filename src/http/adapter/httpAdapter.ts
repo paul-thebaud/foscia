@@ -1,5 +1,6 @@
 import { AdapterI } from '@/core';
 import paramsSerializer from '@/http/adapter/paramsSerializer';
+import AbortedError from '@/http/errors/abortedError';
 import ConflictError from '@/http/errors/conflictError';
 import ForbiddenError from '@/http/errors/forbiddenError';
 import InterruptedError from '@/http/errors/interruptedError';
@@ -53,18 +54,20 @@ export default abstract class HttpAdapter implements AdapterI<Response> {
     try {
       response = await this.runRequest(request);
     } catch (error) {
-      throw await this.transformError(context, new InterruptedError(
-        error instanceof Error ? error.message : 'Unknown fetch adapter error',
-        request,
-        error,
-      ));
+      throw await this.transformError(
+        context,
+        await this.makeRequestError(request, error),
+      );
     }
 
     if (response.status >= 200 && response.status < 300) {
       return this.transformResponse(context, response);
     }
 
-    throw await this.transformError(context, await this.makeError(request, response));
+    throw await this.transformError(
+      context,
+      await this.makeResponseError(request, response),
+    );
   }
 
   /**
@@ -100,6 +103,7 @@ export default abstract class HttpAdapter implements AdapterI<Response> {
       method: this.makeRequestMethod(context),
       headers: context.headers ?? {},
       body: context.body ?? context.data,
+      signal: context.signal,
     } as HttpRequestInit;
   }
 
@@ -150,7 +154,19 @@ export default abstract class HttpAdapter implements AdapterI<Response> {
     return fetch(request.url, request.init);
   }
 
-  protected async makeError(request: HttpRequest, response: Response): Promise<unknown> {
+  protected async makeRequestError(request: HttpRequest, error: unknown): Promise<unknown> {
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      return new AbortedError(error.message, request, error);
+    }
+
+    return new InterruptedError(
+      error instanceof Error ? error.message : 'Unknown fetch adapter error',
+      request,
+      error,
+    );
+  }
+
+  protected async makeResponseError(request: HttpRequest, response: Response): Promise<unknown> {
     switch (true) {
       case response.status >= 500:
         return new ServerError(request, response);

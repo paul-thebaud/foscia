@@ -1,7 +1,7 @@
-import { ModelInstance, ModelRelation } from '@/core';
+import { ModelId, ModelInstance, ModelRelation } from '@/core';
 import { JsonSerializer } from '@/json';
 import { JsonApiDocument, JsonApiNewResource } from '@/jsonapi/types';
-import { isNil } from '@/utilities';
+import { isNil, Optional } from '@/utilities';
 
 /**
  * Serializer implementation for JSON:API.
@@ -13,8 +13,7 @@ export default class JsonApiSerializer extends JsonSerializer<JsonApiDocument> {
   protected async makeResource(instance: ModelInstance) {
     return {
       data: {
-        type: instance.$model.$config.type,
-        id: !isNil(instance.id) ? String(instance.id) : undefined,
+        ...this.serializeInstanceIdentifier(instance),
         attributes: {},
         relationships: {},
       },
@@ -56,9 +55,28 @@ export default class JsonApiSerializer extends JsonSerializer<JsonApiDocument> {
     _def: ModelRelation,
     related: ModelInstance,
   ) {
+    return this.serializeInstanceIdentifier(related);
+  }
+
+  /**
+   * Serialize an instance unique identifier object.
+   *
+   * @param instance
+   */
+  protected serializeInstanceIdentifier(instance: ModelInstance) {
     return {
-      type: related.$model.$config.type,
-      id: related.id,
+      type: instance.$model.$config.type,
+      id: this.serializeId(instance.id),
+      lid: this.serializeId(instance.lid),
     };
+  }
+
+  /**
+   * Serialize an instance's ID.
+   *
+   * @param id
+   */
+  protected serializeId(id?: Optional<ModelId>) {
+    return isNil(id) ? undefined : String(id);
   }
 }

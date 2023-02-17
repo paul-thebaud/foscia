@@ -21,7 +21,7 @@ import {
 } from '@/core';
 import normalizeKey from '@/json/normalizer/normalizeKey';
 import { JsonExtractedData, JsonNormalizedIdentifier, JsonOptionalIdentifier } from '@/json/types';
-import { IdentifiersMap, isNil, Optional, wrap } from '@/utilities';
+import { IdentifiersMap, isNil, isNone, Optional, wrap } from '@/utilities';
 
 export default abstract class JsonDeserializer<
   AdapterData,
@@ -29,9 +29,14 @@ export default abstract class JsonDeserializer<
   Extract extends JsonExtractedData<Resource> = JsonExtractedData<Resource>,
   Data extends DeserializedData = DeserializedData,
 > implements DeserializerI<AdapterData, Data> {
+  protected static NON_IDENTIFIED_LOCAL_ID = '__non_identified__';
+
   public async deserialize(data: AdapterData, context: ActionContext) {
+    const instancesMap = await this.initInstancesMap();
+
     const extractedData = await this.extractData(data, context);
-    const instancesMap = new IdentifiersMap<string, ModelId, Promise<ModelInstance>>();
+
+    await this.prepareInstancesMap(extractedData, instancesMap, context);
 
     return this.makeDeserializedData(
       await Promise.all(wrap(extractedData.resources).map(
@@ -60,6 +65,33 @@ export default abstract class JsonDeserializer<
     relationKey?: string,
     relation?: ModelRelation,
   ): Promise<JsonOptionalIdentifier>;
+
+  protected async initInstancesMap() {
+    return new IdentifiersMap<string, ModelId, Promise<ModelInstance>>();
+  }
+
+  protected async prepareInstancesMap(
+    extractedData: Extract,
+    instancesMap: IdentifiersMap<string, ModelId, Promise<ModelInstance>>,
+    context: ActionContext & Partial<ConsumeInstance>,
+  ) {
+    // Handle a singular creation context to map a non-identified instance
+    // to the single returned resource if available.
+    if (context.action === 'CREATE'
+      && context.instance
+      && !isNone(extractedData.resources)
+      && !Array.isArray(extractedData.resources)
+    ) {
+      const resource = extractedData.resources;
+      const identifier = await this.extractIdentifier(resource, context);
+
+      instancesMap.set(
+        identifier.type,
+        await this.extractLocalId(resource, identifier, context),
+        Promise.resolve(context.instance),
+      );
+    }
+  }
 
   protected async deserializeResource(
     extractedData: Extract,
@@ -136,7 +168,7 @@ export default abstract class JsonDeserializer<
       }
     }));
 
-    await this.releaseInstance(instance, context);
+    await this.releaseInstance(resource, instance, context);
 
     return instance;
   }
@@ -158,7 +190,7 @@ export default abstract class JsonDeserializer<
 
     if (isNil(identifier.type)) {
       if (isNil(relation)) {
-        identifier.type = context.type ?? context.model?.$config.type;
+        identifier.type = context.model?.$config.type ?? context.type;
       } else {
         identifier.type = relation.type;
       }
@@ -178,7 +210,7 @@ export default abstract class JsonDeserializer<
     identifier: JsonNormalizedIdentifier,
     _context: ActionContext,
   ) {
-    return identifier.id ?? '__non-identified-instance__';
+    return identifier.id ?? identifier.lid ?? JsonDeserializer.NON_IDENTIFIED_LOCAL_ID;
   }
 
   protected async findOrMakeInstance(
@@ -237,11 +269,14 @@ export default abstract class JsonDeserializer<
   }
 
   protected async releaseInstance(
+    resource: Resource,
     instance: ModelInstance,
     context: ActionContext & Partial<ConsumeCache>,
   ) {
     // eslint-disable-next-line no-param-reassign
     instance.exists = true;
+    // eslint-disable-next-line no-param-reassign
+    instance.$raw = resource;
 
     syncOriginal(instance);
 

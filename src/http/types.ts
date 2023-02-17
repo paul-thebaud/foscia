@@ -21,6 +21,7 @@ export type HttpRequestConfig = {
   headers?: Dictionary<string>;
   // TODO "dataAs"?
   body?: unknown;
+  signal?: AbortSignal | null;
   requestTransformers?: RequestTransformer[];
   responseTransformers?: ResponseTransformer[];
   errorTransformers?: ErrorTransformer[];
@@ -43,6 +44,7 @@ export type HttpRequestInit = {
   method: HttpMethod;
   headers: Dictionary<string>;
   body: BodyInit;
+  signal?: AbortSignal | null;
 };
 
 export type HttpRequest = {

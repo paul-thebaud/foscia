@@ -1,6 +1,7 @@
 import FuncClientError from '@/core/errors/funcClientError';
 import logger from '@/core/logger/logger';
 import isPropDef from '@/core/model/guards/isPropDef';
+import isRelationDef from '@/core/model/guards/isRelationDef';
 import { Model, ModelConfig, ModelInstance, ModelSchema } from '@/core/model/types';
 import { Dictionary, eachDescriptors, isNil, value } from '@/utilities';
 
@@ -9,6 +10,7 @@ export default function makeModelClass(config: ModelConfig): Model {
     Object.defineProperty(this, '$MODEL_TYPE', { value: 'instance' });
     Object.defineProperty(this, '$model', { value: ModelClass });
     Object.defineProperty(this, 'exists', { writable: true, value: false });
+    Object.defineProperty(this, '$raw', { writable: true, value: null });
     Object.defineProperty(this, '$loaded', { writable: true, value: {} });
     Object.defineProperty(this, '$original', { writable: true, value: {} });
     Object.defineProperty(this, '$values', { writable: true, value: {} });
@@ -18,11 +20,26 @@ export default function makeModelClass(config: ModelConfig): Model {
       enumerable: true,
       value: undefined,
     });
+    Object.defineProperty(this, 'lid', {
+      writable: true,
+      enumerable: true,
+      value: undefined,
+    });
 
     Object.entries(ModelClass.$schema as ModelSchema<any>).forEach(([key, def]) => {
+      const isRelation = isRelationDef(def);
+
       Object.defineProperty(this, key, {
         enumerable: true,
-        get: () => this.$values[key],
+        get: () => {
+          if (isRelation && !this.$loaded[key]) {
+            logger.error(
+              `Retrieving non-loaded \`${this.$model.$config.type}.${key}\` relation's value is prohibited.`,
+            );
+          }
+
+          return this.$values[key];
+        },
         set: (newValue) => {
           this.$values[key] = newValue;
         },
@@ -32,7 +49,9 @@ export default function makeModelClass(config: ModelConfig): Model {
         this.$values[key] = value(def.default);
 
         if (def.default && typeof def.default === 'object') {
-          logger.warn('Default object values must be defined using a factory function.');
+          logger.warn(
+            `Default \`${this.$model.$config.type}.${key}\` object attribute's values must be defined using a factory function.`,
+          );
         }
       }
     });

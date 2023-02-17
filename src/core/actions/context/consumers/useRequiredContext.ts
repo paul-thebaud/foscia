@@ -3,6 +3,9 @@ import { ConsumableContext } from '@/core/actions/types';
 import InvalidContextError from '@/core/errors/invalidContextError';
 import { isNil } from '@/utilities';
 
+// TODO Default value if not available.
+// TODO Check to validate the type of targeted value.
+// TODO Opt out from typed context after those two are done.
 export default async function useRequiredContext<C extends {}, K extends keyof C>(
   actionOrContext: ConsumableContext<C>,
   contextKey: K,

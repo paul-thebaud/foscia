@@ -4,11 +4,13 @@ import { Optional } from '@/utilities';
 export type JsonOptionalIdentifier = {
   type?: string;
   id?: ModelId;
+  lid?: ModelId;
 };
 
 export type JsonNormalizedIdentifier = {
   type: string;
   id?: ModelId;
+  lid?: ModelId;
 };
 
 export type JsonExtractedData<R> = {

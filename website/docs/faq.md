@@ -57,7 +57,7 @@ const posts = await action()
     // As an example, `include` is typed for deep dotted relations, such as:
     // "comments", "comments.author", "comments.author.favoritePosts", etc.
     .use(include('comments'))
-    // As another example, `fields` is typed for direct attributes or relationships of the model.
+    // As another example, `fields` is typed for direct attributes or relations of the model.
     .use(fields('title', 'description', 'comments'))
     .run(all());
 ```
