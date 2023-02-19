@@ -19,7 +19,7 @@ description: Generic CRUD functions setup using your own action factory.
 import {
     ModelRelationDotKey,
     Model,
-    model,
+    forModel,
     when,
     include,
 } from 'func-client/core';
@@ -43,7 +43,7 @@ export default async function fetchAll<M extends Model>(
     query: FetchAllOptions<M> = {},
 ) {
     return action()
-        .use(model(useModel))
+        .use(forModel(useModel))
         .use(when(query.search, (a, s) => a.use(filterBy('search', s))))
         .use(when(query.include, (a, i) => a.use(include(i))))
         .use(sortByDesc('createdAt'))

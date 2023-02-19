@@ -43,7 +43,7 @@ run step (or context computation).
 ```javascript
 action()
     // Enhance the action.
-    .use(model(Post))
+    .use(forModel(Post))
     .use(include('comments'));
 ```
 
@@ -71,7 +71,7 @@ Internally, action running will also trigger [actions hooks](#hooks).
 
 ```javascript
 action()
-    .use(model(Post))
+    .use(forModel(Post))
     .use(include('comments'))
     // Run the action.
     .run(all());
@@ -118,7 +118,7 @@ You can now use the extended enhancers and runners without calling `use` or
 ```javascript
 import action from './action';
 
-await action().model(Post).include('tags').all();
+await action().forModel(Post).include('tags').all();
 ```
 
 Every enhancers and runners of FuncClient provide a `.extension` property
@@ -155,7 +155,7 @@ import { when } from 'func-client/core';
 import { sortByDesc } from 'func-client/jsonapi';
 
 action()
-    .use(model(Post))
+    .use(forModel(Post))
     .use(when(displayLatestFirst, sortByDesc('createdAt')));
 ```
 
@@ -234,7 +234,7 @@ import { withoutHooks } from 'func-client/core';
 
 // Retrieve a list of User instances without action hooks running.
 const users = await withoutHooks(action(), async (a) => {
-    return await a.use(model(User)).run(all());
+    return await a.use(forModel(User)).run(all());
 });
 ```
 

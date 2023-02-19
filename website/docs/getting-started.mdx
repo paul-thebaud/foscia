@@ -191,8 +191,8 @@ should read
 
 #### Builder pattern syntax
 
-If you want to use the builder pattern syntax (e.g. `action().model(Post)`
-instead of `action().use(model(Post))`), you should provide the extensions
+If you want to use the builder pattern syntax (e.g. `action().forModel(Post)`
+instead of `action().use(forModel(Post))`), you should provide the extensions
 you want to use during your action factory creation.
 
 For this, you should provide an `extension` configuration option:
@@ -264,11 +264,11 @@ modify the action context. When you are ready, you can `run` the action with a
 given **context runner**.
 
 ```javascript
-import { all, model } from 'func-client/core';
+import { all, forModel } from 'func-client/core';
 import Post from './models/post';
 import action from './action';
 
-const posts = await action().use(model(Post)).run(all());
+const posts = await action().use(forModel(Post)).run(all());
 ```
 
 Generally in FuncClient, the context enhancers are doing the majority of work to

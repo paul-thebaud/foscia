@@ -1,8 +1,7 @@
-import useCacheContext from '@/core/actions/context/consumers/useCacheContext';
-import useContext from '@/core/actions/context/consumers/useContext';
-import useIdContext from '@/core/actions/context/consumers/useIdContext';
-import useTypeContext from '@/core/actions/context/consumers/useTypeContext';
-import { Action, ConsumeCache, ConsumeIncludes, ConsumeModel } from '@/core/actions/types';
+import consumeCache from '@/core/actions/context/consumers/consumeCache';
+import consumeId from '@/core/actions/context/consumers/consumeId';
+import consumeType from '@/core/actions/context/consumers/consumeType';
+import { Action, ConsumeCache, ConsumeId, ConsumeInclude, ConsumeModel, ConsumeType } from '@/core/actions/types';
 import { Model, ModelInstance } from '@/core/model/types';
 import loaded from '@/core/model/utilities/loaded';
 import { Awaitable, isNil } from '@/utilities';
@@ -17,11 +16,13 @@ export default function cachedUsing<
   I extends InstanceType<M>,
   ND,
 >(transform: (data: CachedUsingData<I>) => Awaitable<ND>) {
-  return async (action: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeIncludes>) => {
-    const cache = await useCacheContext(action);
-    const instance = await cache.find(await useTypeContext(action), await useIdContext(action));
-    const context = await useContext(action);
-    if (isNil(instance) || !loaded(instance, context.includes ?? [])) {
+  return async (
+    action: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeInclude & ConsumeType & ConsumeId>,
+  ) => {
+    const context = await action.useContext();
+    const instance = await consumeCache(context)
+      .find(consumeType(context), consumeId(context));
+    if (isNil(instance) || !loaded(instance, context.include ?? [])) {
       return null;
     }
 

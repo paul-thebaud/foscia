@@ -55,7 +55,7 @@ export default class Post extends makeModel('posts', {
 ### View many
 
 ```javascript
-import { model, when } from 'func-client/core';
+import { forModel, when } from 'func-client/core';
 import {
     filterBy,
     sortByDesc,
@@ -67,7 +67,7 @@ import Post from './models/post';
 
 export default async function fetchAllPost(query = {}) {
     return action()
-        .use(model(Post))
+        .use(forModel(Post))
         .use(when(query.search, (a, s) => a.use(filterBy('search', s))))
         .use(sortByDesc('createdAt'))
         .use(paginate({ number: query.page ?? 1 }))
@@ -152,14 +152,14 @@ Thanks to functional programming, you can easily combine non-standard action
 with classical context enhancers and runners.
 
 ```javascript
-import { model, instance, include, when, oneOrFail } from 'func-client/core';
+import { forModel, instance, include, when, oneOrFail } from 'func-client/core';
 import { makeGet, makePost } from 'func-client/http';
 import action from './action';
 import Post from './models/post';
 
 export default function bestPosts() {
   return action()
-    .use(model(Post))
+    .use(forModel(Post))
     .use(makeGet('actions/best-posts'))
     .run(all());
 }

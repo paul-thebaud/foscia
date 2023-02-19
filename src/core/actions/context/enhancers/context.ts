@@ -1,10 +1,9 @@
-import useContext from '@/core/actions/context/consumers/useContext';
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
-import { ActionContext, Action, ActionParsedExtension } from '@/core/actions/types';
+import { Action, ActionContext, ActionParsedExtension } from '@/core/actions/types';
 
 export default function context<NC extends {}>(contextToMerge: NC) {
   return async <C extends {}>(action: Action<C>) => action.updateContext({
-    ...await useContext(action),
+    ...await action.useContext(),
     ...contextToMerge,
   });
 }

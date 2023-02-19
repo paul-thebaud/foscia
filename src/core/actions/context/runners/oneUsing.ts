@@ -1,4 +1,4 @@
-import useAdapterContext from '@/core/actions/context/consumers/useAdapterContext';
+import consumeAdapter from '@/core/actions/context/consumers/consumeAdapter';
 import allUsing, { AllUsingData } from '@/core/actions/context/runners/allUsing';
 import { DeserializedDataOf } from '@/core/actions/context/utilities/deserializeInstances';
 import { Action, ConsumeAdapter, ConsumeDeserializer, ConsumeModel } from '@/core/actions/types';
@@ -38,8 +38,8 @@ export default function oneUsing<
         return null;
       }));
     } catch (error) {
-      const adapter = await useAdapterContext(action);
-      if (await adapter.isNotFound(error)) {
+      const context = await action.useContext();
+      if (await consumeAdapter(context).isNotFound(error)) {
         return null;
       }
 

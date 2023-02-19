@@ -1,12 +1,11 @@
 import { Action, context } from '@/core';
-import useContext from '@/core/actions/context/consumers/useContext';
-import prevParams from '@/http/actions/context/utilities/prevParams';
+import consumePrevParams from '@/http/actions/context/consumers/consumePrevParams';
 import { Dictionary } from '@/utilities';
 
 export default function param(key: string | Dictionary, value?: unknown) {
   return async <C extends {}>(action: Action<C>) => action.use(context({
     params: {
-      ...prevParams(await useContext(action)),
+      ...consumePrevParams(await action.useContext(), null),
       ...(typeof key === 'string' ? { [key]: value } : key),
     },
   }));

@@ -65,9 +65,9 @@ action().use(target(Post));
 
 #### Arguments
 
-- [`{M extends Model}`](/docs/api/func-client/modules/core#model) `modelToUse` the model class to use
+- [`{M extends Model}`](/docs/api/func-client/modules/core#model) `model` the model class to use
 
-### `model`
+### `forModel`
 
 <FunctionInfo provides="Model" />
 
@@ -78,14 +78,14 @@ Use its type and other applicable model's context.
 #### Example
 
 ```javascript
-import { model } from 'func-client/core';
+import { forModel } from 'func-client/core';
 
-action().use(model(Post));
+action().use(forModel(Post));
 ```
 
 #### Arguments
 
-- [`{M extends Model}`](/docs/api/func-client/modules/core#model) `modelToUse` the model class to use
+- [`{M extends Model}`](/docs/api/func-client/modules/core#model) `model` the model class to use
 
 ### `include`
 

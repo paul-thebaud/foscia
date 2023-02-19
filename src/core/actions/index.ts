@@ -1,13 +1,12 @@
-import useAdapterContext from '@/core/actions/context/consumers/useAdapterContext';
-import useCacheContext from '@/core/actions/context/consumers/useCacheContext';
-import useContext from '@/core/actions/context/consumers/useContext';
-import useDeserializerContext from '@/core/actions/context/consumers/useDeserializerContext';
-import useIdContext from '@/core/actions/context/consumers/useIdContext';
-import useInstanceContext from '@/core/actions/context/consumers/useInstanceContext';
-import useModelContext from '@/core/actions/context/consumers/useModelContext';
-import useRequiredContext from '@/core/actions/context/consumers/useRequiredContext';
-import useSerializerContext from '@/core/actions/context/consumers/useSerializerContext';
-import useTypeContext from '@/core/actions/context/consumers/useTypeContext';
+import consumeAdapter from '@/core/actions/context/consumers/consumeAdapter';
+import consumeCache from '@/core/actions/context/consumers/consumeCache';
+import consumeContext from '@/core/actions/context/consumers/consumeContext';
+import consumeDeserializer from '@/core/actions/context/consumers/consumeDeserializer';
+import consumeId from '@/core/actions/context/consumers/consumeId';
+import consumeInstance from '@/core/actions/context/consumers/consumeInstance';
+import consumeModel from '@/core/actions/context/consumers/consumeModel';
+import consumeSerializer from '@/core/actions/context/consumers/consumeSerializer';
+import consumeType from '@/core/actions/context/consumers/consumeType';
 import context from '@/core/actions/context/enhancers/context';
 import create from '@/core/actions/context/enhancers/crud/create';
 import destroy from '@/core/actions/context/enhancers/crud/destroy';
@@ -21,14 +20,14 @@ import withDeserializer from '@/core/actions/context/enhancers/dependency/withDe
 import withRegistry from '@/core/actions/context/enhancers/dependency/withRegistry';
 import withSerializer from '@/core/actions/context/enhancers/dependency/withSerializer';
 import forId from '@/core/actions/context/enhancers/forId';
+import forInstance from '@/core/actions/context/enhancers/forInstance';
+import forModel from '@/core/actions/context/enhancers/forModel';
 import onError from '@/core/actions/context/enhancers/hooks/onError';
 import onFinally from '@/core/actions/context/enhancers/hooks/onFinally';
 import onPreparing from '@/core/actions/context/enhancers/hooks/onPreparing';
 import onRunning from '@/core/actions/context/enhancers/hooks/onRunning';
 import onSuccess from '@/core/actions/context/enhancers/hooks/onSuccess';
 import include from '@/core/actions/context/enhancers/include';
-import instance from '@/core/actions/context/enhancers/instance';
-import model from '@/core/actions/context/enhancers/model';
 import target from '@/core/actions/context/enhancers/target';
 import all from '@/core/actions/context/runners/all';
 import allUsing from '@/core/actions/context/runners/allUsing';
@@ -67,20 +66,19 @@ export {
   withSerializer,
   withRegistry,
   withCache,
-  useAdapterContext,
-  useCacheContext,
-  useContext,
-  useDeserializerContext,
-  useIdContext,
-  useInstanceContext,
-  useModelContext,
-  useRequiredContext,
-  useSerializerContext,
-  useTypeContext,
+  consumeAdapter,
+  consumeCache,
+  consumeContext,
+  consumeDeserializer,
+  consumeId,
+  consumeInstance,
+  consumeModel,
+  consumeSerializer,
+  consumeType,
   context,
   forId,
-  instance,
-  model,
+  forInstance,
+  forModel,
   target,
   include,
   instanceData,

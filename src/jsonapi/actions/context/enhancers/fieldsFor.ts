@@ -1,7 +1,6 @@
 import { Action, Model, ModelKey } from '@/core';
-import useContext from '@/core/actions/context/consumers/useContext';
 import { param } from '@/http';
-import prevParams from '@/http/actions/context/utilities/prevParams';
+import consumePrevParams from '@/http/actions/context/consumers/consumePrevParams';
 import mergeParamList from '@/jsonapi/actions/context/utilities/mergeParamList';
 import { ArrayableVariadic, wrapVariadic } from '@/utilities';
 
@@ -19,7 +18,7 @@ export default function fieldsFor<C extends {}, M extends Model>(
   ...fieldset: ArrayableVariadic<ModelKey<M>>
 ) {
   return async (action: Action<C>) => {
-    const prevFields = prevParams(await useContext(action))?.fields;
+    const prevFields = consumePrevParams(await action.useContext(), null)?.fields;
 
     return action.use(param('fields', {
       ...prevFields,

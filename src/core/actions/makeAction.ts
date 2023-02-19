@@ -26,7 +26,7 @@ export default function makeAction<Extension extends {} = {}>(extension?: Extens
       this.$hooks = {};
     }
 
-    public async computeContext() {
+    public async useContext() {
       await this.dequeueEnhancements();
 
       return this.$context;
@@ -47,7 +47,7 @@ export default function makeAction<Extension extends {} = {}>(extension?: Extens
     public async run(runner: ContextRunner<any, any>) {
       await runHook(this, 'preparing', undefined);
 
-      const context = await this.computeContext();
+      const context = await this.useContext();
 
       await runHook(this, 'running', { context });
 

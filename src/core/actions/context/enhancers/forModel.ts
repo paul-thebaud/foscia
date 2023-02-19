@@ -8,30 +8,30 @@ import { Model, ModelInstance } from '@/core/model/types';
  * Target the given model.
  * Use its type and other applicable model's context.
  *
- * @param modelToUse
+ * @param model
  *
  * @category Enhancers
  */
-export default function model<
+export default function forModel<
   C extends {},
   D extends {},
   I extends ModelInstance<D>,
   M extends Model<D, I>,
->(modelToUse: M) {
+>(model: M) {
   return (action: Action<C>) => action
-    .use(target<D, I, M>(modelToUse))
+    .use(target<D, I, M>(model))
     .use(context({
-      type: modelToUse.$config.type,
+      type: model.$config.type,
       // TODO Should baseURL be here?
-      baseURL: modelToUse.$config.baseURL,
+      baseURL: model.$config.baseURL,
     }));
 }
 
 type ModelEnhancerExtension = ActionParsedExtension<{
-  model<C extends {}, E extends {}, M extends Model>(
+  forModel<C extends {}, E extends {}, M extends Model>(
     this: Action<C, E>,
     model: M,
   ): Action<C & ConsumeModel<M> & ConsumeType, E>;
 }>;
 
-model.extension = makeEnhancersExtension({ model }) as ModelEnhancerExtension;
+forModel.extension = makeEnhancersExtension({ forModel }) as ModelEnhancerExtension;

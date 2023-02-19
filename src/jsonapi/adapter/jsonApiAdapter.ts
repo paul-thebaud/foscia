@@ -44,8 +44,8 @@ export default class JsonApiAdapter extends HttpAdapter {
    * @param context
    */
   protected makeIncludeParam(context: HttpActionContext) {
-    return isNone(context.includes)
+    return isNone(context.include)
       ? undefined
-      : `include=${optionalJoin(context.includes ?? [], ',')}`;
+      : `include=${optionalJoin(context.include ?? [], ',')}`;
   }
 }

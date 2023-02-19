@@ -1,5 +1,5 @@
 import { Action, ConsumeModel, Model, ModelKey } from '@/core';
-import useModelContext from '@/core/actions/context/consumers/useModelContext';
+import consumeModel from '@/core/actions/context/consumers/consumeModel';
 import fieldsFor from '@/jsonapi/actions/context/enhancers/fieldsFor';
 import { ArrayableVariadic } from '@/utilities';
 
@@ -16,7 +16,7 @@ export default function fields<C extends {}, M extends Model>(
   ...fieldset: ArrayableVariadic<ModelKey<M>>
 ) {
   return async (action: Action<C & ConsumeModel<M>>) => {
-    const model = await useModelContext(action);
+    const model = consumeModel(await action.useContext());
 
     return action.use(fieldsFor(model, ...fieldset));
   };

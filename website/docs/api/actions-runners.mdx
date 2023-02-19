@@ -63,25 +63,6 @@ const response = await action().run(raw());
 `{Promise<AD>}` where `AD` is your adapter's data (e.g. a fetch Response
 object).
 
-### `rawJson`
-
-<FunctionInfo requires="Adapter" only="HTTP" />
-
-Run the action and retrieve the response JSON parsed data.
-
-#### Example
-
-```javascript
-import { rawJson } from 'func-client/http';
-
-const data = await action().run(rawJson());
-```
-
-#### Returns
-
-`{Promise<T>}` where `T` is the generic type passed to `rawJson`
-(defaults to `any`).
-
 ### `all`
 
 <FunctionInfo requires="Adapter, Deserializer, Model" />
@@ -99,22 +80,3 @@ const posts = await action().run(all());
 #### Returns
 
 `{Promise<I[]>}` where `I` is an instance of the targeted model.
-
-### `allDocument`
-
-<FunctionInfo requires="Adapter, Deserializer, Model" only="JSON:API" />
-
-Run the action and deserialize an array of model's instance.
-Also returns the JSON:API document meta.
-
-#### Example
-
-```javascript
-import { allDocument } from 'func-client/jsonapi';
-
-const { instances, meta } = await action().run(allDocument());
-```
-
-#### Returns
-
-`{Promise<{ instances: I[]; meta: JsonApiMeta; }>}` where `I` is an instance of the targeted model.

@@ -8,7 +8,7 @@ export type ActionContext = {
   type?: string;
   id?: ModelId;
   relation?: string;
-  includes?: string[];
+  include?: string[];
   data?: unknown;
   [K: string]: unknown;
 };
@@ -23,7 +23,7 @@ export type ActionHooksDefinition<C extends ActionContext = any> = {
 
 export type Action<Context extends {} = {}, Extension extends {} = {}> =
   & {
-    computeContext(): Promise<Context>;
+    useContext(): Promise<Context>;
     updateContext<NewContext extends {}>(
       newContext: NewContext,
     ): Action<NewContext, Extension>;
@@ -77,8 +77,8 @@ export type ConsumeId = {
   id?: ModelId;
 };
 
-export type ConsumeIncludes = {
-  includes?: string[];
+export type ConsumeInclude = {
+  include?: string[];
 };
 
 export type ConsumeCache = { cache: CacheI; };
