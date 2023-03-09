@@ -7,27 +7,29 @@ description: Configuring a model behavior.
 
 :::tip What you'll learn
 
-- Configuring a model through its factory or with a custom factory
-- Learning each available configuration option goal and usage
+-   Configuring a model through its factory or with a custom factory
+-   Learning each available configuration option goal and usage
 
 :::
 
 ## How to configure a model
 
-You may configure your model when creating them through your
-factory `makeModel` or when defining a custom factory such as described in the
+You may configure your model when creating them through your factory `makeModel`
+or when defining a custom factory such as described in the
 [model composition guide](/docs/advanced/models-composition).
 
 Inside a model creation:
 
 ```javascript title="post.js"
-class Post extends makeModel({
-  type: 'posts',
-  /* ...configuration */
-}, {
-  /* ...definition */
-}) {
-}
+class Post extends makeModel(
+    {
+        type: 'posts',
+        /* ...configuration */
+    },
+    {
+        /* ...definition */
+    },
+) {}
 ```
 
 Common to multiple models through a custom model factory:
@@ -35,11 +37,14 @@ Common to multiple models through a custom model factory:
 ```javascript title="makeModel.js"
 import { attr, makeModelFactory, toDate } from 'func-client/core';
 
-export default makeModelFactory({
-  /* ...definition */
-}, {
-  /* ...configuration */
-});
+export default makeModelFactory(
+    {
+        /* ...definition */
+    },
+    {
+        /* ...configuration */
+    },
+);
 ```
 
 ## Common
@@ -51,23 +56,28 @@ argument of the function is a string. This is the **type** of the current model.
 
 It may be used for different purpose depending on the context:
 
-- Concatenate in a URL to target an API specific resource
-- Identify a record from an API/data source serialized data
-- Etc.
+-   Concatenate in a URL to target an API specific resource
+-   Identify a record from an API/data source serialized data
+-   Etc.
 
-To define it, you should follow your data source convention. As an example,
-in a JSON:API the resource types are defined in plural kebab case, such
-as `blog-posts` or `comments`.
+To define it, you should follow your data source convention. As an example, in a
+JSON:API the resource types are defined in plural kebab case, such as
+`blog-posts` or `comments`.
 
 You may define the type as the only configuration of the model or as a
 configuration property (if you want to define other properties):
 
 ```javascript title="post.js"
-class Post extends makeModel('posts', { /* ...definition */ }) {
-}
+class Post extends makeModel('posts', {
+    /* ...definition */
+}) {}
 // OR
-class Post extends makeModel({ type: 'posts' }, { /* ...definition */ }) {
-}
+class Post extends makeModel(
+    { type: 'posts' },
+    {
+        /* ...definition */
+    },
+) {}
 ```
 
 ### Comparator and cloner
@@ -75,8 +85,8 @@ class Post extends makeModel({ type: 'posts' }, { /* ...definition */ }) {
 You may have noticed that FuncClient provide some model history features. Those
 allow you to know which parts of a model instance changed since its retrieval
 from the data source or interact with those changes, through
-[some utilities functions](/docs/api/models-utilities): `changed`, `reset`,
-and `syncOriginal`.
+[some utilities functions](/docs/api/models-utilities): `changed`, `reset`, and
+`syncOriginal`.
 
 Currently, FuncClient won't clone any value when syncing the instance values (on
 save, etc.) and will do a strict equal comparison to known if the value changed.
@@ -85,21 +95,25 @@ The following model configuration is equivalent to the default behavior of
 FuncClient:
 
 ```javascript title="post.js"
-class Post extends makeModel({
-  comparator: (newValue, prevValue) => nextValue === prevValue,
-  cloner: (value) => value,
-}, { /* definition */ }) {
-}
+class Post extends makeModel(
+    {
+        comparator: (newValue, prevValue) => nextValue === prevValue,
+        cloner: (value) => value,
+    },
+    {
+        /* definition */
+    },
+) {}
 ```
 
 You may change those two functions to really clone values when syncing the
 instance state. Keep in mind that:
 
-- Values might be any value your instance could contain, including complex
-  object and even other model instance
-- Cloned values might be restored through `reset` utility
-- Making a real clone of a value without updating the comparator will break the
-  history because of its default behavior
+-   Values might be any value your instance could contain, including complex
+    object and even other model instance
+-   Cloned values might be restored through `reset` utility
+-   Making a real clone of a value without updating the comparator will break
+    the history because of its default behavior
 
 ## HTTP
 
@@ -112,9 +126,13 @@ You may define a `baseURL` configuration option on your models. It will replace
 the default base URL define on the adapter.
 
 ```javascript title="post.js"
-class Post extends makeModel({
-  type: 'posts',
-  baseURL: 'https://example.com/api/v2',
-}, { /* ...definition */ }) {
-}
+class Post extends makeModel(
+    {
+        type: 'posts',
+        baseURL: 'https://example.com/api/v2',
+    },
+    {
+        /* ...definition */
+    },
+) {}
 ```

@@ -82,13 +82,18 @@ custom model factory. It will replace the FuncClient's `makeModel` function.
 ```javascript title="makeModel.js"
 import { attr, makeModelFactory, toDate } from 'func-client/core';
 
-export default makeModelFactory({
-    createdAt: attr(toDate()),
-    updatedAt: attr(toDate()),
-    get wasChangedSinceCreation() {
-        return this.createdAt.getTime() === this.updatedAt.getTime();
+export default makeModelFactory(
+    {
+        createdAt: attr(toDate()),
+        updatedAt: attr(toDate()),
+        get wasChangedSinceCreation() {
+            return this.createdAt.getTime() === this.updatedAt.getTime();
+        },
     },
-}, { /* base configuration */ });
+    {
+        /* base configuration */
+    },
+);
 ```
 
 Once your factory is ready, you can use in replacement of the classical
