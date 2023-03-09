@@ -68,7 +68,7 @@
     "build:lib:cjs": "BUILD_FORMAT=cjs vite build --config vite.config.js",
     "build:lib:umd": "BUILD_FORMAT=umd vite build --config vite.config.js",
     "build:lib": "concurrently \"pnpm build:lib:es\" \"pnpm build:lib:cjs\" \"pnpm build:lib:umd\"",
-    "build:declaration": "tsc --declaration --emitDeclarationOnly --declarationDir dist-temp/ && tsc-alias --directory dist-temp/",
+    "build:declaration": "tsc --declaration --emitDeclarationOnly --declarationDir dist-temp/ && tsc-alias",
     "build:declaration:bundle": "rollup -c rollup.dts.config.js",
     "build:post-clear": "rimraf \"./dist/index.@(js|cjs|d.ts)?(.map)\" && rimraf ./dist-temp",
     "build": "pnpm build:pre-clear && pnpm build:lib && pnpm build:declaration && pnpm build:declaration:bundle && pnpm build:post-clear",
