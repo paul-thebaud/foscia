@@ -107,6 +107,27 @@ action().use(forInstance(post));
 
 - [`{I extends ModelInstance}`](/docs/api/func-client/modules/core#modelinstance) `instance` the instance to use
 
+### `forRelation`
+
+<FunctionInfo provides="Model, Instance, Type, ID, Relation" />
+
+Target the given instance's relation.
+
+Use its type and other applicable model/relation context.
+
+#### Example
+
+```javascript
+import { forRelation } from 'func-client/core';
+
+action().use(forRelation(post, 'comments'));
+```
+
+#### Arguments
+
+- [`{I extends ModelInstance}`](/docs/api/func-client/modules/core#modelinstance) `instance` the instance to use
+- [`{ModelRelationKey<I>}`](/docs/api/func-client/modules/core#modelrelationkey) `relation` the relation to use
+
 ### `forId`
 
 <FunctionInfo provides="ID" />

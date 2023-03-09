@@ -17,6 +17,7 @@ import update from '@/core/actions/context/enhancers/crud/update';
 import forId from '@/core/actions/context/enhancers/forId';
 import forInstance from '@/core/actions/context/enhancers/forInstance';
 import forModel from '@/core/actions/context/enhancers/forModel';
+import forRelation from '@/core/actions/context/enhancers/forRelation';
 import onError from '@/core/actions/context/enhancers/hooks/onError';
 import onFinally from '@/core/actions/context/enhancers/hooks/onFinally';
 import onPreparing from '@/core/actions/context/enhancers/hooks/onPreparing';
@@ -75,6 +76,7 @@ export {
   forId,
   forInstance,
   forModel,
+  forRelation,
   target,
   include,
   instanceData,

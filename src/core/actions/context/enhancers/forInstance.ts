@@ -34,7 +34,7 @@ export default function forInstance<
 type ForInstanceEnhancerExtension = ActionParsedExtension<{
   forInstance<C extends {}, E extends {}, D extends {}, I extends ModelInstance<D>>(
     this: Action<C, E>,
-    instanceToUse: ModelClassInstance<D> & I,
+    instance: ModelClassInstance<D> & I,
   ): Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeType & ConsumeId, E>;
 }>;
 

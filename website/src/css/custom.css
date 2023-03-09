@@ -8,8 +8,8 @@
 :root {
     --nav-background-color: 255, 255, 255;
 
-    --ifm-font-family-monospace: "Fira Mono", sans-serif;
-    --ifm-font-family-base: "Readex Pro", monospace;
+    --ifm-font-family-monospace: "Fira Mono", monospace;
+    --ifm-font-family-base: "Readex Pro", sans-serif;
     --ifm-background-color: transparent;
     --ifm-background-surface-color: #fef7fa;
     --ifm-footer-background-color: #fef7fa;

@@ -75,6 +75,10 @@ export type ConsumeId = {
   id?: ModelId;
 };
 
+export type ConsumeRelation = {
+  relation?: string;
+};
+
 export type ConsumeInclude = {
   include?: string[];
 };
