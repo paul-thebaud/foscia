@@ -15,10 +15,10 @@
     "prettier-docs": "prettier --config .prettierrc --write \"**/*.md\""
   },
   "dependencies": {
-    "@docusaurus/core": "2.2.0",
-    "@docusaurus/preset-classic": "2.2.0",
+    "@docusaurus/core": "2.3.1",
+    "@docusaurus/preset-classic": "2.3.1",
     "@fontsource/fira-mono": "^4.5.10",
-    "@fontsource/readex-pro": "^4.5.11",
+    "@fontsource/readex-pro": "^4.5.13",
     "@mdx-js/react": "^1.6.22",
     "clsx": "^1.2.1",
     "docusaurus-plugin-typedoc": "^0.18.0",
@@ -26,12 +26,12 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "remark-typescript-tools": "^1.0.11",
-    "typedoc": "^0.23.23",
+    "typedoc": "^0.23.26",
     "typedoc-plugin-markdown": "^3.14.0",
-    "typescript": "^4.8.4"
+    "typescript": "^4.9.5"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "2.2.0"
+    "@docusaurus/module-type-aliases": "2.3.1"
   },
   "browserslist": {
     "production": [
