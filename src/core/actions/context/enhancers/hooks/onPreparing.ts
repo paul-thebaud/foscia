@@ -3,6 +3,14 @@ import { Action, ActionParsedExtension } from '@/core/actions/types';
 import registerHook from '@/core/hooks/registerHook';
 import { Awaitable } from '@/utilities';
 
+/**
+ * Register a "preparing" hook callback on action.
+ * Callback may be async.
+ *
+ * @param callback
+ *
+ * @category Enhancers
+ */
 export default function onPreparing<C extends {}>(
   callback: () => Awaitable<void>,
 ) {

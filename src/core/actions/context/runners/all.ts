@@ -9,6 +9,11 @@ import {
 } from '@/core/actions/types';
 import { Model } from '@/core/model/types';
 
+/**
+ * Run the action and deserialize an array of model's instance.
+ *
+ * @category Runners
+ */
 export default function all<C extends {}, AD, M extends Model>() {
   return (
     action: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD> & ConsumeModel<M>>,

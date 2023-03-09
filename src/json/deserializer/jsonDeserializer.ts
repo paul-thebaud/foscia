@@ -77,7 +77,7 @@ export default abstract class JsonDeserializer<
   ) {
     // Handle a singular creation context to map a non-identified instance
     // to the single returned resource if available.
-    if (context.action === 'CREATE'
+    if (context.action === 'create'
       && context.instance
       && !isNone(extractedData.resources)
       && !Array.isArray(extractedData.resources)

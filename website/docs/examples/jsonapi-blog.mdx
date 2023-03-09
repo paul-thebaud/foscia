@@ -187,10 +187,12 @@ await publishPost(post);
 :::info
 
 `makeGet` or other custom request enhancers (`makePost`, etc.) will just append
-the given path if it is not an "absolute" (starting with `/`) path. This allows
-you to run non-standard actions scoped to an instance, etc.
+the given path if it is not an "absolute" (starting with a scheme such as
+`https://`) path. This allows you to run non-standard actions scoped to an
+instance, etc.
 
-Your may also use an absolute (starting with `/`) path like `/some/magic/action`
-to ignore the configured base URL and run a non-standard action.
+Your may also use an absolute (starting with a scheme) path like
+`https://example.com/some/magic/action` to ignore the configured base URL
+and run a non-standard action.
 
 :::

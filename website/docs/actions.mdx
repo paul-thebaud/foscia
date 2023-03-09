@@ -27,7 +27,7 @@ to quickly create your own action factory.
 
 ## Instantiation
 
-As stated in the [getting started guide](/docs/getting-started#running-actions),
+As stated in the [getting started guide](/docs/getting-started#running-simple-actions),
 actions are instantiated through your action factory. In this guide, we'll admit
 you have a setup action factory.
 
@@ -48,10 +48,10 @@ action()
 ```
 
 <Link
-    className="button bg--primary-gradient"
-    to="/docs/api/actions-enhancers"
+  className="button bg--primary-gradient"
+  to="/docs/api/actions-enhancers"
 >
-    Available enhancers API guide
+  Available enhancers API guide
 </Link>
 
 ## Run
@@ -63,9 +63,9 @@ When an action run, it does 3 things:
 
 -   Dequeue all enhancers since the action instantiation and build context
 -   Execute the runner and each of its internal enhancers/runners (this may
-    update the context)
+update the context)
 -   Return the runner's result (might be any value, including void or an error
-    throwing)
+throwing)
 
 Internally, action running will also trigger [actions hooks](#hooks).
 
@@ -78,10 +78,10 @@ action()
 ```
 
 <Link
-    className="button bg--primary-gradient"
-    to="/docs/api/actions-runners"
+  className="button bg--primary-gradient"
+  to="/docs/api/actions-runners"
 >
-    Available runners API guide
+  Available runners API guide
 </Link>
 
 ## Extensions
@@ -100,11 +100,12 @@ If you are using a custom action factory, you should check the
 
 ```javascript title="action.js"
 import { model, include, all } from 'func-client/core';
-import { makeJsonApi } from 'func-client/blueprints';
+import { makeJsonApi, hooksExtensions } from 'func-client/blueprints';
 
 const { action, registry } = makeJsonApi({
     extensions: {
         // Spread any extensions you want to use here...
+        ...hooksExtensions,
         ...model.extension,
         ...include.extension,
         ...all.extension,
@@ -130,10 +131,10 @@ multiple extensions in one exported object allowing you to extend multiple
 extensions at one time!
 
 <Link
-    className="button bg--primary-gradient margin-bottom--lg"
-    to="/docs/api/actions-extensions"
+  className="button bg--primary-gradient margin-bottom--lg"
+  to="/docs/api/actions-extensions"
 >
-    Available extensions packs API guide
+  Available extensions packs API guide
 </Link>
 
 :::caution

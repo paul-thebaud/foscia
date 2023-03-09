@@ -14,11 +14,6 @@ import find from '@/core/actions/context/enhancers/crud/find';
 import instanceData from '@/core/actions/context/enhancers/crud/instanceData';
 import save from '@/core/actions/context/enhancers/crud/save';
 import update from '@/core/actions/context/enhancers/crud/update';
-import withAdapter from '@/core/actions/context/enhancers/dependency/withAdapter';
-import withCache from '@/core/actions/context/enhancers/dependency/withCache';
-import withDeserializer from '@/core/actions/context/enhancers/dependency/withDeserializer';
-import withRegistry from '@/core/actions/context/enhancers/dependency/withRegistry';
-import withSerializer from '@/core/actions/context/enhancers/dependency/withSerializer';
 import forId from '@/core/actions/context/enhancers/forId';
 import forInstance from '@/core/actions/context/enhancers/forInstance';
 import forModel from '@/core/actions/context/enhancers/forModel';
@@ -34,13 +29,17 @@ import allUsing from '@/core/actions/context/runners/allUsing';
 import cached from '@/core/actions/context/runners/cached';
 import cachedOr from '@/core/actions/context/runners/cachedOr';
 import cachedOrFail from '@/core/actions/context/runners/cachedOrFail';
+import cachedUsing from '@/core/actions/context/runners/cachedUsing';
 import none from '@/core/actions/context/runners/none';
 import one from '@/core/actions/context/runners/one';
 import oneOr from '@/core/actions/context/runners/oneOr';
 import oneOrCurrent from '@/core/actions/context/runners/oneOrCurrent';
 import oneOrFail from '@/core/actions/context/runners/oneOrFail';
+import oneUsing from '@/core/actions/context/runners/oneUsing';
 import raw from '@/core/actions/context/runners/raw';
 import rawUsing from '@/core/actions/context/runners/rawUsing';
+import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
+import makeRunnersExtension from '@/core/actions/extensions/makeRunnersExtension';
 import when from '@/core/actions/when';
 
 export {
@@ -51,9 +50,11 @@ export {
   oneOr,
   oneOrFail,
   oneOrCurrent,
+  oneUsing,
   cached,
   cachedOr,
   cachedOrFail,
+  cachedUsing,
   raw,
   rawUsing,
   find,
@@ -61,11 +62,6 @@ export {
   update,
   save,
   destroy,
-  withAdapter,
-  withDeserializer,
-  withSerializer,
-  withRegistry,
-  withCache,
   consumeAdapter,
   consumeCache,
   consumeContext,
@@ -88,4 +84,6 @@ export {
   onSuccess,
   onError,
   onFinally,
+  makeEnhancersExtension,
+  makeRunnersExtension,
 };

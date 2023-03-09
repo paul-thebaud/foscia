@@ -12,7 +12,7 @@ import { JsonRestAdapter, JsonRestDeserializer, JsonRestSerializer } from '@/jso
  */
 export default function makeJsonRest<Extension extends {} = {}>(config: {
   baseURL?: string;
-  extension?: Extension;
+  extensions?: Extension;
 } = {}) {
   const cache = makeCache();
   const registry = makeRegistry();
@@ -22,7 +22,7 @@ export default function makeJsonRest<Extension extends {} = {}>(config: {
   const deserializer = new JsonRestDeserializer();
   const serializer = new JsonRestSerializer();
 
-  const Action = makeAction(config.extension);
+  const Action = makeAction(config.extensions);
   const withDependencies = context({
     cache, registry, adapter, deserializer, serializer,
   });

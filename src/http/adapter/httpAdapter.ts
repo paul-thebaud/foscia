@@ -13,6 +13,7 @@ import {
   ErrorTransformer,
   HttpActionContext,
   HttpAdapterConfig,
+  HttpMethod,
   HttpParamsSerializer,
   HttpRequest,
   HttpRequestInit,
@@ -100,20 +101,29 @@ export default abstract class HttpAdapter implements AdapterI<Response> {
    */
   protected makeRequestInit(context: HttpActionContext) {
     return {
-      method: this.makeRequestMethod(context),
+      method: this.makeRequestMethod(context).toUpperCase(),
       headers: context.headers ?? {},
       body: context.body ?? context.data,
       signal: context.signal,
     } as HttpRequestInit;
   }
 
-  protected makeRequestMethod(context: HttpActionContext) {
-    return (context.method ?? {
-      READ: 'GET',
-      CREATE: 'POST',
-      UPDATE: 'PATCH',
-      DESTROY: 'DELETE',
-    }[context.action ?? 'READ']).toUpperCase();
+  protected makeRequestMethod(context: HttpActionContext): HttpMethod {
+    if (context.method) {
+      return context.method;
+    }
+
+    const actionsMethodsMap: Dictionary = {
+      read: 'GET',
+      create: 'POST',
+      update: 'PATCH',
+      destroy: 'DELETE',
+    };
+    if (context.action && actionsMethodsMap[context.action]) {
+      return actionsMethodsMap[context.action] as HttpMethod;
+    }
+
+    return 'GET';
   }
 
   protected makeRequestURLEndpoint(context: HttpActionContext) {

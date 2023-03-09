@@ -1,5 +1,5 @@
 import makeExtension from '@/core/actions/extensions/makeExtension';
-import { Action, ContextEnhancer } from '@/core/actions/types';
+import { Action } from '@/core/actions/types';
 import { Dictionary } from '@/utilities';
 
 /**
@@ -11,7 +11,7 @@ import { Dictionary } from '@/utilities';
  * @todo This function returns value should be generically typed.
  */
 export default function makeEnhancersExtension<
-  E extends Dictionary<(...args: any[]) => ContextEnhancer<any, any>> = {},
+  E extends Dictionary<any> = {},
 >(enhancersMap: E) {
   return makeExtension(
     Object.entries(enhancersMap).reduce((extension, [key, enhancer]) => {

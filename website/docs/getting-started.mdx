@@ -110,7 +110,7 @@ available tooling, such as a model registry, an instance cache, a serializer and
 deserializer and an adapter.
 
 You can read more details on the
-[JSON:API implementation page](/docs/implementations/jsonapi).
+[JSON:API implementation page](/docs/advanced/implementations/jsonapi).
 
 ```javascript title="action.js"
 import { makeJsonApi } from 'func-client/blueprints';
@@ -140,7 +140,7 @@ as a model registry, an instance cache, a serializer and deserializer and an
 adapter.
 
 You can read more details on the
-[JSON REST implementation page](/docs/implementations/jsonrest).
+[JSON REST implementation page](/docs/advanced/implementations/jsonrest).
 
 ```javascript title="action.js"
 import { makeJsonRest } from 'func-client/blueprints';
@@ -167,7 +167,8 @@ export default action;
 For the moment, there is no other official implementation available besides
 JSON:API and JSON REST. You should therefore either:
 
-- [**Implement your own action's dependencies**](/docs/implementations/custom)
+- **Implement your own action's dependencies**, you should inspire from existing
+  implementations to build your own.
 - [**Open an issue or a pull request**](https://github.com/paul-thebaud/func-client/issues)
 
 
@@ -205,15 +206,10 @@ For this, you should provide an `extension` configuration option:
   >
 
 ```js
-import { makeJsonApi, coreExtensions, crudExtensions, jsonApiExtensions } from 'func-client/blueprints';
+import { makeJsonApi, jsonApiStarterExtensions } from 'func-client/blueprints';
 
 const { action, registry } = makeJsonApi({
-    extensions: {
-        // Spread any extensions you want to use here...
-        ...coreExtensions,
-        ...crudExtensions,
-        ...jsonApiExtensions,
-    },
+    extensions: jsonApiStarterExtensions,
 });
 ```
 
@@ -224,15 +220,10 @@ const { action, registry } = makeJsonApi({
   >
 
 ```js
-import { makeJsonRest, coreExtensions, crudExtensions, jsonRestExtensions } from 'func-client/blueprints';
+import { makeJsonRest, jsonRestStarterExtensions } from 'func-client/blueprints';
 
 const { action, registry } = makeJsonRest({
-    extensions: {
-        // Spread any extensions you want to use here...
-        ...coreExtensions,
-        ...crudExtensions,
-        ...jsonRestExtensions,
-    },
+    extensions: jsonRestStarterExtensions,
 });
 ```
 
@@ -245,10 +236,11 @@ manually enhancers and runners extensions using the following code:
 
 ```javascript
 import { model, include, all } from 'func-client/core';
-import { makeJsonApi } from 'func-client/blueprints';
+import { makeJsonApi, hooksExtensions } from 'func-client/blueprints';
 
 const { action, registry } = makeJsonApi({
     extensions: {
+        ...hooksExtensions,
         ...model.extension,
         ...include.extension,
         ...all.extension,

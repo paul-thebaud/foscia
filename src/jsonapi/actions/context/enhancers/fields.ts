@@ -1,5 +1,12 @@
-import { Action, ConsumeModel, Model, ModelKey } from '@/core';
-import consumeModel from '@/core/actions/context/consumers/consumeModel';
+import {
+  Action,
+  ActionParsedExtension,
+  ConsumeModel,
+  consumeModel,
+  makeEnhancersExtension,
+  Model,
+  ModelKey,
+} from '@/core';
 import fieldsFor from '@/jsonapi/actions/context/enhancers/fieldsFor';
 import { ArrayableVariadic } from '@/utilities';
 
@@ -21,3 +28,12 @@ export default function fields<C extends {}, M extends Model>(
     return action.use(fieldsFor(model, ...fieldset));
   };
 }
+
+type FieldsEnhancerExtension = ActionParsedExtension<{
+  fields<C extends {}, E extends {}, M extends Model>(
+    this: Action<C, E>,
+    ...fieldset: ArrayableVariadic<ModelKey<M>>
+  ): Action<C, E>;
+}>;
+
+fields.extension = makeEnhancersExtension({ fields }) as FieldsEnhancerExtension;

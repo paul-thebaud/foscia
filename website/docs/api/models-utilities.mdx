@@ -162,7 +162,7 @@ const PostModel = makeModel('posts', { /* definition */ });
 #### Arguments
 
 - [`{ModelConfig | string}`](/docs/api/func-client/modules/core#modelconfig) `config`
-- `{ModelDefinition}` `extendsFrom`
+- `{ModelDefinition}` `rawDefinition`
 
 #### Returns
 
@@ -182,9 +182,29 @@ const makeModel = makeModelFactory({ /* definition */ }, { /* config */ });
 
 #### Arguments
 
-- `{ModelDefinition | undefined }` `baseExtendsFrom`
+- `{ModelDefinition | undefined }` `baseRawDefinition`
 - [`{ModelConfig | undefined}`](/docs/api/func-client/modules/core#modelconfig) `baseConfig` (omitting `type`)
 
 #### Returns
 
 [`{makeModel}`](#makemodel), a customized model factory function.
+
+### `makeComposable`
+
+Create a composable definition to integrate in models.
+
+#### Example
+
+```javascript
+import { makeComposable } from 'func-client/core';
+
+const publishable = makeComposable({ /* definition */ });
+```
+
+#### Arguments
+
+- `{ModelDefinition}` `rawDefinition`
+
+#### Returns
+
+[`{ModelParsedDefinition}`](/docs/api/func-client/modules/core#modelparseddefinition)

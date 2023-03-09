@@ -1,6 +1,16 @@
+import { Action, ActionParsedExtension, makeEnhancersExtension } from '@/core';
 import makeRequest from '@/http/actions/context/enhancers/makeRequest';
 import { HttpRequestConfig } from '@/http/types';
 
+/**
+ * HTTP POST method shortcut for the {@link makeRequest} function.
+ *
+ * @param pathOrBaseURL
+ * @param body
+ * @param config
+ *
+ * @category Enhancers
+ */
 export default function makePost(
   pathOrBaseURL: string,
   body?: HttpRequestConfig['body'],
@@ -12,3 +22,14 @@ export default function makePost(
     ...config,
   });
 }
+
+type MakePostEnhancerExtension = ActionParsedExtension<{
+  makePost<C extends {}, E extends {}>(
+    this: Action<C, E>,
+    pathOrBaseURL: string,
+    body?: HttpRequestConfig['body'],
+    config?: Omit<HttpRequestConfig, 'method' | 'body'>,
+  ): Action<C, E>;
+}>;
+
+makePost.extension = makeEnhancersExtension({ makePost }) as MakePostEnhancerExtension;

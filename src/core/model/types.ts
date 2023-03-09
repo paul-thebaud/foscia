@@ -21,12 +21,12 @@ export type ModelConfig = {
   /**
    * Compare two values when checking model instance changed values.
    *
-   * @param newValue
+   * @param nextValue
    * @param prevValue
    *
    * @see {@link changed}
    */
-  comparator?: (newValue: unknown, prevValue: unknown) => boolean;
+  comparator?: (nextValue: unknown, prevValue: unknown) => boolean;
   /**
    * Clone two values when sync model instances values state.
    *

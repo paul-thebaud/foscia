@@ -1,5 +1,4 @@
-import { FuncClientError } from '@/core';
-import consumeContext from '@/core/actions/context/consumers/consumeContext';
+import { consumeContext, FuncClientError } from '@/core';
 import { HttpActionContext } from '@/http/types';
 
 export default function consumePrevParams<D = never>(

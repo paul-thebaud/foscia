@@ -4,7 +4,7 @@ import { AdapterI, CacheI, DeserializedData, DeserializerI, RegistryI, Serialize
 import { Awaitable, Constructor, DescriptorHolder } from '@/utilities';
 
 export type ActionContext = {
-  action?: 'READ' | 'CREATE' | 'UPDATE' | 'DESTROY';
+  action?: 'read' | 'create' | 'update' | 'destroy' | string;
   type?: string;
   id?: ModelId;
   relation?: string;
@@ -39,7 +39,7 @@ export type Action<Context extends {} = {}, Extension extends {} = {}> =
 
 export type ActionClass<Context extends {} = {}, Extension extends {} = {}> = {
   extends<NewExtension extends {} = {}>(
-    extension?: NewExtension,
+    newExtensions?: NewExtension,
   ): ActionClass<Context, Extension & NewExtension>;
 } & Constructor<Action<Context, Extension>>;
 
@@ -58,8 +58,6 @@ export type ContextEnhancer<PC extends ActionContext, NC extends ActionContext> 
 export type ContextRunner<C extends ActionContext, R> = (
   action: Action<C>,
 ) => R;
-
-export type ConsumableContext<C extends {}> = Action<C> | C;
 
 export type ConsumeModel<M extends Model = Model> = {
   model: M;

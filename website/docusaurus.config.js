@@ -121,10 +121,6 @@ const config = {
                 to: '/docs/category/advanced',
               },
               {
-                label: 'Implementations',
-                to: '/docs/category/implementations',
-              },
-              {
                 label: 'API',
                 to: '/docs/category/api',
               },

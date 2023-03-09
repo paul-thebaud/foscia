@@ -1,3 +1,4 @@
+import { Action, ActionParsedExtension, makeEnhancersExtension } from '@/core';
 import { param } from '@/http';
 
 /**
@@ -13,3 +14,12 @@ import { param } from '@/http';
 export default function paginate(page: unknown) {
   return param('page', page);
 }
+
+type PaginateEnhancerExtension = ActionParsedExtension<{
+  paginate<C extends {}, E extends {}>(
+    this: Action<C, E>,
+    page: unknown,
+  ): Action<C, E>;
+}>;
+
+paginate.extension = makeEnhancersExtension({ paginate }) as PaginateEnhancerExtension;

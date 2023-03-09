@@ -15,7 +15,7 @@ export default function makeJsonApi<
   Extension extends {} = {},
 >(config: {
   baseURL?: string;
-  extension?: Extension;
+  extensions?: Extension;
 } = {}) {
   const cache = makeCache();
   const registry = makeRegistry();
@@ -26,7 +26,7 @@ export default function makeJsonApi<
   const deserializer = new JsonApiDeserializer();
   const serializer = new JsonApiSerializer();
 
-  const Action = makeAction(config.extension);
+  const Action = makeAction(config.extensions);
   const withDependencies = context({
     cache, registry, adapter, deserializer, serializer,
   });

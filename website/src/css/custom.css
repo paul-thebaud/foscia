@@ -149,6 +149,7 @@ aside, .table-of-contents__left-border {
 }
 
 .chip {
+    display: inline-block;
     position: relative;
     padding: 4px 6px;
     border-radius: 8px;

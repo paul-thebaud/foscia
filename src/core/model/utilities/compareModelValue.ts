@@ -2,12 +2,12 @@ import { ModelClass } from '@/core/model/types';
 
 export default function compareModelValue(
   model: ModelClass,
-  newValue: unknown,
+  nextValue: unknown,
   prevValue: unknown,
 ) {
   if (model.$config.comparator) {
-    return model.$config.comparator(newValue, prevValue);
+    return model.$config.comparator(nextValue, prevValue);
   }
 
-  return newValue === prevValue;
+  return nextValue === prevValue;
 }

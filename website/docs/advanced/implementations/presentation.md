@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-description: WIP
+description: Quick introduction on available implementations for FuncClient.
 ---
 
 # Presentation

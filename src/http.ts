@@ -1,3 +1,4 @@
+import abortSignal from '@/http/actions/context/enhancers/abortSignal';
 import makeDelete from '@/http/actions/context/enhancers/makeDelete';
 import makeGet from '@/http/actions/context/enhancers/makeGet';
 import makePatch from '@/http/actions/context/enhancers/makePatch';
@@ -35,11 +36,12 @@ export {
   NotFoundError,
   ConflictError,
   TooManyRequestsError,
-  param,
   makeRequest,
   makeGet,
   makePost,
   makePut,
   makePatch,
   makeDelete,
+  abortSignal,
+  param,
 };

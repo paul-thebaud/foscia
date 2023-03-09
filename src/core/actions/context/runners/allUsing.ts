@@ -2,8 +2,8 @@ import rawUsing from '@/core/actions/context/runners/rawUsing';
 import deserializeInstances, { DeserializedDataOf } from '@/core/actions/context/utilities/deserializeInstances';
 import makeRunnersExtension from '@/core/actions/extensions/makeRunnersExtension';
 import {
-  ActionContext,
   Action,
+  ActionContext,
   ActionParsedExtension,
   ConsumeAdapter,
   ConsumeDeserializer,
@@ -23,6 +23,14 @@ export type AllUsingData<
   instances: I[];
 };
 
+/**
+ * Run the action and deserialize an array of model's instance.
+ * Transform the returned result using given callback.
+ *
+ * @param transform
+ *
+ * @category Runners
+ */
 export default function allUsing<
   C extends ActionContext,
   M extends Model,
@@ -51,7 +59,7 @@ type AllUsingRunnerExtension = ActionParsedExtension<{
   >(
     this: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD> & ConsumeModel<M>>,
     transform: (data: AllUsingData<AD, DeserializedDataOf<I, DD>, I>) => Awaitable<ND>,
-  ): Promise<ND>;
+  ): Promise<Awaited<ND>>;
 }>;
 
 allUsing.extension = makeRunnersExtension({ allUsing }) as AllUsingRunnerExtension;

@@ -4,6 +4,15 @@ import { Action, ActionParsedExtension, ConsumeInclude, ConsumeModel } from '@/c
 import { Model, ModelRelationDotKey } from '@/core/model/types';
 import { ArrayableVariadic, uniqueValues, wrapVariadic } from '@/utilities';
 
+/**
+ * Eager load the given relations for the current model definition. It accepts
+ * deep relations through dot notation. The new relations will be merged with
+ * the previous ones.
+ *
+ * @param relations
+ *
+ * @category Enhancers
+ */
 export default function include<
   C extends {},
   M extends Model,

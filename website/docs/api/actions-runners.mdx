@@ -23,7 +23,7 @@ or runners
 Examples of this guide will omit imports of your action factories or models to
 provide shorter examples.
 
-## Functions
+## Common
 
 ### `none`
 
@@ -55,13 +55,39 @@ Run the action and retrieve the raw adapter's data.
 ```javascript
 import { raw } from 'func-client/core';
 
-const response = await action().run(raw());
+const data = await action().run(raw());
 ```
 
 #### Returns
 
 `{Promise<AD>}` where `AD` is your adapter's data (e.g. a fetch Response
 object).
+
+### `rawUsing`
+
+<FunctionInfo requires="Adapter" />
+
+Run the action and retrieve the raw adapter's data.
+Transform the returned result using given callback.
+
+#### Example
+
+```javascript
+import { rawUsing } from 'func-client/core';
+
+const transformedData = await action().run(rawUsing((data) => {
+  // TODO Transform and return data.
+  return data;
+}));
+```
+
+#### Arguments
+
+- `{Function}` `transform` the callback to transform the raw data object
+
+#### Returns
+
+`{Promise<T>}` where `T` is the transformed result.
 
 ### `all`
 
@@ -80,3 +106,247 @@ const posts = await action().run(all());
 #### Returns
 
 `{Promise<I[]>}` where `I` is an instance of the targeted model.
+
+### `allUsing`
+
+<FunctionInfo requires="Adapter, Deserializer, Model" />
+
+Run the action and deserialize an array of model's instance.
+Transform the returned result using given callback.
+
+#### Example
+
+```javascript
+import { allUsing } from 'func-client/core';
+import { usingDocument } from 'func-client/jsonapi';
+
+const data = await action().run(allUsing(usingDocument));
+data.instances; // Model instances.
+data.document;  // JSON:API document with meta, etc.
+```
+
+#### Arguments
+
+- `{Function}` `transform` the callback to transform the all data object
+
+#### Returns
+
+`{Promise<T>}` where `T` is the transformed result.
+
+### `one`
+
+<FunctionInfo requires="Adapter, Deserializer, Model" />
+
+Run the action and deserialize one model's instance.
+Returns null when not found.
+
+#### Example
+
+```javascript
+import { one } from 'func-client/core';
+
+const post = await action().run(one());
+```
+
+#### Returns
+
+`{Promise<I | null>}` where `I` is an instance of the targeted model.
+
+### `oneOrFail`
+
+<FunctionInfo requires="Adapter, Deserializer, Model" />
+
+Run the action and deserialize one model's instance.
+Throw an `ExpectedRunFailureError` when not found or empty result.
+
+#### Example
+
+```javascript
+import { oneOrFail } from 'func-client/core';
+
+const post = await action().run(oneOrFail());
+```
+
+#### Returns
+
+`{Promise<I>}` where `I` is an instance of the targeted model.
+
+### `oneOrCurrent`
+
+<FunctionInfo requires="Adapter, Deserializer, Model, Instance" />
+
+Run the action and deserialize one model's instance.
+Returns current instance when not found or empty result.
+
+#### Example
+
+```javascript
+import { oneOrCurrent } from 'func-client/core';
+
+const post = await action().run(oneOrCurrent());
+```
+
+#### Returns
+
+`{Promise<I>}` where `I` is an instance of the targeted model.
+
+### `oneOr`
+
+<FunctionInfo requires="Adapter, Deserializer, Model" />
+
+Run the action and deserialize one model's instance.
+Run the given runner when not found or empty result.
+
+#### Example
+
+```javascript
+import { oneOr } from 'func-client/core';
+
+const post = await action().run(oneOr(() => null));
+```
+
+#### Arguments
+
+- `{Function}` `nilRunner` the runner to use when one result is empty
+
+#### Returns
+
+`{Promise<I | T>}` where `I` is an instance of the targeted model and `T` is
+the `nilRunner` result.
+
+### `oneUsing`
+
+<FunctionInfo requires="Adapter, Deserializer, Model" />
+
+Run the action and deserialize one model's instance.
+Handle the not found instance as null result.
+Transform the returned result using given callback.
+
+#### Example
+
+```javascript
+import { oneUsing } from 'func-client/core';
+import { usingDocument } from 'func-client/jsonapi';
+
+const data = await action().run(oneUsing(usingDocument));
+data.instance; // Model instance.
+data.document; // JSON:API document with meta, etc.
+```
+
+#### Arguments
+
+- `{Function}` `transform` the callback to transform the one data object
+
+#### Returns
+
+`{Promise<T>}` where `T` is the transformed result.
+
+### `cached`
+
+<FunctionInfo requires="Cache, Model, Type, Id" />
+
+Retrieve an instance from the cache.
+If the instance is not in cache or if the included relations are not loaded,
+returns null.
+
+#### Example
+
+```javascript
+import { cached } from 'func-client/core';
+
+const post = await action().run(cached());
+```
+
+#### Returns
+
+`{Promise<I | null>}` where `I` is an instance of the targeted model.
+
+### `cachedOrFail`
+
+<FunctionInfo requires="Cache, Model, Type, Id" />
+
+Retrieve an instance from the cache.
+If the instance is not in cache or if the included relations are not loaded,
+throws an `ExpectedRunFailureError`.
+
+#### Example
+
+```javascript
+import { cachedOrFail } from 'func-client/core';
+
+const post = await action().run(cachedOrFail());
+```
+
+#### Returns
+
+`{Promise<I>}` where `I` is an instance of the targeted model.
+
+### `cachedOr`
+
+<FunctionInfo requires="Cache, Model, Type, Id" />
+
+Retrieve an instance from the cache.
+If the instance is not in cache or if the included relations are not loaded,
+run the given runner.
+
+#### Example
+
+```javascript
+import { cachedOr } from 'func-client/core';
+
+const post = await action().run(cachedOr(() => null));
+```
+
+#### Arguments
+
+- `{Function}` `nilRunner` the runner to use when cached result is empty
+
+#### Returns
+
+`{Promise<I | T>}` where `I` is an instance of the targeted model and `T` is
+the `nilRunner` result.
+
+### `cachedUsing`
+
+<FunctionInfo requires="Cache, Model, Type, Id" />
+
+Retrieve an instance from the cache.
+If the instance is not in cache or if the included relations are not loaded,
+returns null.
+Transform the returned result using given callback.
+
+#### Example
+
+```javascript
+import { cachedUsing } from 'func-client/core';
+
+const post = await action().run(cachedUsing(({ instance }) => instance));
+```
+
+#### Arguments
+
+- `{Function}` `transform` the callback to transform the cached data object
+
+#### Returns
+
+`{Promise<T>}` where `T` is the transformed result.
+
+## JSON:API
+
+### `usingDocument`
+
+<FunctionInfo only="JSON:API" />
+
+Append the JSON:API document object to data object.
+Use it as the parameter of `allUsing` and `oneUsing` runners.
+
+#### Example
+
+```javascript
+import { allUsing } from 'func-client/core';
+import { usingDocument } from 'func-client/jsonapi';
+
+const data = await action().run(allUsing(usingDocument));
+data.instances; // Model instances.
+data.document;  // JSON:API document with meta, etc.
+```

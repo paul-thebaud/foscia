@@ -4,7 +4,7 @@ import { HooksRegistrar } from '@/core/hooks/types';
 import withoutHooks from '@/core/hooks/withoutHooks';
 import { Dictionary, eachDescriptors, sequentialTransform } from '@/utilities';
 
-export default function makeAction<Extension extends {} = {}>(extension?: Extension) {
+export default function makeAction<Extension extends {} = {}>(extensions?: Extension) {
   class QueuedAction {
     public $hooks: HooksRegistrar<ActionHooksDefinition> | null;
 
@@ -12,8 +12,8 @@ export default function makeAction<Extension extends {} = {}>(extension?: Extens
 
     private $context: Dictionary;
 
-    public static extends(newExtension?: Dictionary) {
-      eachDescriptors(newExtension ?? {}, (key, descriptor) => {
+    public static extends(newExtensions?: Dictionary) {
+      eachDescriptors(newExtensions ?? {}, (key, descriptor) => {
         Object.defineProperty(this.prototype, key, descriptor);
       });
 
@@ -83,5 +83,5 @@ export default function makeAction<Extension extends {} = {}>(extension?: Extens
     }
   }
 
-  return QueuedAction.extends(extension) as ActionClass<{}, Extension>;
+  return QueuedAction.extends(extensions) as ActionClass<{}, Extension>;
 }

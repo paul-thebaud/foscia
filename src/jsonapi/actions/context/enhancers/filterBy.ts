@@ -1,4 +1,4 @@
-import { Action } from '@/core';
+import { Action, ActionParsedExtension, makeEnhancersExtension } from '@/core';
 import { param } from '@/http';
 import consumePrevParams from '@/http/actions/context/consumers/consumePrevParams';
 import { Dictionary } from '@/utilities';
@@ -20,3 +20,13 @@ export default function filterBy(key: string | Dictionary, value?: unknown) {
     ...(typeof key === 'string' ? { [key]: value } : key),
   }));
 }
+
+type FilterByEnhancerExtension = ActionParsedExtension<{
+  filterBy<C extends {}, E extends {}>(
+    this: Action<C, E>,
+    key: string | Dictionary,
+    value?: unknown,
+  ): Action<C, E>;
+}>;
+
+filterBy.extension = makeEnhancersExtension({ filterBy }) as FilterByEnhancerExtension;

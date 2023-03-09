@@ -29,8 +29,8 @@ export default function makeModelClass(config: ModelConfig): Model {
       Object.defineProperty(this, key, {
         enumerable: true,
         get: () => this.$values[key],
-        set: (newValue) => {
-          this.$values[key] = newValue;
+        set: (nextValue) => {
+          this.$values[key] = nextValue;
         },
       });
 

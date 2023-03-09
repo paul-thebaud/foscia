@@ -13,7 +13,7 @@ description: WIP
 :::
 
 As mentioned in the
-[implementations guide presentation](/docs/implementations/presentation),
+[implementations guide presentation](/docs/advanced/implementations/presentation),
 any action will require some dedicated features through dependencies.
 
 When using an action factory blueprint, all those dependencies are initialized

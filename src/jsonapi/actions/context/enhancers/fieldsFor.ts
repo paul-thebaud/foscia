@@ -1,4 +1,4 @@
-import { Action, Model, ModelKey } from '@/core';
+import { Action, ActionParsedExtension, makeEnhancersExtension, Model, ModelKey } from '@/core';
 import { param } from '@/http';
 import consumePrevParams from '@/http/actions/context/consumers/consumePrevParams';
 import mergeParamList from '@/jsonapi/actions/context/utilities/mergeParamList';
@@ -29,3 +29,13 @@ export default function fieldsFor<C extends {}, M extends Model>(
     }));
   };
 }
+
+type FieldsForEnhancerExtension = ActionParsedExtension<{
+  fieldsFor<C extends {}, E extends {}, M extends Model>(
+    this: Action<C, E>,
+    model: M,
+    ...fieldset: ArrayableVariadic<ModelKey<M>>
+  ): Action<C, E>;
+}>;
+
+fieldsFor.extension = makeEnhancersExtension({ fieldsFor }) as FieldsForEnhancerExtension;

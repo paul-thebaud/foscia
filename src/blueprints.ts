@@ -1,10 +1,13 @@
-import coreExtensions from '@/blueprints/extensions/coreExtensions';
-import crudExtensions from '@/blueprints/extensions/crudExtensions';
-import hooksExtensions from '@/blueprints/extensions/hooksExtensions';
-import jsonApiExtensions from '@/blueprints/extensions/jsonApiExtensions';
-import jsonRestExtensions from '@/blueprints/extensions/jsonRestExtensions';
-import readExtensions from '@/blueprints/extensions/readExtensions';
-import writeExtensions from '@/blueprints/extensions/writeExtensions';
+import coreExtensions from '@/blueprints/extensions/coreExtension';
+import crudExtensions from '@/blueprints/extensions/crudExtension';
+import hooksExtensions from '@/blueprints/extensions/hooksExtension';
+import httpExtensions from '@/blueprints/extensions/httpExtension';
+import jsonApiExtensions from '@/blueprints/extensions/jsonApiExtension';
+import jsonRestExtensions from '@/blueprints/extensions/jsonRestExtension';
+import readExtensions from '@/blueprints/extensions/readExtension';
+import jsonApiStarterExtensions from '@/blueprints/extensions/starters/jsonApiStarterExtensions';
+import jsonRestStarterExtensions from '@/blueprints/extensions/starters/jsonRestStarterExtensions';
+import writeExtensions from '@/blueprints/extensions/writeExtension';
 import makeJsonApi from '@/blueprints/jsonapi/makeJsonApi';
 import makeJsonRest from '@/blueprints/jsonrest/makeJsonRest';
 import makeCache from '@/blueprints/makeCache';
@@ -16,10 +19,13 @@ export {
   makeJsonApi,
   makeJsonRest,
   coreExtensions,
-  crudExtensions,
-  hooksExtensions,
-  jsonApiExtensions,
-  jsonRestExtensions,
   readExtensions,
   writeExtensions,
+  crudExtensions,
+  hooksExtensions,
+  httpExtensions,
+  jsonApiExtensions,
+  jsonRestExtensions,
+  jsonApiStarterExtensions,
+  jsonRestStarterExtensions,
 };

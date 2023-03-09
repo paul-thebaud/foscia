@@ -1,7 +1,8 @@
-import { Action } from '@/core';
+import { Action, ActionParsedExtension, makeEnhancersExtension } from '@/core';
 import { param } from '@/http';
 import consumePrevParams from '@/http/actions/context/consumers/consumePrevParams';
 import mergeParamList from '@/jsonapi/actions/context/utilities/mergeParamList';
+import { wrap } from '@/utilities';
 
 /**
  * [Sort the JSON:API resource](https://jsonapi.org/format/#fetching-sorting)
@@ -14,12 +15,22 @@ import mergeParamList from '@/jsonapi/actions/context/utilities/mergeParamList';
  *
  * @category Enhancers
  */
-export default function sortBy(key: string, direction: 'asc' | 'desc' = 'asc') {
+export default function sortBy(key: string | string[], direction: 'asc' | 'desc' = 'asc') {
   return async <C extends {}>(action: Action<C>) => action.use(param(
     'sort',
     mergeParamList([
       consumePrevParams(await action.useContext(), null)?.sort,
-      `${direction === 'desc' ? '-' : ''}${key}`,
+      ...wrap(key).map((k) => `${direction === 'desc' ? '-' : ''}${k}`),
     ]),
   ));
 }
+
+type SortByEnhancerExtension = ActionParsedExtension<{
+  sortBy<C extends {}, E extends {}>(
+    this: Action<C, E>,
+    key: string | string[],
+    direction?: 'asc' | 'desc',
+  ): Action<C, E>;
+}>;
+
+sortBy.extension = makeEnhancersExtension({ sortBy }) as SortByEnhancerExtension;

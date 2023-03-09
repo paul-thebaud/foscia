@@ -88,7 +88,7 @@ export default makeModelFactory({
     get wasChangedSinceCreation() {
         return this.createdAt.getTime() === this.updatedAt.getTime();
     },
-});
+}, { /* base configuration */ });
 ```
 
 Once your factory is ready, you can use in replacement of the classical
