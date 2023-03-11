@@ -98,7 +98,7 @@ Once your enhancer extension is ready, you will be able to use it
 [as any other enhancers of FuncClient](/docs/actions#extensions).
 
 ```ts title="action/enhancers/first.ts"
-import {Action, ActionParsedExtension, ConsumeId, ConsumeModel, ConsumeType, forModel, makeEnhancersExtension, Model, ModelInstance} from 'func-client/core';
+import {Action, ActionParsedExtension, ConsumeId, ConsumeModel, forModel, makeEnhancersExtension, Model, ModelInstance} from 'func-client/core';
 import {paginate} from 'func-client/jsonapi';
 
 // Our previous enhancer code.
@@ -118,7 +118,7 @@ type FirstEnhancerExtension = ActionParsedExtension<{
   first<Context extends {}, Extension extends {}, ContextModel extends Model>(
     this: Action<Context, Extension>,
     model: ContextModel,
-  ): Action<Context & ConsumeModel<ContextModel> & ConsumeType & ConsumeId, Extension>;
+  ): Action<Context & ConsumeModel<ContextModel> & ConsumeId, Extension>;
 }>;
 
 // The extension value.
