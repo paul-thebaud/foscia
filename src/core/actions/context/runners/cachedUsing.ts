@@ -1,6 +1,6 @@
-import { consumeModel } from '@/core/actions';
 import consumeCache from '@/core/actions/context/consumers/consumeCache';
 import consumeId from '@/core/actions/context/consumers/consumeId';
+import consumeModel from '@/core/actions/context/consumers/consumeModel';
 import makeRunnersExtension from '@/core/actions/extensions/makeRunnersExtension';
 import {
   Action,
