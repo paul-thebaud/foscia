@@ -1,6 +1,6 @@
+import { consumeModel } from '@/core/actions';
 import consumeCache from '@/core/actions/context/consumers/consumeCache';
 import consumeId from '@/core/actions/context/consumers/consumeId';
-import consumeType from '@/core/actions/context/consumers/consumeType';
 import makeRunnersExtension from '@/core/actions/extensions/makeRunnersExtension';
 import {
   Action,
@@ -40,7 +40,7 @@ export default function cachedUsing<
   ) => {
     const context = await action.useContext();
     const instance = await consumeCache(context)
-      .find(consumeType(context), consumeId(context));
+      .find(consumeModel(context).$config.type, consumeId(context));
     if (isNil(instance) || !loaded(instance, context.include ?? [])) {
       return null;
     }

@@ -1,8 +1,23 @@
 import { ModelInstance } from '@/core';
 import { JsonDeserializer, JsonExtractedData } from '@/json';
-import { JsonRestDocument, JsonRestNewResource } from '@/jsonrest/types';
+import { DataExtractor, JsonRestDeserializerConfig, JsonRestNewResource } from '@/jsonrest/types';
+import { assignConfig } from '@/utilities';
 
 export default class JsonRestDeserializer extends JsonDeserializer<Response, JsonRestNewResource> {
+  private dataExtractor: DataExtractor | null = null;
+
+  public constructor(config?: JsonRestDeserializerConfig) {
+    super(config);
+
+    this.configure(config);
+  }
+
+  public configure(config?: JsonRestDeserializerConfig) {
+    assignConfig(this, config);
+
+    return this;
+  }
+
   /**
    * @inheritDoc
    */
@@ -14,10 +29,14 @@ export default class JsonRestDeserializer extends JsonDeserializer<Response, Jso
    * @inheritDoc
    */
   protected async extractData(response: Response): Promise<JsonExtractedData<JsonRestNewResource>> {
-    const document: JsonRestDocument = response.status === 204 ? {} : await response.json();
+    if (response.status === 204) {
+      return { resources: null };
+    }
+
+    const document = await response.json();
 
     return {
-      resources: document.data,
+      resources: this.dataExtractor ? await this.dataExtractor(document) : document,
     };
   }
 

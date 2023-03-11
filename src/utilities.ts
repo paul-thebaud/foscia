@@ -1,12 +1,13 @@
+import assignConfig from '@/utilities/assignConfig';
 import eachDescriptors from '@/utilities/descriptors/eachDescriptors';
 import isDescriptorHolder from '@/utilities/descriptors/isDescriptorHolder';
 import makeDescriptorHolder from '@/utilities/descriptors/makeDescriptorHolder';
-import excludeNone from '@/utilities/excludeNone';
 import IdentifiersMap from '@/utilities/identifiersMap';
 import isNil from '@/utilities/isNil';
 import isNone from '@/utilities/isNone';
 import optionalJoin from '@/utilities/optionalJoin';
 import sequentialTransform from '@/utilities/sequentialTransform';
+import toKebab from '@/utilities/toKebab';
 import uniqueValues from '@/utilities/uniqueValues';
 import value from '@/utilities/value';
 import wrap from '@/utilities/wrap';
@@ -16,15 +17,16 @@ export * from '@/utilities/descriptors/types';
 export * from '@/utilities/types';
 
 export {
+  assignConfig,
   eachDescriptors,
   isDescriptorHolder,
   makeDescriptorHolder,
-  excludeNone,
+  IdentifiersMap,
   isNil,
   isNone,
   optionalJoin,
   sequentialTransform,
-  IdentifiersMap,
+  toKebab,
   uniqueValues,
   value,
   wrap,

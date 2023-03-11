@@ -175,20 +175,23 @@ JSON:API and JSON REST. You should therefore either:
   </TabItem>
 </Tabs>
 
-#### Notice on blueprints
+:::info Notice on blueprints
 
 Using blueprints is a simple and quick way to set up an action factory. However,
 it may have some downsides:
 
--   Only some implementations are available for now, so you may not found
+-   Only some implementations are available for now, so you may not find
     something which fits your needs
--   Some dependencies (e.g. serializer in a readonly context) may imported even
-    if you don't use them, and it may increase your production bundle size;
--   Some behaviors may not be configurable;
+-   Some dependencies (e.g. serializer in a readonly context) may be imported
+    even if you don't use them, and it may increase your production bundle size
+-   Some behaviors may not be configurable
 
-If you want more control over your action factory and its dependencies, you
-should read
-[**the advanced guide on custom action factory**](/docs/advanced/custom-action-factory).
+You may configure the behavior or implementation in two ways:
+
+- [**Configure your action factory**](/docs/advanced/action-factory-configuration)
+- [**Implement custom action factory**](/docs/advanced/custom-action-factory)
+
+:::
 
 #### Builder pattern syntax
 
@@ -307,7 +310,7 @@ Using JSON:API or JSON REST blueprints, you may also want to use FuncClient to
 make non-standard API calls.
 
 ```javascript
-import { instance, raw } from 'func-client/core';
+import { forInstance, raw } from 'func-client/core';
 import { makePost } from 'func-client/http';
 import action from './action';
 
@@ -315,7 +318,7 @@ const post = await action().use(find(Post, 'abc-123')).run(oneOrFail());
 
 // Make a POST call to "https://example.com/api/v1/services/posts/1/publish"
 const response = await action()
-    .use(instance(post))
+    .use(forInstance(post))
     .use(
         makePost('publish', {
             data: { publishedAt: new Date() },

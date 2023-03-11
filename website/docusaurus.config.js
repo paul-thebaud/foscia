@@ -80,13 +80,18 @@ const config = {
           },
           {
             to: '/docs/category/api',
-            position: 'right',
+            position: 'left',
             label: 'API',
           },
           {
             to: '/docs/faq',
-            position: 'right',
+            position: 'left',
             label: 'FAQ',
+          },
+          {
+            href: 'https://stackblitz.com/edit/func-client?file=playground.ts',
+            label: 'Playground',
+            position: 'right',
           },
           {
             href: 'https://github.com/paul-thebaud/func-client',

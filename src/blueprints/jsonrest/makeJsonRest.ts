@@ -2,7 +2,8 @@ import makeCache from '@/blueprints/makeCache';
 import makeRegistry from '@/blueprints/makeRegistry';
 import { context } from '@/core/actions';
 import makeAction from '@/core/actions/makeAction';
-import { JsonRestAdapter, JsonRestDeserializer, JsonRestSerializer } from '@/jsonrest';
+import HttpAdapter from '@/http/adapter/httpAdapter';
+import { JsonRestDeserializer, JsonRestSerializer } from '@/jsonrest';
 
 /**
  * Create the dependencies and action factory to interact with a
@@ -16,8 +17,13 @@ export default function makeJsonRest<Extension extends {} = {}>(config: {
 } = {}) {
   const cache = makeCache();
   const registry = makeRegistry();
-  const adapter = new JsonRestAdapter({
-    baseURL: config.baseURL,
+  const adapter = new HttpAdapter({
+    baseURL: config.baseURL ?? '/api',
+    defaultBodyAs: (body) => JSON.stringify(body),
+    defaultHeaders: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
   });
   const deserializer = new JsonRestDeserializer();
   const serializer = new JsonRestSerializer();

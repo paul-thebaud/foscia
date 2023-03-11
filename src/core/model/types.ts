@@ -13,6 +13,11 @@ export type ModelConfig = {
    */
   type: string;
   /**
+   * Path which is used to query the model.
+   * Defaults to the model's type.
+   */
+  path?: string;
+  /**
    * Dedicated base URL. Will overwrite the default base URL.
    *
    * TODO Should this be moved?
@@ -87,6 +92,7 @@ export type ModelRelation<T = unknown> = ModelProp<T> & {
   $MODEL_TYPE: 'relation';
   $RELATION_TYPE: ModelRelationType;
   type?: string;
+  path?: string;
 };
 
 /**

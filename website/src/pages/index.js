@@ -22,13 +22,19 @@ function HomepageHeader() {
             className="button button--secondary button--lg margin--sm"
             to="/docs/about"
           >
-            Discover
+            About 🔎
           </Link>
           <Link
             className="button button--secondary button--lg margin--sm"
             to="/docs/getting-started"
           >
             Getting started 🚀
+          </Link>
+          <Link
+            className="button button--secondary button--lg margin--sm"
+            to="https://stackblitz.com/edit/func-client?file=playground.ts"
+          >
+            Playground 🛝
           </Link>
         </div>
       </div>

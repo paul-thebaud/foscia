@@ -20,8 +20,14 @@ import {
   useTransform,
 } from '@/core';
 import normalizeKey from '@/json/normalizer/normalizeKey';
-import { JsonExtractedData, JsonNormalizedIdentifier, JsonOptionalIdentifier } from '@/json/types';
-import { IdentifiersMap, isNil, isNone, Optional, wrap } from '@/utilities';
+import {
+  JsonDeserializerConfig,
+  JsonExtractedData,
+  JsonNormalizedIdentifier,
+  JsonOptionalIdentifier,
+  KeyTransformer,
+} from '@/json/types';
+import { assignConfig, IdentifiersMap, isNil, isNone, Optional, wrap } from '@/utilities';
 
 export default abstract class JsonDeserializer<
   AdapterData,
@@ -30,6 +36,20 @@ export default abstract class JsonDeserializer<
   Data extends DeserializedData = DeserializedData,
 > implements DeserializerI<AdapterData, Data> {
   protected static NON_IDENTIFIED_LOCAL_ID = '__non_identified__';
+
+  private attributeKeyTransformer: KeyTransformer | null = null;
+
+  private relationKeyTransformer: KeyTransformer | null = null;
+
+  public constructor(config?: JsonDeserializerConfig) {
+    this.configure(config);
+  }
+
+  public configure(config?: JsonDeserializerConfig) {
+    assignConfig(this, config);
+
+    return this;
+  }
 
   public async deserialize(data: AdapterData, context: ActionContext) {
     const instancesMap = await this.initInstancesMap();
@@ -218,7 +238,7 @@ export default abstract class JsonDeserializer<
 
     if (isNil(identifier.type)) {
       if (isNil(relation)) {
-        identifier.type = context.model?.$config.type ?? context.type;
+        identifier.type = context.model?.$config.type;
       } else {
         identifier.type = relation.type;
       }
@@ -371,27 +391,18 @@ export default abstract class JsonDeserializer<
     instance: ModelInstance,
     key: string,
     def: ModelProp,
-    context: ActionContext,
+    _context: ActionContext,
   ) {
-    return this.deserializePropKey(instance, key, def, context);
+    return normalizeKey(instance, key, def, this.attributeKeyTransformer);
   }
 
   protected deserializeRelationKey(
     instance: ModelInstance,
     key: string,
     def: ModelProp,
-    context: ActionContext,
-  ) {
-    return this.deserializePropKey(instance, key, def, context);
-  }
-
-  protected async deserializePropKey(
-    instance: ModelInstance,
-    key: string,
-    def: ModelProp,
     _context: ActionContext,
   ) {
-    return normalizeKey(instance, key, def);
+    return normalizeKey(instance, key, def, this.relationKeyTransformer);
   }
 
   protected shouldDeserializeAttribute(

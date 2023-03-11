@@ -1,5 +1,6 @@
 import { ModelId } from '@/core';
-import { Dictionary } from '@/utilities';
+import { JsonDeserializerConfig, JsonSerializerConfig } from '@/json';
+import { Awaitable, Dictionary } from '@/utilities';
 
 export type JsonRestResourceId = ModelId;
 
@@ -15,6 +16,16 @@ export type JsonRestNewResource = JsonRestAbstractResource & {
   id?: JsonRestResourceId;
 };
 
-export type JsonRestDocument = {
-  data?: JsonRestResource[] | JsonRestResource | JsonRestNewResource | null;
+export type JsonRestDeserializerConfig = JsonDeserializerConfig & {
+  dataExtractor?: DataExtractor | null;
 };
+
+export type JsonRestSerializerConfig = JsonSerializerConfig & {
+  dataWrapper?: DataWrapper | null;
+};
+
+export type DataExtractor = (
+  document: any,
+) => Awaitable<JsonRestResource[] | JsonRestResource | JsonRestNewResource | null>;
+
+export type DataWrapper = (resource: Dictionary) => Awaitable<Dictionary>;

@@ -8,13 +8,29 @@ import {
   ModelInstance,
   ModelProp,
   ModelRelation,
-  SerializerI,
   SerializerError,
+  SerializerI,
   useTransform,
 } from '@/core';
 import normalizeKey from '@/json/normalizer/normalizeKey';
+import { JsonSerializerConfig, KeyTransformer } from '@/json/types';
+import { assignConfig } from '@/utilities';
 
 export default abstract class JsonSerializer<Data> implements SerializerI<Data> {
+  private attributeKeyTransformer: KeyTransformer | null = null;
+
+  private relationKeyTransformer: KeyTransformer | null = null;
+
+  public constructor(config?: JsonSerializerConfig) {
+    this.configure(config);
+  }
+
+  public configure(config?: JsonSerializerConfig) {
+    assignConfig(this, config);
+
+    return this;
+  }
+
   public async serialize(instance: ModelInstance, context: ActionContext) {
     const resource = await this.makeResource(instance, context);
 
@@ -93,27 +109,18 @@ export default abstract class JsonSerializer<Data> implements SerializerI<Data> 
     instance: ModelInstance,
     key: string,
     def: ModelProp,
-    context: ActionContext,
+    _context: ActionContext,
   ) {
-    return this.serializePropKey(instance, key, def, context);
+    return normalizeKey(instance, key, def, this.attributeKeyTransformer);
   }
 
   protected serializeRelationKey(
     instance: ModelInstance,
     key: string,
     def: ModelProp,
-    context: ActionContext,
-  ) {
-    return this.serializePropKey(instance, key, def, context);
-  }
-
-  protected async serializePropKey(
-    instance: ModelInstance,
-    key: string,
-    def: ModelProp,
     _context: ActionContext,
   ) {
-    return normalizeKey(instance, key, def);
+    return normalizeKey(instance, key, def, this.relationKeyTransformer);
   }
 
   protected shouldSerializeAttribute(

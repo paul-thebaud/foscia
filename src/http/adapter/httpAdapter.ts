@@ -10,6 +10,7 @@ import ServerError from '@/http/errors/serverError';
 import TooManyRequestsError from '@/http/errors/tooManyRequestsError';
 import UnauthorizedError from '@/http/errors/unauthorizedError';
 import {
+  BodyAsTransformer,
   ErrorTransformer,
   HttpActionContext,
   HttpAdapterConfig,
@@ -17,17 +18,25 @@ import {
   HttpParamsSerializer,
   HttpRequest,
   HttpRequestInit,
+  PathTransformer,
   RequestTransformer,
   ResponseTransformer,
 } from '@/http/types';
-import { Dictionary, isNil, optionalJoin, sequentialTransform } from '@/utilities';
+import { assignConfig, Dictionary, isNil, optionalJoin, sequentialTransform } from '@/utilities';
 
-export default abstract class HttpAdapter implements AdapterI<Response> {
+/**
+ * Adapter implementation for HTTP interaction using fetch.
+ */
+export default class HttpAdapter implements AdapterI<Response> {
   private fetch = fetch;
 
   private paramsSerializer: HttpParamsSerializer = paramsSerializer;
 
-  private baseURL: string | undefined = undefined;
+  private baseURL: string | null = null;
+
+  private defaultHeaders: Dictionary<string> = {};
+
+  private defaultBodyAs: BodyAsTransformer | null = null;
 
   private requestTransformers: RequestTransformer[] = [];
 
@@ -35,12 +44,16 @@ export default abstract class HttpAdapter implements AdapterI<Response> {
 
   private errorTransformers: ErrorTransformer[] = [];
 
-  public constructor(config: HttpAdapterConfig) {
+  private modelPathTransformer: PathTransformer | null = null;
+
+  private relationPathTransformer: PathTransformer | null = null;
+
+  public constructor(config?: HttpAdapterConfig) {
     this.configure(config);
   }
 
-  public configure(config: HttpAdapterConfig) {
-    Object.assign(this, config);
+  public configure(config?: HttpAdapterConfig) {
+    assignConfig(this, config);
 
     return this;
   }
@@ -81,12 +94,12 @@ export default abstract class HttpAdapter implements AdapterI<Response> {
   protected async makeRequest(context: HttpActionContext): Promise<HttpRequest> {
     return {
       context,
-      url: this.makeRequestURL(context),
-      init: this.makeRequestInit(context),
+      url: await this.makeRequestURL(context),
+      init: await this.makeRequestInit(context),
     };
   }
 
-  protected makeRequestURL(context: HttpActionContext) {
+  protected async makeRequestURL(context: HttpActionContext) {
     return optionalJoin([
       this.makeRequestURLEndpoint(context),
       this.makeRequestURLParams(context),
@@ -99,11 +112,26 @@ export default abstract class HttpAdapter implements AdapterI<Response> {
    *
    * @param context
    */
-  protected makeRequestInit(context: HttpActionContext) {
+  protected async makeRequestInit(context: HttpActionContext) {
+    const method = this.makeRequestMethod(context).toUpperCase();
+    let headers = { ...this.defaultHeaders };
+    let body = context.body ?? context.data;
+
+    if (body instanceof FormData || body instanceof URLSearchParams) {
+      delete headers['Content-Type'];
+    }
+
+    headers = { ...headers, ...context.headers };
+
+    const bodyAs = context.bodyAs ?? this.defaultBodyAs;
+    if (bodyAs && body !== undefined) {
+      body = await bodyAs(body, headers);
+    }
+
     return {
-      method: this.makeRequestMethod(context).toUpperCase(),
-      headers: context.headers ?? {},
-      body: context.body ?? context.data,
+      method,
+      headers,
+      body,
       signal: context.signal,
     } as HttpRequestInit;
   }
@@ -127,12 +155,14 @@ export default abstract class HttpAdapter implements AdapterI<Response> {
   }
 
   protected makeRequestURLEndpoint(context: HttpActionContext) {
-    // TODO Transform type and relation.
+    const modelPathTransformer = this.modelPathTransformer ?? ((path: string) => path);
+    const relationPathTransformer = this.relationPathTransformer ?? ((path: string) => path);
+
     return optionalJoin([
       isNil(context.baseURL) ? this.baseURL : context.baseURL,
-      isNil(context.type) ? undefined : context.type,
+      isNil(context.modelPath) ? undefined : modelPathTransformer(context.modelPath),
       isNil(context.id) ? undefined : `${context.id}`,
-      isNil(context.relation) ? undefined : context.relation,
+      isNil(context.relationPath) ? undefined : relationPathTransformer(context.relationPath),
       context.path,
     ], '/');
   }

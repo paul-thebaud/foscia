@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 20
 description: Configuring a model behavior.
 ---
 
@@ -76,6 +76,25 @@ class Post extends makeModel(
     { type: 'posts' },
     {
         /* ...definition */
+    },
+) {}
+```
+
+### Record path
+
+The `path` is used to query the model. It defaults to the model's type.
+
+In an HTTP API, it is used as the endpoint. In a SQL database, it would be the
+table.
+
+```javascript title="post.js"
+class Post extends makeModel(
+    {
+        type: 'posts',
+        path: 'blog-posts',
+    },
+    {
+        /* definition */
     },
 ) {}
 ```

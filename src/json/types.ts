@@ -16,3 +16,15 @@ export type JsonNormalizedIdentifier = {
 export type JsonExtractedData<R> = {
   resources: Optional<R[] | R>;
 };
+
+export type JsonDeserializerConfig = {
+  attributeKeyTransformer?: KeyTransformer | null;
+  relationKeyTransformer?: KeyTransformer | null;
+};
+
+export type JsonSerializerConfig = {
+  attributeKeyTransformer?: KeyTransformer | null;
+  relationKeyTransformer?: KeyTransformer | null;
+};
+
+export type KeyTransformer = (key: string) => string;

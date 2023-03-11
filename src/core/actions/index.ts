@@ -6,7 +6,6 @@ import consumeId from '@/core/actions/context/consumers/consumeId';
 import consumeInstance from '@/core/actions/context/consumers/consumeInstance';
 import consumeModel from '@/core/actions/context/consumers/consumeModel';
 import consumeSerializer from '@/core/actions/context/consumers/consumeSerializer';
-import consumeType from '@/core/actions/context/consumers/consumeType';
 import context from '@/core/actions/context/enhancers/context';
 import create from '@/core/actions/context/enhancers/crud/create';
 import destroy from '@/core/actions/context/enhancers/crud/destroy';
@@ -71,7 +70,6 @@ export {
   consumeInstance,
   consumeModel,
   consumeSerializer,
-  consumeType,
   context,
   forId,
   forInstance,

@@ -1,8 +1,7 @@
 import { Action, ActionParsedExtension, makeEnhancersExtension, Model, ModelKey } from '@/core';
 import { param } from '@/http';
 import consumePrevParams from '@/http/actions/context/consumers/consumePrevParams';
-import mergeParamList from '@/jsonapi/actions/context/utilities/mergeParamList';
-import { ArrayableVariadic, wrapVariadic } from '@/utilities';
+import { ArrayableVariadic, optionalJoin, uniqueValues, wrapVariadic } from '@/utilities';
 
 /**
  * [Select the given JSON:API fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets)
@@ -22,10 +21,10 @@ export default function fieldsFor<C extends {}, M extends Model>(
 
     return action.use(param('fields', {
       ...prevFields,
-      [model.$config.type]: mergeParamList([
+      [model.$config.type]: optionalJoin(uniqueValues([
         prevFields?.[model.$config.type],
         ...wrapVariadic(...fieldset),
-      ]),
+      ]), ','),
     }));
   };
 }

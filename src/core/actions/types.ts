@@ -5,9 +5,9 @@ import { Awaitable, Constructor, DescriptorHolder } from '@/utilities';
 
 export type ActionContext = {
   action?: 'read' | 'create' | 'update' | 'destroy' | string;
-  type?: string;
+  modelPath?: string;
+  relationPath?: string;
   id?: ModelId;
-  relation?: string;
   include?: string[];
   data?: unknown;
   [K: string]: unknown;

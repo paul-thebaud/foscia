@@ -1,6 +1,9 @@
 import { ActionContext } from '@/core';
 import { Awaitable, Dictionary } from '@/utilities';
 
+/**
+ * The HTTP method to use in request.
+ */
 export type HttpMethod =
   | 'get' | 'GET'
   | 'delete' | 'DELETE'
@@ -13,27 +16,37 @@ export type HttpMethod =
   | 'link' | 'LINK'
   | 'unlink' | 'UNLINK';
 
+/**
+ * The configuration object for a request.
+ */
 export type HttpRequestConfig = {
   method?: HttpMethod;
   baseURL?: string;
   path?: string;
   params?: Dictionary<any> | string;
   headers?: Dictionary<string>;
-  // TODO "dataAs"?
   body?: unknown;
+  bodyAs?: BodyAsTransformer;
   signal?: AbortSignal | null;
   requestTransformers?: RequestTransformer[];
   responseTransformers?: ResponseTransformer[];
   errorTransformers?: ErrorTransformer[];
 };
 
+/**
+ * The configuration for the HTTP adapter implementation.
+ */
 export type HttpAdapterConfig = {
   fetch?: typeof fetch;
-  baseURL?: string;
+  baseURL?: string | null;
   paramsSerializer?: HttpParamsSerializer;
+  defaultHeaders?: Dictionary<string>;
+  defaultBodyAs?: BodyAsTransformer | null;
   requestTransformers?: RequestTransformer[];
   responseTransformers?: ResponseTransformer[];
   errorTransformers?: ErrorTransformer[];
+  modelPathTransformer?: PathTransformer | null;
+  relationPathTransformer?: PathTransformer | null;
 };
 
 export type HttpActionContext = ActionContext & HttpRequestConfig;
@@ -56,3 +69,5 @@ export type HttpRequest = {
 export type RequestTransformer = (request: HttpRequest) => Awaitable<HttpRequest>;
 export type ResponseTransformer = (response: Response) => Awaitable<Response>;
 export type ErrorTransformer = (error: unknown) => Awaitable<unknown>;
+export type PathTransformer = (path: string) => string;
+export type BodyAsTransformer = (body: unknown, headers: Dictionary<string>) => Awaitable<BodyInit>;

@@ -3,7 +3,9 @@ import makeRegistry from '@/blueprints/makeRegistry';
 import { context } from '@/core/actions';
 import makeAction from '@/core/actions/makeAction';
 import { deepParamsSerializer } from '@/http';
-import { JsonApiAdapter, JsonApiDeserializer, JsonApiSerializer } from '@/jsonapi';
+import { JsonApiDeserializer, JsonApiSerializer } from '@/jsonapi';
+import JsonApiAdapter from '@/jsonapi/adapter/jsonApiAdapter';
+import { toKebab } from '@/utilities';
 
 /**
  * Create the dependencies and action factory to interact with a
@@ -20,8 +22,15 @@ export default function makeJsonApi<
   const cache = makeCache();
   const registry = makeRegistry();
   const adapter = new JsonApiAdapter({
-    baseURL: config.baseURL,
+    baseURL: config.baseURL ?? '/api/v1',
     paramsSerializer: deepParamsSerializer,
+    modelPathTransformer: toKebab,
+    relationPathTransformer: toKebab,
+    defaultBodyAs: (body) => JSON.stringify(body),
+    defaultHeaders: {
+      Accept: 'application/vnd.api+json',
+      'Content-Type': 'application/vnd.api+json',
+    },
   });
   const deserializer = new JsonApiDeserializer();
   const serializer = new JsonApiSerializer();

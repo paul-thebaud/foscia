@@ -8,27 +8,6 @@ export default class JsonApiAdapter extends HttpAdapter {
   /**
    * @inheritDoc
    */
-  protected makeRequestInit(context: HttpActionContext) {
-    const init = super.makeRequestInit(context);
-
-    if (!init.headers.Accept) {
-      init.headers.Accept = 'application/vnd.api+json';
-    }
-
-    if (!init.headers['Content-Type']
-      && init.body !== undefined
-      && !(init.body instanceof FormData)
-    ) {
-      init.headers['Content-Type'] = 'application/vnd.api+json';
-      init.body = JSON.stringify(init.body);
-    }
-
-    return init;
-  }
-
-  /**
-   * @inheritDoc
-   */
   protected makeRequestURLParams(context: HttpActionContext) {
     const params = optionalJoin([
       super.makeRequestURLParams(context),
@@ -44,8 +23,12 @@ export default class JsonApiAdapter extends HttpAdapter {
    * @param context
    */
   protected makeIncludeParam(context: HttpActionContext) {
-    return isNone(context.include)
-      ? undefined
-      : `include=${optionalJoin(context.include ?? [], ',')}`;
+    if (isNone(context.include)) {
+      return undefined;
+    }
+
+    return this.makeRequestURLParamsFromObject(context, {
+      include: optionalJoin(context.include, ','),
+    });
   }
 }

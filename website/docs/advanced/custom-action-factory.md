@@ -1,13 +1,12 @@
 ---
-sidebar_position: 6
-description: WIP
+sidebar_position: 70
+description: Making your own action factory.
 ---
 
 # Custom action factory
 
 :::tip What you'll learn
 
--   Goals of each action's dependencies
 -   Creating a custom action factory
 
 :::
@@ -19,6 +18,48 @@ any action will require some dedicated features through dependencies.
 When using an action factory blueprint, all those dependencies are initialized
 automatically, and you may only configure it. This is quick and simple, but do
 not fit custom implementations or full tree-shaking needs.
+
+## Replacing some dependencies
+
+Sometimes, you may need to only replace an overwritten dependency (such as a
+customized version of the `JsonRestDeserializer`). Admitting you have
+an extended version of this deserializer like:
+
+```javascript title="action/customDeserializer.js"
+export default class CustomDeserializer extends JsonRestDeserializer {
+  // ...your overwrite...
+}
+```
+
+You are able to keep using the default blueprint factory and only replace some
+dependency by instantiating your action manually:
+
+```javascript title="action.js"
+import { makeJsonRest } from 'func-client/blueprints';
+import { context } from 'func-client/core';
+import CustomDeserializer from './action/customDeserializer';
+
+// Note that we are not using the exported action function,
+// but the raw Action class.
+const { Action, cache, registry, adapter, serializer } = makeJsonRest({
+  baseURL: 'https://example.com/api/v1',
+});
+
+const deserializer = new CustomDeserializer();
+
+// We are now manually declaring our action factory
+// with the proper dependencies injection.
+export default function action() {
+  return new Action().use(context({
+    cache, registry, adapter, deserializer, serializer,
+  }))
+}
+```
+
+## Writing your own factory
+
+For more complex requirements, like with custom implementations, you should
+use a custom action factory from scratch.
 
 When using a custom action factory, all those dependencies are initialized and
 attached to your actions manually. This gives you a lot of control over which

@@ -1,8 +1,7 @@
 import { Action, ActionParsedExtension, makeEnhancersExtension } from '@/core';
 import { param } from '@/http';
 import consumePrevParams from '@/http/actions/context/consumers/consumePrevParams';
-import mergeParamList from '@/jsonapi/actions/context/utilities/mergeParamList';
-import { wrap } from '@/utilities';
+import { optionalJoin, uniqueValues, wrap } from '@/utilities';
 
 /**
  * [Sort the JSON:API resource](https://jsonapi.org/format/#fetching-sorting)
@@ -18,10 +17,10 @@ import { wrap } from '@/utilities';
 export default function sortBy(key: string | string[], direction: 'asc' | 'desc' = 'asc') {
   return async <C extends {}>(action: Action<C>) => action.use(param(
     'sort',
-    mergeParamList([
+    optionalJoin(uniqueValues([
       consumePrevParams(await action.useContext(), null)?.sort,
       ...wrap(key).map((k) => `${direction === 'desc' ? '-' : ''}${k}`),
-    ]),
+    ]), ','),
   ));
 }
 

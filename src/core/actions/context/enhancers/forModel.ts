@@ -21,9 +21,9 @@ export default function forModel<
   return (action: Action<C>) => action
     .use(target<D, I, M>(model))
     .use(context({
-      type: model.$config.type,
       // TODO Should baseURL be here?
       baseURL: model.$config.baseURL,
+      modelPath: model.$config.path ?? model.$config.type,
     }));
 }
 

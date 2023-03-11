@@ -1,8 +1,30 @@
-import { ModelInstance, ModelRelation } from '@/core';
+import { ActionContext, ModelInstance, ModelRelation } from '@/core';
 import { JsonSerializer } from '@/json';
-import { JsonRestNewResource } from '@/jsonrest/types';
+import { DataWrapper, JsonRestNewResource, JsonRestSerializerConfig } from '@/jsonrest/types';
+import { assignConfig } from '@/utilities';
+import { Dictionary } from '@/utilities/types';
 
-export default class JsonRestSerializer extends JsonSerializer<JsonRestNewResource> {
+export default class JsonRestSerializer extends JsonSerializer<Dictionary> {
+  private dataWrapper: DataWrapper | null = null;
+
+  public constructor(config?: JsonRestSerializerConfig) {
+    super(config);
+
+    this.configure(config);
+  }
+
+  public configure(config?: JsonRestSerializerConfig) {
+    assignConfig(this, config);
+
+    return this;
+  }
+
+  public async serialize(instance: ModelInstance, context: ActionContext) {
+    const resource = await super.serialize(instance, context);
+
+    return this.dataWrapper ? this.dataWrapper(resource) : resource;
+  }
+
   /**
    * @inheritDoc
    */
