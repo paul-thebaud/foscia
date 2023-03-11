@@ -1,14 +1,7 @@
 import context from '@/core/actions/context/enhancers/context';
 import forInstance from '@/core/actions/context/enhancers/forInstance';
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
-import {
-  Action,
-  ActionParsedExtension,
-  ConsumeId,
-  ConsumeInstance,
-  ConsumeModel,
-  ConsumeType,
-} from '@/core/actions/types';
+import { Action, ActionParsedExtension, ConsumeId, ConsumeInstance, ConsumeModel } from '@/core/actions/types';
 import { Model, ModelClassInstance, ModelInstance, ModelRelationKey } from '@/core/model/types';
 
 /**
@@ -19,6 +12,8 @@ import { Model, ModelClassInstance, ModelInstance, ModelRelationKey } from '@/co
  * @param relation
  *
  * @category Enhancers
+ *
+ * TODO forRelation should extract the used model from the relation type.
  */
 export default function forRelation<
   C extends {},
@@ -35,7 +30,7 @@ type ForRelationEnhancerExtension = ActionParsedExtension<{
     this: Action<C, E>,
     instance: ModelClassInstance<D> & I,
     relation: ModelRelationKey<I>,
-  ): Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeType & ConsumeId, E>;
+  ): Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeId, E>;
 }>;
 
 forRelation.extension = makeEnhancersExtension({ forRelation }) as ForRelationEnhancerExtension;

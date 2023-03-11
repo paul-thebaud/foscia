@@ -7,7 +7,6 @@ import {
   ConsumeId,
   ConsumeInclude,
   ConsumeModel,
-  ConsumeType,
   ContextRunner,
 } from '@/core/actions/types';
 import { Model } from '@/core/model/types';
@@ -31,7 +30,7 @@ export default function cachedOr<C extends {}, M extends Model, RD>(
 
 type CachedOrRunnerExtension = ActionParsedExtension<{
   cachedOr<C extends {}, M extends Model, RD>(
-    this: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeInclude & ConsumeType & ConsumeId>,
+    this: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeInclude & ConsumeId>,
     nilRunner: ContextRunner<C & ConsumeCache & ConsumeModel<M>, RD>,
   ): Promise<InstanceType<M> | Awaited<RD>>;
 }>;

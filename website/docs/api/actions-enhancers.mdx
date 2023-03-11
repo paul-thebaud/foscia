@@ -69,7 +69,7 @@ action().use(target(Post));
 
 ### `forModel`
 
-<FunctionInfo provides="Model, Type" />
+<FunctionInfo provides="Model" />
 
 Target the given model.
 
@@ -89,7 +89,7 @@ action().use(forModel(Post));
 
 ### `forInstance`
 
-<FunctionInfo provides="Model, Instance, Type, ID" />
+<FunctionInfo provides="Model, Instance, ID" />
 
 Target the given model.
 
@@ -109,7 +109,7 @@ action().use(forInstance(post));
 
 ### `forRelation`
 
-<FunctionInfo provides="Model, Instance, Type, ID, Relation" />
+<FunctionInfo provides="Model, Instance, ID, Relation" />
 
 Target the given instance's relation.
 
@@ -148,7 +148,7 @@ action().use(forId('123'));
 
 ### `find`
 
-<FunctionInfo provides="Model, Type, ID" />
+<FunctionInfo provides="Model, ID" />
 
 Target a given model record using its ID.
 
@@ -169,7 +169,7 @@ action().use(find(Post, '123'));
 
 <FunctionInfo
   requires="Serializer"
-  provides="Model, Instance, Type, ID"
+  provides="Model, Instance, ID"
 />
 
 Prepare context for an instance creation.
@@ -192,7 +192,7 @@ action().use(create(post));
 
 <FunctionInfo
   requires="Serializer"
-  provides="Model, Instance, Type, ID"
+  provides="Model, Instance, ID"
 />
 
 Prepare context for an instance update.
@@ -214,7 +214,7 @@ action().use(update(post));
 
 <FunctionInfo
   requires="Serializer"
-  provides="Model, Instance, Type, ID"
+  provides="Model, Instance, ID"
 />
 
 Prepare context for an instance creation or update depending on its existence
@@ -235,7 +235,7 @@ action().use(save(post));
 
 ### `destroy`
 
-<FunctionInfo provides="Model, Instance, Type, ID" />
+<FunctionInfo provides="Model, Instance, ID" />
 
 Prepare context for an instance deletion.
 

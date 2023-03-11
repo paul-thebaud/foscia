@@ -14,7 +14,6 @@ import {
   ConsumeInstance,
   ConsumeModel,
   ConsumeSerializer,
-  ConsumeType,
 } from '@/core/actions/types';
 import { Model, ModelClassInstance, ModelInstance } from '@/core/model/types';
 
@@ -45,7 +44,7 @@ type CreateEnhancerExtension = ActionParsedExtension<{
   create<C extends {}, E extends {}, SD, D extends {}, I extends ModelInstance<D>>(
     this: Action<C & ConsumeSerializer<SD>, E>,
     instance: ModelClassInstance<D> & I,
-  ): Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeType & ConsumeId, E>;
+  ): Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeId, E>;
 }>;
 
 create.extension = makeEnhancersExtension({ create }) as CreateEnhancerExtension;

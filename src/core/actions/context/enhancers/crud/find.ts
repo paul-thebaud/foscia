@@ -1,7 +1,7 @@
 import forId from '@/core/actions/context/enhancers/forId';
 import forModel from '@/core/actions/context/enhancers/forModel';
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
-import { Action, ActionParsedExtension, ConsumeId, ConsumeModel, ConsumeType } from '@/core/actions/types';
+import { Action, ActionParsedExtension, ConsumeId, ConsumeModel } from '@/core/actions/types';
 import { Model, ModelId, ModelInstance } from '@/core/model/types';
 
 /**
@@ -28,7 +28,7 @@ type FindEnhancerExtension = ActionParsedExtension<{
     this: Action<C, E>,
     model: M,
     id: ModelId,
-  ): Action<C & ConsumeModel<M> & ConsumeType & ConsumeId, E>;
+  ): Action<C & ConsumeModel<M> & ConsumeId, E>;
 }>;
 
 find.extension = makeEnhancersExtension({ find }) as FindEnhancerExtension;

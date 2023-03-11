@@ -1,7 +1,7 @@
 import context from '@/core/actions/context/enhancers/context';
 import target from '@/core/actions/context/enhancers/target';
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
-import { Action, ActionParsedExtension, ConsumeModel, ConsumeType } from '@/core/actions/types';
+import { Action, ActionParsedExtension, ConsumeModel } from '@/core/actions/types';
 import { Model, ModelInstance } from '@/core/model/types';
 
 /**
@@ -31,7 +31,7 @@ type ForModelEnhancerExtension = ActionParsedExtension<{
   forModel<C extends {}, E extends {}, M extends Model>(
     this: Action<C, E>,
     model: M,
-  ): Action<C & ConsumeModel<M> & ConsumeType, E>;
+  ): Action<C & ConsumeModel<M>, E>;
 }>;
 
 forModel.extension = makeEnhancersExtension({ forModel }) as ForModelEnhancerExtension;

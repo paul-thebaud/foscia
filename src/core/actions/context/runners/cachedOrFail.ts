@@ -8,7 +8,6 @@ import {
   ConsumeId,
   ConsumeInclude,
   ConsumeModel,
-  ConsumeType,
 } from '@/core/actions/types';
 import ExpectedRunFailureError from '@/core/errors/expectedRunFailureError';
 import { Model } from '@/core/model/types';
@@ -30,7 +29,7 @@ export default function cachedOrFail<M extends Model>() {
 
 type CachedOrFailRunnerExtension = ActionParsedExtension<{
   cachedOrFail<C extends {}, M extends Model>(
-    this: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeInclude & ConsumeType & ConsumeId>,
+    this: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeInclude & ConsumeId>,
   ): Promise<InstanceType<M>>;
 }>;
 

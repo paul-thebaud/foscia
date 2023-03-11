@@ -8,7 +8,6 @@ import {
   ConsumeInstance,
   ConsumeModel,
   ConsumeSerializer,
-  ConsumeType,
 } from '@/core/actions/types';
 import { Model, ModelClassInstance, ModelInstance } from '@/core/model/types';
 
@@ -30,14 +29,14 @@ export default function save<
     instance.exists
       ? action.use(update(instance))
       : action.use(create(instance))
-  ) as Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeType & ConsumeId>;
+  ) as Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeId>;
 }
 
 type SaveEnhancerExtension = ActionParsedExtension<{
   save<C extends {}, E extends {}, SD, D extends {}, I extends ModelInstance<D>>(
     this: Action<C & ConsumeSerializer<SD>, E>,
     instance: ModelClassInstance<D> & I,
-  ): Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeType & ConsumeId, E>;
+  ): Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeId, E>;
 }>;
 
 save.extension = makeEnhancersExtension({ save }) as SaveEnhancerExtension;

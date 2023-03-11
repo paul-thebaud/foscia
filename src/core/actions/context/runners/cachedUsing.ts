@@ -9,7 +9,6 @@ import {
   ConsumeId,
   ConsumeInclude,
   ConsumeModel,
-  ConsumeType,
 } from '@/core/actions/types';
 import { Model, ModelInstance } from '@/core/model/types';
 import loaded from '@/core/model/utilities/loaded';
@@ -36,7 +35,7 @@ export default function cachedUsing<
   ND,
 >(transform: (data: CachedUsingData<I>) => Awaitable<ND>) {
   return async (
-    action: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeInclude & ConsumeType & ConsumeId>,
+    action: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeInclude & ConsumeId>,
   ) => {
     const context = await action.useContext();
     const instance = await consumeCache(context)
@@ -56,7 +55,7 @@ type CachedUsingRunnerExtension = ActionParsedExtension<{
     I extends InstanceType<M>,
     ND,
   >(
-    this: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeInclude & ConsumeType & ConsumeId>,
+    this: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeInclude & ConsumeId>,
     transform: (data: CachedUsingData<I>) => Awaitable<ND>,
   ): Promise<Awaited<ND>>;
 }>;

@@ -5,14 +5,7 @@ import onPreparing from '@/core/actions/context/enhancers/hooks/onPreparing';
 import onSuccess from '@/core/actions/context/enhancers/hooks/onSuccess';
 import runInstanceHooks from '@/core/actions/context/enhancers/hooks/runInstanceHooks';
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
-import {
-  Action,
-  ActionParsedExtension,
-  ConsumeId,
-  ConsumeInstance,
-  ConsumeModel,
-  ConsumeType,
-} from '@/core/actions/types';
+import { Action, ActionParsedExtension, ConsumeId, ConsumeInstance, ConsumeModel } from '@/core/actions/types';
 import { Model, ModelClassInstance, ModelInstance } from '@/core/model/types';
 
 /**
@@ -39,7 +32,7 @@ type DestroyEnhancerExtension = ActionParsedExtension<{
   destroy<C extends {}, E extends {}, D extends {}, I extends ModelInstance<D>>(
     this: Action<C, E>,
     instance: ModelClassInstance<D> & I,
-  ): Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeType & ConsumeId, E>;
+  ): Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeId, E>;
 }>;
 
 destroy.extension = makeEnhancersExtension({ destroy }) as DestroyEnhancerExtension;

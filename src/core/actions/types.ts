@@ -67,16 +67,8 @@ export type ConsumeInstance<I extends ModelInstance = ModelInstance> = {
   instance: I;
 };
 
-export type ConsumeType = {
-  type?: string;
-};
-
 export type ConsumeId = {
   id?: ModelId;
-};
-
-export type ConsumeRelation = {
-  relation?: string;
 };
 
 export type ConsumeInclude = {
