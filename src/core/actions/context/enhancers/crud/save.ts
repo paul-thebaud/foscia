@@ -32,11 +32,11 @@ export default function save<
   ) as Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeId>;
 }
 
-type SaveEnhancerExtension = ActionParsedExtension<{
+type EnhancerExtension = ActionParsedExtension<{
   save<C extends {}, E extends {}, SD, D extends {}, I extends ModelInstance<D>>(
     this: Action<C & ConsumeSerializer<SD>, E>,
     instance: ModelClassInstance<D> & I,
   ): Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeId, E>;
 }>;
 
-save.extension = makeEnhancersExtension({ save }) as SaveEnhancerExtension;
+save.extension = makeEnhancersExtension({ save }) as EnhancerExtension;

@@ -17,11 +17,11 @@ export default function instanceData<C extends {}, SD>(instance: ModelInstance) 
   }));
 }
 
-type InstanceDataEnhancerExtension = ActionParsedExtension<{
+type EnhancerExtension = ActionParsedExtension<{
   instanceData<C extends {}, E extends {}, SD>(
     this: Action<C & ConsumeSerializer<SD>, E>,
     instance: ModelInstance,
   ): Action<C, E>;
 }>;
 
-instanceData.extension = makeEnhancersExtension({ instanceData }) as InstanceDataEnhancerExtension;
+instanceData.extension = makeEnhancersExtension({ instanceData }) as EnhancerExtension;

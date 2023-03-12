@@ -1,8 +1,7 @@
-import cachedOr from '@/core/actions/context/runners/cachedOr';
+import cachedOr, { CachedData } from '@/core/actions/context/runners/cachedOr';
 import makeRunnersExtension from '@/core/actions/extensions/makeRunnersExtension';
 import {
   Action,
-  ActionContext,
   ActionParsedExtension,
   ConsumeCache,
   ConsumeId,
@@ -11,6 +10,7 @@ import {
 } from '@/core/actions/types';
 import ExpectedRunFailureError from '@/core/errors/expectedRunFailureError';
 import { Model } from '@/core/model/types';
+import { Awaitable } from '@/utilities';
 
 /**
  * Retrieve an instance from the cache.
@@ -19,18 +19,29 @@ import { Model } from '@/core/model/types';
  *
  * @category Runners
  */
-export default function cachedOrFail<M extends Model>() {
-  return cachedOr<ActionContext, M, never>(() => {
+export default function cachedOrFail<
+  C extends {},
+  M extends Model,
+  I extends InstanceType<M>,
+  ND = I,
+>(transform?: (data: CachedData<I>) => Awaitable<ND>) {
+  return cachedOr<C, M, I, never, ND>(() => {
     throw new ExpectedRunFailureError(
       '`cachedOrFail` failed. You may handle this error globally as a "not found" record error.',
     );
-  });
+  }, transform);
 }
 
-type CachedOrFailRunnerExtension = ActionParsedExtension<{
-  cachedOrFail<C extends {}, M extends Model>(
+type RunnerExtension = ActionParsedExtension<{
+  cachedOrFail<
+    C extends {},
+    M extends Model,
+    I extends InstanceType<M>,
+    ND = I,
+  >(
     this: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeInclude & ConsumeId>,
-  ): Promise<InstanceType<M>>;
+    transform?: (data: CachedData<I>) => Awaitable<ND>,
+  ): Promise<ND>;
 }>;
 
-cachedOrFail.extension = makeRunnersExtension({ cachedOrFail }) as CachedOrFailRunnerExtension;
+cachedOrFail.extension = makeRunnersExtension({ cachedOrFail }) as RunnerExtension;

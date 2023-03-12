@@ -54,7 +54,7 @@ Combination of:
 ### `readExtension`
 
 -   [`all`](/docs/api/actions-runners#all)
--   [`allUsing`](/docs/api/actions-runners#allusing)
+-   [`all`](/docs/api/actions-runners#allusing)
 -   [`one`](/docs/api/actions-runners#one)
 -   [`oneOrFail`](/docs/api/actions-runners#oneorfail)
 -   [`oneOrCurrent`](/docs/api/actions-runners#oneorcurrent)

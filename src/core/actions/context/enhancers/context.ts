@@ -16,11 +16,11 @@ export default function context<NC extends {}>(contextToMerge: NC) {
   });
 }
 
-type ContextEnhancerExtension = ActionParsedExtension<{
+type EnhancerExtension = ActionParsedExtension<{
   context<C extends {}, E extends {}, NC extends ActionContext>(
     this: Action<C, E>,
     context: NC,
   ): Action<C & NC, E>;
 }>;
 
-context.extension = makeEnhancersExtension({ context }) as ContextEnhancerExtension;
+context.extension = makeEnhancersExtension({ context }) as EnhancerExtension;

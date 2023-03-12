@@ -40,11 +40,11 @@ export default function create<
     .use(onSuccess(runInstanceHooks(instance, ['created', 'saved'])));
 }
 
-type CreateEnhancerExtension = ActionParsedExtension<{
+type EnhancerExtension = ActionParsedExtension<{
   create<C extends {}, E extends {}, SD, D extends {}, I extends ModelInstance<D>>(
     this: Action<C & ConsumeSerializer<SD>, E>,
     instance: ModelClassInstance<D> & I,
   ): Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeId, E>;
 }>;
 
-create.extension = makeEnhancersExtension({ create }) as CreateEnhancerExtension;
+create.extension = makeEnhancersExtension({ create }) as EnhancerExtension;

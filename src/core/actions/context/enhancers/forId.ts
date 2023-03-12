@@ -14,11 +14,11 @@ export default function forId(id: ModelId | undefined) {
   return context({ id });
 }
 
-type ForIdEnhancerExtension = ActionParsedExtension<{
+type EnhancerExtension = ActionParsedExtension<{
   forId<C extends {}, E extends {}, Id extends ModelId | undefined>(
     this: Action<C, E>,
     id: Id,
   ): Action<C & ConsumeId, E>;
 }>;
 
-forId.extension = makeEnhancersExtension({ forId }) as ForIdEnhancerExtension;
+forId.extension = makeEnhancersExtension({ forId }) as EnhancerExtension;

@@ -38,11 +38,11 @@ export default function update<
     .use(onSuccess(runInstanceHooks(instance, ['updated', 'saved'])));
 }
 
-type UpdateEnhancerExtension = ActionParsedExtension<{
+type EnhancerExtension = ActionParsedExtension<{
   update<C extends {}, E extends {}, SD, D extends {}, I extends ModelInstance<D>>(
     this: Action<C & ConsumeSerializer<SD>, E>,
     instance: ModelClassInstance<D> & I,
   ): Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeId, E>;
 }>;
 
-update.extension = makeEnhancersExtension({ update }) as UpdateEnhancerExtension;
+update.extension = makeEnhancersExtension({ update }) as EnhancerExtension;

@@ -28,11 +28,11 @@ export default function destroy<
     .use(onSuccess(runInstanceHooks(instance, ['destroyed'])));
 }
 
-type DestroyEnhancerExtension = ActionParsedExtension<{
+type EnhancerExtension = ActionParsedExtension<{
   destroy<C extends {}, E extends {}, D extends {}, I extends ModelInstance<D>>(
     this: Action<C, E>,
     instance: ModelClassInstance<D> & I,
   ): Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeId, E>;
 }>;
 
-destroy.extension = makeEnhancersExtension({ destroy }) as DestroyEnhancerExtension;
+destroy.extension = makeEnhancersExtension({ destroy }) as EnhancerExtension;

@@ -1,5 +1,5 @@
 import { Hookable, HookCallback } from '@/core/hooks/types';
-import { Model, ModelId, ModelInstance } from '@/core/model/types';
+import { Model, ModelId, ModelInstance, ModelRelation } from '@/core/model/types';
 import { AdapterI, CacheI, DeserializedData, DeserializerI, RegistryI, SerializerI } from '@/core/types';
 import { Awaitable, Constructor, DescriptorHolder } from '@/utilities';
 
@@ -58,6 +58,19 @@ export type ContextEnhancer<PC extends ActionContext, NC extends ActionContext> 
 export type ContextRunner<C extends ActionContext, R> = (
   action: Action<C>,
 ) => R;
+
+export type InferConsumedInstance<C extends {}> =
+  C extends { relation: ModelRelation<Array<infer I>> }
+    ? I extends ModelInstance ? I : never
+    : C extends { relation: ModelRelation<infer I> }
+      ? I extends ModelInstance ? I : never
+      : C extends { model: Constructor<infer I> }
+        ? I extends ModelInstance ? I : never : never;
+
+export type ManageModel<C extends {}, I extends ModelInstance> =
+  C extends { relation: ModelRelation<I | I[]> }
+    ? { relation: ModelRelation<I | I[]> }
+    : { model: Constructor<I> };
 
 export type ConsumeModel<M extends Model = Model> = {
   model: M;

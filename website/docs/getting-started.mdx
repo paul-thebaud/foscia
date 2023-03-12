@@ -238,13 +238,13 @@ check the [available extensions packs](/docs/api/actions-extensions) or import
 manually enhancers and runners extensions using the following code:
 
 ```javascript
-import { model, include, all } from 'func-client/core';
+import { forModel, include, all } from 'func-client/core';
 import { makeJsonApi, hooksExtensions } from 'func-client/blueprints';
 
 const { action, registry } = makeJsonApi({
     extensions: {
         ...hooksExtensions,
-        ...model.extension,
+        ...forModel.extension,
         ...include.extension,
         ...all.extension,
     },

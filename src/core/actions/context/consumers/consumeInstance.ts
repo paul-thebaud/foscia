@@ -12,5 +12,5 @@ export default function consumeInstance<I extends ModelInstance, D = never>(
     'save',
     'destroy',
     'instance',
-  ], defaultValue);
+  ], defaultValue) as I | D;
 }

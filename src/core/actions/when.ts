@@ -63,7 +63,7 @@ function when<C extends {}, V, TR, FR = void>(
 
 export default when;
 
-type WhenEnhancerExtension = ActionParsedExtension<{
+type EnhancerExtension = ActionParsedExtension<{
   when<C extends {}, E extends {}, V, TC extends {} = C>(
     this: Action<C, E>,
     expression: V,
@@ -97,4 +97,4 @@ type WhenEnhancerExtension = ActionParsedExtension<{
   ): Promise<TR | FR>;
 }>;
 
-when.extension = makeEnhancersExtension({ when }) as WhenEnhancerExtension;
+when.extension = makeEnhancersExtension({ when }) as EnhancerExtension;

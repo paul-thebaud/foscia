@@ -19,11 +19,11 @@ export default function onRunning<C extends {}>(
   };
 }
 
-type OnRunningEnhancerExtension = ActionParsedExtension<{
+type EnhancerExtension = ActionParsedExtension<{
   onRunning<C extends {}, E extends {}>(
     this: Action<C, E>,
     callback: (event: { context: C; }) => Awaitable<void>,
   ): Action<C, E>;
 }>;
 
-onRunning.extension = makeEnhancersExtension({ onRunning }) as OnRunningEnhancerExtension;
+onRunning.extension = makeEnhancersExtension({ onRunning }) as EnhancerExtension;

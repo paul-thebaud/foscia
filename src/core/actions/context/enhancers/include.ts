@@ -27,11 +27,11 @@ export default function include<
   }));
 }
 
-type IncludeEnhancerExtension = ActionParsedExtension<{
+type EnhancerExtension = ActionParsedExtension<{
   include<C extends {}, E extends {}, M extends Model>(
     this: Action<C & ConsumeModel<M>, E>,
     ...relations: ArrayableVariadic<ModelRelationDotKey<M>>
   ): Action<C, E>;
 }>;
 
-include.extension = makeEnhancersExtension({ include }) as IncludeEnhancerExtension;
+include.extension = makeEnhancersExtension({ include }) as EnhancerExtension;

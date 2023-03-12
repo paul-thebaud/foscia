@@ -20,15 +20,15 @@ export default function forInstance<
 >(instance: ModelClassInstance<D> & I) {
   return (action: Action<C>) => action
     .use(forModel(instance.$model as Model<D, I>))
-    .use(context({ instance }))
+    .use(context({ instance: instance as I }))
     .use(forId(instance.id));
 }
 
-type ForInstanceEnhancerExtension = ActionParsedExtension<{
+type EnhancerExtension = ActionParsedExtension<{
   forInstance<C extends {}, E extends {}, D extends {}, I extends ModelInstance<D>>(
     this: Action<C, E>,
     instance: ModelClassInstance<D> & I,
   ): Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I> & ConsumeId, E>;
 }>;
 
-forInstance.extension = makeEnhancersExtension({ forInstance }) as ForInstanceEnhancerExtension;
+forInstance.extension = makeEnhancersExtension({ forInstance }) as EnhancerExtension;

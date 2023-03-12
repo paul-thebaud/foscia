@@ -19,11 +19,11 @@ export default function onFinally<C extends {}>(
   };
 }
 
-type OnFinallyEnhancerExtension = ActionParsedExtension<{
+type EnhancerExtension = ActionParsedExtension<{
   onFinally<C extends {}, E extends {}>(
     this: Action<C, E>,
     callback: (event: { context: C; }) => Awaitable<void>,
   ): Action<C, E>;
 }>;
 
-onFinally.extension = makeEnhancersExtension({ onFinally }) as OnFinallyEnhancerExtension;
+onFinally.extension = makeEnhancersExtension({ onFinally }) as EnhancerExtension;

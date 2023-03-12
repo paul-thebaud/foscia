@@ -21,11 +21,11 @@ export default function onPreparing<C extends {}>(
   };
 }
 
-type OnPreparingEnhancerExtension = ActionParsedExtension<{
+type EnhancerExtension = ActionParsedExtension<{
   onPreparing<C extends {}, E extends {}>(
     this: Action<C, E>,
     callback: () => Awaitable<void>,
   ): Action<C, E>;
 }>;
 
-onPreparing.extension = makeEnhancersExtension({ onPreparing }) as OnPreparingEnhancerExtension;
+onPreparing.extension = makeEnhancersExtension({ onPreparing }) as EnhancerExtension;

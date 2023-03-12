@@ -1,8 +1,16 @@
-import oneOr from '@/core/actions/context/runners/oneOr';
+import oneOr, { OneData } from '@/core/actions/context/runners/oneOr';
+import { DeserializedDataOf } from '@/core/actions/context/utilities/deserializeInstances';
 import makeRunnersExtension from '@/core/actions/extensions/makeRunnersExtension';
-import { Action, ActionParsedExtension, ConsumeAdapter, ConsumeDeserializer, ConsumeModel } from '@/core/actions/types';
+import {
+  Action,
+  ActionParsedExtension,
+  ConsumeAdapter,
+  ConsumeDeserializer,
+  InferConsumedInstance,
+} from '@/core/actions/types';
 import ExpectedRunFailureError from '@/core/errors/expectedRunFailureError';
-import { Model } from '@/core/model/types';
+import { DeserializedData } from '@/core/types';
+import { Awaitable } from '@/utilities';
 
 /**
  * Run the action and deserialize one model's instance.
@@ -10,18 +18,33 @@ import { Model } from '@/core/model/types';
  *
  * @category Runners
  */
-export default function oneOrFail<C extends {}, M extends Model, AD>() {
-  return oneOr<C, M, AD, never>(() => {
+export default function oneOrFail<
+  C extends {},
+  I extends InferConsumedInstance<C>,
+  AD,
+  DD extends DeserializedData,
+  ND = I,
+>(
+  transform?: (data: OneData<AD, DeserializedDataOf<I, DD>, I>) => Awaitable<ND>,
+) {
+  return oneOr<C, I, AD, DD, never, ND>(() => {
     throw new ExpectedRunFailureError(
       '`oneOrFail` failed. You may handle this error globally as a "not found" record error.',
     );
-  });
+  }, transform);
 }
 
-type OneOrFailRunnerExtension = ActionParsedExtension<{
-  oneOrFail<C extends {}, M extends Model, AD>(
-    this: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD> & ConsumeModel<M>>,
-  ): Promise<InstanceType<M>>;
+type RunnerExtension = ActionParsedExtension<{
+  oneOrFail<
+    C extends {},
+    I extends InferConsumedInstance<C>,
+    AD,
+    DD extends DeserializedData,
+    ND = I,
+  >(
+    this: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD>>,
+    transform?: (data: OneData<AD, DeserializedDataOf<I, DD>, I>) => Awaitable<ND>,
+  ): Promise<ND>;
 }>;
 
-oneOrFail.extension = makeRunnersExtension({ oneOrFail }) as OneOrFailRunnerExtension;
+oneOrFail.extension = makeRunnersExtension({ oneOrFail }) as RunnerExtension;

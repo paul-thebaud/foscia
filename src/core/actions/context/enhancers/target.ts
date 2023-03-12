@@ -20,11 +20,11 @@ export default function target<
   return context({ model });
 }
 
-type TargetEnhancerExtension = ActionParsedExtension<{
+type EnhancerExtension = ActionParsedExtension<{
   target<C extends {}, E extends {}, M extends Model>(
     this: Action<C, E>,
     model: M,
   ): Action<C & ConsumeModel<M>, E>;
 }>;
 
-target.extension = makeEnhancersExtension({ target }) as TargetEnhancerExtension;
+target.extension = makeEnhancersExtension({ target }) as EnhancerExtension;

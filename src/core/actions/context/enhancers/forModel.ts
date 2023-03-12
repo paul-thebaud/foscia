@@ -27,11 +27,11 @@ export default function forModel<
     }));
 }
 
-type ForModelEnhancerExtension = ActionParsedExtension<{
+type EnhancerExtension = ActionParsedExtension<{
   forModel<C extends {}, E extends {}, M extends Model>(
     this: Action<C, E>,
     model: M,
   ): Action<C & ConsumeModel<M>, E>;
 }>;
 
-forModel.extension = makeEnhancersExtension({ forModel }) as ForModelEnhancerExtension;
+forModel.extension = makeEnhancersExtension({ forModel }) as EnhancerExtension;

@@ -19,11 +19,11 @@ export default function onError<C extends {}>(
   };
 }
 
-type OnErrorEnhancerExtension = ActionParsedExtension<{
+type EnhancerExtension = ActionParsedExtension<{
   onError<C extends {}, E extends {}>(
     this: Action<C, E>,
     callback: (event: { context: C; error: unknown; }) => Awaitable<void>,
   ): Action<C, E>;
 }>;
 
-onError.extension = makeEnhancersExtension({ onError }) as OnErrorEnhancerExtension;
+onError.extension = makeEnhancersExtension({ onError }) as EnhancerExtension;

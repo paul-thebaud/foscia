@@ -1,4 +1,6 @@
-import cachedUsing from '@/core/actions/context/runners/cachedUsing';
+import consumeCache from '@/core/actions/context/consumers/consumeCache';
+import consumeId from '@/core/actions/context/consumers/consumeId';
+import consumeModel from '@/core/actions/context/consumers/consumeModel';
 import makeRunnersExtension from '@/core/actions/extensions/makeRunnersExtension';
 import {
   Action,
@@ -9,7 +11,13 @@ import {
   ConsumeModel,
   ContextRunner,
 } from '@/core/actions/types';
-import { Model } from '@/core/model/types';
+import { Model, ModelInstance } from '@/core/model/types';
+import loaded from '@/core/model/utilities/loaded';
+import { Awaitable, isNil } from '@/utilities';
+
+export type CachedData<I extends ModelInstance> = {
+  instance: I;
+};
 
 /**
  * Retrieve an instance from the cache.
@@ -17,22 +25,47 @@ import { Model } from '@/core/model/types';
  * run the given runner.
  *
  * @param nilRunner
+ * @param transform
  *
  * @category Runners
  */
-export default function cachedOr<C extends {}, M extends Model, RD>(
-  nilRunner: ContextRunner<C & ConsumeCache & ConsumeModel<M>, RD>,
+export default function cachedOr<
+  C extends {},
+  M extends Model,
+  I extends InstanceType<M>,
+  RD,
+  ND = I,
+>(
+  nilRunner: ContextRunner<C & ConsumeCache & ConsumeModel<M>, Awaitable<RD>>,
+  transform?: (data: CachedData<I>) => Awaitable<ND>,
 ) {
-  return async (action: Action<C & ConsumeCache & ConsumeModel<M>>) => (
-    await action.run(cachedUsing(({ instance }) => instance)) ?? await action.run(nilRunner)
-  );
+  return async (
+    action: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeInclude & ConsumeId>,
+  ) => {
+    // TODO Manage forRelation case.
+    const context = await action.useContext();
+    const instance = await consumeCache(context)
+      .find(consumeModel(context).$config.type, consumeId(context));
+    if (isNil(instance) || !loaded(instance, context.include ?? [])) {
+      return action.run(nilRunner);
+    }
+
+    return (transform ? transform({ instance }) : instance) as ND;
+  };
 }
 
-type CachedOrRunnerExtension = ActionParsedExtension<{
-  cachedOr<C extends {}, M extends Model, RD>(
+type RunnerExtension = ActionParsedExtension<{
+  cachedOr<
+    C extends {},
+    M extends Model,
+    I extends InstanceType<M>,
+    RD,
+    ND = I,
+  >(
     this: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeInclude & ConsumeId>,
-    nilRunner: ContextRunner<C & ConsumeCache & ConsumeModel<M>, RD>,
-  ): Promise<InstanceType<M> | Awaited<RD>>;
+    nilRunner: ContextRunner<C & ConsumeCache & ConsumeModel<M>, Awaitable<RD>>,
+    transform?: (data: CachedData<I>) => Awaitable<ND>,
+  ): Promise<Awaited<ND> | Awaited<RD>>;
 }>;
 
-cachedOr.extension = makeRunnersExtension({ cachedOr }) as CachedOrRunnerExtension;
+cachedOr.extension = makeRunnersExtension({ cachedOr }) as RunnerExtension;

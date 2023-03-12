@@ -102,14 +102,14 @@ If you are using a custom action factory, you should check the
 [custom action factory guide](/docs/advanced/custom-action-factory).
 
 ```javascript title="action.js"
-import { model, include, all } from 'func-client/core';
+import { forModel, include, all } from 'func-client/core';
 import { makeJsonApi, hooksExtensions } from 'func-client/blueprints';
 
 const { action, registry } = makeJsonApi({
     extensions: {
         // Spread any extensions you want to use here...
         ...hooksExtensions,
-        ...model.extension,
+        ...forModel.extension,
         ...include.extension,
         ...all.extension,
     },

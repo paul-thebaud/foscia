@@ -23,7 +23,7 @@ export default function find<
     .use(forId(id));
 }
 
-type FindEnhancerExtension = ActionParsedExtension<{
+type EnhancerExtension = ActionParsedExtension<{
   find<C extends {}, E extends {}, M extends Model>(
     this: Action<C, E>,
     model: M,
@@ -31,4 +31,4 @@ type FindEnhancerExtension = ActionParsedExtension<{
   ): Action<C & ConsumeModel<M> & ConsumeId, E>;
 }>;
 
-find.extension = makeEnhancersExtension({ find }) as FindEnhancerExtension;
+find.extension = makeEnhancersExtension({ find }) as EnhancerExtension;

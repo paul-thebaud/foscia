@@ -8,10 +8,9 @@ export type DeserializedDataOf<I extends ModelInstance, DD extends DeserializedD
 } & Omit<DD, 'instances'>;
 
 export default async function deserializeInstances<
-  C extends {}, I extends ModelInstance, AD, DD extends DeserializedData,
+  C extends {}, AD, DD extends DeserializedData,
 >(action: Action<C & ConsumeDeserializer<AD, DD>>, data: AD) {
   const context = await action.useContext();
 
-  return consumeDeserializer(context)
-    .deserialize(data, context) as Promise<DeserializedDataOf<I, DD>>;
+  return consumeDeserializer(context).deserialize(data, context);
 }

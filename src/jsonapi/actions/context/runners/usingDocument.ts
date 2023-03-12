@@ -1,6 +1,6 @@
 import { ModelInstance } from '@/core';
-import { AllUsingData } from '@/core/actions/context/runners/allUsing';
-import { OneUsingData } from '@/core/actions/context/runners/oneUsing';
+import { AllData } from '@/core/actions/context/runners/all';
+import { OneData } from '@/core/actions/context/runners/oneOr';
 import { JsonApiDeserializedData } from '@/jsonapi/deserializer/jsonApiDeserializer';
 
 /**
@@ -12,7 +12,7 @@ import { JsonApiDeserializedData } from '@/jsonapi/deserializer/jsonApiDeseriali
 export default function usingDocument<
   I extends ModelInstance,
   DD extends JsonApiDeserializedData<I>,
-  D extends OneUsingData<Response, DD, I> | AllUsingData<Response, DD, I>,
+  D extends OneData<Response, DD, I> | AllData<Response, DD, I>,
 >(data: D) {
   return {
     ...data,

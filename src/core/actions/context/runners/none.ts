@@ -14,10 +14,10 @@ export default function none<C extends {}>() {
   };
 }
 
-type NoneRunnerExtension = ActionParsedExtension<{
+type RunnerExtension = ActionParsedExtension<{
   none<C extends {}>(
     this: Action<C & ConsumeAdapter>,
   ): Promise<void>;
 }>;
 
-none.extension = makeRunnersExtension({ none }) as NoneRunnerExtension;
+none.extension = makeRunnersExtension({ none }) as RunnerExtension;
