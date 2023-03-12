@@ -34,14 +34,44 @@ features takes place in the
 
 > Notice that we use PNPM as our package manager.
 
-### Linting code
+### Package development
+
+#### Linting code
 
 ``` shell
 pnpm lint
 ```
 
-### Building library for publish
+#### Run local playground
 
 ``` shell
-yarn build
+pnpm dev
+```
+
+#### Build dist
+
+``` shell
+pnpm build
+```
+
+### Documentation development
+
+You can work on documentation by moving to the `website` directory.
+
+#### Prettier code
+
+``` shell
+pnpm prettier
+```
+
+#### Run local website
+
+``` shell
+pnpm start
+```
+
+#### Build dist
+
+``` shell
+pnpm build
 ```

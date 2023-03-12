@@ -7,16 +7,16 @@ description: Making your own action factory.
 
 :::tip What you'll learn
 
-- Configuring your action factory dependencies
+-   Configuring your action factory dependencies
 
 :::
 
-You may need to configure your action factory implementation and dependencies
-to match your data source needs.
+You may need to configure your action factory implementation and dependencies to
+match your data source needs.
 
 You can customize the dependencies when
-[using a blueprint action factory](/docs/getting-started#with-blueprints)
-or when using a [custom action factory](/docs/advanced/custom-action-factory).
+[using a blueprint action factory](/docs/getting-started#with-blueprints) or
+when using a [custom action factory](/docs/advanced/custom-action-factory).
 
 In this guide, we will see how to customize dependencies configuration through
 the JSON REST blueprint action factory as an example. For this, each
@@ -27,24 +27,26 @@ configure the dependency.
 import { makeJsonRest } from 'func-client/blueprints';
 import Post from './models/post';
 
-const {
-  cache,
-  registry,
-  adapter,
-  deserializer,
-  serializer,
-  action
-} = makeJsonRest({
-  baseURL: 'https://example.com/api/v1',
-});
+const { cache, registry, adapter, deserializer, serializer, action } =
+    makeJsonRest({
+        baseURL: 'https://example.com/api/v1',
+    });
 
 registry.register(Post);
 
 // Configure the dependencies you want:
-cache.configure({ /* Cache configuration. */ });
-adapter.configure({ /* Adapter configuration. */ });
-deserializer.configure({ /* Deserializer configuration. */ });
-serializer.configure({ /* Serializer configuration. */ });
+cache.configure({
+    /* Cache configuration. */
+});
+adapter.configure({
+    /* Adapter configuration. */
+});
+deserializer.configure({
+    /* Deserializer configuration. */
+});
+serializer.configure({
+    /* Serializer configuration. */
+});
 
 export default action;
 ```

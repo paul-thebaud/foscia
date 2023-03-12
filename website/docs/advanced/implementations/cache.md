@@ -1,6 +1,7 @@
 ---
 sidebar_position: 10
-description: Specificities of the cache implementation and available configuration.
+description:
+    Specificities of the cache implementation and available configuration.
 ---
 
 # Cache

@@ -22,12 +22,12 @@ not fit custom implementations or full tree-shaking needs.
 ## Replacing some dependencies
 
 Sometimes, you may need to only replace an overwritten dependency (such as a
-customized version of the `JsonRestDeserializer`). Admitting you have
-an extended version of this deserializer like:
+customized version of the `JsonRestDeserializer`). Admitting you have an
+extended version of this deserializer like:
 
 ```javascript title="action/customDeserializer.js"
 export default class CustomDeserializer extends JsonRestDeserializer {
-  // ...your overwrite...
+    // ...your overwrite...
 }
 ```
 
@@ -42,7 +42,7 @@ import CustomDeserializer from './action/customDeserializer';
 // Note that we are not using the exported action function,
 // but the raw Action class.
 const { Action, cache, registry, adapter, serializer } = makeJsonRest({
-  baseURL: 'https://example.com/api/v1',
+    baseURL: 'https://example.com/api/v1',
 });
 
 const deserializer = new CustomDeserializer();
@@ -50,16 +50,22 @@ const deserializer = new CustomDeserializer();
 // We are now manually declaring our action factory
 // with the proper dependencies injection.
 export default function action() {
-  return new Action().use(context({
-    cache, registry, adapter, deserializer, serializer,
-  }))
+    return new Action().use(
+        context({
+            cache,
+            registry,
+            adapter,
+            deserializer,
+            serializer,
+        }),
+    );
 }
 ```
 
 ## Writing your own factory
 
-For more complex requirements, like with custom implementations, you should
-use a custom action factory from scratch.
+For more complex requirements, like with custom implementations, you should use
+a custom action factory from scratch.
 
 When using a custom action factory, all those dependencies are initialized and
 attached to your actions manually. This gives you a lot of control over which

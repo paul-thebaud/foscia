@@ -1,6 +1,7 @@
 ---
 sidebar_position: 40
-description: Specificities of the JSON implementation and available configuration.
+description:
+    Specificities of the JSON implementation and available configuration.
 ---
 
 # JSON
