@@ -6,8 +6,8 @@
 [![NPM downloads](https://img.shields.io/npm/dt/func-client)](https://www.npmjs.com/package/func-client)
 ![MIT license](https://img.shields.io/npm/l/func-client)
 
-[Read FuncClient documentation](https://paul-thebaud.github.io/func-client/)
-or [Try it now in your browser](https://stackblitz.com/edit/func-client?file=playground.ts).
+[Check out FuncClient website](https://paul-thebaud.github.io/func-client/)
+or [try it now in your browser](https://stackblitz.com/edit/func-client?file=playground.ts).
 
 ## About
 

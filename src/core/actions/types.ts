@@ -80,6 +80,10 @@ export type ConsumeInstance<I extends ModelInstance = ModelInstance> = {
   instance: I;
 };
 
+export type ConsumeRelation = {
+  relation: ModelRelation;
+};
+
 export type ConsumeId = {
   id?: ModelId;
 };

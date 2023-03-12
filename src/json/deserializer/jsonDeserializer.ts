@@ -5,6 +5,7 @@ import {
   ConsumeInstance,
   ConsumeModel,
   ConsumeRegistry,
+  ConsumeRelation,
   DeserializedData,
   DeserializerError,
   DeserializerI,
@@ -223,7 +224,7 @@ export default abstract class JsonDeserializer<
 
   protected async extractIdentifier(
     resource: Resource,
-    context: ActionContext & Partial<ConsumeModel>,
+    context: ActionContext & Partial<ConsumeModel> & Partial<ConsumeRelation>,
     parent?: ModelInstance,
     relationKey?: string,
     relation?: ModelRelation,
@@ -238,7 +239,9 @@ export default abstract class JsonDeserializer<
 
     if (isNil(identifier.type)) {
       if (isNil(relation)) {
-        identifier.type = context.model?.$config.type;
+        identifier.type = context.relation
+          ? context.relation.type
+          : context.model?.$config.type;
       } else {
         identifier.type = relation.type;
       }
