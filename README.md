@@ -3,13 +3,11 @@
 [![Tests](https://github.com/paul-thebaud/func-client/actions/workflows/tests.yml/badge.svg)](https://github.com/paul-thebaud/func-client/actions/workflows/tests.yml)
 [![Publish](https://github.com/paul-thebaud/func-client/actions/workflows/publish.yml/badge.svg)](https://github.com/paul-thebaud/func-client/actions/workflows/publish.yml)
 [![NPM version](https://img.shields.io/npm/v/func-client)](https://www.npmjs.com/package/func-client)
-[!![NPM downloads](https://img.shields.io/npm/dt/func-client)](https://www.npmjs.com/package/func-client)
+[![NPM downloads](https://img.shields.io/npm/dt/func-client)](https://www.npmjs.com/package/func-client)
 ![MIT license](https://img.shields.io/npm/l/func-client)
 
-## Documentation and playground
-
-- [Read FuncClient documentation](https://paul-thebaud.github.io/func-client/)
-- [Try FuncClient in the playground](https://stackblitz.com/edit/func-client?file=playground.ts)
+[Read FuncClient documentation](https://paul-thebaud.github.io/func-client/)
+or [Try it now in your browser](https://stackblitz.com/edit/func-client?file=playground.ts).
 
 ## About
 
