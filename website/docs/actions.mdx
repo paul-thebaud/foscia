@@ -102,8 +102,8 @@ If you are using a custom action factory, you should check the
 [custom action factory guide](/docs/advanced/custom-action-factory).
 
 ```javascript title="action.js"
-import { forModel, include, all } from 'func-client/core';
-import { makeJsonApi, hooksExtensions } from 'func-client/blueprints';
+import { forModel, include, all } from 'foscia/core';
+import { makeJsonApi, hooksExtensions } from 'foscia/blueprints';
 
 const { action, registry } = makeJsonApi({
     extensions: {
@@ -125,7 +125,7 @@ import action from './action';
 await action().forModel(Post).include('tags').all();
 ```
 
-Every enhancers and runners of FuncClient provide a `.extension` property
+Every enhancers and runners of Foscia provide a `.extension` property
 which is extendable by an action instance.
 
 You may extend your action with any enhancers or runners extensions manually.
@@ -155,8 +155,8 @@ an example, you may want to sort results differently based on the user's defined
 sort's direction. This can be done easily using the `when` helper:
 
 ```javascript
-import { when } from 'func-client/core';
-import { sortByDesc } from 'func-client/jsonapi';
+import { when } from 'foscia/core';
+import { sortByDesc } from 'foscia/jsonapi';
 
 action()
     .use(forModel(Post))
@@ -175,7 +175,7 @@ as any enhancers and runners.
 Here are further examples:
 
 ```javascript
-import { changed, create, oneOrFail, when } from 'func-client/core';
+import { changed, create, oneOrFail, when } from 'foscia/core';
 
 const post = fill(new Post(), userInputData);
 
@@ -214,7 +214,7 @@ import {
     onSuccess,
     onError,
     onFinally,
-} from 'func-client/core';
+} from 'foscia/core';
 
 action().use(onPreparing(() => /* ... */));
 action().use(onRunning(({ context }) => /* ... */));
@@ -234,7 +234,7 @@ You can disable hook execution on a given action instance by using the
 `withoutHooks` function.
 
 ```javascript
-import { withoutHooks } from 'func-client/core';
+import { withoutHooks } from 'foscia/core';
 
 // Retrieve a list of User instances without action hooks running.
 const users = await withoutHooks(action(), async (a) => {
@@ -244,7 +244,7 @@ const users = await withoutHooks(action(), async (a) => {
 
 :::caution
 
-FuncClient may also register hooks internally when using some enhancers. Those
+Foscia may also register hooks internally when using some enhancers. Those
 provide some library features
 ([**models hooks**](/docs/models#hooks), etc.). Be careful running
 actions without hooks, as those hooks will also be disable.

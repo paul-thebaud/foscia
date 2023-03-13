@@ -18,7 +18,7 @@ import Link from '@docusaurus/Link';
 ## Model factory
 
 ```javascript
-import { makeModel, attr, hasMany, toDate } from 'func-client/core';
+import { makeModel, attr, hasMany, toDate } from 'foscia/core';
 
 makeModel('type', {
     /* The model definition */
@@ -89,7 +89,7 @@ Please note that most model's interaction (fetching, updating, etc.) are done
 through actions, so you may [read the actions guide](/docs/actions)
 to learn more about those.
 
-**FuncClient proposes you multiple utilities functions to interact with models**
+**Foscia proposes you multiple utilities functions to interact with models**
 
 <Link className="button bg--primary-gradient" to="/docs/models">
     Read the models' utilities API guide
@@ -100,7 +100,7 @@ to learn more about those.
 :::caution
 
 You **must** not use `id`, `lid`, `type` or `exists` as key of any
-attributes/relations/properties as those keys are internally used by FuncClient
+attributes/relations/properties as those keys are internally used by Foscia
 or may be used by dependencies (e.g. JSON:API adapter).
 
 :::
@@ -112,7 +112,7 @@ define your model's attributes. It may take 0 to 2 arguments, depending on what
 you want to do.
 
 ```ts
-import { attr, toDate } from 'func-client/core';
+import { attr, toDate } from 'foscia/core';
 
 attr<string>(); // Without config.
 attr(toDate()); // With a transformer.
@@ -121,7 +121,7 @@ attr(toDate(), { readOnly: true }); // With a transformer and config.
 attr({ default: () => [] }); // With a factory default (required for objects props).
 ```
 
-Note that FuncClient consider your attributes as non-nullable values by default.
+Note that Foscia consider your attributes as non-nullable values by default.
 When one of your model contains nullable attributes, you may want to pass a type
 to the factory (e.g. `attr<string | null>()`) or set a default attribute value
 (e.g. `attr({ default: '' })`).
@@ -140,18 +140,18 @@ You may customize your attribute with the following config:
 #### Transform
 
 You can use a transform to convert an attribute value when (de)serializing
-from/to your data source. There are two types or transformer within FuncClient:
+from/to your data source. There are two types or transformer within Foscia:
 
 -   `FunctionTransform`: a function to call to transform the value whether we
     are serializing or deserializing it.
 -   `ObjectTransform`: an object with two methods: `serialize` and
     `deserialize`.
 
-FuncClient propose you 4 transformers out of the box:
-[`toDate`](/docs/api/func-client/modules/core#todate),
-[`toNumber`](/docs/api/func-client/modules/core#tonumber),
-[`toBoolean`](/docs/api/func-client/modules/core#toboolean) and
-[`toString`](/docs/api/func-client/modules/core#tostring).
+Foscia propose you 4 transformers out of the box:
+[`toDate`](/docs/api/foscia/modules/core#todate),
+[`toNumber`](/docs/api/foscia/modules/core#tonumber),
+[`toBoolean`](/docs/api/foscia/modules/core#toboolean) and
+[`toString`](/docs/api/foscia/modules/core#tostring).
 
 :::info
 
@@ -171,15 +171,15 @@ single model. It may take 0 to 1 argument, depending on what you want to do.
 
 ```ts
 // file: models/user.ts noEmit
-import { makeModel } from 'func-client/core';
+import { makeModel } from 'foscia/core';
 export default class User extends makeModel('users') {}
 
 // file: models/comment.ts noEmit
-import { makeModel } from 'func-client/core';
+import { makeModel } from 'foscia/core';
 export default class Comment extends makeModel('comments') {}
 
 // file: models/example.ts
-import { hasOne, hasMany } from 'func-client/core';
+import { hasOne, hasMany } from 'foscia/core';
 import type User from './user';
 import type Comment from './comment';
 
@@ -192,7 +192,7 @@ hasMany<Comment>({ readOnly: true }); // With config.
 hasMany<Comment>({ type: 'comments' }); // With explicit type.
 ```
 
-Note that FuncClient consider your relations as non-nullable values by default.
+Note that Foscia consider your relations as non-nullable values by default.
 When one of your model contains nullable relations, you may want to pass a type
 to the factory (e.g. `hasOne<User | null>()`) or set a default relation value
 (e.g. `hasOne({ default: null as User | null })`).
@@ -271,7 +271,7 @@ unregister the hook. All model hook callback will have the concerned model
 instance as the only provided argument.
 
 ```javascript
-import { onSaving } from 'func-client/core';
+import { onSaving } from 'foscia/core';
 
 // After this, the hook will run on each User instance saving.
 const unregisterThisHook = onSaving(User, async (user) => {
@@ -293,7 +293,7 @@ You can disable hook execution on a given model by using the `withoutHooks`
 function.
 
 ```javascript
-import { withoutHooks } from 'func-client/core';
+import { withoutHooks } from 'foscia/core';
 
 const syncResultOfYourCallback = withoutHooks(User, () => {
     // TODO Do something sync and return it.

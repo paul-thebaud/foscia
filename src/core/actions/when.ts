@@ -17,7 +17,7 @@ function when<C extends {}, V, TC extends {} = C, FC extends {} = C>(
   ) => Awaitable<Action<TC> | void>,
   falsyCallback: (
     action: Action<C>,
-    value: OnlyTruthy<Awaited<Value<V>>>,
+    value: OnlyFalsy<Awaited<Value<V>>>,
   ) => Awaitable<Action<FC> | void>,
 ): ContextEnhancer<C, TC | FC>;
 function when<C extends {}, V, TR>(
@@ -27,7 +27,7 @@ function when<C extends {}, V, TR>(
 function when<C extends {}, V, TR, FR>(
   expression: V,
   truthyCallback: (action: Action<C>, value: OnlyTruthy<Awaited<Value<V>>>) => TR,
-  falsyCallback: (action: Action<C>, value: OnlyTruthy<Awaited<Value<V>>>) => FR,
+  falsyCallback: (action: Action<C>, value: OnlyFalsy<Awaited<Value<V>>>) => FR,
 ): ContextRunner<C, TR | FR>;
 
 /**
@@ -81,7 +81,7 @@ type EnhancerExtension = ActionParsedExtension<{
     ) => Awaitable<Action<TC> | void>,
     falsyCallback: (
       action: Action<C, E>,
-      value: OnlyTruthy<Awaited<Value<V>>>,
+      value: OnlyFalsy<Awaited<Value<V>>>,
     ) => Awaitable<Action<FC> | void>,
   ): Action<FC | TC, E>;
   when<C extends {}, E extends {}, V, TR>(

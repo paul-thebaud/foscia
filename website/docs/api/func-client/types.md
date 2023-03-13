@@ -7,7 +7,7 @@ description: Internal types description.
 
 :::tip
 
-FuncClient uses some utilities types which are not exported to avoid polluting
+Foscia uses some utilities types which are not exported to avoid polluting
 your code or conflicting with your own utilities types. You may copy those types
 as you want and use them in your project.
 

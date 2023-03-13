@@ -1,4 +1,4 @@
-import FuncClientError from '@/core/errors/funcClientError';
+import FosciaError from '@/core/errors/fosciaError';
 import isModel from '@/core/model/guards/isModel';
 import { Model } from '@/core/model/types';
 import { RegistryI } from '@/core/types';
@@ -16,7 +16,7 @@ export default class MapRegistry implements RegistryI {
     if (!modelResolver) {
       const registeredModels = [...this.models.keys()].map((t) => `- \`${t}\``).join('\n');
 
-      throw new FuncClientError(
+      throw new FosciaError(
         `Model for type \`${type}\` is not registered. Did you forget registering it?\nRegistered models:\n${registeredModels}`,
       );
     }

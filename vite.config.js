@@ -6,7 +6,7 @@ const makeLibOptions = (format) => ({
   entry: resolve(__dirname, 'src/index.ts'),
   formats: [format],
   fileName: 'index',
-  name: 'FuncClient',
+  name: 'Foscia',
 });
 
 const makeRollupOptions = (ext) => ({

@@ -11,7 +11,7 @@ const modelsExampleMeta = {
   link: { to: '/docs/models', text: 'Learn more about models' },
   description: (
     <>
-      FuncClient provides a simple and expressive way to define your models,
+      Foscia provides a simple and expressive way to define your models,
       which may combine attributes, relations, custom properties/methods and
       even composable definitions.
     </>
@@ -19,7 +19,7 @@ const modelsExampleMeta = {
 };
 
 const modelsExampleCode = `
-import { makeModel, attr, hasOne } from 'func-client/core';
+import { makeModel, attr, hasOne } from 'foscia/core';
 import publishable from './composables/publishable';
 import type User from './User';
 import type Tag from './Tag';
@@ -54,7 +54,7 @@ const playExampleMeta = {
 };
 
 const playFunctionalExampleCode = `
-import { find, update, include, oneOrFail, oneOrCurrent } from 'func-client/core';
+import { find, update, include, oneOrFail, oneOrCurrent } from 'foscia/core';
 import Post from './post';
 import action from './action';
 

@@ -35,7 +35,7 @@ Adapter errors are not caught and so may be thrown.
 #### Example
 
 ```javascript
-import { none } from 'func-client/core';
+import { none } from 'foscia/core';
 
 await action().run(none());
 ```
@@ -53,7 +53,7 @@ Run the action and retrieve the raw adapter's data.
 #### Example
 
 ```javascript
-import { raw } from 'func-client/core';
+import { raw } from 'foscia/core';
 
 // When using HttpAdapter, raw result is a fetch Response object.
 const response = await action().run(raw());
@@ -79,7 +79,7 @@ Run the action and deserialize an array of model's instance.
 #### Example
 
 ```javascript
-import { all } from 'func-client/core';
+import { all } from 'foscia/core';
 
 const posts = await action().run(all());
 ```
@@ -103,7 +103,7 @@ Returns null when not found.
 #### Example
 
 ```javascript
-import { one } from 'func-client/core';
+import { one } from 'foscia/core';
 
 const post = await action().run(one());
 ```
@@ -127,7 +127,7 @@ Throws an `ExpectedRunFailureError` when not found or empty result.
 #### Example
 
 ```javascript
-import { oneOrFail } from 'func-client/core';
+import { oneOrFail } from 'foscia/core';
 
 const post = await action().run(oneOrFail());
 ```
@@ -151,7 +151,7 @@ Returns current instance when not found or empty result.
 #### Example
 
 ```javascript
-import { oneOrCurrent } from 'func-client/core';
+import { oneOrCurrent } from 'foscia/core';
 
 const post = await action().run(oneOrCurrent());
 ```
@@ -174,7 +174,7 @@ Run the action and deserialize one model's instance.
 #### Example
 
 ```javascript
-import { oneOr } from 'func-client/core';
+import { oneOr } from 'foscia/core';
 
 const post = await action().run(oneOr(() => null));
 ```
@@ -201,7 +201,7 @@ returns null.
 #### Example
 
 ```javascript
-import { cached } from 'func-client/core';
+import { cached } from 'foscia/core';
 
 const post = await action().run(cached());
 ```
@@ -226,7 +226,7 @@ throws an `ExpectedRunFailureError`.
 #### Example
 
 ```javascript
-import { cachedOrFail } from 'func-client/core';
+import { cachedOrFail } from 'foscia/core';
 
 const post = await action().run(cachedOrFail());
 ```
@@ -251,7 +251,7 @@ runs the given runner.
 #### Example
 
 ```javascript
-import { cachedOr } from 'func-client/core';
+import { cachedOr } from 'foscia/core';
 
 const post = await action().run(cachedOr(() => null));
 ```
@@ -279,8 +279,8 @@ Use it as the parameter of `all` and `one` (and derivatives) runners.
 #### Example
 
 ```javascript
-import { all } from 'func-client/core';
-import { usingDocument } from 'func-client/jsonapi';
+import { all } from 'foscia/core';
+import { usingDocument } from 'foscia/jsonapi';
 
 const data = await action().run(all(usingDocument));
 data.instances; // Model instances.

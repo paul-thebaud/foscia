@@ -1,16 +1,16 @@
 {
-  "name": "func-client",
+  "name": "foscia",
   "type": "module",
   "version": "1.0.0-alpha.91",
   "license": "MIT",
-  "description": "Functional programming oriented client for TS and JS, with strong typing and tree-shaking capabilities",
-  "homepage": "https://paul-thebaud.github.io/func-client",
+  "description": "Type safe, modular and intuitive API client.",
+  "homepage": "https://paul-thebaud.github.io/foscia",
   "repository": {
     "type": "git",
-    "url": "https://github.com/paul-thebaud/func-client.git"
+    "url": "https://github.com/paul-thebaud/foscia.git"
   },
   "bugs": {
-    "url": "https://github.com/paul-thebaud/func-client/issues"
+    "url": "https://github.com/paul-thebaud/foscia/issues"
   },
   "keywords": [
     "typescript",

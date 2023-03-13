@@ -1,17 +1,17 @@
-# FuncClient
+# Foscia
 
-[![Tests](https://github.com/paul-thebaud/func-client/actions/workflows/tests.yml/badge.svg)](https://github.com/paul-thebaud/func-client/actions/workflows/tests.yml)
-[![Publish](https://github.com/paul-thebaud/func-client/actions/workflows/publish.yml/badge.svg)](https://github.com/paul-thebaud/func-client/actions/workflows/publish.yml)
-[![NPM version](https://img.shields.io/npm/v/func-client)](https://www.npmjs.com/package/func-client)
-[![NPM downloads](https://img.shields.io/npm/dt/func-client)](https://www.npmjs.com/package/func-client)
-![MIT license](https://img.shields.io/npm/l/func-client)
+[![Tests](https://github.com/paul-thebaud/foscia/actions/workflows/tests.yml/badge.svg)](https://github.com/paul-thebaud/foscia/actions/workflows/tests.yml)
+[![Publish](https://github.com/paul-thebaud/foscia/actions/workflows/publish.yml/badge.svg)](https://github.com/paul-thebaud/foscia/actions/workflows/publish.yml)
+[![NPM version](https://img.shields.io/npm/v/foscia)](https://www.npmjs.com/package/foscia)
+[![NPM downloads](https://img.shields.io/npm/dt/foscia)](https://www.npmjs.com/package/foscia)
+![MIT license](https://img.shields.io/npm/l/foscia)
 
-[Check out FuncClient website](https://paul-thebaud.github.io/func-client/)
-or [try it now in your browser](https://stackblitz.com/edit/func-client?file=playground.ts).
+[Check out Foscia website](https://paul-thebaud.github.io/foscia/)
+or [try it now in your browser](https://stackblitz.com/edit/foscia?file=playground.ts).
 
 ## About
 
-**FuncClient** is a simple functional programming oriented API client. It is
+**Foscia** is a simple functional programming oriented API client. It is
 framework-agnostic and can integrate with any Web app using JavaScript or
 TypeScript, and with any data source.
 
@@ -35,15 +35,15 @@ Please see [CONTRIBUTING file](CONTRIBUTING.md) for more details.
 
 Informal discussion regarding bugs, new features, and implementation of existing
 features takes place in the
-[GitHub issue page of this repository](https://github.com/paul-thebaud/func-client/issues).
+[GitHub issue page of this repository](https://github.com/paul-thebaud/foscia/issues).
 
 ## Credits
 
 - [Paul Thébaud](https://github.com/paul-thebaud)
 - [Mathieu Thébaud](https://github.com/mthebaud)
-- [All Contributors](https://github.com/paul-thebaud/func-client/graphs/contributors)
+- [All Contributors](https://github.com/paul-thebaud/foscia/graphs/contributors)
 
 ## License
 
-`func-client` is an open-sourced software licensed under the
+`foscia` is an open-sourced software licensed under the
 [MIT license](https://opensource.org/licenses/MIT).

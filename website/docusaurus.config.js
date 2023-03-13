@@ -7,14 +7,14 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'FuncClient',
-  tagline: 'Functional programming oriented client with strong typing and tree-shaking capabilities.',
+  title: 'Foscia',
+  tagline: 'Type safe, modular and intuitive API client.',
   url: 'https://paul-thebaud.github.io',
-  baseUrl: '/func-client/',
+  baseUrl: '/foscia/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   organizationName: 'paul-thebaud',
-  projectName: 'func-client',
+  projectName: 'foscia',
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -32,7 +32,7 @@ const config = {
             },
           }]],
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/paul-thebaud/func-client/tree/main/website/',
+          editUrl: 'https://github.com/paul-thebaud/foscia/tree/main/website/',
         },
         blog: false,
         theme: {
@@ -43,7 +43,7 @@ const config = {
   ],
   plugins: [
     ['docusaurus-plugin-typedoc', {
-      id: 'api-func-client',
+      id: 'api-foscia',
       entryPoints: [
         '../src/core.ts',
         '../src/http.ts',
@@ -53,7 +53,7 @@ const config = {
         '../src/blueprints.ts',
       ],
       tsconfig: '../tsconfig.json',
-      out: 'api/func-client',
+      out: 'api/foscia',
       sidebar: { position: 5, categoryLabel: 'API Reference' },
     }],
   ],
@@ -66,7 +66,7 @@ const config = {
         },
       },
       navbar: {
-        title: 'FuncClient',
+        title: 'Foscia',
         items: [
           {
             to: '/docs/about',
@@ -89,14 +89,15 @@ const config = {
             label: 'FAQ',
           },
           {
-            href: 'https://stackblitz.com/edit/func-client?file=playground.ts',
+            href: 'https://stackblitz.com/edit/foscia?file=playground.ts',
             label: 'Playground',
             position: 'right',
           },
           {
-            href: 'https://github.com/paul-thebaud/func-client',
-            label: 'GitHub',
+            href: 'https://github.com/paul-thebaud/foscia',
             position: 'right',
+            className: 'header-github-link',
+            'aria-label': 'GitHub repository (in new tab)',
           },
         ],
       },
@@ -140,10 +141,10 @@ const config = {
             items: [
               {
                 label: 'GitHub',
-                href: 'https://github.com/paul-thebaud/func-client',
+                href: 'https://github.com/paul-thebaud/foscia',
               },
               {
-                href: 'https://www.npmjs.com/package/func-client',
+                href: 'https://www.npmjs.com/package/foscia',
                 label: 'NPM',
               },
             ],

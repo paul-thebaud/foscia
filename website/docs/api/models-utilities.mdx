@@ -14,15 +14,15 @@ Fill the model instance's values with the given values.
 #### Example
 
 ```javascript
-import { fill } from 'func-client/core';
+import { fill } from 'foscia/core';
 
 const post = fill(new Post(), { title: 'Hello', description: 'World' });
 ```
 
 #### Arguments
 
-- [`{I extends ModelInstance}`](/docs/api/func-client/modules/core#modelinstance) `instance`
-- [`{Partial<ModelValues<I>>}`](/docs/api/func-client/modules/core#modelvalues) `values`
+- [`{I extends ModelInstance}`](/docs/api/foscia/modules/core#modelinstance) `instance`
+- [`{Partial<ModelValues<I>>}`](/docs/api/foscia/modules/core#modelvalues) `values`
 
 #### Returns
 
@@ -36,7 +36,7 @@ If no keys are provided, will check all instance keys.
 #### Example
 
 ```javascript
-import { changed } from 'func-client/core';
+import { changed } from 'foscia/core';
 
 const wasChanged = changed(post, ['title', 'description']);
 if (wasChanged) { /* do something */ }
@@ -44,8 +44,8 @@ if (wasChanged) { /* do something */ }
 
 #### Arguments
 
-- [`{I extends ModelInstance}`](/docs/api/func-client/modules/core#modelinstance) `instance`
-- [`{ArrayableVariadic<ModelKey<I>}`](/docs/api/func-client/modules/core#modelkey) `...keys`
+- [`{I extends ModelInstance}`](/docs/api/foscia/modules/core#modelinstance) `instance`
+- [`{ArrayableVariadic<ModelKey<I>}`](/docs/api/foscia/modules/core#modelkey) `...keys`
 
 #### Returns
 
@@ -59,15 +59,15 @@ If no keys are provided, will sync all instance keys.
 #### Example
 
 ```javascript
-import { syncOriginal } from 'func-client/core';
+import { syncOriginal } from 'foscia/core';
 
 syncOriginal(post, ['title', 'description']);
 ```
 
 #### Arguments
 
-- [`{I extends ModelInstance}`](/docs/api/func-client/modules/core#modelinstance) `instance`
-- [`{ArrayableVariadic<ModelKey<I>>}`](/docs/api/func-client/modules/core#modelkey) `...keys`
+- [`{I extends ModelInstance}`](/docs/api/foscia/modules/core#modelinstance) `instance`
+- [`{ArrayableVariadic<ModelKey<I>>}`](/docs/api/foscia/modules/core#modelkey) `...keys`
 
 #### Returns
 
@@ -81,15 +81,15 @@ If no keys are provided, will reset all instance keys.
 #### Example
 
 ```javascript
-import { reset } from 'func-client/core';
+import { reset } from 'foscia/core';
 
 reset(post, ['title', 'description']);
 ```
 
 #### Arguments
 
-- [`{I extends ModelInstance}`](/docs/api/func-client/modules/core#modelinstance) `instance`
-- [`{ArrayableVariadic<ModelKey<I>>}`](/docs/api/func-client/modules/core#modelkey) `...keys`
+- [`{I extends ModelInstance}`](/docs/api/foscia/modules/core#modelinstance) `instance`
+- [`{ArrayableVariadic<ModelKey<I>>}`](/docs/api/foscia/modules/core#modelkey) `...keys`
 
 #### Returns
 
@@ -105,7 +105,7 @@ If no relations are provided, wont perform any check.
 #### Example
 
 ```javascript
-import { loaded } from 'func-client/core';
+import { loaded } from 'foscia/core';
 
 const isFullyLoaded = loaded(post, ['comments', 'comments.author']);
 if (!isFullyLoaded) { /* do something */ }
@@ -113,8 +113,8 @@ if (!isFullyLoaded) { /* do something */ }
 
 #### Arguments
 
-- [`{I extends ModelInstance}`](/docs/api/func-client/modules/core#modelinstance) `instance`
-- [`{ArrayableVariadic<ModelRelationDotKey<I>>}`](/docs/api/func-client/modules/core#modelrelationdotkey) `...relations`
+- [`{I extends ModelInstance}`](/docs/api/foscia/modules/core#modelinstance) `instance`
+- [`{ArrayableVariadic<ModelRelationDotKey<I>>}`](/docs/api/foscia/modules/core#modelrelationdotkey) `...relations`
 
 #### Returns
 
@@ -125,14 +125,14 @@ if (!isFullyLoaded) { /* do something */ }
 Check if two values are the same model instance. Ensure the equality by
 checking if the two instances:
 
-- Are FuncClient model instances
+- Are Foscia model instances
 - Have the same type
 - Have the same and non-NIL ID
 
 #### Example
 
 ```javascript
-import { isSame } from 'func-client/core';
+import { isSame } from 'foscia/core';
 
 const areSameInstances = isSame(foo, bar);
 if (areSameInstances) { /* do something */ }
@@ -154,19 +154,19 @@ Create a model class.
 #### Example
 
 ```javascript
-import { makeModel } from 'func-client/core';
+import { makeModel } from 'foscia/core';
 
 const PostModel = makeModel('posts', { /* definition */ });
 ```
 
 #### Arguments
 
-- [`{ModelConfig | string}`](/docs/api/func-client/modules/core#modelconfig) `config`
+- [`{ModelConfig | string}`](/docs/api/foscia/modules/core#modelconfig) `config`
 - `{ModelDefinition}` `rawDefinition`
 
 #### Returns
 
-[`{ModelClass}`](/docs/api/func-client/modules/core#modelclass)
+[`{ModelClass}`](/docs/api/foscia/modules/core#modelclass)
 
 ### `makeModelFactory`
 
@@ -175,7 +175,7 @@ Create a model class factory.
 #### Example
 
 ```javascript
-import { makeModelFactory } from 'func-client/core';
+import { makeModelFactory } from 'foscia/core';
 
 const makeModel = makeModelFactory({ /* definition */ }, { /* config */ });
 ```
@@ -183,7 +183,7 @@ const makeModel = makeModelFactory({ /* definition */ }, { /* config */ });
 #### Arguments
 
 - `{ModelDefinition | undefined }` `baseRawDefinition`
-- [`{ModelConfig | undefined}`](/docs/api/func-client/modules/core#modelconfig) `baseConfig` (omitting `type`)
+- [`{ModelConfig | undefined}`](/docs/api/foscia/modules/core#modelconfig) `baseConfig` (omitting `type`)
 
 #### Returns
 
@@ -196,7 +196,7 @@ Create a composable definition to integrate in models.
 #### Example
 
 ```javascript
-import { makeComposable } from 'func-client/core';
+import { makeComposable } from 'foscia/core';
 
 const publishable = makeComposable({ /* definition */ });
 ```
@@ -207,4 +207,4 @@ const publishable = makeComposable({ /* definition */ });
 
 #### Returns
 
-[`{ModelParsedDefinition}`](/docs/api/func-client/modules/core#modelparseddefinition)
+[`{ModelParsedDefinition}`](/docs/api/foscia/modules/core#modelparseddefinition)

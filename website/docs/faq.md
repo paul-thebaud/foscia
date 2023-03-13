@@ -5,28 +5,28 @@ sidebar_position: 100
 # FAQ
 
 If you have any questions, feel free to ask them on our
-[GitHub Issues page](https://github.com/paul-thebaud/func-client/issues).
+[GitHub Issues page](https://github.com/paul-thebaud/foscia/issues).
 
 ## Why are we not using big `Model` and `Builder` classes?
 
 In a lot of frameworks, modeling the data and building the query are done
 through two main classes: the `Model` and the `Builder`.
 
-The goal of FuncClient is to provide a lot of simple function to affect model
+The goal of Foscia is to provide a lot of simple function to affect model
 instances or their context. If all of those functions were included in classes,
 it will be in your final production bundle even if you are not using them.
-Thanks to the way FuncClient works, **all unused models helpers or actions
+Thanks to the way Foscia works, **all unused models helpers or actions
 enhancers/runners can be tree-shaken.**
 
 ## Is it strongly typed?
 
-**Yes!** FuncClient makes great use of Typescript generics to provide strongly
+**Yes!** Foscia makes great use of Typescript generics to provide strongly
 typed models objects and contexts changes.
 
 Here are a short example of the capabilities reusing the previous examples:
 
 ```typescript title="post.ts"
-import { makeModel, attr, hasMany, toDate } from 'func-client/core';
+import { makeModel, attr, hasMany, toDate } from 'foscia/core';
 
 class Post extends makeModel('posts', {
     title: attr({ default: '' }), // Infered to string.
@@ -82,7 +82,7 @@ export default class Post extends makeModel('posts', {
 }) {}
 ```
 
-## What our the downsides of FuncClient approach?
+## What our the downsides of Foscia approach?
 
 When declaring models, there are no clear downside of the functional
 programming, as `this` context is still available in definition and classes
@@ -97,9 +97,9 @@ In addition, you will need a supplementary step to be able to use
 used. This is possible through actions' extensions, which will plug functions to
 your action instance and allow you to use a builder pattern call style.
 
-## Why is my IDE slow when using FuncClient?
+## Why is my IDE slow when using Foscia?
 
-Due to generics usage and types inference, FuncClient may require more types
+Due to generics usage and types inference, Foscia may require more types
 computation for autocompletion than other librairies.
 
 -   **JetBrains's IDEs** seems to currently have a problem with TypeScript types

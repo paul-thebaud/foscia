@@ -1,9 +1,9 @@
 dist
 node_modules
-docs/api/func-client/modules
-docs/api/func-client/classes
-docs/api/func-client/namespaces
-docs/api/func-client/_category_.yml
-docs/api/func-client/index.md
+docs/api/foscia/modules
+docs/api/foscia/classes
+docs/api/foscia/namespaces
+docs/api/foscia/_category_.yml
+docs/api/foscia/index.md
 build
 .docusaurus

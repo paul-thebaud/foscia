@@ -1,4 +1,4 @@
-import FuncClientError from '@/core/errors/funcClientError';
+import FosciaError from '@/core/errors/fosciaError';
 import logger from '@/core/logger/logger';
 import isPropDef from '@/core/model/guards/isPropDef';
 import { Model, ModelConfig, ModelInstance, ModelSchema } from '@/core/model/types';
@@ -53,7 +53,7 @@ export default function makeModelClass(config: ModelConfig): Model {
   ModelClass.extends = (definition?: object) => {
     eachDescriptors(definition ?? {}, (key, descriptor) => {
       if (['id', 'lid', 'type', 'exists'].indexOf(key) !== -1) {
-        throw new FuncClientError(
+        throw new FosciaError(
           `\`id\`, \`lid\`, \`type\` and \`exists\` are forbidden as a definition keys (found \`${key}\`).`,
         );
       }

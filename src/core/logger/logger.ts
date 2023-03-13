@@ -34,7 +34,7 @@ class Logger {
       const log = `[${level}] ${message}`;
       if (!this.logs.has(log)) {
         this.logs.add(log);
-        console[level](`[func-client]${log}`);
+        console[level](`[foscia]${log}`);
       }
     }
   }

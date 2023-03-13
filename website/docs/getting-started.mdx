@@ -34,11 +34,11 @@ takes up to 2 arguments:
 
 ```ts title="models/post.ts"
 // file: models/comment.ts noEmit
-import { makeModel } from 'func-client/core';
+import { makeModel } from 'foscia/core';
 export default class Comment extends makeModel('comments') {}
 
 // file: models/post.ts
-import { makeModel, attr, hasMany, toDate } from 'func-client/core';
+import { makeModel, attr, hasMany, toDate } from 'foscia/core';
 import type Comment from './comment';
 
 export default class Post extends makeModel('posts', {
@@ -113,7 +113,7 @@ You can read more details on the
 [JSON:API implementation page](/docs/advanced/implementations/jsonapi).
 
 ```javascript title="action.js"
-import { makeJsonApi } from 'func-client/blueprints';
+import { makeJsonApi } from 'foscia/blueprints';
 import Comment from './models/comment';
 import Post from './models/post';
 
@@ -143,7 +143,7 @@ You can read more details on the
 [JSON REST implementation page](/docs/advanced/implementations/jsonrest).
 
 ```javascript title="action.js"
-import { makeJsonRest } from 'func-client/blueprints';
+import { makeJsonRest } from 'foscia/blueprints';
 import Comment from './models/comment';
 import Post from './models/post';
 
@@ -169,7 +169,7 @@ JSON:API and JSON REST. You should therefore either:
 
 - **Implement your own action's dependencies**, you should inspire from existing
   implementations to build your own.
-- [**Open an issue or a pull request**](https://github.com/paul-thebaud/func-client/issues)
+- [**Open an issue or a pull request**](https://github.com/paul-thebaud/foscia/issues)
 
 
   </TabItem>
@@ -209,7 +209,7 @@ For this, you should provide an `extension` configuration option:
   >
 
 ```js
-import { makeJsonApi, jsonApiStarterExtensions } from 'func-client/blueprints';
+import { makeJsonApi, jsonApiStarterExtensions } from 'foscia/blueprints';
 
 const { action, registry } = makeJsonApi({
     extensions: jsonApiStarterExtensions,
@@ -223,7 +223,7 @@ const { action, registry } = makeJsonApi({
   >
 
 ```js
-import { makeJsonRest, jsonRestStarterExtensions } from 'func-client/blueprints';
+import { makeJsonRest, jsonRestStarterExtensions } from 'foscia/blueprints';
 
 const { action, registry } = makeJsonRest({
     extensions: jsonRestStarterExtensions,
@@ -238,8 +238,8 @@ check the [available extensions packs](/docs/api/actions-extensions) or import
 manually enhancers and runners extensions using the following code:
 
 ```javascript
-import { forModel, include, all } from 'func-client/core';
-import { makeJsonApi, hooksExtensions } from 'func-client/blueprints';
+import { forModel, include, all } from 'foscia/core';
+import { makeJsonApi, hooksExtensions } from 'foscia/blueprints';
 
 const { action, registry } = makeJsonApi({
     extensions: {
@@ -259,14 +259,14 @@ modify the action context. When you are ready, you can `run` the action with a
 given **context runner**.
 
 ```javascript
-import { all, forModel } from 'func-client/core';
+import { all, forModel } from 'foscia/core';
 import Post from './models/post';
 import action from './action';
 
 const posts = await action().use(forModel(Post)).run(all());
 ```
 
-Generally in FuncClient, the context enhancers are doing the majority of work to
+Generally in Foscia, the context enhancers are doing the majority of work to
 customize the action you will run. Context runners only exists to tell how you
 wish to run the action and retrieve the result (raw result, model instance,
 etc.).
@@ -277,7 +277,7 @@ and a `oneOrFail` context runner. This way, you are able to do a find query and
 retrieve a raw result when needed.
 
 ```javascript
-import { find, oneOrFail } from 'func-client/core';
+import { find, oneOrFail } from 'foscia/core';
 import Post from './models/post';
 import action from './action';
 
@@ -288,7 +288,7 @@ This works the same to send write operations through actions. In the following
 example, we are retrieving a raw adapter response instead of model instances.
 
 ```javascript
-import { create, fill, oneOrCurrent } from 'func-client/core';
+import { create, fill, oneOrCurrent } from 'foscia/core';
 import Post from './models/post';
 import action from './action';
 
@@ -306,12 +306,12 @@ const response = await action().use(create(post)).run(oneOrCurrent());
 
 ### Running HTTP custom actions
 
-Using JSON:API or JSON REST blueprints, you may also want to use FuncClient to
+Using JSON:API or JSON REST blueprints, you may also want to use Foscia to
 make non-standard API calls.
 
 ```javascript
-import { forInstance, raw } from 'func-client/core';
-import { makePost } from 'func-client/http';
+import { forInstance, raw } from 'foscia/core';
+import { makePost } from 'foscia/http';
 import action from './action';
 
 const post = await action().use(find(Post, 'abc-123')).run(oneOrFail());

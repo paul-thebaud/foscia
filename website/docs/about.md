@@ -4,9 +4,9 @@ sidebar_position: 0
 
 # About
 
-## What is FuncClient?
+## What is Foscia?
 
-**FuncClient** is a simple functional programming oriented API client. It is
+**Foscia** is a simple functional programming oriented API client. It is
 framework-agnostic and can integrate with any Web app using JavaScript or
 TypeScript, and with any data source.
 
@@ -23,14 +23,14 @@ TypeScript, and with any data source.
 
 ## Starting point
 
-You may start to discover FuncClient from different point of view.
+You may start to discover Foscia from different point of view.
 
 -   [Install](/docs/installation) the package to use it immediately
 -   [Get started](/docs/getting-started) using our simple guide about
     interacting with a JSON:API or JSON REST API
--   [Live test through the Playground](https://stackblitz.com/edit/func-client?file=playground.ts)
+-   [Live test through the Playground](https://stackblitz.com/edit/foscia?file=playground.ts)
     using a fake JSON REST API
--   [Check out examples](/docs/category/examples) built with FuncClient to know
+-   [Check out examples](/docs/category/examples) built with Foscia to know
     if the API fits your needs
 
 ## Structure of the documentation
@@ -51,15 +51,15 @@ You may start to discover FuncClient from different point of view.
 
 ## Structure of the package
 
--   [`func-client/blueprints`](/docs/api/func-client/modules/blueprints):
-    pre-configured actions factories to quickly get started with FuncClient
--   [`func-client/core`](/docs/api/func-client/modules/core): core features of
-    FuncClient (models, actions, hooks, etc.)
--   [`func-client/http`](/docs/api/func-client/modules/http): abstract HTTP
+-   [`foscia/blueprints`](/docs/api/foscia/modules/blueprints):
+    pre-configured actions factories to quickly get started with Foscia
+-   [`foscia/core`](/docs/api/foscia/modules/core): core features of
+    Foscia (models, actions, hooks, etc.)
+-   [`foscia/http`](/docs/api/foscia/modules/http): abstract HTTP
     adapter implementation
--   [`func-client/json`](/docs/api/func-client/modules/json): abstract raw JSON
+-   [`foscia/json`](/docs/api/foscia/modules/json): abstract raw JSON
     objects (de)serializer implementations
--   [`func-client/jsonapi`](/docs/api/func-client/modules/jsonapi):
+-   [`foscia/jsonapi`](/docs/api/foscia/modules/jsonapi):
     [JSON:API](https://jsonapi.org) implementation
--   [`func-client/jsonrest`](/docs/api/func-client/modules/jsonrest): JSON REST
+-   [`foscia/jsonrest`](/docs/api/foscia/modules/jsonrest): JSON REST
     implementation

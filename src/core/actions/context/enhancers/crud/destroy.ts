@@ -22,7 +22,7 @@ export default function destroy<
 >(instance: ModelClassInstance<D> & I) {
   return (action: Action<C>) => action
     .use(forInstance<C, D, I>(instance))
-    .use(context({ action: 'DESTROY' }))
+    .use(context({ action: 'destroy' }))
     .use(changeInstanceExistence(false))
     .use(onPreparing(runInstanceHooks(instance, ['destroying'])))
     .use(onSuccess(runInstanceHooks(instance, ['destroyed'])));

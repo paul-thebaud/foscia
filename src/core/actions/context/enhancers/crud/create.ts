@@ -34,7 +34,7 @@ export default function create<
     .use(forInstance<C & ConsumeSerializer<SD>, D, I>(instance))
     .use(instanceData(instance))
     .use(forId(undefined))
-    .use(context({ action: 'CREATE' }))
+    .use(context({ action: 'create' }))
     .use(changeInstanceExistence(true))
     .use(onPreparing(runInstanceHooks(instance, ['creating', 'saving'])))
     .use(onSuccess(runInstanceHooks(instance, ['created', 'saved'])));

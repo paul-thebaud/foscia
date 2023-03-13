@@ -1,13 +1,13 @@
 ---
 sidebar_position: 1
-description: Quick introduction on available implementations for FuncClient.
+description: Quick introduction on available implementations for Foscia.
 ---
 
 # Presentation
 
 ## Introduction
 
-FuncClient actions might require one or many dependencies to work:
+Foscia actions might require one or many dependencies to work:
 
 -   **Cache** will store already fetched models instances. It will avoid
     multiple instances of the same record coexisting and allows you to retrieve
@@ -26,9 +26,9 @@ have a specific implementation (HTTP, JSON:API, etc.).
 
 ## Core implementation
 
-FuncClient propose core implementation for the `Cache` and `Registry` actions'
-dependencies. Both classes are available through `func-client/core` namespace
-and both factory are available through `func-client/blueprints`.
+Foscia propose core implementation for the `Cache` and `Registry` actions'
+dependencies. Both classes are available through `foscia/core` namespace
+and both factory are available through `foscia/blueprints`.
 
 Those dependencies may be used with any implementations.
 

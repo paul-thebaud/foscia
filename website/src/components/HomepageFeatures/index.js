@@ -8,11 +8,11 @@ import styles from './styles.module.css';
 const FeatureList = [
   {
     Icon: SwapHorizontalSvg,
-    title: 'REST and JSON:API ready',
+    title: 'Intuitive, REST/JSON:API ready',
     description: (
       <>
-        FuncClient comes with a set of tools to quickly integrate with a
-        REST or JSON:API backend.
+        Foscia provides an intuitive API and comes with a set of tools to
+        quickly integrate with a REST or JSON:API backend.
         <br />
         You may also create your own implementations to fit your needs
         (Soap, SQL, IndexedDB, etc.).
@@ -24,7 +24,7 @@ const FeatureList = [
     title: 'Modular and fully tree-shakable',
     description: (
       <>
-        With functional programming, FuncClient can be used in many ways
+        With functional programming, Foscia can be used in many ways
         and unused functions can be tree-shaken from your production build
         automatically.
       </>
@@ -35,7 +35,7 @@ const FeatureList = [
     title: 'Strongly typed',
     description: (
       <>
-        FuncClient was build at start with TypeScript to propose you
+        Foscia was build at start with TypeScript to propose you
         a secure typing experience with consistent generic types and inference.
       </>
     ),

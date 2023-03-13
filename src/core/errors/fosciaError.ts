@@ -1,14 +1,14 @@
 /**
- * Extendable error class used inside FuncClient.
+ * Extendable error class used inside Foscia.
  */
-export default class FuncClientError extends Error {
+export default class FosciaError extends Error {
   /**
-   * Construct a new FuncClientError. Prefix the given message with "[func-client]".
+   * Construct a new FosciaError. Prefix the given message with "[foscia]".
    *
    * @param message
    */
   public constructor(message: string) {
-    super(`[func-client] ${message}`);
+    super(`[foscia] ${message}`);
 
     Object.defineProperty(this, 'name', {
       value: new.target.name,

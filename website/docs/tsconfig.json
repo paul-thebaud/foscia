@@ -18,22 +18,22 @@
     "jsx": "preserve",
     "baseUrl": "..",
     "paths": {
-      "func-client/core": [
+      "foscia/core": [
         "dist/core.d.ts"
       ],
-      "func-client/http": [
+      "foscia/http": [
         "dist/http.d.ts"
       ],
-      "func-client/json": [
+      "foscia/json": [
         "dist/json.d.ts"
       ],
-      "func-client/jsonapi": [
+      "foscia/jsonapi": [
         "dist/jsonapi.d.ts"
       ],
-      "func-client/jsonrest": [
+      "foscia/jsonrest": [
         "dist/jsonrest.d.ts"
       ],
-      "func-client/blueprints": [
+      "foscia/blueprints": [
         "dist/blueprints.d.ts"
       ]
     }

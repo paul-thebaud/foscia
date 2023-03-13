@@ -1,4 +1,4 @@
-import FuncClientError from '@/core/errors/funcClientError';
+import FosciaError from '@/core/errors/fosciaError';
 
 /**
  * Error which occurs during serialization.
@@ -6,5 +6,5 @@ import FuncClientError from '@/core/errors/funcClientError';
  * It should be thrown when encountering a serializer configuration error
  * or a data source's data format mismatch.
  */
-export default class SerializerError extends FuncClientError {
+export default class SerializerError extends FosciaError {
 }

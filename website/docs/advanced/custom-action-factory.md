@@ -35,8 +35,8 @@ You are able to keep using the default blueprint factory and only replace some
 dependency by instantiating your action manually:
 
 ```javascript title="action.js"
-import { makeJsonRest } from 'func-client/blueprints';
-import { context } from 'func-client/core';
+import { makeJsonRest } from 'foscia/blueprints';
+import { context } from 'foscia/core';
 import CustomDeserializer from './action/customDeserializer';
 
 // Note that we are not using the exported action function,
@@ -82,13 +82,13 @@ import {
     jsonRestExtensions,
     makeCache,
     makeRegistry,
-} from 'func-client/blueprints';
-import { context, makeAction } from 'func-client/core';
+} from 'foscia/blueprints';
+import { context, makeAction } from 'foscia/core';
 import {
     JsonRestAdapter,
     JsonRestDeserializer,
     JsonRestSerializer,
-} from 'func-client/jsonrest';
+} from 'foscia/jsonrest';
 
 const cache = makeCache();
 const registry = makeRegistry();
@@ -123,7 +123,7 @@ serializer dependency. Removing it will reduce your bundle size.
 
 :::caution
 
-When an action enhancer/runner requires a dependency, FuncClient will throw an
+When an action enhancer/runner requires a dependency, Foscia will throw an
 exception if this dependency is not available in the context. You may remove
 useless dependencies which you are not using for now.
 
@@ -145,9 +145,9 @@ import {
     jsonRestExtensions,
     makeCache,
     makeRegistry,
-} from 'func-client/blueprints';
-import { context, makeAction } from 'func-client/core';
-import { JsonRestAdapter, JsonRestDeserializer } from 'func-client/jsonrest';
+} from 'foscia/blueprints';
+import { context, makeAction } from 'foscia/core';
+import { JsonRestAdapter, JsonRestDeserializer } from 'foscia/jsonrest';
 
 const cache = makeCache();
 const registry = makeRegistry();

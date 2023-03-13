@@ -10,6 +10,40 @@
     overflow: hidden;
 }
 
+.hero__content {
+    position: relative;
+    z-index: 1;
+}
+
+.hero__logo__wrapper {
+    position: relative;
+}
+
+.hero__logo {
+    position: relative;
+    height: 128px;
+    width: 128px;
+    z-index: 1;
+}
+
+.hero__logo__bg {
+    position: absolute;
+    content: "";
+    top: 50%;
+    left: 50%;
+    height: 464px;
+    width: 464px;
+    border-radius: 50%;
+    background: #ffc107;
+    opacity: 40%;
+    transform: translate(-50%, -50%);
+    filter: blur(128px);
+}
+
+.hero__title {
+    font-family: var(--ifm-font-family-monospace) !important;
+}
+
 @media screen and (max-width: 996px) {
     .hero__title {
         font-size: 2.6rem;

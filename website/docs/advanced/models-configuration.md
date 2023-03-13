@@ -35,7 +35,7 @@ class Post extends makeModel(
 Common to multiple models through a custom model factory:
 
 ```javascript title="makeModel.js"
-import { attr, makeModelFactory, toDate } from 'func-client/core';
+import { attr, makeModelFactory, toDate } from 'foscia/core';
 
 export default makeModelFactory(
     {
@@ -101,17 +101,17 @@ class Post extends makeModel(
 
 ### Comparator and cloner
 
-You may have noticed that FuncClient provide some model history features. Those
+You may have noticed that Foscia provide some model history features. Those
 allow you to know which parts of a model instance changed since its retrieval
 from the data source or interact with those changes, through
 [some utilities functions](/docs/api/models-utilities): `changed`, `reset`, and
 `syncOriginal`.
 
-Currently, FuncClient won't clone any value when syncing the instance values (on
+Currently, Foscia won't clone any value when syncing the instance values (on
 save, etc.) and will do a strict equal comparison to known if the value changed.
 
 The following model configuration is equivalent to the default behavior of
-FuncClient:
+Foscia:
 
 ```javascript title="post.js"
 class Post extends makeModel(

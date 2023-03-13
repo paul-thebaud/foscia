@@ -14,7 +14,7 @@ description: Sharing common features across your models.
 :::
 
 Sometimes, you may want to share common features across your models. To solve
-this, you may use one of the two solutions proposed by FuncClient:
+this, you may use one of the two solutions proposed by Foscia:
 
 -   [Composition](#composition), to share features across some of your models
 -   [Factory](#factory), to share features across all of your models
@@ -32,7 +32,7 @@ rewritten to protect their descriptor. This allows using spread syntax when
 using composable in other models' definition.
 
 ```javascript title="composables/publishable.js"
-import { attr, makeComposable, toDate } from 'func-client/core';
+import { attr, makeComposable, toDate } from 'foscia/core';
 
 export default makeComposable({
     publishedAt: attr(toDate()),
@@ -46,7 +46,7 @@ The easiest way to use your composable is to object-spread it inside your
 model's definition.
 
 ```javascript title="models/post.js"
-import { makeModel } from 'func-client/core';
+import { makeModel } from 'foscia/core';
 import publishable from '../composables/publishable';
 
 export default class Post extends makeModel('posts', {
@@ -58,7 +58,7 @@ export default class Post extends makeModel('posts', {
 You may also use the model `extends` method as follows:
 
 ```javascript title="models/post.js"
-import { makeModel } from 'func-client/core';
+import { makeModel } from 'foscia/core';
 import publishable from '../composables/publishable';
 
 export default class Post extends makeModel('posts').extends(publishable) {}
@@ -70,17 +70,17 @@ Please note that when using the object spread syntax, you won't be able to get a
 correctly typed `this` context _inside the current definition object_ (it is
 still available in next/previous definition or in class body). This is because
 of an
-[**issue due to a TypeScript limitation**](https://github.com/paul-thebaud/func-client/issues/6).
+[**issue due to a TypeScript limitation**](https://github.com/paul-thebaud/foscia/issues/6).
 
 :::
 
 ## Factory
 
 When you need to share features across **all** of your models, you should use a
-custom model factory. It will replace the FuncClient's `makeModel` function.
+custom model factory. It will replace the Foscia's `makeModel` function.
 
 ```javascript title="makeModel.js"
-import { attr, makeModelFactory, toDate } from 'func-client/core';
+import { attr, makeModelFactory, toDate } from 'foscia/core';
 
 export default makeModelFactory(
     {

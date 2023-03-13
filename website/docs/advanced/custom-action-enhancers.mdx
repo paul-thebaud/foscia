@@ -12,15 +12,15 @@ description: Defining your own action enhancers and their associated extension.
 
 :::
 
-FuncClient tries to be agnostic of your data source, so sometimes you may
+Foscia tries to be agnostic of your data source, so sometimes you may
 require a custom enhancer to avoid code duplication.
 
 This is a simple guide on defining a custom enhancer, but you may also inspire
-from any existing FuncClient enhancers.
+from any existing Foscia enhancers.
 
 ## Goal
 
-Since FuncClient is pagination agnostic, providing a `first` enhancer is
+Since Foscia is pagination agnostic, providing a `first` enhancer is
 not possible. Here is what we want our new `first` enhancer to do:
 
 - Select the model just like the `find` enhancer, but not a record ID
@@ -44,8 +44,8 @@ This guide is an enhancer version of the `first` runner described in the
 Our implementation of `first` will target the model and paginate the context.
 
 ```ts title="action/enhancers/first.ts"
-import { Action, Model, ModelInstance, forModel } from 'func-client/core';
-import { paginate } from 'func-client/jsonapi';
+import { Action, Model, ModelInstance, forModel } from 'foscia/core';
+import { paginate } from 'foscia/jsonapi';
 
 export default function first<
   Context extends {},
@@ -69,10 +69,10 @@ context propagation through other enhancers and runners.
 
 ## Using the function
 
-Once your enhancer is ready, you may use it like any other FuncClient enhancer.
+Once your enhancer is ready, you may use it like any other Foscia enhancer.
 
 ```javascript
-import { one } from 'func-client/core';
+import { one } from 'foscia/core';
 import action from './action';
 import first from './action/enhancers/first';
 import Post from './models/post';
@@ -95,11 +95,11 @@ The goal of an extension definition is to strongly type the feature provided
 to our action (and so provide autocomplete, context propagation, etc.).
 
 Once your enhancer extension is ready, you will be able to use it
-[as any other enhancers of FuncClient](/docs/actions#extensions).
+[as any other enhancers of Foscia](/docs/actions#extensions).
 
 ```ts title="action/enhancers/first.ts"
-import {Action, ActionParsedExtension, ConsumeId, ConsumeModel, forModel, makeEnhancersExtension, Model, ModelInstance} from 'func-client/core';
-import {paginate} from 'func-client/jsonapi';
+import {Action, ActionParsedExtension, ConsumeId, ConsumeModel, forModel, makeEnhancersExtension, Model, ModelInstance} from 'foscia/core';
+import {paginate} from 'foscia/jsonapi';
 
 // Our previous enhancer code.
 export default function first<

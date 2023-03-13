@@ -3,7 +3,7 @@ import weakRefCacheMode from '@/core/cache/weakRefCacheMode';
 import AdapterError from '@/core/errors/adapterError';
 import DeserializerError from '@/core/errors/deserializerError';
 import ExpectedRunFailureError from '@/core/errors/expectedRunFailureError';
-import FuncClientError from '@/core/errors/funcClientError';
+import FosciaError from '@/core/errors/fosciaError';
 import SerializerError from '@/core/errors/serializerError';
 import registerHook from '@/core/hooks/registerHook';
 import runHook from '@/core/hooks/runHook';
@@ -51,7 +51,7 @@ export * from '@/core/actions';
 
 export {
   AdapterError,
-  FuncClientError,
+  FosciaError,
   DeserializerError,
   SerializerError,
   ExpectedRunFailureError,

@@ -24,7 +24,7 @@ configurable dependency have a `configure` method which will allow you to
 configure the dependency.
 
 ```javascript title="action.js"
-import { makeJsonRest } from 'func-client/blueprints';
+import { makeJsonRest } from 'foscia/blueprints';
 import Post from './models/post';
 
 const { cache, registry, adapter, deserializer, serializer, action } =

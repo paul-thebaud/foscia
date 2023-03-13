@@ -32,7 +32,7 @@ export default function update<
   return (action: Action<C & ConsumeSerializer<SD>>) => action
     .use(forInstance<C & ConsumeSerializer<SD>, D, I>(instance))
     .use(instanceData(instance))
-    .use(context({ action: 'UPDATE' }))
+    .use(context({ action: 'update' }))
     .use(changeInstanceExistence(true))
     .use(onPreparing(runInstanceHooks(instance, ['updating', 'saving'])))
     .use(onSuccess(runInstanceHooks(instance, ['updated', 'saved'])));

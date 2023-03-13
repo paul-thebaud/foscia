@@ -5,7 +5,7 @@ description: Available actions extensions.
 
 # Actions extensions
 
-FuncClient provides multiple extension packs, which contains many enhancers or
+Foscia provides multiple extension packs, which contains many enhancers or
 runners to integrate into your action to get
 [builder pattern style calls](/docs/actions#extensions).
 

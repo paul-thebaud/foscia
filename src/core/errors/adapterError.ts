@@ -1,4 +1,4 @@
-import FuncClientError from '@/core/errors/funcClientError';
+import FosciaError from '@/core/errors/fosciaError';
 
-export default class AdapterError extends FuncClientError {
+export default class AdapterError extends FosciaError {
 }
