@@ -14,7 +14,7 @@ TypeScript, and with any data source.
     programming
 -   Ready to use functions to integrate with any
     [JSON:API](https://jsonapi.org/) and JSON REST backends
--   Strongly typed everywhere, with generics typings on models, actions, etc.
+-   Type safe with generics typings on models, actions, etc.
 -   Dependency free (HTTP adapters are based on
     [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API))
 -   Free and open-source under

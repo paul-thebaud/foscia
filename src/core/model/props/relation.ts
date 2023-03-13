@@ -7,11 +7,15 @@ export type RelationConfig<T> = ModelProp<T> & {
 
 export default function relation<T>(
   relationType: ModelRelationType,
-  config: RelationConfig<T> = {},
+  config: string | RelationConfig<T> = {},
 ): ModelRelation<T> {
   return {
     $MODEL_TYPE: 'relation',
     $RELATION_TYPE: relationType,
-    ...config,
+    ...(
+      typeof config === 'string' ? {
+        type: config,
+      } : config
+    ),
   };
 }

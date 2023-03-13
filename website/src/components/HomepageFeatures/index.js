@@ -32,7 +32,7 @@ const FeatureList = [
   },
   {
     Icon: AlarmLightOutlineSvg,
-    title: 'Strongly typed',
+    title: 'Type safe',
     description: (
       <>
         Foscia was build at start with TypeScript to propose you

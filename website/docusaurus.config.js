@@ -98,7 +98,7 @@ const config = {
             href: 'https://github.com/paul-thebaud/foscia',
             position: 'right',
             className: 'header-github-link',
-            'aria-label': 'GitHub repository (in new tab)',
+            title: 'GitHub repository (open in new tab)',
           },
         ],
       },
@@ -140,6 +140,10 @@ const config = {
           {
             title: 'More',
             items: [
+              {
+                label: 'Playground',
+                href: 'https://stackblitz.com/edit/foscia?file=playground.ts',
+              },
               {
                 label: 'GitHub',
                 href: 'https://github.com/paul-thebaud/foscia',

@@ -18,7 +18,7 @@ it will be in your final production bundle even if you are not using them.
 Thanks to the way Foscia works, **all unused models helpers or actions
 enhancers/runners can be tree-shaken.**
 
-## Is it strongly typed?
+## Is it type safe?
 
 **Yes!** Foscia makes great use of Typescript generics to provide strongly
 typed models objects and contexts changes.
@@ -46,7 +46,7 @@ class Post extends makeModel('posts', {
 }
 ```
 
-Strongly typed models are used by context enhancers to provide strongly typed
+Type safe models are used by context enhancers to provide strongly typed
 parameters.
 
 ```typescript
@@ -82,7 +82,7 @@ export default class Post extends makeModel('posts', {
 }) {}
 ```
 
-## What our the downsides of Foscia approach?
+## What are the downsides of Foscia approach?
 
 When declaring models, there are no clear downside of the functional
 programming, as `this` context is still available in definition and classes

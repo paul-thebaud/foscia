@@ -20,7 +20,7 @@ import Link from '@docusaurus/Link';
 ```javascript
 import { makeModel, attr, hasMany, toDate } from 'foscia/core';
 
-makeModel('type', {
+makeModel('posts', {
     /* The model definition */
     title: attr<string>(),
     description: attr<string>(),
@@ -185,10 +185,12 @@ import type Comment from './comment';
 
 hasOne<User>(); // Without config.
 hasOne<User>({ readOnly: true }); // With config.
+hasOne<User>('users'); // With explicit type.
 hasOne<User>({ type: 'users' }); // With explicit type.
 
 hasMany<Comment>(); // Without config.
 hasMany<Comment>({ readOnly: true }); // With config.
+hasMany<Comment>('comments'); // With explicit type.
 hasMany<Comment>({ type: 'comments' }); // With explicit type.
 ```
 
@@ -201,8 +203,8 @@ Also consider that non-loaded relations will have a value of `undefined`.
 
 :::tip
 
-When using TypeScript, you should define the type of the relation to get a fully
-strongly typed model. We suggest you to use `import type` to avoid creating
+When using TypeScript, you should define the type of the relation to get a
+type safe model. We suggest you to use `import type` to avoid creating
 circular dependencies when having circular model relations.
 
 :::
