@@ -7,6 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
+  favicon: '/img/favicon.ico',
   title: 'Foscia',
   tagline: 'Type safe, modular and intuitive API client.',
   url: 'https://paul-thebaud.github.io',
