@@ -4,7 +4,7 @@ import { ModelRelation } from '@/core/model/types';
 export type HasManyConfig<T> = RelationConfig<T>;
 
 export default function hasMany<T>(
-  config: HasManyConfig<T[]> = {},
+  config: string | HasManyConfig<T[]> = {},
 ): ModelRelation<T[]> {
   return relation('hasMany', config);
 }
