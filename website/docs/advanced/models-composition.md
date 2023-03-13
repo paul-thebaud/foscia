@@ -1,5 +1,5 @@
 ---
-sidebar_position: 30
+sidebar_position: 20
 description: Sharing common features across your models.
 ---
 

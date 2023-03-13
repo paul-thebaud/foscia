@@ -55,7 +55,10 @@ Run the action and retrieve the raw adapter's data.
 ```javascript
 import { raw } from 'func-client/core';
 
-const data = await action().run(raw());
+// When using HttpAdapter, raw result is a fetch Response object.
+const response = await action().run(raw());
+// You may also transform the data by passing a function.
+const data = await action().run(raw((r) => r.json()));
 ```
 
 #### Arguments

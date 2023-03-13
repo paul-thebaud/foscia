@@ -1,6 +1,8 @@
 import InvalidContextError from '@/core/errors/invalidContextError';
 import { isNil } from '@/utilities';
 
+export const CONSUME_DEFAULT = Symbol('default throw invalid context error symbol') as unknown as never;
+
 export default function consumeContext<
   Context extends {},
   Key extends keyof Context,
@@ -9,11 +11,11 @@ export default function consumeContext<
   context: Context,
   key: Key,
   enhancers: string[],
-  defaultValue?: Default,
+  defaultValue: Default = CONSUME_DEFAULT,
 ) {
   const value = context[key];
   if (isNil(value)) {
-    if (!isNil(defaultValue)) {
+    if (defaultValue !== CONSUME_DEFAULT) {
       return defaultValue;
     }
 

@@ -9,6 +9,7 @@ import param from '@/http/actions/context/enhancers/param';
 import deepParamsSerializer from '@/http/adapter/deepParamsSerializer';
 import HttpAdapter from '@/http/adapter/httpAdapter';
 import paramsSerializer from '@/http/adapter/paramsSerializer';
+import AbortedError from '@/http/errors/abortedError';
 import ConflictError from '@/http/errors/conflictError';
 import ForbiddenError from '@/http/errors/forbiddenError';
 import HttpAdapterError from '@/http/errors/httpAdapterError';
@@ -26,6 +27,7 @@ export {
   HttpAdapter,
   paramsSerializer,
   deepParamsSerializer,
+  AbortedError,
   HttpAdapterError,
   InterruptedError,
   ResponseError,
