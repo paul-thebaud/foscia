@@ -5,7 +5,7 @@ import { Model, ModelInstance } from '@/core/model/types';
 
 /**
  * Only target the given model.
- * In most cases, you should use {@link model}, {@link find} or any other
+ * In most cases, you should use {@link forModel}, {@link find} or any other
  * model's enhancers instead of `target`.
  *
  * @param model
