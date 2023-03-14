@@ -7,13 +7,13 @@ import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Layout from '@theme/Layout';
 import clsx from 'clsx';
 import React from 'react';
-import LogoIconSvg from '../icons/logo-icon.svg';
+import LogoIconSvg from '../../static/img/icon.svg';
 import styles from './index.module.css';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <header className={clsx('bg--primary-gradient', 'hero', styles.heroBanner)}>
+    <header className={clsx('hero', styles.heroBanner)}>
       <div className="container">
         <div className={styles.hero__logo__wrapper}>
           <div className={styles.hero__logo__bg} />
@@ -23,27 +23,27 @@ function HomepageHeader() {
           <h1 className={clsx('hero__title', styles.hero__title)}>
             {siteConfig.title}
           </h1>
-          <p className="hero__subtitle">
+          <p className={clsx('hero__subtitle', styles.hero__subtitle)}>
             {siteConfig.tagline}
           </p>
           <div className={styles.buttons}>
             <Link
-              className="button button--secondary button--lg margin--sm"
+              className={clsx('button button--secondary button--lg margin--sm', styles.hero__button)}
               to="/docs/about"
             >
-              About 🔎
+              About
             </Link>
             <Link
-              className="button button--secondary button--lg margin--sm"
+              className={clsx('button button--secondary button--lg margin--sm', styles.hero__button)}
               to="/docs/getting-started"
             >
-              Getting started 🚀
+              Getting started
             </Link>
             <Link
-              className="button button--secondary button--lg margin--sm"
+              className={clsx('button button--secondary button--lg margin--sm', styles.hero__button)}
               to="https://stackblitz.com/edit/foscia?file=playground.ts"
             >
-              Playground 🛝
+              Playground
             </Link>
           </div>
         </div>
