@@ -1,7 +1,5 @@
-import { hasMany } from '@/core';
-import makeModel from '@/core/model/makeModel';
-import attr from '@/core/model/props/attr';
-import type Comment from '@/playground/models/comment';
+import { attr, hasMany, makeModel } from '@/core';
+import type Comment from './comment';
 
 export default class Post extends makeModel('posts', {
   title: attr<string>(),
