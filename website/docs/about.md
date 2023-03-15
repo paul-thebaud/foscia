@@ -67,8 +67,8 @@ You may start to discover Foscia from different point of view.
     (models, actions, hooks, etc.)
 -   [`foscia/http`](/docs/api/foscia/modules/http): abstract HTTP adapter
     implementation
--   [`foscia/json`](/docs/api/foscia/modules/json): abstract raw JSON objects
+-   [`foscia/object`](/docs/api/foscia/modules/object): abstract raw objects
     (de)serializer implementations
 -   [`foscia/jsonapi`](/docs/api/foscia/modules/jsonapi):
     [JSON:API](https://jsonapi.org) implementation
--   [`foscia/jsonrest`](/docs/api/foscia/modules/jsonrest): REST implementation
+-   [`foscia/rest`](/docs/api/foscia/modules/rest): REST implementation
