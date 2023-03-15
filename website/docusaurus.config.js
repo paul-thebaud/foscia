@@ -48,9 +48,9 @@ const config = {
       entryPoints: [
         '../src/core.ts',
         '../src/http.ts',
-        '../src/json.ts',
+        '../src/object.ts',
         '../src/jsonapi.ts',
-        '../src/jsonrest.ts',
+        '../src/rest.ts',
         '../src/blueprints.ts',
       ],
       tsconfig: '../tsconfig.json',
