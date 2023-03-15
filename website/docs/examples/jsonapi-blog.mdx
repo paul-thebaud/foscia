@@ -55,12 +55,12 @@ export default class Post extends makeModel('posts', {
 ### View many
 
 ```javascript
-import { forModel, when } from 'foscia/core';
+import { forModel, when, all } from 'foscia/core';
 import {
     filterBy,
     sortByDesc,
     paginate,
-    allDocument,
+    usingDocument,
 } from 'foscia/jsonapi';
 import action from './action';
 import Post from './models/post';
@@ -71,10 +71,10 @@ export default async function fetchAllPost(query = {}) {
         .use(when(query.search, (a, s) => a.use(filterBy('search', s))))
         .use(sortByDesc('createdAt'))
         .use(paginate({ number: query.page ?? 1 }))
-        .run(allDocument());
+        .run(all(usingDocument));
 }
 
-const { instances, meta } = await fetchAllPost({ search: 'Hello' });
+const { instances, document } = await fetchAllPost({ search: 'Hello' });
 ```
 
 ### View one
@@ -94,7 +94,7 @@ const post = await fetchOnePost('123-abc');
 ### Create or update one
 
 ```javascript
-import { changed, fill, one, reset, save, when } from 'foscia/core';
+import { changed, fill, oneOrCurrent, reset, save, when } from 'foscia/core';
 import action from './action';
 import Post from './models/post';
 
@@ -174,12 +174,12 @@ export default function publishPost(post, query = {}) {
     .run(oneOrFail());
 }
 
-// Sends a GET to "/<your-base-url>/posts/actions/best-posts
+// Sends a GET to "<your-base-url>/posts/actions/best-posts
 // and deserialize a list of Post instances.
 const posts = await bestPosts();
 
 const post = new Post();
-// Sends a POST to "/<your-base-url>/posts/<id>/actions/publish
+// Sends a POST to "<your-base-url>/posts/<id>/actions/publish
 // and deserialize a Post instance.
 await publishPost(post);
 ```

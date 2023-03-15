@@ -1,7 +1,7 @@
 import { ModelInstance } from '@/core';
 import { AllData } from '@/core/actions/context/runners/all';
 import { OneData } from '@/core/actions/context/runners/oneOr';
-import { JsonApiDeserializedData } from '@/jsonapi/deserializer/jsonApiDeserializer';
+import { JsonApiDeserializedData } from '@/jsonapi/jsonApiDeserializer';
 
 /**
  * Append the JSON:API document object to data object.

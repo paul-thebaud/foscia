@@ -3,13 +3,13 @@ import crudExtensions from '@/blueprints/extensions/crudExtension';
 import hooksExtensions from '@/blueprints/extensions/hooksExtension';
 import httpExtensions from '@/blueprints/extensions/httpExtension';
 import jsonApiExtensions from '@/blueprints/extensions/jsonApiExtension';
-import jsonRestExtensions from '@/blueprints/extensions/jsonRestExtension';
+import restExtension from '@/blueprints/extensions/restExtension';
 import readExtensions from '@/blueprints/extensions/readExtension';
 import jsonApiStarterExtensions from '@/blueprints/extensions/starters/jsonApiStarterExtensions';
-import jsonRestStarterExtensions from '@/blueprints/extensions/starters/jsonRestStarterExtensions';
+import restStarterExtensions from '@/blueprints/extensions/starters/restStarterExtensions';
 import writeExtensions from '@/blueprints/extensions/writeExtension';
 import makeJsonApi from '@/blueprints/jsonapi/makeJsonApi';
-import makeJsonRest from '@/blueprints/jsonrest/makeJsonRest';
+import makeJsonRest from '@/blueprints/rest/makeJsonRest';
 import makeCache from '@/blueprints/makeCache';
 import makeRegistry from '@/blueprints/makeRegistry';
 
@@ -25,7 +25,7 @@ export {
   hooksExtensions,
   httpExtensions,
   jsonApiExtensions,
-  jsonRestExtensions,
+  restExtension,
   jsonApiStarterExtensions,
-  jsonRestStarterExtensions,
+  restStarterExtensions,
 };

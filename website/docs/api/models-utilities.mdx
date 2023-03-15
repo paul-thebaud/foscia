@@ -5,7 +5,7 @@ description: Available models utilities.
 
 # Models utilities
 
-## Functions
+## Common
 
 ### `fill`
 
@@ -147,6 +147,8 @@ if (areSameInstances) { /* do something */ }
 
 `{boolean}`
 
+## Factories
+
 ### `makeModel`
 
 Create a model class.
@@ -182,7 +184,7 @@ const makeModel = makeModelFactory({ /* definition */ }, { /* config */ });
 
 #### Arguments
 
-- `{ModelDefinition | undefined }` `baseRawDefinition`
+- `{ModelDefinition | undefined}` `baseRawDefinition`
 - [`{ModelConfig | undefined}`](/docs/api/foscia/modules/core#modelconfig) `baseConfig` (omitting `type`)
 
 #### Returns

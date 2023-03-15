@@ -22,11 +22,11 @@ not fit custom implementations or full tree-shaking needs.
 ## Replacing some dependencies
 
 Sometimes, you may need to only replace an overwritten dependency (such as a
-customized version of the `JsonRestDeserializer`). Admitting you have an
-extended version of this deserializer like:
+customized version of the `RestDeserializer`). Admitting you have an extended
+version of this deserializer like:
 
 ```javascript title="action/customDeserializer.js"
-export default class CustomDeserializer extends JsonRestDeserializer {
+export default class CustomDeserializer extends RestDeserializer {
     // ...your overwrite...
 }
 ```
@@ -86,15 +86,25 @@ import {
 import { context, makeAction } from 'foscia/core';
 import {
     JsonRestAdapter,
-    JsonRestDeserializer,
-    JsonRestSerializer,
+    RestDeserializer,
+    RestSerializer,
 } from 'foscia/jsonrest';
 
 const cache = makeCache();
 const registry = makeRegistry();
-const adapter = new JsonRestAdapter({ baseURL: 'https://example.com/api' });
-const deserializer = new JsonRestDeserializer();
-const serializer = new JsonRestSerializer();
+const adapter = new HttpAdapter({
+    baseURL: 'https://example.com/api',
+    defaultBodyAs: (body) => JSON.stringify(body),
+    defaultHeaders: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+    },
+});
+const deserializer = new RestDeserializer({
+    dataReader: (response) =>
+        response.status === 204 ? undefined : response.json(),
+});
+const serializer = new RestSerializer();
 const Action = makeAction({
     ...coreExtensions,
     ...crudExtensions,
@@ -147,12 +157,22 @@ import {
     makeRegistry,
 } from 'foscia/blueprints';
 import { context, makeAction } from 'foscia/core';
-import { JsonRestAdapter, JsonRestDeserializer } from 'foscia/jsonrest';
+import { JsonRestAdapter, RestDeserializer } from 'foscia/jsonrest';
 
 const cache = makeCache();
 const registry = makeRegistry();
-const adapter = new JsonRestAdapter({ baseURL: 'https://example.com/api' });
-const deserializer = new JsonRestDeserializer();
+const adapter = new HttpAdapter({
+    baseURL: 'https://example.com/api',
+    defaultBodyAs: (body) => JSON.stringify(body),
+    defaultHeaders: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+    },
+});
+const deserializer = new RestDeserializer({
+    dataReader: (response) =>
+        response.status === 204 ? undefined : response.json(),
+});
 const Action = makeAction({
     ...coreExtensions,
     ...readExtensions,

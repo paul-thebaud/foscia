@@ -2,20 +2,13 @@
 
 ## General features
 
-- [ ] **MAJOR** Method of composable/models this context broken.
+- [ ] Real playground directory to test lib locally
+- [ ] Include, filterBy, etc. should use attr/rel alias
 - [ ] Action context should let any key be available.
 - [ ] Generics should be clearly named.
-- [ ] Store raw original attributes in model instances.
-- [ ] Add @tag, @category or @group to enhancers, runners, etc.
 - [ ] Replace `extends ActionContext` by `{}` when available.
-- [ ] Manage `lid` on models
-- [ ] Created instance should be used when deserializing the created record
-- [ ] `useModelContext` and other contextual user with exception throwing
 - [ ] Receipts docs (client side generated ID, "first" enhancer)
-- [ ] Generic context (ID, etc.) should not be mentioned in ActionContext type
-- [ ] Prettier on docs to quickly format code
 - [ ] Model and relations metadata (missing, loading, etc.)
-- [ ] Manage errors when users are bypassing types (relations not found, etc.)
 - [ ] Tests using vitest
 
 ## Questions

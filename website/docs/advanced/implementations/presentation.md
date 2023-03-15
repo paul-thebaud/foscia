@@ -19,7 +19,7 @@ Foscia actions might require one or many dependencies to work:
     cache and registry internally.
 -   **Adapter** create the exchange between your actions' built context and your
     data source. As an example, it will _translate_ the context to an HTTP
-    request when using JSON:API or JSON REST implementations.
+    request when using JSON:API or REST implementations.
 
 Some dependencies have a common implementation through the core and some may
 have a specific implementation (HTTP, JSON:API, etc.).
@@ -27,8 +27,8 @@ have a specific implementation (HTTP, JSON:API, etc.).
 ## Core implementation
 
 Foscia propose core implementation for the `Cache` and `Registry` actions'
-dependencies. Both classes are available through `foscia/core` namespace
-and both factory are available through `foscia/blueprints`.
+dependencies. Both classes are available through `foscia/core` namespace and
+both factory are available through `foscia/blueprints`.
 
 Those dependencies may be used with any implementations.
 
@@ -41,8 +41,8 @@ The JSON:API implementation is built on a common base for HTTP interaction and
 JSON (de)serialization. It is described in depth inside the
 [JSON:API implementation guide](docs/advanced/implementations/jsonapi).
 
-## JSON REST implementation
+## REST implementation
 
-The JSON REST implementation is built on a common base for HTTP interaction and
-JSON (de)serialization. It is described in depth inside the
-[JSON REST implementation guide](docs/advanced/implementations/jsonrest).
+The REST implementation is built on a common base for HTTP interaction and raw
+objects (de)serialization. It is described in depth inside the
+[REST implementation guide](docs/advanced/implementations/rest).

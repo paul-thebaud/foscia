@@ -4,7 +4,7 @@ import { context } from '@/core/actions';
 import makeAction from '@/core/actions/makeAction';
 import { deepParamsSerializer } from '@/http';
 import { JsonApiDeserializer, JsonApiSerializer } from '@/jsonapi';
-import JsonApiAdapter from '@/jsonapi/adapter/jsonApiAdapter';
+import JsonApiAdapter from '@/jsonapi/jsonApiAdapter';
 import { toKebab } from '@/utilities';
 
 /**

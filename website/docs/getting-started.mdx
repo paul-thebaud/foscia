@@ -95,7 +95,7 @@ using this action factory will be seen in the
 
 Blueprints provide a quick initialization of your action factory for different
 common use-cases. Currently, you may choose between the two available
-blueprints: [JSON:API](https://jsonapi.org) or JSON REST.
+blueprints: [JSON:API](https://jsonapi.org) or REST.
 
 <Tabs groupId="implementation">
   <TabItem
@@ -135,12 +135,12 @@ export default action;
   >
 
 `makeJsonRest` is a blueprint to quickly initiate an action factory to interact
-with a normalized JSON REST backend. It provides all the available tooling, such
-as a model registry, an instance cache, a serializer and deserializer and an
-adapter.
+with a normalized REST backend exchanging JSON.
+It provides all the available tooling, such as a model registry, an instance
+cache, a serializer and deserializer and an adapter.
 
 You can read more details on the
-[JSON REST implementation page](/docs/advanced/implementations/jsonrest).
+[REST implementation page](/docs/advanced/implementations/rest).
 
 ```javascript title="action.js"
 import { makeJsonRest } from 'foscia/blueprints';
@@ -165,7 +165,7 @@ export default action;
   >
 
 For the moment, there is no other official implementation available besides
-JSON:API and JSON REST. You should therefore either:
+JSON:API and REST. You should therefore either:
 
 - **Implement your own action's dependencies**, you should inspire from existing
   implementations to build your own.
@@ -306,7 +306,7 @@ const response = await action().use(create(post)).run(oneOrCurrent());
 
 ### Running HTTP custom actions
 
-Using JSON:API or JSON REST blueprints, you may also want to use Foscia to
+Using JSON:API or REST blueprints, you may also want to use Foscia to
 make non-standard API calls.
 
 ```javascript
@@ -331,4 +331,4 @@ console.log(response.status);
 ```
 
 This way, you can standardize all API calls across your application, even when
-those are non JSON:API/JSON REST related.
+those are non JSON:API/REST related.

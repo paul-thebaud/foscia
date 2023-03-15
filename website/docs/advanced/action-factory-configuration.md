@@ -19,9 +19,9 @@ You can customize the dependencies when
 when using a [custom action factory](/docs/advanced/custom-action-factory).
 
 In this guide, we will see how to customize dependencies configuration through
-the JSON REST blueprint action factory as an example. For this, each
-configurable dependency have a `configure` method which will allow you to
-configure the dependency.
+the REST blueprint action factory as an example. For this, each configurable
+dependency have a `configure` method which will allow you to configure the
+dependency.
 
 ```javascript title="action.js"
 import { makeJsonRest } from 'foscia/blueprints';

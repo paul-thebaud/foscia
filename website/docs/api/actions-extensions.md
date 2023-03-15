@@ -54,19 +54,16 @@ Combination of:
 ### `readExtension`
 
 -   [`all`](/docs/api/actions-runners#all)
--   [`all`](/docs/api/actions-runners#allusing)
 -   [`one`](/docs/api/actions-runners#one)
 -   [`oneOrFail`](/docs/api/actions-runners#oneorfail)
 -   [`oneOrCurrent`](/docs/api/actions-runners#oneorcurrent)
 -   [`oneOr`](/docs/api/actions-runners#oneor)
--   [`oneUsing`](/docs/api/actions-runners#oneusing)
 -   [`none`](/docs/api/actions-runners#none)
 -   [`raw`](/docs/api/actions-runners#raw)
 -   [`rawUsing`](/docs/api/actions-runners#rawusing)
 -   [`cached`](/docs/api/actions-runners#cached)
 -   [`cachedOrFail`](/docs/api/actions-runners#cachedorfail)
 -   [`cachedOr`](/docs/api/actions-runners#cachedor)
--   [`cachedUsing`](/docs/api/actions-runners#cachedusing)
 
 ### `writeExtension`
 
@@ -108,8 +105,8 @@ Combination of:
 -   [`sortByDesc`](/docs/api/actions-enhancers#sortbydesc)
 -   [`paginate`](/docs/api/actions-enhancers#paginate)
 
-## JSON REST packs
+## REST packs
 
-### `jsonRestExtension`
+### `restExtension`
 
 No enhancers/runners available for now in this extension.

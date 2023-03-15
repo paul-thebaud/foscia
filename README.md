@@ -1,33 +1,52 @@
-# Foscia
+<p align="center">
+  <a href="https://paul-thebaud.github.io/foscia">
+    <img width="180" src="https://paul-thebaud.github.io/foscia/img/icon.svg" alt="Foscia">
+  </a>
+</p>
 
-[![Tests](https://github.com/paul-thebaud/foscia/actions/workflows/tests.yml/badge.svg)](https://github.com/paul-thebaud/foscia/actions/workflows/tests.yml)
-[![Publish](https://github.com/paul-thebaud/foscia/actions/workflows/publish.yml/badge.svg)](https://github.com/paul-thebaud/foscia/actions/workflows/publish.yml)
-[![NPM version](https://img.shields.io/npm/v/foscia)](https://www.npmjs.com/package/foscia)
-[![NPM downloads](https://img.shields.io/npm/dt/foscia)](https://www.npmjs.com/package/foscia)
-![MIT license](https://img.shields.io/npm/l/foscia)
+<p align="center">
+<a href="https://www.npmjs.com/package/foscia">
+  <img src="https://img.shields.io/npm/v/foscia" alt="NPM package">
+</a>
+<a href="https://github.com/paul-thebaud/foscia/actions/workflows/tests.yml">
+  <img src="https://github.com/paul-thebaud/foscia/actions/workflows/tests.yml/badge.svg" alt="Test workflow">
+</a>
+<a href="https://codecov.io/gh/paul-thebaud/foscia">
+  <img src="https://codecov.io/gh/paul-thebaud/foscia/branch/main/graph/badge.svg?token=TODO" alt="Codecov Coverage">
+</a>
+<a href="https://github.com/paul-thebaud/foscia/blob/main/LICENSE">
+  <img src="https://img.shields.io/npm/l/foscia" alt="MIT License">
+</a>
+</p>
 
-[Check out Foscia website](https://paul-thebaud.github.io/foscia/)
-or [try it now in your browser](https://stackblitz.com/edit/foscia?file=playground.ts).
+<p align="center">
+<a href="https://paul-thebaud.github.io/foscia">
+  Foscia Website
+</a>
+|
+<a href="https://stackblitz.com/edit/foscia?file=playground.ts">
+  StackBlitz Playground
+</a>
+</p>
 
-## About
+## Foscia
 
-**Foscia** is a simple functional programming oriented API client. It is
-framework-agnostic and can integrate with any Web app using JavaScript or
-TypeScript, and with any data source.
+> Type safe, modular and intuitive API client.
 
 - Modular, highly extensible and fully tree-shakable thanks to functional
   programming
 - Ready to use functions to integrate with any
   [JSON:API](https://jsonapi.org/) and JSON REST backends
 - Strongly typed everywhere, with generics typings on models, actions, etc.
-- Dependency free (HTTP adapters are based on
+- Framework-agnostic and dependency free (HTTP adapters are based on
   [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API))
 - Free and open-source under
   [MIT license](https://opensource.org/licenses/MIT)
 - _Coming soon:_ Fully tested and documented
 
-> This package is a work in progress. It is unstable, untested and not
-> documented.
+> Foscia is currently in alpha stage. It may contain bugs and the API may change.
+> [**Please fill an issue**](https://github.com/paul-thebaud/foscia/issues)
+> to give your feedback.
 
 ## Contributing
 

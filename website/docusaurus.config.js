@@ -66,6 +66,13 @@ const config = {
           autoCollapseCategories: true,
         },
       },
+      announcementBar: {
+        id: 'alpha_stage',
+        content: 'Foscia is currently in alpha stage, <a target="_blank" rel="noopener noreferrer" href="https://github.com/paul-thebaud/foscia/issues">please fill an issue</a> to give your feedback.',
+        backgroundColor: 'var(--ifm-background-surface-color)',
+        textColor: 'inherit',
+        isCloseable: false,
+      },
       navbar: {
         title: 'Foscia',
         items: [
@@ -78,16 +85,6 @@ const config = {
             to: '/docs/getting-started',
             position: 'left',
             label: 'Documentation',
-          },
-          {
-            to: '/docs/category/api',
-            position: 'left',
-            label: 'API',
-          },
-          {
-            to: '/docs/faq',
-            position: 'left',
-            label: 'FAQ',
           },
           {
             href: 'https://stackblitz.com/edit/foscia?file=playground.ts',

@@ -1,0 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Readex+Pro&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap");
+
+#app {
+    font-family: "Readex Pro", sans-serif;
+    text-align: center;
+    padding: 24px;
+}
+
+code {
+    font-family: "Fira Mono", monospace;
+}
+
+a {
+    color: #ac1b55;
+}
+
+.logo {
+    width: 86px;
+}

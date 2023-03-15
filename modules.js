@@ -1,9 +1,9 @@
 export default [
-  'core',
-  'utilities',
-  'http',
-  'json',
-  'jsonapi',
-  'jsonrest',
   'blueprints',
+  'core',
+  'http',
+  'object',
+  'jsonapi',
+  'rest',
+  'utilities',
 ];

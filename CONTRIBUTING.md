@@ -12,12 +12,13 @@ features takes place in the
 ## Pull Requests
 
 - **Lint your code.** Make sure your code follows our coding standards by
-  running `yarn lint` on the CLI.
+  running `pnpm lint` on the CLI.
 
 - **Add tests!** Your patch won't be accepted if it does not have tests.
+  Run tests using `pnpm test`
 
 - **Document any change in behaviour.** Make sure the `README.md` and any other
-  relevant documentation are kept up-to-date.
+  relevant documentation (inside `website/docs`) are kept up-to-date.
 
 - **Create feature branches.** Don't ask us to pull from your master branch.
 
@@ -32,45 +33,61 @@ features takes place in the
 
 ## Useful commands
 
-> Notice that we use PNPM as our package manager.
+> Notice that we use [PNPM](https://pnpm.io/) as our package manager.
 
 ### Package development
 
-#### Linting code
-
-``` shell
-pnpm lint
-```
-
 #### Run local playground
+
+This will run a local website which will run the `playground/main.ts` file.
+You should use it to locally test your new features/bug fixes in addition
+to automated tests.
 
 ``` shell
 pnpm dev
 ```
 
-#### Build dist
+#### Build
 
 ``` shell
 pnpm build
+```
+
+#### Lint
+
+``` shell
+pnpm lint
+```
+
+#### Test watch
+
+``` shell
+pnpm test
+```
+
+#### Test coverage
+
+``` shell
+pnpm coverage
 ```
 
 ### Documentation development
 
 You can work on documentation by moving to the `website` directory.
 
-#### Prettier code
+#### Prettier docs
 
 ``` shell
 pnpm prettier
 ```
 
-#### Run local website
+#### Run local docs
 
 ``` shell
 pnpm start
 ```
 
-#### Build dist
+#### Build docs
 
 ``` shell
 pnpm build

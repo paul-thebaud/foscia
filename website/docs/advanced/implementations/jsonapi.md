@@ -10,8 +10,9 @@ description:
 
 JSON:API implementation is an extended version of the
 [**HTTP adapter**](/docs/advanced/implementations/http) and
-[**JSON (de)serializer**](docs/advanced/implementations/json). You may check out
-those implementations to known about common behavior and configuration options.
+[**JSON (de)serializer**](docs/advanced/implementations/object). You may check
+out those implementations to known about common behavior and configuration
+options.
 
 :::
 

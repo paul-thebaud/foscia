@@ -20,8 +20,8 @@ enhancers/runners can be tree-shaken.**
 
 ## Is it type safe?
 
-**Yes!** Foscia makes great use of Typescript generics to provide strongly
-typed models objects and contexts changes.
+**Yes!** Foscia makes great use of Typescript generics to provide strongly typed
+models objects and contexts changes.
 
 Here are a short example of the capabilities reusing the previous examples:
 

@@ -1,5 +1,7 @@
-.DS_Store
-node_modules/
+/node_modules/
+
+# build files
+/coverage/
 /dist/
 /dist-temp/
 
@@ -9,6 +11,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # editor directories and files
+.DS_Store
 .idea
 .vscode
 *.suo
