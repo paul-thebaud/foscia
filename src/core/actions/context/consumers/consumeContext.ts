@@ -11,11 +11,11 @@ export default function consumeContext<
   context: Context,
   key: Key,
   enhancers: string[],
-  defaultValue: Default = CONSUME_DEFAULT,
+  defaultValue?: Default,
 ) {
   const value = context[key];
   if (isNil(value)) {
-    if (defaultValue !== CONSUME_DEFAULT) {
+    if (defaultValue !== undefined) {
       return defaultValue;
     }
 

@@ -1,4 +1,4 @@
-import { ActionContext, ModelInstance, ModelRelation } from '@/core';
+import { ModelInstance, ModelRelation } from '@/core';
 import { ObjectSerializer } from '@/object';
 import { DataWrapper, RestNewResource, RestSerializerConfig } from '@/rest/types';
 import { assignConfig } from '@/utilities';
@@ -19,7 +19,7 @@ export default class RestSerializer extends ObjectSerializer<Dictionary> {
     return this;
   }
 
-  public async serialize(instance: ModelInstance, context: ActionContext) {
+  public async serialize(instance: ModelInstance, context: {}) {
     const resource = await super.serialize(instance, context);
 
     return this.dataWrapper ? this.dataWrapper(resource) : resource;
@@ -54,7 +54,7 @@ export default class RestSerializer extends ObjectSerializer<Dictionary> {
     _def: ModelRelation,
     related: ModelInstance,
   ) {
-    // TODO Object or ID? Type?
+    // TODO Provide configuration for related instance serialization.
     return related.id;
   }
 }

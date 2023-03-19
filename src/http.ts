@@ -6,9 +6,6 @@ import makePost from '@/http/actions/context/enhancers/makePost';
 import makePut from '@/http/actions/context/enhancers/makePut';
 import makeRequest from '@/http/actions/context/enhancers/makeRequest';
 import param from '@/http/actions/context/enhancers/param';
-import deepParamsSerializer from '@/http/utilities/deepParamsSerializer';
-import HttpAdapter from '@/http/httpAdapter';
-import paramsSerializer from '@/http/utilities/paramsSerializer';
 import AbortedError from '@/http/errors/abortedError';
 import ConflictError from '@/http/errors/conflictError';
 import ForbiddenError from '@/http/errors/forbiddenError';
@@ -20,13 +17,20 @@ import ResponseError from '@/http/errors/responseError';
 import ServerError from '@/http/errors/serverError';
 import TooManyRequestsError from '@/http/errors/tooManyRequestsError';
 import UnauthorizedError from '@/http/errors/unauthorizedError';
+import HttpAdapter from '@/http/httpAdapter';
+import appendIncludeParams from '@/http/utilities/appendIncludeParams';
+import bodyAsJson from '@/http/utilities/bodyAsJson';
+import deepParamsSerializer from '@/http/utilities/deepParamsSerializer';
+import paramsSerializer from '@/http/utilities/paramsSerializer';
 
 export * from '@/http/types';
 
 export {
   HttpAdapter,
+  bodyAsJson,
   paramsSerializer,
   deepParamsSerializer,
+  appendIncludeParams,
   AbortedError,
   HttpAdapterError,
   InterruptedError,

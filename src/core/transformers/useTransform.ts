@@ -1,6 +1,5 @@
 import { ObjectTransform, Transform } from '@/core/transformers/types';
 
-// TODO Do not export this function.
 export default function useTransform(
   transformer: Transform<unknown, unknown> | undefined,
   action: keyof ObjectTransform<unknown, unknown>,

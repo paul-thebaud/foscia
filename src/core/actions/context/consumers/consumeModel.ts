@@ -1,19 +1,19 @@
-import consumeContext, { CONSUME_DEFAULT } from '@/core/actions/context/consumers/consumeContext';
+import consumeContext from '@/core/actions/context/consumers/consumeContext';
 import { ConsumeModel } from '@/core/actions/types';
 import { Model } from '@/core/model/types';
 
-export default function consumeModel<M extends Model, D = never>(
-  context: Partial<ConsumeModel<M>>,
-  defaultValue: D = CONSUME_DEFAULT,
+export default function consumeModel<C extends {}, M extends Model, D = never>(
+  context: C & Partial<ConsumeModel<M>>,
+  defaultValue?: D,
 ) {
   return consumeContext(context, 'model', [
-    'model',
+    'forModel',
     'find',
     'create',
     'update',
     'save',
     'destroy',
-    'instance',
+    'forInstance',
     'target',
   ], defaultValue);
 }

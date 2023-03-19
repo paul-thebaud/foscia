@@ -1,5 +1,5 @@
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
-import { Action, ActionContext, ActionParsedExtension } from '@/core/actions/types';
+import { Action, ActionParsedExtension } from '@/core/actions/types';
 
 /**
  * Merge the given context into the action's current context.
@@ -17,7 +17,7 @@ export default function context<NC extends {}>(contextToMerge: NC) {
 }
 
 type EnhancerExtension = ActionParsedExtension<{
-  context<C extends {}, E extends {}, NC extends ActionContext>(
+  context<C extends {}, E extends {}, NC extends {}>(
     this: Action<C, E>,
     context: NC,
   ): Action<C & NC, E>;

@@ -1,8 +1,8 @@
 import makeCache from '@/blueprints/makeCache';
+import makeKeyNormalizer from '@/blueprints/makeKeyNormalizer';
 import makeRegistry from '@/blueprints/makeRegistry';
-import { context } from '@/core/actions';
-import makeAction from '@/core/actions/makeAction';
-import HttpAdapter from '@/http/httpAdapter';
+import { context, makeAction } from '@/core';
+import { bodyAsJson, HttpAdapter } from '@/http';
 import { RestDeserializer, RestSerializer } from '@/rest';
 
 /**
@@ -19,12 +19,13 @@ export default function makeJsonRest<Extension extends {} = {}>(config: {
   const registry = makeRegistry();
   const adapter = new HttpAdapter({
     baseURL: config.baseURL ?? '/api',
-    defaultBodyAs: (body) => JSON.stringify(body),
+    defaultBodyAs: bodyAsJson,
     defaultHeaders: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
   });
+  const keyNormalizer = makeKeyNormalizer();
   const deserializer = new RestDeserializer({
     dataReader: (response) => (
       response.status === 204 ? undefined : response.json()
@@ -34,13 +35,14 @@ export default function makeJsonRest<Extension extends {} = {}>(config: {
 
   const Action = makeAction(config.extensions);
   const withDependencies = context({
-    cache, registry, adapter, deserializer, serializer,
+    cache, registry, adapter, keyNormalizer, deserializer, serializer,
   });
 
   return {
     cache,
     registry,
     adapter,
+    keyNormalizer,
     deserializer,
     serializer,
     withDependencies,

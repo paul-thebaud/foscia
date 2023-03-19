@@ -1,4 +1,3 @@
-import { ActionContext } from '@/core';
 import { Awaitable, Dictionary } from '@/utilities';
 
 /**
@@ -17,7 +16,8 @@ export type HttpMethod =
   | 'unlink' | 'UNLINK';
 
 /**
- * The configuration object for a request.
+ * The configuration object for a request which is used as an action's context
+ * when using HttpAdapter.
  */
 export type HttpRequestConfig = {
   method?: HttpMethod;
@@ -39,7 +39,8 @@ export type HttpRequestConfig = {
 export type HttpAdapterConfig = {
   fetch?: typeof fetch;
   baseURL?: string | null;
-  paramsSerializer?: HttpParamsSerializer;
+  serializeParams?: HttpParamsSerializer;
+  appendParams?: ParamsAppender | null;
   defaultHeaders?: Dictionary<string>;
   defaultBodyAs?: BodyAsTransformer | null;
   requestTransformers?: RequestTransformer[];
@@ -48,8 +49,6 @@ export type HttpAdapterConfig = {
   modelPathTransformer?: PathTransformer | null;
   relationPathTransformer?: PathTransformer | null;
 };
-
-export type HttpActionContext = ActionContext & HttpRequestConfig;
 
 export type HttpParamsSerializer = (params: Dictionary) => string | undefined;
 
@@ -61,7 +60,7 @@ export type HttpRequestInit = {
 };
 
 export type HttpRequest = {
-  context: HttpActionContext;
+  context: HttpRequestConfig;
   url: string;
   init: HttpRequestInit;
 };
@@ -71,3 +70,4 @@ export type ResponseTransformer = (response: Response) => Awaitable<Response>;
 export type ErrorTransformer = (error: unknown) => Awaitable<unknown>;
 export type PathTransformer = (path: string) => string;
 export type BodyAsTransformer = (body: unknown, headers: Dictionary<string>) => Awaitable<BodyInit>;
+export type ParamsAppender = (context: HttpRequestConfig) => Awaitable<Dictionary>;

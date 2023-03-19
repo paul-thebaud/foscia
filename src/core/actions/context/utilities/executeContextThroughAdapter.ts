@@ -1,12 +1,13 @@
+import consumeAction from '@/core/actions/context/consumers/consumeAction';
 import consumeAdapter from '@/core/actions/context/consumers/consumeAdapter';
-import { ActionContext, ConsumeAdapter } from '@/core/actions/types';
+import { ConsumeAdapter } from '@/core/actions/types';
 import { Awaitable } from '@/utilities';
 
-export default function executeContextThroughAdapter<C extends ActionContext, AD>(
-  context: C & ConsumeAdapter<AD>,
+export default function executeContextThroughAdapter<AD>(
+  context: ConsumeAdapter<AD>,
 ): Awaitable<AD> {
   const adapter = consumeAdapter(context);
-  const action = context.action ?? 'read';
+  const action = consumeAction(context, 'read');
   if (action in adapter && typeof (adapter as any)[action] === 'function') {
     return (adapter as any)[action](context);
   }

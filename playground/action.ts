@@ -1,4 +1,5 @@
 import { makeJsonRest, restStarterExtensions } from '@/blueprints';
+import { logger } from '@/core';
 import Comment from './models/comment';
 import Post from './models/post';
 
@@ -18,6 +19,9 @@ const { action, registry } = makeJsonRest({
   baseURL: 'https://jsonplaceholder.typicode.com',
   extensions: restStarterExtensions,
 });
+
+// Set logger level to debug for playground.
+logger.level = 'debug';
 
 // Registration of our models.
 registry.register(Comment, Post);

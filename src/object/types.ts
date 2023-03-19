@@ -17,14 +17,8 @@ export type ObjectExtractedData<R> = {
   resources: Optional<R[] | R>;
 };
 
-export type ObjectDeserializerConfig = {
-  attributeKeyTransformer?: KeyTransformer | null;
-  relationKeyTransformer?: KeyTransformer | null;
-};
+export type ObjectDeserializerConfig = {};
 
-export type ObjectSerializerConfig = {
-  attributeKeyTransformer?: KeyTransformer | null;
-  relationKeyTransformer?: KeyTransformer | null;
-};
+export type ObjectSerializerConfig = {};
 
 export type KeyTransformer = (key: string) => string;

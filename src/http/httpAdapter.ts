@@ -1,5 +1,11 @@
-import { AdapterI } from '@/core';
-import paramsSerializer from '@/http/utilities/paramsSerializer';
+import {
+  AdapterI,
+  consumeAction,
+  consumeData,
+  consumeId,
+  consumeModelPath,
+  consumeRelationPath,
+} from '@/core';
 import AbortedError from '@/http/errors/abortedError';
 import ConflictError from '@/http/errors/conflictError';
 import ForbiddenError from '@/http/errors/forbiddenError';
@@ -12,27 +18,31 @@ import UnauthorizedError from '@/http/errors/unauthorizedError';
 import {
   BodyAsTransformer,
   ErrorTransformer,
-  HttpActionContext,
   HttpAdapterConfig,
   HttpMethod,
   HttpParamsSerializer,
   HttpRequest,
+  HttpRequestConfig,
   HttpRequestInit,
+  ParamsAppender,
   PathTransformer,
   RequestTransformer,
   ResponseTransformer,
 } from '@/http/types';
+import paramsSerializer from '@/http/utilities/paramsSerializer';
 import { assignConfig, Dictionary, isNil, optionalJoin, sequentialTransform } from '@/utilities';
 
 /**
  * Adapter implementation for HTTP interaction using fetch.
  */
 export default class HttpAdapter implements AdapterI<Response> {
+  private baseURL: string | null = null;
+
   private fetch = globalThis.fetch;
 
-  private paramsSerializer: HttpParamsSerializer = paramsSerializer;
+  private serializeParams: HttpParamsSerializer = paramsSerializer;
 
-  private baseURL: string | null = null;
+  private appendParams: ParamsAppender | null = null;
 
   private defaultHeaders: Dictionary<string> = {};
 
@@ -61,7 +71,7 @@ export default class HttpAdapter implements AdapterI<Response> {
   /**
    * @inheritDoc
    */
-  public async execute(context: HttpActionContext): Promise<Response> {
+  public async execute(context: HttpRequestConfig): Promise<Response> {
     const request = await this.transformRequest(context, await this.makeRequest(context));
 
     let response: Response;
@@ -91,7 +101,7 @@ export default class HttpAdapter implements AdapterI<Response> {
     return error instanceof NotFoundError;
   }
 
-  protected async makeRequest(context: HttpActionContext): Promise<HttpRequest> {
+  protected async makeRequest(context: HttpRequestConfig): Promise<HttpRequest> {
     return {
       context,
       url: await this.makeRequestURL(context),
@@ -99,10 +109,10 @@ export default class HttpAdapter implements AdapterI<Response> {
     };
   }
 
-  protected async makeRequestURL(context: HttpActionContext) {
+  protected async makeRequestURL(context: HttpRequestConfig) {
     return optionalJoin([
-      this.makeRequestURLEndpoint(context),
-      this.makeRequestURLParams(context),
+      await this.makeRequestURLEndpoint(context),
+      await this.makeRequestURLParams(context),
     ], '?');
   }
 
@@ -112,10 +122,10 @@ export default class HttpAdapter implements AdapterI<Response> {
    *
    * @param context
    */
-  protected async makeRequestInit(context: HttpActionContext) {
-    const method = this.makeRequestMethod(context).toUpperCase();
+  protected async makeRequestInit(context: HttpRequestConfig) {
+    const method = (await this.makeRequestMethod(context)).toUpperCase();
     let headers = { ...this.defaultHeaders };
-    let body = context.body ?? context.data;
+    let body = context.body ?? consumeData(context, null) ?? undefined;
 
     if (body instanceof FormData || body instanceof URLSearchParams) {
       delete headers['Content-Type'];
@@ -136,55 +146,81 @@ export default class HttpAdapter implements AdapterI<Response> {
     } as HttpRequestInit;
   }
 
-  protected makeRequestMethod(context: HttpActionContext): HttpMethod {
+  protected async makeRequestMethod(context: HttpRequestConfig): Promise<HttpMethod> {
     if (context.method) {
       return context.method;
     }
 
+    const action = consumeAction(context, null);
     const actionsMethodsMap: Dictionary = {
       read: 'GET',
       create: 'POST',
       update: 'PATCH',
       destroy: 'DELETE',
     };
-    if (context.action && actionsMethodsMap[context.action]) {
-      return actionsMethodsMap[context.action] as HttpMethod;
+    if (action && actionsMethodsMap[action]) {
+      return actionsMethodsMap[action] as HttpMethod;
     }
 
     return 'GET';
   }
 
-  protected makeRequestURLEndpoint(context: HttpActionContext) {
+  protected async makeRequestURLEndpoint(context: HttpRequestConfig) {
     const modelPathTransformer = this.modelPathTransformer ?? ((path: string) => path);
     const relationPathTransformer = this.relationPathTransformer ?? ((path: string) => path);
 
-    return optionalJoin([
+    const modelPath = consumeModelPath(context, null);
+    const id = consumeId(context, null);
+    const relationPath = consumeRelationPath(context, null);
+
+    const requestEndpoint = optionalJoin([
       isNil(context.baseURL) ? this.baseURL : context.baseURL,
-      isNil(context.modelPath) ? undefined : modelPathTransformer(context.modelPath),
-      isNil(context.id) ? undefined : `${context.id}`,
-      isNil(context.relationPath) ? undefined : relationPathTransformer(context.relationPath),
+      isNil(modelPath) ? undefined : modelPathTransformer(modelPath),
+      isNil(id) ? undefined : `${id}`,
+      isNil(relationPath) ? undefined : relationPathTransformer(relationPath),
       context.path,
     ], '/');
+
+    return this.clearRequestURLEndpoint(requestEndpoint);
   }
 
-  protected makeRequestURLParams(context: HttpActionContext) {
+  protected clearRequestURLEndpoint(endpoint: string) {
+    return endpoint.replace(/\/+/g, '/');
+  }
+
+  protected async makeRequestURLParams(context: HttpRequestConfig) {
+    return optionalJoin([
+      await this.makeRequestURLAdditionalParams(context),
+      await this.makeRequestURLContextParams(context),
+    ], '&');
+  }
+
+  protected async makeRequestURLAdditionalParams(context: HttpRequestConfig) {
+    const additionalParams = this.appendParams
+      ? await this.appendParams(context)
+      : {};
+
+    return this.makeRequestURLParamsFromObject(additionalParams);
+  }
+
+  protected async makeRequestURLContextParams(context: HttpRequestConfig) {
     if (typeof context.params === 'string') {
-      return this.makeRequestURLParamsFromString(context, context.params);
+      return this.makeRequestURLParamsFromString(context.params);
     }
 
     if (context.params) {
-      return this.makeRequestURLParamsFromObject(context, context.params);
+      return this.makeRequestURLParamsFromObject(context.params);
     }
 
     return undefined;
   }
 
-  protected makeRequestURLParamsFromString(_context: HttpActionContext, params: string) {
+  protected makeRequestURLParamsFromString(params: string) {
     return params;
   }
 
-  protected makeRequestURLParamsFromObject(_context: HttpActionContext, params: Dictionary) {
-    return this.paramsSerializer(params);
+  protected makeRequestURLParamsFromObject(params: Dictionary) {
+    return this.serializeParams(params);
   }
 
   protected runRequest(request: HttpRequest) {
@@ -225,21 +261,21 @@ export default class HttpAdapter implements AdapterI<Response> {
     }
   }
 
-  protected transformRequest(context: HttpActionContext, request: HttpRequest) {
+  protected async transformRequest(context: HttpRequestConfig, request: HttpRequest) {
     return sequentialTransform([
       ...this.requestTransformers,
       ...(context.requestTransformers ?? []),
     ], request);
   }
 
-  protected transformResponse(context: HttpActionContext, response: Response) {
+  protected async transformResponse(context: HttpRequestConfig, response: Response) {
     return sequentialTransform([
       ...this.responseTransformers,
       ...(context.responseTransformers ?? []),
     ], response);
   }
 
-  protected transformError(context: HttpActionContext, error: unknown): unknown {
+  protected async transformError(context: HttpRequestConfig, error: unknown) {
     return sequentialTransform([
       ...this.errorTransformers,
       ...(context.errorTransformers ?? []),

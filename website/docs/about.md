@@ -48,10 +48,10 @@ You may start to discover Foscia from different point of view.
 -   [Installation](/docs/installation): installation instructions
 -   [Getting started](/docs/getting-started): quick start guide with concrete
     examples
--   [Models](/docs/models): basic guides about models (definition, usage, hooks,
-    etc.)
--   [Actions](/docs/actions): basic guides about actions (enhancers, runners,
-    hooks, etc.)
+-   [Models](/docs/core-concepts/models): basic guides about models (definition,
+    usage, hooks, etc.)
+-   [Actions](/docs/core-concepts/actions): basic guides about actions
+    (enhancers, runners, hooks, etc.)
 -   [Advanced](/docs/category/advanced): advanced guides for special use case or
     customized behaviors
 -   [Examples](/docs/category/examples): concrete examples of usage
@@ -61,14 +61,14 @@ You may start to discover Foscia from different point of view.
 
 ## Structure of the package
 
--   [`foscia/blueprints`](/docs/api/foscia/modules/blueprints): pre-configured
-    actions factories to quickly get started with Foscia
--   [`foscia/core`](/docs/api/foscia/modules/core): core features of Foscia
+-   [`foscia/blueprints`](/docs/reference/api/modules/blueprints):
+    pre-configured actions factories to quickly get started with Foscia
+-   [`foscia/core`](/docs/reference/api/modules/core): core features of Foscia
     (models, actions, hooks, etc.)
--   [`foscia/http`](/docs/api/foscia/modules/http): abstract HTTP adapter
+-   [`foscia/http`](/docs/reference/api/modules/http): abstract HTTP adapter
     implementation
--   [`foscia/object`](/docs/api/foscia/modules/object): abstract raw objects
+-   [`foscia/object`](/docs/reference/api/modules/object): abstract raw objects
     (de)serializer implementations
--   [`foscia/jsonapi`](/docs/api/foscia/modules/jsonapi):
+-   [`foscia/jsonapi`](/docs/reference/api/modules/jsonapi):
     [JSON:API](https://jsonapi.org) implementation
--   [`foscia/rest`](/docs/api/foscia/modules/rest): REST implementation
+-   [`foscia/rest`](/docs/reference/api/modules/rest): REST implementation

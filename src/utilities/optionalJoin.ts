@@ -1,3 +1,4 @@
+import isNone from '@/utilities/isNone';
 import { Optional } from '@/utilities/types';
 
 export default function optionalJoin(
@@ -5,6 +6,6 @@ export default function optionalJoin(
   separator: string,
 ) {
   return strings
-    .filter((s) => typeof s === 'string')
+    .filter((s) => !isNone(s))
     .join(separator);
 }

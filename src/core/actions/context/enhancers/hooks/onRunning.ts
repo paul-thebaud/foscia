@@ -12,7 +12,7 @@ import { Awaitable } from '@/utilities';
  * @category Enhancers
  */
 export default function onRunning<C extends {}>(
-  callback: (event: { context: C; }) => Awaitable<void>,
+  callback: (event: { context: C; runner: Function; }) => Awaitable<void>,
 ) {
   return (action: Action<C>) => {
     registerHook(action, 'running', callback);
@@ -22,7 +22,7 @@ export default function onRunning<C extends {}>(
 type EnhancerExtension = ActionParsedExtension<{
   onRunning<C extends {}, E extends {}>(
     this: Action<C, E>,
-    callback: (event: { context: C; }) => Awaitable<void>,
+    callback: (event: { context: C; runner: Function; }) => Awaitable<void>,
   ): Action<C, E>;
 }>;
 

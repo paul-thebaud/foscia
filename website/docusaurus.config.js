@@ -13,7 +13,7 @@ const config = {
   url: 'https://paul-thebaud.github.io',
   baseUrl: '/foscia/',
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenMarkdownLinks: 'throw',
   organizationName: 'paul-thebaud',
   projectName: 'foscia',
   i18n: {
@@ -26,14 +26,15 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+          sidebarPath: require.resolve('./sidebars.js'),
+          editUrl: 'https://github.com/paul-thebaud/foscia/tree/main/website/',
+          showLastUpdateTime: true,
           remarkPlugins: [[transpileCodeblocks, {
             compilerSettings: {
               tsconfig: resolve(__dirname, './docs/tsconfig.json'),
               externalResolutions: {},
             },
           }]],
-          sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/paul-thebaud/foscia/tree/main/website/',
         },
         blog: false,
         theme: {
@@ -44,7 +45,7 @@ const config = {
   ],
   plugins: [
     ['docusaurus-plugin-typedoc', {
-      id: 'api-foscia',
+      id: 'api',
       entryPoints: [
         '../src/core.ts',
         '../src/http.ts',
@@ -54,18 +55,14 @@ const config = {
         '../src/blueprints.ts',
       ],
       tsconfig: '../tsconfig.json',
-      out: 'api/foscia',
-      sidebar: { position: 5, categoryLabel: 'API Reference' },
+      out: 'reference/api',
+      sidebar: { position: 5, categoryLabel: 'API' },
     }],
   ],
   themeConfig:
   /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      docs: {
-        sidebar: {
-          autoCollapseCategories: true,
-        },
-      },
+      docs: {},
       announcementBar: {
         id: 'alpha_stage',
         content: 'Foscia is currently in alpha stage, <a target="_blank" rel="noopener noreferrer" href="https://github.com/paul-thebaud/foscia/issues">please fill an issue</a> to give your feedback.',
@@ -75,16 +72,20 @@ const config = {
       },
       navbar: {
         title: 'Foscia',
+        logo: {
+          src: 'img/icon.svg',
+          alt: '',
+        },
         items: [
           {
             to: '/docs/about',
-            position: 'left',
             label: 'About',
+            position: 'right',
           },
           {
             to: '/docs/getting-started',
-            position: 'left',
             label: 'Documentation',
+            position: 'right',
           },
           {
             href: 'https://stackblitz.com/edit/foscia?file=playground.ts',
@@ -93,9 +94,9 @@ const config = {
           },
           {
             href: 'https://github.com/paul-thebaud/foscia',
+            title: 'GitHub repository (open in new tab)',
             position: 'right',
             className: 'header-github-link',
-            title: 'GitHub repository (open in new tab)',
           },
         ],
       },

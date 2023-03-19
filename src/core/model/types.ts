@@ -1,6 +1,6 @@
 import { Hookable, HookCallback } from '@/core/hooks/types';
 import { Transform } from '@/core/transformers/types';
-import { Awaitable, Constructor, DescriptorHolder, Dictionary, Prev } from '@/utilities';
+import { Constructor, DescriptorHolder, Dictionary, Prev } from '@/utilities';
 
 /**
  * Configuration of a model class.
@@ -18,12 +18,6 @@ export type ModelConfig = {
    */
   path?: string;
   /**
-   * Dedicated base URL. Will overwrite the default base URL.
-   *
-   * TODO Should this be moved?
-   */
-  baseURL?: string;
-  /**
    * Compare two values when checking model instance changed values.
    *
    * @param nextValue
@@ -31,7 +25,7 @@ export type ModelConfig = {
    *
    * @see {@link changed}
    */
-  comparator?: (nextValue: unknown, prevValue: unknown) => boolean;
+  compareValue?: (nextValue: unknown, prevValue: unknown) => boolean;
   /**
    * Clone two values when sync model instances values state.
    *
@@ -40,7 +34,11 @@ export type ModelConfig = {
    * @see {@link reset}
    * @see {@link syncOriginal}
    */
-  cloner?: <T = unknown>(value: T) => T;
+  cloneValue?: <T = unknown>(value: T) => T;
+  /**
+   * Dedicated base URL. Will overwrite the default base URL.
+   */
+  baseURL?: string;
 };
 
 /**
@@ -59,7 +57,7 @@ export type ModelProp<T = unknown> = {
   /**
    * Alias of the property (might be used when (de)serializing).
    */
-  alias?: string | ((instance: ModelInstance, key: string) => Awaitable<string>) | undefined;
+  alias?: string | undefined;
   /**
    * Avoid serializing the property (won't be sent to data source).
    */

@@ -1,9 +1,9 @@
-import consumeContext, { CONSUME_DEFAULT } from '@/core/actions/context/consumers/consumeContext';
+import consumeContext from '@/core/actions/context/consumers/consumeContext';
 import { ConsumeInclude } from '@/core/actions/types';
 
-export default function consumeInclude<D = never>(
-  context: Partial<ConsumeInclude>,
-  defaultValue: D = CONSUME_DEFAULT,
+export default function consumeInclude<C extends {}, D = never>(
+  context: C & Partial<ConsumeInclude>,
+  defaultValue?: D,
 ) {
   return consumeContext(context, 'include', ['include'], defaultValue);
 }

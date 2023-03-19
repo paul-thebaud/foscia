@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  ActionContext,
   changed,
   eachAttributes,
   eachRelations,
@@ -8,19 +7,15 @@ import {
   ModelInstance,
   ModelProp,
   ModelRelation,
+  normalizeKeys,
   SerializerError,
   SerializerI,
-  useTransform,
 } from '@/core';
-import normalizeKey from '@/object/utilities/normalizeKey';
-import { ObjectSerializerConfig, KeyTransformer } from '@/object/types';
+import useTransform from '@/core/transformers/useTransform';
+import { ObjectSerializerConfig } from '@/object/types';
 import { assignConfig } from '@/utilities';
 
 export default abstract class ObjectSerializer<Data> implements SerializerI<Data> {
-  private attributeKeyTransformer: KeyTransformer | null = null;
-
-  private relationKeyTransformer: KeyTransformer | null = null;
-
   public constructor(config?: ObjectSerializerConfig) {
     this.configure(config);
   }
@@ -31,7 +26,7 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
     return this;
   }
 
-  public async serialize(instance: ModelInstance, context: ActionContext) {
+  public async serialize(instance: ModelInstance, context: {}) {
     const resource = await this.makeResource(instance, context);
 
     await Promise.all(eachAttributes(instance, async (key, def) => {
@@ -69,14 +64,14 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
     return resource;
   }
 
-  protected abstract makeResource(instance: ModelInstance, context: ActionContext): Promise<Data>;
+  protected abstract makeResource(instance: ModelInstance, context: {}): Promise<Data>;
 
   protected abstract serializeRelatedInstance(
     instance: ModelInstance,
     key: string,
     def: ModelRelation,
     related: ModelInstance,
-    context: ActionContext,
+    context: {},
   ): Promise<unknown>;
 
   protected hydratePropInResource(
@@ -105,22 +100,22 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
     await this.hydratePropInResource(resource, serializedKey, serializedValue);
   }
 
-  protected serializeAttributeKey(
+  protected async serializeAttributeKey(
     instance: ModelInstance,
     key: string,
-    def: ModelProp,
-    _context: ActionContext,
+    _def: ModelAttribute,
+    context: {},
   ) {
-    return normalizeKey(instance, key, def, this.attributeKeyTransformer);
+    return (await normalizeKeys(context, instance.$model, [key]))[0];
   }
 
-  protected serializeRelationKey(
+  protected async serializeRelationKey(
     instance: ModelInstance,
     key: string,
-    def: ModelProp,
-    _context: ActionContext,
+    _def: ModelRelation,
+    context: {},
   ) {
-    return normalizeKey(instance, key, def, this.relationKeyTransformer);
+    return (await normalizeKeys(context, instance.$model, [key]))[0];
   }
 
   protected shouldSerializeAttribute(
@@ -128,7 +123,7 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
     key: string,
     def: ModelAttribute,
     rawValue: unknown,
-    context: ActionContext,
+    context: {},
   ) {
     return this.shouldSerializeProp(instance, key, def, rawValue, context);
   }
@@ -138,7 +133,7 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
     key: string,
     def: ModelRelation,
     rawValue: unknown,
-    context: ActionContext,
+    context: {},
   ) {
     return this.shouldSerializeProp(instance, key, def, rawValue, context);
   }
@@ -148,7 +143,7 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
     key: string,
     def: ModelProp,
     rawValue: unknown,
-    _context: ActionContext,
+    _context: {},
   ) {
     return !def.readOnly
       && rawValue !== undefined
@@ -160,7 +155,7 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
     _key: string,
     def: ModelAttribute,
     rawValue: unknown,
-    _context: ActionContext,
+    _context: {},
   ) {
     const transform = useTransform(def.transformer, 'serialize');
 
@@ -172,7 +167,7 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
     key: string,
     def: ModelRelation,
     rawValue: unknown,
-    context: ActionContext,
+    context: {},
   ) {
     const serializeRelatedInstance = (related: ModelInstance) => this.serializeRelatedInstance(
       instance,

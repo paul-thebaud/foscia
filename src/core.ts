@@ -33,12 +33,15 @@ import isSame from '@/core/model/utilities/isSame';
 import loaded from '@/core/model/utilities/loaded';
 import reset from '@/core/model/utilities/reset';
 import syncOriginal from '@/core/model/utilities/syncOriginal';
+import KeyNormalizer from '@/core/normalizer/keyNormalizer';
+import normalizeDotRelations from '@/core/normalizer/normalizeDotRelations';
+import normalizeInclude from '@/core/normalizer/normalizeInclude';
+import normalizeKeys from '@/core/normalizer/normalizeKeys';
 import MapRegistry from '@/core/registry/mapRegistry';
 import toBoolean from '@/core/transformers/toBoolean';
 import toDate from '@/core/transformers/toDate';
 import toNumber from '@/core/transformers/toNumber';
 import toString from '@/core/transformers/toString';
-import useTransform from '@/core/transformers/useTransform';
 
 export * from '@/core/actions/types';
 export * from '@/core/cache/types';
@@ -58,6 +61,10 @@ export {
   MapRegistry,
   RefsCache,
   weakRefCacheMode,
+  KeyNormalizer,
+  normalizeDotRelations,
+  normalizeInclude,
+  normalizeKeys,
   attr,
   hasMany,
   hasOne,
@@ -76,7 +83,6 @@ export {
   toDate,
   toNumber,
   toString,
-  useTransform,
   onRetrieved,
   onCreating,
   onCreated,

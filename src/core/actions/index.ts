@@ -1,10 +1,18 @@
+import consumeAction from '@/core/actions/context/consumers/consumeAction';
 import consumeAdapter from '@/core/actions/context/consumers/consumeAdapter';
 import consumeCache from '@/core/actions/context/consumers/consumeCache';
 import consumeContext from '@/core/actions/context/consumers/consumeContext';
+import consumeData from '@/core/actions/context/consumers/consumeData';
 import consumeDeserializer from '@/core/actions/context/consumers/consumeDeserializer';
 import consumeId from '@/core/actions/context/consumers/consumeId';
+import consumeInclude from '@/core/actions/context/consumers/consumeInclude';
 import consumeInstance from '@/core/actions/context/consumers/consumeInstance';
+import consumeKeyNormalizer from '@/core/actions/context/consumers/consumeKeyNormalizer';
 import consumeModel from '@/core/actions/context/consumers/consumeModel';
+import consumeModelPath from '@/core/actions/context/consumers/consumeModelPath';
+import consumeRegistry from '@/core/actions/context/consumers/consumeRegistry';
+import consumeRelation from '@/core/actions/context/consumers/consumeRelation';
+import consumeRelationPath from '@/core/actions/context/consumers/consumeRelationPath';
 import consumeSerializer from '@/core/actions/context/consumers/consumeSerializer';
 import context from '@/core/actions/context/enhancers/context';
 import create from '@/core/actions/context/enhancers/crud/create';
@@ -26,16 +34,19 @@ import include from '@/core/actions/context/enhancers/include';
 import target from '@/core/actions/context/enhancers/target';
 import all from '@/core/actions/context/runners/all';
 import cached from '@/core/actions/context/runners/cached';
-import cachedOrFail from '@/core/actions/context/runners/cachedOrFail';
 import cachedOr from '@/core/actions/context/runners/cachedOr';
+import cachedOrFail from '@/core/actions/context/runners/cachedOrFail';
 import none from '@/core/actions/context/runners/none';
 import one from '@/core/actions/context/runners/one';
 import oneOr from '@/core/actions/context/runners/oneOr';
 import oneOrCurrent from '@/core/actions/context/runners/oneOrCurrent';
 import oneOrFail from '@/core/actions/context/runners/oneOrFail';
 import raw from '@/core/actions/context/runners/raw';
+import detectTargetModel from '@/core/actions/context/utilities/detectTargetModel';
+import detectTargetType from '@/core/actions/context/utilities/detectTargetType';
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
 import makeRunnersExtension from '@/core/actions/extensions/makeRunnersExtension';
+import makeAction from '@/core/actions/makeAction';
 import when from '@/core/actions/when';
 
 export {
@@ -54,13 +65,21 @@ export {
   update,
   save,
   destroy,
+  consumeAction,
   consumeAdapter,
   consumeCache,
   consumeContext,
+  consumeData,
   consumeDeserializer,
   consumeId,
+  consumeInclude,
   consumeInstance,
+  consumeKeyNormalizer,
   consumeModel,
+  consumeModelPath,
+  consumeRegistry,
+  consumeRelation,
+  consumeRelationPath,
   consumeSerializer,
   context,
   forId,
@@ -76,6 +95,9 @@ export {
   onSuccess,
   onError,
   onFinally,
+  detectTargetModel,
+  detectTargetType,
   makeEnhancersExtension,
   makeRunnersExtension,
+  makeAction,
 };

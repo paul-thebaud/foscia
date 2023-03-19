@@ -1,21 +1,19 @@
 import { Hookable, HookCallback } from '@/core/hooks/types';
 import { Model, ModelId, ModelInstance, ModelRelation } from '@/core/model/types';
-import { AdapterI, CacheI, DeserializedData, DeserializerI, RegistryI, SerializerI } from '@/core/types';
+import {
+  AdapterI,
+  CacheI,
+  DeserializedData,
+  DeserializerI,
+  KeyNormalizerI,
+  RegistryI,
+  SerializerI,
+} from '@/core/types';
 import { Awaitable, Constructor, DescriptorHolder } from '@/utilities';
 
-export type ActionContext = {
-  action?: 'read' | 'create' | 'update' | 'destroy' | string;
-  modelPath?: string;
-  relationPath?: string;
-  id?: ModelId;
-  include?: string[];
-  data?: unknown;
-  [K: string]: unknown;
-};
-
-export type ActionHooksDefinition<C extends ActionContext = any> = {
+export type ActionHooksDefinition<C extends {} = any> = {
   preparing: HookCallback<undefined>;
-  running: HookCallback<{ context: C; }>;
+  running: HookCallback<{ context: C; runner: Function; }>;
   success: HookCallback<{ context: C; result: unknown; }>;
   error: HookCallback<{ context: C; error: unknown; }>;
   finally: HookCallback<{ context: C; }>;
@@ -51,11 +49,11 @@ export type ExtendedAction<E extends {}> = {
   [K in keyof E]: E[K] extends DescriptorHolder<infer T> ? T : E[K];
 };
 
-export type ContextEnhancer<PC extends ActionContext, NC extends ActionContext> = (
+export type ContextEnhancer<PC extends {}, NC extends {}> = (
   action: Action<PC>,
 ) => Awaitable<Action<NC> | void>;
 
-export type ContextRunner<C extends ActionContext, R> = (
+export type ContextRunner<C extends {}, R> = (
   action: Action<C>,
 ) => R;
 
@@ -67,13 +65,20 @@ export type InferConsumedInstance<C extends {}> =
       : C extends { model: Constructor<infer I> }
         ? I extends ModelInstance ? I : never : never;
 
-export type ManageModel<C extends {}, I extends ModelInstance> =
-  C extends { relation: ModelRelation<I | I[]> }
-    ? { relation: ModelRelation<I | I[]> }
-    : { model: Constructor<I> };
+export type ConsumeAction = {
+  action: 'read' | 'create' | 'update' | 'destroy' | string;
+};
+
+export type ConsumeData = {
+  data: unknown;
+};
 
 export type ConsumeModel<M extends Model = Model> = {
   model: M;
+};
+
+export type ConsumeModelPath = {
+  modelPath: string;
 };
 
 export type ConsumeInstance<I extends ModelInstance = ModelInstance> = {
@@ -82,6 +87,10 @@ export type ConsumeInstance<I extends ModelInstance = ModelInstance> = {
 
 export type ConsumeRelation = {
   relation: ModelRelation;
+};
+
+export type ConsumeRelationPath = {
+  relationPath: string;
 };
 
 export type ConsumeId = {
@@ -98,6 +107,10 @@ export type ConsumeRegistry = { registry: RegistryI; };
 
 export type ConsumeAdapter<AdapterData = unknown> = {
   adapter: AdapterI<AdapterData>;
+};
+
+export type ConsumeKeyNormalizer = {
+  keyNormalizer: KeyNormalizerI;
 };
 
 export type ConsumeDeserializer<

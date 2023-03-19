@@ -1,6 +1,5 @@
-import type { ActionContext } from '@/core/actions/types';
-import type { Model, ModelId, ModelInstance } from '@/core/model/types';
-import { Awaitable } from '@/utilities';
+import type { Model, ModelClass, ModelId, ModelInstance } from '@/core/model/types';
+import type { Awaitable } from '@/utilities';
 
 export type RegistryI = {
   modelFor(type: string): Promise<Model>;
@@ -14,12 +13,16 @@ export type CacheI = {
 };
 
 export type AdapterI<Data> = {
-  execute(context: ActionContext): Awaitable<Data>;
+  execute(context: {}): Awaitable<Data>;
   isNotFound(error: unknown): Awaitable<boolean>;
 };
 
+export type KeyNormalizerI = {
+  normalizeKey(model: ModelClass, key: string): Awaitable<string>;
+};
+
 export type SerializerI<Data> = {
-  serialize(instance: ModelInstance, context: ActionContext): Awaitable<Data>;
+  serialize(instance: ModelInstance, context: {}): Awaitable<Data>;
 };
 
 export type DeserializedData<I extends ModelInstance = ModelInstance> = {
@@ -27,5 +30,5 @@ export type DeserializedData<I extends ModelInstance = ModelInstance> = {
 };
 
 export type DeserializerI<AdapterData, Data extends DeserializedData> = {
-  deserialize(data: AdapterData, context: ActionContext): Awaitable<Data>;
+  deserialize(data: AdapterData, context: {}): Awaitable<Data>;
 };

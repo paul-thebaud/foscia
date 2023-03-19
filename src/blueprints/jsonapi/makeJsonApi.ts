@@ -1,10 +1,10 @@
+import appendJsonApiParams from '@/blueprints/jsonapi/appendJsonApiParams';
 import makeCache from '@/blueprints/makeCache';
+import makeKeyNormalizer from '@/blueprints/makeKeyNormalizer';
 import makeRegistry from '@/blueprints/makeRegistry';
-import { context } from '@/core/actions';
-import makeAction from '@/core/actions/makeAction';
-import { deepParamsSerializer } from '@/http';
+import { context, makeAction } from '@/core';
+import { bodyAsJson, deepParamsSerializer, HttpAdapter } from '@/http';
 import { JsonApiDeserializer, JsonApiSerializer } from '@/jsonapi';
-import JsonApiAdapter from '@/jsonapi/jsonApiAdapter';
 import { toKebab } from '@/utilities';
 
 /**
@@ -21,29 +21,32 @@ export default function makeJsonApi<
 } = {}) {
   const cache = makeCache();
   const registry = makeRegistry();
-  const adapter = new JsonApiAdapter({
+  const adapter = new HttpAdapter({
     baseURL: config.baseURL ?? '/api/v1',
-    paramsSerializer: deepParamsSerializer,
-    modelPathTransformer: toKebab,
-    relationPathTransformer: toKebab,
-    defaultBodyAs: (body) => JSON.stringify(body),
+    serializeParams: deepParamsSerializer,
+    defaultBodyAs: bodyAsJson,
     defaultHeaders: {
       Accept: 'application/vnd.api+json',
       'Content-Type': 'application/vnd.api+json',
     },
+    appendParams: appendJsonApiParams,
+    modelPathTransformer: toKebab,
+    relationPathTransformer: toKebab,
   });
+  const keyNormalizer = makeKeyNormalizer();
   const deserializer = new JsonApiDeserializer();
   const serializer = new JsonApiSerializer();
 
   const Action = makeAction(config.extensions);
   const withDependencies = context({
-    cache, registry, adapter, deserializer, serializer,
+    cache, registry, adapter, keyNormalizer, deserializer, serializer,
   });
 
   return {
     cache,
     registry,
     adapter,
+    keyNormalizer,
     deserializer,
     serializer,
     withDependencies,

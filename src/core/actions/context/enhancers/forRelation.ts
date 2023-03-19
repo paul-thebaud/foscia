@@ -1,7 +1,13 @@
 import context from '@/core/actions/context/enhancers/context';
 import forInstance from '@/core/actions/context/enhancers/forInstance';
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
-import { Action, ActionParsedExtension, ConsumeId, ConsumeInstance, ConsumeModel } from '@/core/actions/types';
+import {
+  Action,
+  ActionParsedExtension,
+  ConsumeId,
+  ConsumeInstance,
+  ConsumeModel,
+} from '@/core/actions/types';
 import {
   Model,
   ModelClassInstance,
@@ -19,8 +25,6 @@ import {
  * @param relationKey
  *
  * @category Enhancers
- *
- * TODO forRelation should extract the used model from the relation type.
  */
 export default function forRelation<
   C extends {},

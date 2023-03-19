@@ -1,4 +1,11 @@
-import { Action, ActionParsedExtension, makeEnhancersExtension, Model, ModelKey } from '@/core';
+import {
+  Action,
+  ActionParsedExtension,
+  makeEnhancersExtension,
+  Model,
+  ModelKey,
+  normalizeKeys,
+} from '@/core';
 import { param } from '@/http';
 import consumePrevParams from '@/http/actions/context/consumers/consumePrevParams';
 import { ArrayableVariadic, optionalJoin, uniqueValues, wrapVariadic } from '@/utilities';
@@ -17,13 +24,19 @@ export default function fieldsFor<C extends {}, M extends Model>(
   ...fieldset: ArrayableVariadic<ModelKey<M>>
 ) {
   return async (action: Action<C>) => {
-    const prevFields = consumePrevParams(await action.useContext(), null)?.fields;
+    const context = await action.useContext();
+    const prevFields = consumePrevParams(context, null)?.fields;
+    const nextFields = await normalizeKeys(
+      context,
+      model,
+      wrapVariadic(...fieldset) as string[],
+    );
 
     return action.use(param('fields', {
       ...prevFields,
       [model.$config.type]: optionalJoin(uniqueValues([
-        prevFields?.[model.$config.type],
-        ...wrapVariadic(...fieldset),
+        ...(prevFields ?? {})[model.$config.type],
+        ...nextFields,
       ]), ','),
     }));
   };

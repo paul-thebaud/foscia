@@ -1,10 +1,9 @@
 import { consumeContext, FosciaError } from '@/core';
-import { CONSUME_DEFAULT } from '@/core/actions/context/consumers/consumeContext';
-import { HttpActionContext } from '@/http/types';
+import { HttpRequestConfig } from '@/http/types';
 
 export default function consumePrevParams<D = never>(
-  context: HttpActionContext,
-  defaultValue: D = CONSUME_DEFAULT,
+  context: HttpRequestConfig,
+  defaultValue?: D,
 ) {
   const params = consumeContext(context, 'params', [
     'param',

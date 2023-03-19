@@ -1,5 +1,8 @@
 /node_modules/
 
+# playground files
+/playground/index.ts
+
 # build files
 /coverage/
 /dist/
@@ -19,7 +22,3 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-
-# TODO temporary dir when dev
-/src/playground/
-index.html

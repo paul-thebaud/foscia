@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  ActionContext,
-  ConsumeCache,
-  ConsumeInstance,
-  ConsumeModel,
-  ConsumeRegistry,
-  ConsumeRelation,
+  consumeAction,
+  consumeCache,
+  consumeInstance,
+  consumeModel,
+  consumeRegistry,
   DeserializedData,
   DeserializerError,
   DeserializerI,
+  detectTargetType,
   eachAttributes,
   eachRelations,
   ModelAttribute,
@@ -16,17 +16,16 @@ import {
   ModelInstance,
   ModelProp,
   ModelRelation,
+  normalizeKeys,
   runHook,
   syncOriginal,
-  useTransform,
 } from '@/core';
-import normalizeKey from '@/object/utilities/normalizeKey';
+import useTransform from '@/core/transformers/useTransform';
 import {
   ObjectDeserializerConfig,
   ObjectExtractedData,
   ObjectNormalizedIdentifier,
   ObjectOptionalIdentifier,
-  KeyTransformer,
 } from '@/object/types';
 import { assignConfig, IdentifiersMap, isNil, isNone, Optional, wrap } from '@/utilities';
 
@@ -38,10 +37,6 @@ export default abstract class ObjectDeserializer<
 > implements DeserializerI<AdapterData, Data> {
   protected static NON_IDENTIFIED_LOCAL_ID = '__non_identified__';
 
-  private attributeKeyTransformer: KeyTransformer | null = null;
-
-  private relationKeyTransformer: KeyTransformer | null = null;
-
   public constructor(config?: ObjectDeserializerConfig) {
     this.configure(config);
   }
@@ -52,7 +47,7 @@ export default abstract class ObjectDeserializer<
     return this;
   }
 
-  public async deserialize(data: AdapterData, context: ActionContext) {
+  public async deserialize(data: AdapterData, context: {}) {
     const instancesMap = await this.initInstancesMap();
 
     const extractedData = await this.extractData(data, context);
@@ -77,11 +72,11 @@ export default abstract class ObjectDeserializer<
     extractedData: Extract,
   ): Promise<Data>;
 
-  protected abstract extractData(data: AdapterData, context: ActionContext): Promise<Extract>;
+  protected abstract extractData(data: AdapterData, context: {}): Promise<Extract>;
 
   protected abstract extractOptionalIdentifier(
     resource: Resource,
-    context: ActionContext,
+    context: {},
     parent?: ModelInstance,
     relationKey?: string,
     relation?: ModelRelation,
@@ -94,12 +89,14 @@ export default abstract class ObjectDeserializer<
   protected async prepareInstancesMap(
     extractedData: Extract,
     instancesMap: IdentifiersMap<string, ModelId, Promise<ModelInstance>>,
-    context: ActionContext & Partial<ConsumeInstance>,
+    context: {},
   ) {
     // Handle a singular creation context to map a non-identified instance
     // to the single returned resource if available.
-    if (context.action === 'create'
-      && context.instance
+    const action = consumeAction(context, null);
+    const instance = consumeInstance(context, null);
+    if (action === 'create'
+      && instance
       && !isNone(extractedData.resources)
       && !Array.isArray(extractedData.resources)
     ) {
@@ -114,7 +111,7 @@ export default abstract class ObjectDeserializer<
           instancesMap,
           resource,
           identifier,
-          context.instance,
+          instance,
           context,
         ),
       );
@@ -125,7 +122,7 @@ export default abstract class ObjectDeserializer<
     extractedData: Extract,
     instancesMap: IdentifiersMap<string, ModelId, Promise<ModelInstance>>,
     resource: Resource,
-    context: ActionContext,
+    context: {},
     parent?: ModelInstance,
     relationKey?: string,
     relation?: ModelRelation,
@@ -166,7 +163,7 @@ export default abstract class ObjectDeserializer<
     resource: Resource,
     identifier: ObjectNormalizedIdentifier,
     instance: ModelInstance,
-    context: ActionContext,
+    context: {},
   ) {
     // eslint-disable-next-line no-param-reassign
     instance.id = instance.id ?? identifier.id;
@@ -224,7 +221,7 @@ export default abstract class ObjectDeserializer<
 
   protected async extractIdentifier(
     resource: Resource,
-    context: ActionContext & Partial<ConsumeModel> & Partial<ConsumeRelation>,
+    context: {},
     parent?: ModelInstance,
     relationKey?: string,
     relation?: ModelRelation,
@@ -239,9 +236,7 @@ export default abstract class ObjectDeserializer<
 
     if (isNil(identifier.type)) {
       if (isNil(relation)) {
-        identifier.type = context.relation
-          ? context.relation.type
-          : context.model?.$config.type;
+        identifier.type = detectTargetType(context);
       } else {
         identifier.type = relation.type;
       }
@@ -259,7 +254,7 @@ export default abstract class ObjectDeserializer<
   protected async extractLocalId(
     _resource: Resource,
     identifier: ObjectNormalizedIdentifier,
-    _context: ActionContext,
+    _context: {},
   ) {
     return identifier.id ?? identifier.lid ?? ObjectDeserializer.NON_IDENTIFIED_LOCAL_ID;
   }
@@ -267,7 +262,7 @@ export default abstract class ObjectDeserializer<
   protected async findOrMakeInstance(
     resource: Resource,
     identifier: ObjectNormalizedIdentifier,
-    context: ActionContext & Partial<ConsumeCache>,
+    context: {},
   ) {
     return await this.findInstance(resource, identifier, context)
       ?? await this.makeInstance(resource, identifier, context);
@@ -276,14 +271,16 @@ export default abstract class ObjectDeserializer<
   protected async findInstance(
     _resource: Resource,
     identifier: ObjectNormalizedIdentifier,
-    context: ActionContext & Partial<ConsumeCache & ConsumeInstance>,
+    context: {},
   ): Promise<ModelInstance | null> {
-    if (context.cache && !isNil(identifier.id)) {
-      return context.cache.find(identifier.type, identifier.id);
+    const cache = consumeCache(context, null);
+    if (cache && !isNil(identifier.id)) {
+      return cache.find(identifier.type, identifier.id);
     }
 
-    if (context.instance && identifier.id === context.instance.id) {
-      return context.instance;
+    const instance = consumeInstance(context, null);
+    if (instance && identifier.id === instance.id) {
+      return instance;
     }
 
     return null;
@@ -292,18 +289,18 @@ export default abstract class ObjectDeserializer<
   protected async makeInstance(
     _resource: Resource,
     identifier: ObjectNormalizedIdentifier,
-    context: ActionContext & Partial<ConsumeRegistry & ConsumeModel>,
+    context: {},
   ): Promise<ModelInstance> {
-    if (context.registry) {
-      const ModelClass = await context.registry.modelFor(identifier.type);
+    const registry = consumeRegistry(context, null);
+    if (registry) {
+      const ModelClass = await registry.modelFor(identifier.type);
 
       return new ModelClass();
     }
 
-    if (context.model && context.model.$config.type === identifier.type) {
-      const ModelClass = context.model;
-
-      return new ModelClass();
+    const ContextModel = consumeModel(context, null);
+    if (ContextModel && ContextModel.$config.type === identifier.type) {
+      return new ContextModel();
     }
 
     throw new DeserializerError(
@@ -314,7 +311,7 @@ export default abstract class ObjectDeserializer<
   protected async releaseInstance(
     resource: Resource,
     instance: ModelInstance,
-    context: ActionContext & Partial<ConsumeCache>,
+    context: {},
   ) {
     // eslint-disable-next-line no-param-reassign
     instance.exists = true;
@@ -325,15 +322,16 @@ export default abstract class ObjectDeserializer<
 
     await runHook(instance.$model, 'retrieved', instance);
 
-    if (context.cache && !isNil(instance.id)) {
-      await context.cache.put(instance.$model.$config.type, instance.id, instance);
+    const cache = consumeCache(context, null);
+    if (cache && !isNil(instance.id)) {
+      await cache.put(instance.$model.$config.type, instance.id, instance);
     }
   }
 
   protected extractPropValue(
     _resource: Resource,
     _serializedKey: string,
-    _context: ActionContext,
+    _context: {},
   ): Promise<unknown> {
     throw new DeserializerError(
       'You should either implement `extractPropValue` or `extractAttributeValue` and `extractRelationValue` in your JsonDeserializer implementation.',
@@ -344,7 +342,7 @@ export default abstract class ObjectDeserializer<
     _extractedData: Extract,
     resource: Resource,
     serializedKey: string,
-    context: ActionContext,
+    context: {},
   ) {
     return this.extractPropValue(resource, serializedKey, context);
   }
@@ -353,7 +351,7 @@ export default abstract class ObjectDeserializer<
     _extractedData: Extract,
     resource: Resource,
     serializedKey: string,
-    context: ActionContext,
+    context: {},
   ) {
     return this.extractPropValue(
       resource,
@@ -390,22 +388,22 @@ export default abstract class ObjectDeserializer<
     instance.$loaded[key] = true;
   }
 
-  protected deserializeAttributeKey(
+  protected async deserializeAttributeKey(
     instance: ModelInstance,
     key: string,
-    def: ModelProp,
-    _context: ActionContext,
+    _def: ModelAttribute,
+    context: {},
   ) {
-    return normalizeKey(instance, key, def, this.attributeKeyTransformer);
+    return (await normalizeKeys(context, instance.$model, [key]))[0];
   }
 
-  protected deserializeRelationKey(
+  protected async deserializeRelationKey(
     instance: ModelInstance,
     key: string,
-    def: ModelProp,
-    _context: ActionContext,
+    _def: ModelRelation,
+    context: {},
   ) {
-    return normalizeKey(instance, key, def, this.relationKeyTransformer);
+    return (await normalizeKeys(context, instance.$model, [key]))[0];
   }
 
   protected shouldDeserializeAttribute(
@@ -413,7 +411,7 @@ export default abstract class ObjectDeserializer<
     key: string,
     def: ModelAttribute,
     rawValue: unknown,
-    context: ActionContext,
+    context: {},
   ) {
     return this.shouldDeserializeProp(instance, key, def, rawValue, context);
   }
@@ -423,7 +421,7 @@ export default abstract class ObjectDeserializer<
     key: string,
     def: ModelRelation,
     rawValue: unknown,
-    context: ActionContext,
+    context: {},
   ) {
     return this.shouldDeserializeProp(instance, key, def, rawValue, context);
   }
@@ -433,7 +431,7 @@ export default abstract class ObjectDeserializer<
     _key: string,
     _def: ModelProp,
     rawValue: unknown,
-    _context: ActionContext,
+    _context: {},
   ) {
     return rawValue !== undefined;
   }
@@ -443,7 +441,7 @@ export default abstract class ObjectDeserializer<
     _key: string,
     def: ModelAttribute,
     rawValue: unknown,
-    _context: ActionContext,
+    _context: {},
   ) {
     const transform = useTransform(def.transformer, 'deserialize');
 
@@ -457,7 +455,7 @@ export default abstract class ObjectDeserializer<
     key: string,
     def: ModelRelation,
     rawValue: Optional<Resource[] | Resource>,
-    context: ActionContext,
+    context: {},
   ) {
     if (Array.isArray(rawValue)) {
       return Promise.all(rawValue.map((resource) => this.deserializeResource(

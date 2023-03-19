@@ -42,7 +42,7 @@ export default function cachedOr<
   return async (
     action: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeInclude & ConsumeId>,
   ) => {
-    // TODO Manage forRelation case.
+    // TODO How could we manage the "forRelation" case?
     const context = await action.useContext();
     const instance = await consumeCache(context)
       .find(consumeModel(context).$config.type, consumeId(context));

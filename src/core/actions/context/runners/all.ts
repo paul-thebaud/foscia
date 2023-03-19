@@ -1,9 +1,10 @@
 import raw from '@/core/actions/context/runners/raw';
-import deserializeInstances, { DeserializedDataOf } from '@/core/actions/context/utilities/deserializeInstances';
+import deserializeInstances, {
+  DeserializedDataOf,
+} from '@/core/actions/context/utilities/deserializeInstances';
 import makeRunnersExtension from '@/core/actions/extensions/makeRunnersExtension';
 import {
   Action,
-  ActionContext,
   ActionParsedExtension,
   ConsumeAdapter,
   ConsumeDeserializer,
@@ -31,7 +32,7 @@ export type AllData<
  * @category Runners
  */
 export default function all<
-  C extends ActionContext,
+  C extends {},
   I extends InferConsumedInstance<C>,
   AD,
   DD extends DeserializedData,

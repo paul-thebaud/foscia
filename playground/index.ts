@@ -1,4 +1,3 @@
-import './style.css';
 import action from './action';
 import Post from './models/post';
 

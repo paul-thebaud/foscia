@@ -1,4 +1,11 @@
-import { ActionClass, ActionHooksDefinition, ContextEnhancer, ContextRunner } from '@/core/actions/types';
+import { logger } from '@/core';
+import {
+  ActionClass,
+  ActionHooksDefinition,
+  ContextEnhancer,
+  ContextRunner,
+} from '@/core/actions/types';
+import registerHook from '@/core/hooks/registerHook';
 import runHook from '@/core/hooks/runHook';
 import { HooksRegistrar } from '@/core/hooks/types';
 import withoutHooks from '@/core/hooks/withoutHooks';
@@ -24,6 +31,10 @@ export default function makeAction<Extension extends {} = {}>(extensions?: Exten
       this.$enhancementsQueue = [];
       this.$context = {};
       this.$hooks = {};
+
+      registerHook(this, 'running', (event) => logger.debug('Action running. ', [event]));
+      registerHook(this, 'success', (event) => logger.debug('Action success. ', [event]));
+      registerHook(this, 'error', (event) => logger.debug('Action error. ', [event]));
     }
 
     public async useContext() {
@@ -49,7 +60,7 @@ export default function makeAction<Extension extends {} = {}>(extensions?: Exten
 
       const context = await this.useContext();
 
-      await runHook(this, 'running', { context });
+      await runHook(this, 'running', { context, runner });
 
       try {
         // Context runner might use other context runners, so we must disable
