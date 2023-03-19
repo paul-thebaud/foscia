@@ -42,11 +42,11 @@ Those dependencies may be used with any implementations.
 ## JSON:API implementation
 
 The JSON:API implementation is built on a common base for HTTP interaction and
-JSON (de)serialization. It is described in depth inside the
-[JSON:API implementation guide](/jsonapi).
+objects (de)serialization. It is described in depth inside the
+[JSON:API implementation guide](/docs/guides/implementations/jsonapi).
 
 ## REST implementation
 
 The REST implementation is built on a common base for HTTP interaction and raw
 objects (de)serialization. It is described in depth inside the
-[REST implementation guide](/rest).
+[REST implementation guide](/docs/guides/implementations/rest).

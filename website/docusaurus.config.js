@@ -114,24 +114,20 @@ const config = {
                 to: '/docs/getting-started',
               },
               {
-                label: 'Models',
-                to: '/docs/models',
+                label: 'Core concepts',
+                to: '/docs/category/core-concepts',
               },
               {
-                label: 'Actions',
-                to: '/docs/actions',
+                label: 'Guides',
+                to: '/docs/category/guides',
               },
               {
-                label: 'Advanced',
-                to: '/docs/category/advanced',
+                label: 'Reference',
+                to: '/docs/category/reference',
               },
               {
-                label: 'API',
-                to: '/docs/category/api',
-              },
-              {
-                label: 'FAQ',
-                to: '/docs/faq',
+                label: 'Help',
+                to: '/docs/category/help',
               },
             ],
           },

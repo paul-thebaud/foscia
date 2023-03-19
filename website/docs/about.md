@@ -48,16 +48,14 @@ You may start to discover Foscia from different point of view.
 -   [Installation](/docs/installation): installation instructions
 -   [Getting started](/docs/getting-started): quick start guide with concrete
     examples
--   [Models](/docs/core-concepts/models): basic guides about models (definition,
-    usage, hooks, etc.)
--   [Actions](/docs/core-concepts/actions): basic guides about actions
-    (enhancers, runners, hooks, etc.)
--   [Advanced](/docs/category/advanced): advanced guides for special use case or
+-   [Core concepts](/docs/category/core-concepts): Core concepts of Foscia (models and
+    actions)
+-   [Guides](/docs/category/guides): guides for special use case or
     customized behaviors
 -   [Examples](/docs/category/examples): concrete examples of usage
--   [API](/docs/category/api): API reference and concrete functions listing and
-    documentation
--   [FAQ](/docs/faq): interesting or frequently asked questions
+-   [Reference](/docs/category/reference): API reference and concrete functions 
+    listing and documentation
+-   [Help](/docs/category/help): useful links and FAQ for Foscia
 
 ## Structure of the package
 

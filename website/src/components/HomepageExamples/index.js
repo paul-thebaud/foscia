@@ -8,7 +8,7 @@ import styles from './styles.module.css';
 
 const modelsExampleMeta = {
   title: 'Define your models',
-  link: { to: '/docs/models', text: 'Learn more about models' },
+  link: { to: '/docs/core-concepts/models', text: 'Learn more about models' },
   description: (
     <>
       Foscia provides a simple and expressive way to define your models,
@@ -39,7 +39,7 @@ export default class Post extends makeModel('posts', {
 
 const playExampleMeta = {
   title: 'Play with your models',
-  link: { to: '/docs/actions', text: 'Learn more about actions' },
+  link: { to: '/docs/core-concepts/actions', text: 'Learn more about actions' },
   description: (
     <>
       The <code>action()</code> factory you will define provides an easy way to

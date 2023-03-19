@@ -55,6 +55,6 @@ export default action;
 
 To know which configuration options are available in a `configuration` method,
 you should check out the method signature or
-[**the dedicated implementations guides**](/docs/category/implementations).
+[**the dedicated implementations guides**](/docs/category/configuring-dependencies).
 
 :::
