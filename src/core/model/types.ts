@@ -49,7 +49,7 @@ export type ModelId = string | number;
 /**
  * Configuration for a model's property (attribute or relation).
  */
-export type ModelProp<T = unknown> = {
+export type ModelPropConfig<T = unknown> = {
   /**
    * Default value for the property.
    */
@@ -59,15 +59,70 @@ export type ModelProp<T = unknown> = {
    */
   alias?: string | undefined;
   /**
-   * Avoid serializing the property (won't be sent to data source).
+   * Makes the property read-only.
    */
   readOnly?: boolean;
+  /**
+   * Avoid retrieving the property's value (won't be deserialized from data source).
+   */
+  noRetrieving?: boolean;
+  /**
+   * Avoid sending the property's value (won't be serialized from data source).
+   */
+  noSending?: boolean;
+};
+
+/**
+ * Definition for a model's property (attribute or relation).
+ */
+export type ModelProp<T = unknown> = {
+  /**
+   * Key for the property in model.
+   */
+  key: string;
+  /**
+   * Default value for the property.
+   */
+  default?: T | (() => T) | undefined;
+  /**
+   * Alias of the property (might be used when (de)serializing).
+   */
+  alias?: string | undefined;
+  /**
+   * Makes the property read-only.
+   */
+  readOnly: boolean;
+  /**
+   * Avoid retrieving the property's value (won't be deserialized from data source).
+   */
+  noRetrieving: boolean;
+  /**
+   * Avoid sending the property's value (won't be serialized from data source).
+   */
+  noSending: boolean;
 };
 
 /**
  * Configuration for a model's attribute.
  */
-export type ModelAttribute<T = unknown, S = unknown> = ModelProp<T> & {
+export type ModelAttributeConfig<
+  T = unknown,
+  S = unknown,
+> = ModelPropConfig<T> & {
+  /**
+   * Internal type identifier for Foscia's type guards.
+   */
+  $MODEL_TYPE: 'attribute';
+  transformer?: Transform<T | null, S> | undefined;
+};
+
+/**
+ * Definition for a model's attribute.
+ */
+export type ModelAttribute<
+  T = unknown,
+  S = unknown,
+> = ModelProp<T> & {
   /**
    * Internal type identifier for Foscia's type guards.
    */
@@ -82,6 +137,19 @@ export type ModelRelationType = 'hasOne' | 'hasMany' | 'morphOne' | 'morphMany';
 
 /**
  * Configuration for a model's relation.
+ */
+export type ModelRelationConfig<T = unknown> = ModelPropConfig<T> & {
+  /**
+   * Internal type identifier for Foscia's type guards.
+   */
+  $MODEL_TYPE: 'relation';
+  $RELATION_TYPE: ModelRelationType;
+  type?: string;
+  path?: string;
+};
+
+/**
+ * Definition for a model's relation.
  */
 export type ModelRelation<T = unknown> = ModelProp<T> & {
   /**
@@ -98,9 +166,9 @@ export type ModelRelation<T = unknown> = ModelProp<T> & {
  * descriptors wrapped in holders.
  */
 export type ModelParsedDefinition<D extends {} = {}> = {
-  [K in keyof D]: D[K] extends ModelAttribute<any, any>
-    ? D[K] : D[K] extends ModelRelation<any>
-      ? D[K] : D[K] extends DescriptorHolder<any>
+  [K in keyof D]: D[K] extends ModelAttributeConfig<infer T, infer S>
+    ? ModelAttribute<T, S> : D[K] extends ModelRelationConfig<infer T>
+      ? ModelRelation<T> : D[K] extends DescriptorHolder<any>
         ? D[K] : DescriptorHolder<D[K]>;
 };
 

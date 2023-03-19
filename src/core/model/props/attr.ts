@@ -1,20 +1,20 @@
-import { ModelAttribute, ModelProp } from '@/core/model/types';
+import { ModelAttributeConfig, ModelPropConfig } from '@/core/model/types';
 import { Transform } from '@/core/transformers/types';
 
-export type AttrConfig<T, S> = ModelProp<T> & {
+export type AttrOptions<T, S> = ModelPropConfig<T> & {
   transformer?: Transform<T | null, S> | undefined;
 };
 
-export type AttrConfigVariadic<T, S> =
+export type AttrOptionsVariadic<T, S> =
   | []
-  | [AttrConfig<T, S>]
+  | [AttrOptions<T, S>]
   | [Transform<T | null, S>]
-  | [Transform<T | null, S>, Omit<AttrConfig<T, S>, 'transformer'>];
+  | [Transform<T | null, S>, Omit<AttrOptions<T, S>, 'transformer'>];
 
 function attr<T, S = unknown>(
-  ...config: AttrConfigVariadic<T, S>
-): ModelAttribute<T, S> {
-  const attribute: ModelAttribute<T, S> = { $MODEL_TYPE: 'attribute' };
+  ...config: AttrOptionsVariadic<T, S>
+): ModelAttributeConfig<T, S> {
+  const attribute: ModelAttributeConfig<T, S> = { $MODEL_TYPE: 'attribute' };
 
   if (config.length === 0) {
     return attribute;

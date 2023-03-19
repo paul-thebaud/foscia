@@ -130,12 +130,14 @@ to the factory (e.g. `attr<string | null>()`) or set a default attribute value
 
 You may customize your attribute with the following config:
 
-| Key           | Type           | Defaults    | Description                                                                           |
-| ------------- | -------------- | ----------- | ------------------------------------------------------------------------------------- |
-| `transformer` | `Transform<T>` | `undefined` | The transformer for the prop's value when interacting with your backend.              |
-| `default`     | `T`            | `undefined` | The default value for the prop when initializing a model instance.                    |
-| `readOnly`    | `boolean`      | `false`     | The value won't be serialized when sending the data to your data source.              |
-| `alias`       | `string`       | `undefined` | The key to (de)serialize the prop's value from/in when interacting with your backend. |
+| Key            | Type           | Defaults    | Description                                                                           |
+|----------------|----------------|-------------|---------------------------------------------------------------------------------------|
+| `transformer`  | `Transform<T>` | `undefined` | The transformer for the prop's value when interacting with your backend.              |
+| `default`      | `T`            | `undefined` | The default value for the prop when initializing a model instance.                    |
+| `alias`        | `string`       | `undefined` | The key to (de)serialize the prop's value from/in when interacting with your backend. |
+| `readOnly`     | `boolean`      | `false`     | Makes the property read-only.                                                         |
+| `noRetrieving` | `boolean`      | `false`     | Avoid retrieving the property's value (won't be deserialized from data source).       |
+| `noSending`    | `boolean`      | `false`     | Avoid sending the property's value (won't be serialized from data source).            |
 
 #### Transform
 
@@ -213,13 +215,15 @@ circular dependencies when having circular model relations.
 
 You may customize your relation with the following config:
 
-| Key        | Type      | Defaults    | Description                                                                                                |
-|------------|-----------|-------------|------------------------------------------------------------------------------------------------------------|
-| `default`  | `T`       | `undefined` | The default value for the prop when initializing a model instance.                                         |
-| `readOnly` | `boolean` | `false`     | The value won't be serialized when sending the data to your data source.                                   |
-| `alias`    | `string`  | `undefined` | The key to (de)serialize the prop's value from/in when interacting with your backend.                      |
-| `path`     | `string`  | `undefined` | Path which is used to query the relation. Defaults to the relation's key.                                  |
-| `type`     | `string`  | `undefined` | The explicit type of related model. Might be used by the deserializer to known which model to instantiate. |
+| Key            | Type      | Defaults    | Description                                                                                                |
+|----------------|-----------|-------------|------------------------------------------------------------------------------------------------------------|
+| `default`      | `T`       | `undefined` | The default value for the prop when initializing a model instance.                                         |
+| `alias`        | `string`  | `undefined` | The key to (de)serialize the prop's value from/in when interacting with your backend.                      |
+| `path`         | `string`  | `undefined` | Path which is used to query the relation. Defaults to the relation's key.                                  |
+| `type`         | `string`  | `undefined` | The explicit type of related model. Might be used by the deserializer to known which model to instantiate. |
+| `readOnly`     | `boolean` | `false`     | Makes the property read-only.                                                                              |
+| `noRetrieving` | `boolean` | `false`     | Avoid retrieving the property's value (won't be deserialized from data source).                            |
+| `noSending`    | `boolean` | `false`     | Avoid sending the property's value (won't be serialized from data source).                                 |
 
 ### Custom properties
 

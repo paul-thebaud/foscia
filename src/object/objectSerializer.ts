@@ -145,7 +145,7 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
     rawValue: unknown,
     _context: {},
   ) {
-    return !def.readOnly
+    return !def.noSending
       && rawValue !== undefined
       && changed(instance, key);
   }

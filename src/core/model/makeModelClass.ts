@@ -30,6 +30,12 @@ export default function makeModelClass(config: ModelConfig): Model {
         enumerable: true,
         get: () => this.$values[key],
         set: (nextValue) => {
+          if (def.readOnly) {
+            throw new FosciaError(
+              `\`${this.$model.$config.type}.${key}\` cannot be set because it is read-only.`,
+            );
+          }
+
           this.$values[key] = nextValue;
         },
       });

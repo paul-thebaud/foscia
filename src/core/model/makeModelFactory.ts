@@ -1,14 +1,14 @@
 import makeDefinition from '@/core/model/makeDefinition';
 import makeModelClass from '@/core/model/makeModelClass';
-import { Model, ModelConfig, ModelInstance } from '@/core/model/types';
+import { Model, ModelConfig, ModelInstance, ModelParsedDefinition } from '@/core/model/types';
 
 export default function makeModelFactory<ND extends {} = {}>(
-  baseRawDefinition?: ND & ThisType<ModelInstance<ND>>,
+  baseRawDefinition?: ND & ThisType<ModelInstance<ModelParsedDefinition<ND>>>,
   baseConfig?: Omit<ModelConfig, 'type'>,
 ) {
   return <D extends {} = {}>(
     config: ModelConfig | string,
-    rawDefinition?: D & ThisType<ModelInstance<ND & D>>,
+    rawDefinition?: D & ThisType<ModelInstance<ModelParsedDefinition<ND & D>>>,
   ) => {
     const mergedConfig = typeof config === 'string'
       ? { ...baseConfig, type: config }
@@ -18,7 +18,8 @@ export default function makeModelFactory<ND extends {} = {}>(
       ...makeDefinition(rawDefinition),
     };
 
-    return makeModelClass(mergedConfig)
-      .extends(mergedDefinition) as Model<ND & D, ModelInstance<ND & D>>;
+    return makeModelClass(mergedConfig).extends(
+      mergedDefinition,
+    ) as Model<ModelParsedDefinition<ND & D>, ModelInstance<ModelParsedDefinition<ND & D>>>;
   };
 }

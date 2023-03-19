@@ -185,7 +185,7 @@ export default class HttpAdapter implements AdapterI<Response> {
   }
 
   protected clearRequestURLEndpoint(endpoint: string) {
-    return endpoint.replace(/\/+/g, '/');
+    return endpoint.replace(/([^:]\/)\/+/g, '$1');
   }
 
   protected async makeRequestURLParams(context: HttpRequestConfig) {

@@ -366,7 +366,7 @@ export default abstract class ObjectDeserializer<
     value: unknown,
   ) {
     // eslint-disable-next-line no-param-reassign
-    instance[key] = value;
+    instance.$values[key] = value;
   }
 
   protected async hydrateAttributeInInstance(
@@ -429,11 +429,12 @@ export default abstract class ObjectDeserializer<
   protected async shouldDeserializeProp(
     _instance: ModelInstance,
     _key: string,
-    _def: ModelProp,
+    def: ModelProp,
     rawValue: unknown,
     _context: {},
   ) {
-    return rawValue !== undefined;
+    return !def.noRetrieving
+      && rawValue !== undefined;
   }
 
   protected async deserializeAttributeValue(

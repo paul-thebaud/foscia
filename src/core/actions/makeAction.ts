@@ -1,4 +1,3 @@
-import { logger } from '@/core';
 import {
   ActionClass,
   ActionHooksDefinition,
@@ -9,6 +8,7 @@ import registerHook from '@/core/hooks/registerHook';
 import runHook from '@/core/hooks/runHook';
 import { HooksRegistrar } from '@/core/hooks/types';
 import withoutHooks from '@/core/hooks/withoutHooks';
+import logger from '@/core/logger/logger';
 import { Dictionary, eachDescriptors, sequentialTransform } from '@/utilities';
 
 export default function makeAction<Extension extends {} = {}>(extensions?: Extension) {

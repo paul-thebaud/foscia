@@ -1,10 +1,10 @@
-import relation, { RelationConfig } from '@/core/model/props/relation';
-import { ModelRelation } from '@/core/model/types';
+import makeRelationConfig, { RelationOptions } from '@/core/model/props/makeRelationConfig';
+import { ModelRelationConfig } from '@/core/model/types';
 
-export type HasManyConfig<T> = RelationConfig<T>;
+export type HasManyOptions<T> = RelationOptions<T>;
 
 export default function hasMany<T>(
-  config: string | HasManyConfig<T[]> = {},
-): ModelRelation<T[]> {
-  return relation('hasMany', config);
+  config: string | HasManyOptions<T[]> = {},
+): ModelRelationConfig<T[]> {
+  return makeRelationConfig('hasMany', config);
 }
