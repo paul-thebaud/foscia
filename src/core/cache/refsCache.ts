@@ -2,7 +2,7 @@ import { RefsCacheConfig, RefsCacheMode } from '@/core/cache/types';
 import weakRefCacheMode from '@/core/cache/weakRefCacheMode';
 import { ModelId, ModelInstance } from '@/core/model/types';
 import { CacheI } from '@/core/types';
-import { assignConfig, IdentifiersMap } from '@/utilities';
+import { applyConfig, IdentifiersMap } from '@/utilities';
 
 export default class RefsCache implements CacheI {
   private readonly instances: IdentifiersMap<string, ModelId, unknown>;
@@ -14,10 +14,8 @@ export default class RefsCache implements CacheI {
     this.configure(config);
   }
 
-  public configure(config?: RefsCacheConfig) {
-    assignConfig(this, config);
-
-    return this;
+  public configure(config?: RefsCacheConfig, override = true) {
+    applyConfig(this, config, override);
   }
 
   public async find(type: string, id: ModelId) {

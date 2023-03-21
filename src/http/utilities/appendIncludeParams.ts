@@ -1,6 +1,5 @@
-import { normalizeInclude } from '@/core';
-import { consumeInclude } from '@/core/actions';
-import { Dictionary } from '@/utilities/types';
+import { consumeInclude, normalizeInclude } from '@/core';
+import { Dictionary } from '@/utilities';
 
 export default async function appendIncludeParams(
   context: {},

@@ -7,6 +7,6 @@ export type ObjectTransform<T, S> = {
   deserialize(value: S): Awaitable<T>;
 };
 
-export type Transform<T, S> =
+export type Transform<T, S = unknown> =
   | FunctionTransform<T, S>
   | ObjectTransform<T, S>;

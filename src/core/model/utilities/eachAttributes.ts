@@ -3,11 +3,11 @@ import { ModelAttribute, ModelInstance } from '@/core/model/types';
 
 export default function eachAttributes<R>(
   instance: ModelInstance,
-  callback: (key: string, def: ModelAttribute) => R,
+  callback: (def: ModelAttribute) => R,
 ) {
-  return Object.entries(instance.$model.$schema).reduce((stack, [key, def]) => {
+  return Object.values(instance.$model.$schema).reduce((stack, def) => {
     if (isAttributeDef(def)) {
-      stack.push(callback(key, def));
+      stack.push(callback(def));
     }
 
     return stack;

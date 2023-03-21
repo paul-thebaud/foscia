@@ -1,11 +1,10 @@
 import { Hookable, HookCallback } from '@/core/hooks/types';
-import { Model, ModelId, ModelInstance, ModelRelation } from '@/core/model/types';
+import { Model, ModelId, ModelInstance, ModelRelation, ModelRelationRaw } from '@/core/model/types';
 import {
   AdapterI,
   CacheI,
   DeserializedData,
   DeserializerI,
-  KeyNormalizerI,
   RegistryI,
   SerializerI,
 } from '@/core/types';
@@ -58,9 +57,9 @@ export type ContextRunner<C extends {}, R> = (
 ) => R;
 
 export type InferConsumedInstance<C extends {}> =
-  C extends { relation: ModelRelation<Array<infer I>> }
+  C extends { relation: ModelRelationRaw<Array<infer I>> }
     ? I extends ModelInstance ? I : never
-    : C extends { relation: ModelRelation<infer I> }
+    : C extends { relation: ModelRelationRaw<infer I> }
       ? I extends ModelInstance ? I : never
       : C extends { model: Constructor<infer I> }
         ? I extends ModelInstance ? I : never : never;
@@ -107,10 +106,6 @@ export type ConsumeRegistry = { registry: RegistryI; };
 
 export type ConsumeAdapter<AdapterData = unknown> = {
   adapter: AdapterI<AdapterData>;
-};
-
-export type ConsumeKeyNormalizer = {
-  keyNormalizer: KeyNormalizerI;
 };
 
 export type ConsumeDeserializer<

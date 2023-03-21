@@ -1,6 +1,4 @@
-import { ModelInstance } from '@/core';
-import { AllData } from '@/core/actions/context/runners/all';
-import { OneData } from '@/core/actions/context/runners/oneOr';
+import { AllData, ModelInstance, OneData } from '@/core';
 import { JsonApiDeserializedData } from '@/jsonapi/jsonApiDeserializer';
 
 /**

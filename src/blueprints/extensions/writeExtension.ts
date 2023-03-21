@@ -1,4 +1,4 @@
-import { create, destroy, instanceData, save, update } from '@/core/actions';
+import { create, destroy, instanceData, save, update } from '@/core';
 
 export default {
   ...create.extension,

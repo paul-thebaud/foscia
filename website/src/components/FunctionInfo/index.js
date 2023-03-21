@@ -1,5 +1,5 @@
 import React from 'react';
-import Chip from './chip.js';
+import Chip from '@site/src/components/Chip';
 
 export default function FunctionInfo({ children, version, only, requires, provides }) {
   return (

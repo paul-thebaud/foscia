@@ -10,6 +10,12 @@ import runHook from '@/core/hooks/runHook';
 import unregisterHook from '@/core/hooks/unregisterHook';
 import withoutHooks from '@/core/hooks/withoutHooks';
 import logger from '@/core/logger/logger';
+import isAttributeDef from '@/core/model/guards/isAttributeDef';
+import isInstance from '@/core/model/guards/isInstance';
+import isPluralRelationDef from '@/core/model/guards/isPluralRelationDef';
+import isModel from '@/core/model/guards/isModel';
+import isPropDef from '@/core/model/guards/isPropDef';
+import isRelationDef from '@/core/model/guards/isRelationDef';
 import onCreated from '@/core/model/hooks/onCreated';
 import onCreating from '@/core/model/hooks/onCreating';
 import onDestroyed from '@/core/model/hooks/onDestroyed';
@@ -32,11 +38,11 @@ import fill from '@/core/model/utilities/fill';
 import isSame from '@/core/model/utilities/isSame';
 import loaded from '@/core/model/utilities/loaded';
 import reset from '@/core/model/utilities/reset';
+import shouldSyncProp from '@/core/model/utilities/shouldSyncProp';
 import syncOriginal from '@/core/model/utilities/syncOriginal';
-import KeyNormalizer from '@/core/normalizer/keyNormalizer';
-import normalizeDotRelations from '@/core/normalizer/normalizeDotRelations';
-import normalizeInclude from '@/core/normalizer/normalizeInclude';
-import normalizeKeys from '@/core/normalizer/normalizeKeys';
+import normalizeDotRelations from '@/core/normalization/normalizeDotRelations';
+import normalizeInclude from '@/core/normalization/normalizeInclude';
+import normalizeKey from '@/core/normalization/normalizeKey';
 import MapRegistry from '@/core/registry/mapRegistry';
 import toBoolean from '@/core/transformers/toBoolean';
 import toDate from '@/core/transformers/toDate';
@@ -47,6 +53,8 @@ export * from '@/core/actions/types';
 export * from '@/core/cache/types';
 export * from '@/core/hooks/types';
 export * from '@/core/model/types';
+export * from '@/core/normalization/types';
+export * from '@/core/registry/types';
 export * from '@/core/transformers/types';
 export * from '@/core/types';
 
@@ -61,16 +69,16 @@ export {
   MapRegistry,
   RefsCache,
   weakRefCacheMode,
-  KeyNormalizer,
   normalizeDotRelations,
   normalizeInclude,
-  normalizeKeys,
+  normalizeKey,
   attr,
   hasMany,
   hasOne,
   loaded,
   fill,
   reset,
+  shouldSyncProp,
   syncOriginal,
   changed,
   isSame,
@@ -96,5 +104,11 @@ export {
   registerHook,
   unregisterHook,
   withoutHooks,
+  isPropDef,
+  isAttributeDef,
+  isRelationDef,
+  isPluralRelationDef,
+  isModel,
+  isInstance,
   logger,
 };

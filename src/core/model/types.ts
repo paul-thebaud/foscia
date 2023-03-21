@@ -1,22 +1,51 @@
 import { Hookable, HookCallback } from '@/core/hooks/types';
+import { Normalizer } from '@/core/normalization/types';
 import { Transform } from '@/core/transformers/types';
-import { Constructor, DescriptorHolder, Dictionary, Prev } from '@/utilities';
+import { Constructor, DescriptorHolder, Dictionary, Optional, Prev } from '@/utilities';
+
+export type ModelRelationTypeGuesser = (model: ModelClass, def: ModelRelation) => Optional<string>;
 
 /**
  * Configuration of a model class.
  */
 export type ModelConfig = {
   /**
-   * Type which uniquely identify this model.
-   * May be used by action's dependencies for different purpose
-   * (endpoint computing, caching, etc.).
-   */
-  type: string;
-  /**
    * Path which is used to query the model.
    * Defaults to the model's type.
    */
-  path?: string;
+  path?: Optional<string>;
+  /**
+   * Normalize a model/relation path when injecting it inside an action context.
+   */
+  normalizePath?: Optional<Normalizer<string>>;
+  /**
+   * Normalize a model path when injecting it inside an action context.
+   * Prioritized over `normalizePath`.
+   */
+  normalizeModelPath?: Optional<Normalizer<string>>;
+  /**
+   * Normalize a relation path when injecting it inside an action context.
+   * Prioritized over `normalizePath`.
+   */
+  normalizeRelationPath?: Optional<Normalizer<string>>;
+  /**
+   * Normalize an attribute/relation key when (de)serializing for data source.
+   */
+  normalizeKey?: Optional<Normalizer<string>>;
+  /**
+   * Normalize an attribute key when (de)serializing for data source.
+   * Prioritized over `normalizeKey`.
+   */
+  normalizeAttributeKey?: Optional<Normalizer<string>>;
+  /**
+   * Normalize a relation key when (de)serializing for data source.
+   * Prioritized over `normalizeKey`.
+   */
+  normalizeRelationKey?: Optional<Normalizer<string>>;
+  /**
+   * Guess the type for a given relation.
+   */
+  guessRelationType?: Optional<ModelRelationTypeGuesser>;
   /**
    * Compare two values when checking model instance changed values.
    *
@@ -25,7 +54,7 @@ export type ModelConfig = {
    *
    * @see {@link changed}
    */
-  compareValue?: (nextValue: unknown, prevValue: unknown) => boolean;
+  compareValue?: Optional<((nextValue: unknown, prevValue: unknown) => boolean)>;
   /**
    * Clone two values when sync model instances values state.
    *
@@ -34,11 +63,11 @@ export type ModelConfig = {
    * @see {@link reset}
    * @see {@link syncOriginal}
    */
-  cloneValue?: <T = unknown>(value: T) => T;
+  cloneValue?: Optional<(<T>(value: T) => T)>;
   /**
    * Dedicated base URL. Will overwrite the default base URL.
    */
-  baseURL?: string;
+  baseURL?: Optional<string>;
 };
 
 /**
@@ -47,9 +76,21 @@ export type ModelConfig = {
 export type ModelId = string | number;
 
 /**
- * Configuration for a model's property (attribute or relation).
+ * Sync precise configuration for a property (will only do defined action).
  */
-export type ModelPropConfig<T = unknown> = {
+export type ModelPropSync = 'retrieve' | 'write';
+
+/**
+ * Normalized part of a property's definition (attribute or relation).
+ */
+export type ModelPropNormalized<K = string> = {
+  key: K;
+};
+
+/**
+ * Raw definition for a model's property (attribute or relation).
+ */
+export type ModelPropRaw<T = unknown> = {
   /**
    * Default value for the property.
    */
@@ -63,82 +104,40 @@ export type ModelPropConfig<T = unknown> = {
    */
   readOnly?: boolean;
   /**
-   * Avoid retrieving the property's value (won't be deserialized from data source).
+   * Tells if the property should be synced with the data store.
    */
-  noRetrieving?: boolean;
-  /**
-   * Avoid sending the property's value (won't be serialized from data source).
-   */
-  noSending?: boolean;
+  sync?: boolean | ModelPropSync;
 };
 
 /**
- * Definition for a model's property (attribute or relation).
+ * Raw definition for a model's attribute.
  */
-export type ModelProp<T = unknown> = {
-  /**
-   * Key for the property in model.
-   */
-  key: string;
-  /**
-   * Default value for the property.
-   */
-  default?: T | (() => T) | undefined;
-  /**
-   * Alias of the property (might be used when (de)serializing).
-   */
-  alias?: string | undefined;
-  /**
-   * Makes the property read-only.
-   */
-  readOnly: boolean;
-  /**
-   * Avoid retrieving the property's value (won't be deserialized from data source).
-   */
-  noRetrieving: boolean;
-  /**
-   * Avoid sending the property's value (won't be serialized from data source).
-   */
-  noSending: boolean;
-};
-
-/**
- * Configuration for a model's attribute.
- */
-export type ModelAttributeConfig<
+export type ModelAttributeRaw<
   T = unknown,
-  S = unknown,
-> = ModelPropConfig<T> & {
+> = ModelPropRaw<T> & {
   /**
    * Internal type identifier for Foscia's type guards.
    */
   $MODEL_TYPE: 'attribute';
-  transformer?: Transform<T | null, S> | undefined;
+  transformer?: Transform<T | null> | undefined;
 };
 
 /**
  * Definition for a model's attribute.
  */
-export type ModelAttribute<
-  T = unknown,
-  S = unknown,
-> = ModelProp<T> & {
-  /**
-   * Internal type identifier for Foscia's type guards.
-   */
-  $MODEL_TYPE: 'attribute';
-  transformer?: Transform<T | null, S> | undefined;
-};
+export type ModelAttribute<K = string, T = any> =
+  ModelPropNormalized<K>
+  & ModelAttributeRaw<T>;
 
 /**
  * Available model relation types.
  */
-export type ModelRelationType = 'hasOne' | 'hasMany' | 'morphOne' | 'morphMany';
+export type ModelRelationType = 'hasOne' | 'hasMany';
 
 /**
- * Configuration for a model's relation.
+ * Raw definition for a model's relation.
  */
-export type ModelRelationConfig<T = unknown> = ModelPropConfig<T> & {
+export type ModelRelationRaw<T = any> = ModelPropRaw<T> & {
   /**
    * Internal type identifier for Foscia's type guards.
    */
@@ -149,26 +148,18 @@ export type ModelRelationConfig<T = unknown> = ModelPropConfig<T> & {
 };
 
 /**
- * Definition for a model's relation.
+ * Definition for a model's attribute.
  */
-export type ModelRelation<T = unknown> = ModelProp<T> & {
-  /**
-   * Internal type identifier for Foscia's type guards.
-   */
-  $MODEL_TYPE: 'relation';
-  $RELATION_TYPE: ModelRelationType;
-  type?: string;
-  path?: string;
-};
+export type ModelRelation<K = string, T = any> = ModelPropNormalized<K> & ModelRelationRaw<T>;
 
 /**
  * The parsed model definition with non attributes/relations properties'
  * descriptors wrapped in holders.
  */
 export type ModelParsedDefinition<D extends {} = {}> = {
-  [K in keyof D]: D[K] extends ModelAttributeConfig<infer T, infer S>
-    ? ModelAttribute<T, S> : D[K] extends ModelRelationConfig<infer T>
-      ? ModelRelation<T> : D[K] extends DescriptorHolder<any>
+  [K in keyof D]: D[K] extends ModelAttributeRaw
+    ? D[K] & ModelPropNormalized<K> : D[K] extends ModelRelationRaw
+      ? D[K] & ModelPropNormalized<K> : D[K] extends DescriptorHolder<any>
         ? D[K] : DescriptorHolder<D[K]>;
 };
 
@@ -176,8 +167,8 @@ export type ModelParsedDefinition<D extends {} = {}> = {
  * Extract model's attributes and relations from the whole definition.
  */
 export type ModelSchema<D extends {} = {}> = {
-  [K in keyof D]: D[K] extends ModelAttribute<any, any>
-    ? D[K] : D[K] extends ModelRelation<any>
+  [K in keyof D]: D[K] extends ModelAttribute<K>
+    ? D[K] : D[K] extends ModelRelation<K>
       ? D[K] : never;
 };
 
@@ -209,10 +200,12 @@ export type ModelClass<D extends {} = any> = Hookable<ModelHooksDefinition> & {
    * Internal type identifier for Foscia's type guards.
    */
   readonly $MODEL_TYPE: 'model';
+  readonly $type: string;
   readonly $config: ModelConfig;
   readonly $schema: ModelSchema<D>;
+  configure(rawConfig?: ModelConfig, override?: boolean): void;
   extends<ND extends {} = {}>(
-    extendsFrom?: ND & ThisType<ModelInstance<D & ND>>,
+    rawDefinition?: ND & ThisType<ModelInstance<D & ND>>,
   ): Model<D & ND, ModelInstance<D & ND>>;
 };
 
@@ -250,8 +243,8 @@ export type ModelInstance<D extends {} = any> = {
   $original: Partial<ModelValues<ModelClass<D>>>;
   $values: Partial<ModelValues<ModelClass<D>>>;
 } & {
-  [K in keyof D]: D[K] extends ModelAttribute<infer T, any>
-    ? T : D[K] extends ModelRelation<infer T>
+  [K in keyof D]: D[K] extends ModelAttribute<K, infer T>
+    ? T : D[K] extends ModelRelation<K, infer T>
       ? T : D[K] extends DescriptorHolder<infer T>
         ? T : D[K];
 };
@@ -274,21 +267,16 @@ export type ModelInferSchema<M> = ModelSchema<ModelInferDefinition<M>>;
  * Model class or instance values map (only attributes/relations).
  */
 export type ModelValues<M> = {
-  [K in keyof ModelInferDefinition<M>]:
-  ModelInferDefinition<M>[K] extends ModelAttribute<infer T, any>
-    ? T : ModelInferDefinition<M>[K] extends ModelRelation<infer T>
+  [K in keyof ModelInferSchema<M>]:
+  ModelInferSchema<M>[K] extends ModelAttribute<infer T>
+    ? T : ModelInferSchema<M>[K] extends ModelRelation<infer T>
       ? T : never;
 };
 
 /**
  * Model class or instance attributes/relations key.
  */
-export type ModelKey<M> = {
-  [K in keyof ModelInferDefinition<M>]:
-  ModelInferDefinition<M>[K] extends ModelAttribute<any, any>
-    ? K : ModelInferDefinition<M>[K] extends ModelRelation<any>
-      ? K : never;
-}[keyof ModelInferDefinition<M>];
+export type ModelKey<M> = keyof ModelInferSchema<M>;
 
 /**
  * Model class or instance relations key (only direct relations).

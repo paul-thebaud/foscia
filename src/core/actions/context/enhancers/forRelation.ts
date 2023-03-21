@@ -16,6 +16,7 @@ import {
   ModelRelationKey,
   ModelSchema,
 } from '@/core/model/types';
+import normalize from '@/core/normalization/normalize';
 
 /**
  * Target the given instance's relation.
@@ -38,7 +39,10 @@ export default function forRelation<
     return action
       .use(forInstance(instance as I))
       .use(context({
-        relationPath: (relation as ModelRelation).path ?? relationKey,
+        relationPath: normalize(
+          (relation as ModelRelation).path ?? relationKey,
+          instance.$model.$config.normalizeRelationPath ?? instance.$model.$config.normalizePath,
+        ),
         relation,
       }));
   };

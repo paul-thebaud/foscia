@@ -14,8 +14,6 @@ Foscia actions might require one or many dependencies to work:
     already fetched record without making further requests to your data source.
 -   **Registry** is a map of types and associated model. It is used by
     deserializer to identify which models should map to which types.
--   **Key normalizer** which normalize the attributes and relations keys when
-    using them through (de)serialization, includes, etc.
 -   **Serializer** will serialize instances to the data source format.
 -   **Deserializer** will deserialize records to instances. It might use the
     cache and registry internally.
@@ -28,16 +26,14 @@ have a specific implementation (HTTP, JSON:API, etc.).
 
 ## Core implementation
 
-Foscia propose core implementation for the `Cache`, `Registry` and
-`KeyNormalizer` actions' dependencies. Both classes are available through
-`foscia/core` namespace and both factory are available through
-`foscia/blueprints`.
+Foscia propose core implementation for the `Cache` and `Registry` actions'
+dependencies. Both classes are available through `foscia/core` namespace and
+both factory are available through `foscia/blueprints`.
 
 Those dependencies may be used with any implementations.
 
 -   [Cache through `RefsCache`](/docs/guides/implementations/cache)
 -   [Registry through `MapRegistry`](/docs/guides/implementations/registry)
--   [Key normalizer through `KeyNormalizer`](/docs/guides/implementations/key-normalizer)
 
 ## JSON:API implementation
 

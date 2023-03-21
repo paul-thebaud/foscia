@@ -41,10 +41,9 @@ import CustomDeserializer from './action/customDeserializer';
 
 // Note that we are not using the exported action function,
 // but the raw Action class.
-const { Action, cache, registry, adapter, keyNormalizer, serializer } =
-    makeJsonRest({
-        baseURL: 'https://example.com/api/v1',
-    });
+const { Action, cache, registry, adapter, serializer } = makeJsonRest({
+    baseURL: 'https://example.com/api/v1',
+});
 
 const deserializer = new CustomDeserializer();
 
@@ -56,7 +55,6 @@ export default function action() {
             cache,
             registry,
             adapter,
-            keyNormalizer,
             deserializer,
             serializer,
         }),

@@ -7,7 +7,6 @@ import consumeDeserializer from '@/core/actions/context/consumers/consumeDeseria
 import consumeId from '@/core/actions/context/consumers/consumeId';
 import consumeInclude from '@/core/actions/context/consumers/consumeInclude';
 import consumeInstance from '@/core/actions/context/consumers/consumeInstance';
-import consumeKeyNormalizer from '@/core/actions/context/consumers/consumeKeyNormalizer';
 import consumeModel from '@/core/actions/context/consumers/consumeModel';
 import consumeModelPath from '@/core/actions/context/consumers/consumeModelPath';
 import consumeRegistry from '@/core/actions/context/consumers/consumeRegistry';
@@ -32,13 +31,13 @@ import onRunning from '@/core/actions/context/enhancers/hooks/onRunning';
 import onSuccess from '@/core/actions/context/enhancers/hooks/onSuccess';
 import include from '@/core/actions/context/enhancers/include';
 import target from '@/core/actions/context/enhancers/target';
-import all from '@/core/actions/context/runners/all';
+import all, { AllData } from '@/core/actions/context/runners/all';
 import cached from '@/core/actions/context/runners/cached';
 import cachedOr from '@/core/actions/context/runners/cachedOr';
 import cachedOrFail from '@/core/actions/context/runners/cachedOrFail';
 import none from '@/core/actions/context/runners/none';
 import one from '@/core/actions/context/runners/one';
-import oneOr from '@/core/actions/context/runners/oneOr';
+import oneOr, { OneData } from '@/core/actions/context/runners/oneOr';
 import oneOrCurrent from '@/core/actions/context/runners/oneOrCurrent';
 import oneOrFail from '@/core/actions/context/runners/oneOrFail';
 import raw from '@/core/actions/context/runners/raw';
@@ -48,6 +47,8 @@ import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExten
 import makeRunnersExtension from '@/core/actions/extensions/makeRunnersExtension';
 import makeAction from '@/core/actions/makeAction';
 import when from '@/core/actions/when';
+
+export type { AllData, OneData };
 
 export {
   none,
@@ -74,7 +75,6 @@ export {
   consumeId,
   consumeInclude,
   consumeInstance,
-  consumeKeyNormalizer,
   consumeModel,
   consumeModelPath,
   consumeRegistry,

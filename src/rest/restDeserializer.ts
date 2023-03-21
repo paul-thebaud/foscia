@@ -1,7 +1,7 @@
 import { ModelInstance } from '@/core';
 import { ObjectDeserializer, ObjectExtractedData } from '@/object';
 import { DataExtractor, DataReader, RestDeserializerConfig, RestNewResource } from '@/rest/types';
-import { assignConfig } from '@/utilities';
+import { applyConfig } from '@/utilities';
 
 export default class RestDeserializer extends ObjectDeserializer<Response, RestNewResource> {
   private dataReader: DataReader | null = null;
@@ -14,10 +14,8 @@ export default class RestDeserializer extends ObjectDeserializer<Response, RestN
     this.configure(config);
   }
 
-  public configure(config?: RestDeserializerConfig) {
-    assignConfig(this, config);
-
-    return this;
+  public configure(config?: RestDeserializerConfig, override = true) {
+    applyConfig(this, config, override);
   }
 
   /**

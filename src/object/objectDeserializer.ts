@@ -14,12 +14,13 @@ import {
   ModelAttribute,
   ModelId,
   ModelInstance,
-  ModelProp,
   ModelRelation,
-  normalizeKeys,
+  normalizeKey,
   runHook,
+  shouldSyncProp,
   syncOriginal,
 } from '@/core';
+import detectRelationType from '@/core/model/utilities/detectRelationType';
 import useTransform from '@/core/transformers/useTransform';
 import {
   ObjectDeserializerConfig,
@@ -27,7 +28,7 @@ import {
   ObjectNormalizedIdentifier,
   ObjectOptionalIdentifier,
 } from '@/object/types';
-import { assignConfig, IdentifiersMap, isNil, isNone, Optional, wrap } from '@/utilities';
+import { applyConfig, IdentifiersMap, isNil, isNone, Optional, wrap } from '@/utilities';
 
 export default abstract class ObjectDeserializer<
   AdapterData,
@@ -41,10 +42,8 @@ export default abstract class ObjectDeserializer<
     this.configure(config);
   }
 
-  public configure(config?: ObjectDeserializerConfig) {
-    assignConfig(this, config);
-
-    return this;
+  public configure(config?: ObjectDeserializerConfig, override = true) {
+    applyConfig(this, config, override);
   }
 
   public async deserialize(data: AdapterData, context: {}) {
@@ -78,7 +77,6 @@ export default abstract class ObjectDeserializer<
     resource: Resource,
     context: {},
     parent?: ModelInstance,
-    relationKey?: string,
     relation?: ModelRelation,
   ): Promise<ObjectOptionalIdentifier>;
 
@@ -124,14 +122,12 @@ export default abstract class ObjectDeserializer<
     resource: Resource,
     context: {},
     parent?: ModelInstance,
-    relationKey?: string,
     relation?: ModelRelation,
   ) {
     const identifier = await this.extractIdentifier(
       resource,
       context,
       parent,
-      relationKey,
       relation,
     );
 
@@ -170,47 +166,40 @@ export default abstract class ObjectDeserializer<
     // eslint-disable-next-line no-param-reassign
     instance.lid = instance.lid ?? identifier.lid;
 
-    await Promise.all(eachAttributes(instance, async (key, def) => {
-      const serializedKey = await this.deserializeAttributeKey(instance, key, def, context);
+    await Promise.all(eachAttributes(instance, async (def) => {
+      const serializedKey = await this.serializeAttributeKey(instance, def, context);
       const rawValue = await this.extractAttributeValue(
         extractedData,
         resource,
         serializedKey,
         context,
       );
-      if (await this.shouldDeserializeAttribute(instance, key, def, rawValue, context)) {
-        const value = await this.deserializeAttributeValue(
-          instance,
-          key,
-          def,
-          rawValue,
-          context,
-        );
+      if (await this.shouldDeserializeAttribute(instance, def, rawValue, context)) {
+        const value = await this.deserializeAttributeValue(instance, def, rawValue, context);
 
-        await this.hydrateAttributeInInstance(instance, key, value);
+        await this.hydrateAttributeInInstance(instance, def, value);
       }
     }));
 
-    await Promise.all(eachRelations(instance, async (key, def) => {
-      const serializedKey = await this.deserializeRelationKey(instance, key, def, context);
+    await Promise.all(eachRelations(instance, async (def) => {
+      const serializedKey = await this.serializeRelationKey(instance, def, context);
       const rawValue = await this.extractRelationValue(
         extractedData,
         resource,
         serializedKey,
         context,
       );
-      if (await this.shouldDeserializeRelation(instance, key, def, rawValue, context)) {
+      if (await this.shouldDeserializeRelation(instance, def, rawValue, context)) {
         const value = await this.deserializeRelationValue(
           extractedData,
           instancesMap,
           instance,
-          key,
           def,
           rawValue,
           context,
         );
 
-        await this.hydrateRelationInInstance(instance, key, value);
+        await this.hydrateRelationInInstance(instance, def, value);
       }
     }));
 
@@ -223,14 +212,12 @@ export default abstract class ObjectDeserializer<
     resource: Resource,
     context: {},
     parent?: ModelInstance,
-    relationKey?: string,
     relation?: ModelRelation,
   ) {
     const identifier = await this.extractOptionalIdentifier(
       resource,
       context,
       parent,
-      relationKey,
       relation,
     );
 
@@ -238,7 +225,7 @@ export default abstract class ObjectDeserializer<
       if (isNil(relation)) {
         identifier.type = detectTargetType(context);
       } else {
-        identifier.type = relation.type;
+        identifier.type = detectRelationType(relation, parent!.$model);
       }
 
       if (isNil(identifier.type)) {
@@ -294,12 +281,13 @@ export default abstract class ObjectDeserializer<
     const registry = consumeRegistry(context, null);
     if (registry) {
       const ModelClass = await registry.modelFor(identifier.type);
-
-      return new ModelClass();
+      if (ModelClass) {
+        return new ModelClass();
+      }
     }
 
     const ContextModel = consumeModel(context, null);
-    if (ContextModel && ContextModel.$config.type === identifier.type) {
+    if (ContextModel && ContextModel.$type === identifier.type) {
       return new ContextModel();
     }
 
@@ -324,7 +312,7 @@ export default abstract class ObjectDeserializer<
 
     const cache = consumeCache(context, null);
     if (cache && !isNil(instance.id)) {
-      await cache.put(instance.$model.$config.type, instance.id, instance);
+      await cache.put(instance.$model.$type, instance.id, instance);
     }
   }
 
@@ -362,84 +350,78 @@ export default abstract class ObjectDeserializer<
 
   protected hydratePropInInstance(
     instance: ModelInstance,
-    key: string,
+    def: ModelAttribute | ModelRelation,
     value: unknown,
   ) {
     // eslint-disable-next-line no-param-reassign
-    instance.$values[key] = value;
+    instance.$values[def.key] = value;
   }
 
   protected async hydrateAttributeInInstance(
     instance: ModelInstance,
-    key: string,
+    def: ModelAttribute,
     value: unknown,
   ) {
-    await this.hydratePropInInstance(instance, key, value);
+    await this.hydratePropInInstance(instance, def, value);
   }
 
   protected async hydrateRelationInInstance(
     instance: ModelInstance,
-    key: string,
+    def: ModelRelation,
     value: unknown,
   ) {
-    await this.hydratePropInInstance(instance, key, value);
+    await this.hydratePropInInstance(instance, def, value);
 
     // eslint-disable-next-line no-param-reassign
-    instance.$loaded[key] = true;
+    instance.$loaded[def.key] = true;
   }
 
-  protected async deserializeAttributeKey(
+  protected async serializeAttributeKey(
     instance: ModelInstance,
-    key: string,
-    _def: ModelAttribute,
-    context: {},
+    def: ModelAttribute,
+    _context: {},
   ) {
-    return (await normalizeKeys(context, instance.$model, [key]))[0];
+    return normalizeKey(instance.$model, def.key);
   }
 
-  protected async deserializeRelationKey(
+  protected async serializeRelationKey(
     instance: ModelInstance,
-    key: string,
-    _def: ModelRelation,
-    context: {},
+    def: ModelRelation,
+    _context: {},
   ) {
-    return (await normalizeKeys(context, instance.$model, [key]))[0];
+    return normalizeKey(instance.$model, def.key);
   }
 
   protected shouldDeserializeAttribute(
     instance: ModelInstance,
-    key: string,
     def: ModelAttribute,
     rawValue: unknown,
     context: {},
   ) {
-    return this.shouldDeserializeProp(instance, key, def, rawValue, context);
+    return this.shouldDeserializeProp(instance, def, rawValue, context);
   }
 
   protected shouldDeserializeRelation(
     instance: ModelInstance,
-    key: string,
     def: ModelRelation,
     rawValue: unknown,
     context: {},
   ) {
-    return this.shouldDeserializeProp(instance, key, def, rawValue, context);
+    return this.shouldDeserializeProp(instance, def, rawValue, context);
   }
 
   protected async shouldDeserializeProp(
     _instance: ModelInstance,
-    _key: string,
-    def: ModelProp,
+    def: ModelAttribute | ModelRelation,
     rawValue: unknown,
     _context: {},
   ) {
-    return !def.noRetrieving
+    return shouldSyncProp(def, ['retrieve'])
       && rawValue !== undefined;
   }
 
   protected async deserializeAttributeValue(
     _instance: ModelInstance,
-    _key: string,
     def: ModelAttribute,
     rawValue: unknown,
     _context: {},
@@ -453,7 +435,6 @@ export default abstract class ObjectDeserializer<
     extractedData: Extract,
     instancesMap: IdentifiersMap<string, ModelId, Promise<ModelInstance>>,
     instance: ModelInstance,
-    key: string,
     def: ModelRelation,
     rawValue: Optional<Resource[] | Resource>,
     context: {},
@@ -465,7 +446,6 @@ export default abstract class ObjectDeserializer<
         resource,
         context,
         instance,
-        key,
         def,
       )));
     }
@@ -477,7 +457,6 @@ export default abstract class ObjectDeserializer<
         rawValue,
         context,
         instance,
-        key,
         def,
       );
     }

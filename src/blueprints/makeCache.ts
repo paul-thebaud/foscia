@@ -5,6 +5,6 @@ import { RefsCache, RefsCacheConfig } from '@/core';
  *
  * @param config
  */
-export default function makeCache(config: RefsCacheConfig = {}) {
+export default function makeCache(config?: RefsCacheConfig) {
   return new RefsCache(config);
 }

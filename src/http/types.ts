@@ -46,8 +46,6 @@ export type HttpAdapterConfig = {
   requestTransformers?: RequestTransformer[];
   responseTransformers?: ResponseTransformer[];
   errorTransformers?: ErrorTransformer[];
-  modelPathTransformer?: PathTransformer | null;
-  relationPathTransformer?: PathTransformer | null;
 };
 
 export type HttpParamsSerializer = (params: Dictionary) => string | undefined;
@@ -68,6 +66,5 @@ export type HttpRequest = {
 export type RequestTransformer = (request: HttpRequest) => Awaitable<HttpRequest>;
 export type ResponseTransformer = (response: Response) => Awaitable<Response>;
 export type ErrorTransformer = (error: unknown) => Awaitable<unknown>;
-export type PathTransformer = (path: string) => string;
 export type BodyAsTransformer = (body: unknown, headers: Dictionary<string>) => Awaitable<BodyInit>;
 export type ParamsAppender = (context: HttpRequestConfig) => Awaitable<Dictionary>;

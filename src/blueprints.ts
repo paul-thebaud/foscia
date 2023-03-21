@@ -11,14 +11,12 @@ import writeExtensions from '@/blueprints/extensions/writeExtension';
 import appendJsonApiParams from '@/blueprints/jsonapi/appendJsonApiParams';
 import makeJsonApi from '@/blueprints/jsonapi/makeJsonApi';
 import makeCache from '@/blueprints/makeCache';
-import makeKeyNormalizer from '@/blueprints/makeKeyNormalizer';
 import makeRegistry from '@/blueprints/makeRegistry';
 import makeJsonRest from '@/blueprints/rest/makeJsonRest';
 
 export {
   makeCache,
   makeRegistry,
-  makeKeyNormalizer,
   makeJsonApi,
   appendJsonApiParams,
   makeJsonRest,

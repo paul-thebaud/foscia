@@ -4,7 +4,7 @@ import {
   makeEnhancersExtension,
   Model,
   ModelKey,
-  normalizeKeys,
+  normalizeKey,
 } from '@/core';
 import { param } from '@/http';
 import consumePrevParams from '@/http/actions/context/consumers/consumePrevParams';
@@ -26,16 +26,12 @@ export default function fieldsFor<C extends {}, M extends Model>(
   return async (action: Action<C>) => {
     const context = await action.useContext();
     const prevFields = consumePrevParams(context, null)?.fields;
-    const nextFields = await normalizeKeys(
-      context,
-      model,
-      wrapVariadic(...fieldset) as string[],
-    );
+    const nextFields = wrapVariadic(...fieldset).map((key) => normalizeKey(model, key));
 
     return action.use(param('fields', {
       ...prevFields,
-      [model.$config.type]: optionalJoin(uniqueValues([
-        ...(prevFields ?? {})[model.$config.type],
+      [model.$type]: optionalJoin(uniqueValues([
+        ...(prevFields ?? {})[model.$type],
         ...nextFields,
       ]), ','),
     }));

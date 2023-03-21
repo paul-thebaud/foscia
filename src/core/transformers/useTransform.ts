@@ -1,7 +1,7 @@
 import { ObjectTransform, Transform } from '@/core/transformers/types';
 
 export default function useTransform(
-  transformer: Transform<unknown, unknown> | undefined,
+  transformer: Transform<unknown> | undefined,
   action: keyof ObjectTransform<unknown, unknown>,
 ) {
   if (!transformer) {

@@ -1,8 +1,4 @@
-import onError from '@/core/actions/context/enhancers/hooks/onError';
-import onFinally from '@/core/actions/context/enhancers/hooks/onFinally';
-import onPreparing from '@/core/actions/context/enhancers/hooks/onPreparing';
-import onRunning from '@/core/actions/context/enhancers/hooks/onRunning';
-import onSuccess from '@/core/actions/context/enhancers/hooks/onSuccess';
+import { onError, onFinally, onPreparing, onRunning, onSuccess } from '@/core';
 
 export default {
   ...onPreparing.extension,

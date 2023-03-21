@@ -1,7 +1,7 @@
 import detectTargetModel from '@/core/actions/context/utilities/detectTargetModel';
 import detectTargetType from '@/core/actions/context/utilities/detectTargetType';
 import logger from '@/core/logger/logger';
-import normalizeDotRelations from '@/core/normalizer/normalizeDotRelations';
+import normalizeDotRelations from '@/core/normalization/normalizeDotRelations';
 
 export default async function normalizeInclude(
   context: {},

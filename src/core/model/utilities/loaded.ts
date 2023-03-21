@@ -13,7 +13,7 @@ export default function loaded<I extends ModelInstance>(
     const def = instance.$model.$schema[currentKey];
     if (!isRelationDef(def)) {
       logger.warn(
-        `Checking loaded state of non-relation \`${instance.$model.$config.type}.${currentKey}\`. Either this is not a relation or relation is not declared.`,
+        `Checking loaded state of non-relation \`${instance.$model.$type}.${currentKey}\`. Either this is not a relation or relation is not declared.`,
       );
 
       return false;

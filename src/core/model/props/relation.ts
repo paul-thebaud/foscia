@@ -1,14 +1,14 @@
-import { ModelPropConfig, ModelRelationConfig, ModelRelationType } from '@/core/model/types';
+import { ModelPropRaw, ModelRelationRaw, ModelRelationType } from '@/core/model/types';
 
-export type RelationOptions<T> = ModelPropConfig<T> & {
+export type RelationOptions<T> = ModelPropRaw<T> & {
   type?: string;
   path?: string;
 };
 
-export default function makeRelationConfig<T>(
+export default function relation<T>(
   relationType: ModelRelationType,
   config: string | RelationOptions<T> = {},
-): ModelRelationConfig<T> {
+): ModelRelationRaw<T> {
   return {
     $MODEL_TYPE: 'relation',
     $RELATION_TYPE: relationType,

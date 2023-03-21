@@ -2,9 +2,9 @@ import FosciaError from '@/core/errors/fosciaError';
 import logger from '@/core/logger/logger';
 import isPropDef from '@/core/model/guards/isPropDef';
 import { Model, ModelConfig, ModelInstance, ModelSchema } from '@/core/model/types';
-import { Dictionary, eachDescriptors, isNil, value } from '@/utilities';
+import { applyConfig, Dictionary, eachDescriptors, isNil, value } from '@/utilities';
 
-export default function makeModelClass(config: ModelConfig): Model {
+export default function makeModelClass(type: string, config: ModelConfig): Model {
   function ModelClass(this: ModelInstance) {
     Object.defineProperty(this, '$MODEL_TYPE', { value: 'instance' });
     Object.defineProperty(this, '$model', { value: ModelClass });
@@ -25,27 +25,27 @@ export default function makeModelClass(config: ModelConfig): Model {
       value: undefined,
     });
 
-    Object.entries(ModelClass.$schema as ModelSchema<any>).forEach(([key, def]) => {
-      Object.defineProperty(this, key, {
+    Object.values(ModelClass.$schema as ModelSchema<any>).forEach((def) => {
+      Object.defineProperty(this, def.key, {
         enumerable: true,
-        get: () => this.$values[key],
+        get: () => this.$values[def.key],
         set: (nextValue) => {
           if (def.readOnly) {
             throw new FosciaError(
-              `\`${this.$model.$config.type}.${key}\` cannot be set because it is read-only.`,
+              `\`${this.$model.$type}.${def.key}\` cannot be set because it is read-only.`,
             );
           }
 
-          this.$values[key] = nextValue;
+          this.$values[def.key] = nextValue;
         },
       });
 
       if (def.default !== undefined) {
-        this.$values[key] = value(def.default);
+        this.$values[def.key] = value(def.default);
 
         if (def.default && typeof def.default === 'object') {
           logger.warn(
-            `Default \`${this.$model.$config.type}.${key}\` object attribute's values must be defined using a factory function.`,
+            `Default \`${this.$model.$type}.${def.key}\` object attribute's values must be defined using a factory function.`,
           );
         }
       }
@@ -53,11 +53,15 @@ export default function makeModelClass(config: ModelConfig): Model {
   }
 
   ModelClass.$MODEL_TYPE = 'model';
+  ModelClass.$type = type;
   ModelClass.$config = config;
   ModelClass.$schema = {} as Dictionary;
   ModelClass.$hooks = {};
-  ModelClass.extends = (definition?: object) => {
-    eachDescriptors(definition ?? {}, (key, descriptor) => {
+  ModelClass.configure = (rawConfig?: ModelConfig, override = true) => {
+    applyConfig(ModelClass.$config, rawConfig, override);
+  };
+  ModelClass.extends = (rawDefinition?: object) => {
+    eachDescriptors(rawDefinition ?? {}, (key, descriptor) => {
       if (['id', 'lid', 'type', 'exists'].indexOf(key) !== -1) {
         throw new FosciaError(
           `\`id\`, \`lid\`, \`type\` and \`exists\` are forbidden as a definition keys (found \`${key}\`).`,

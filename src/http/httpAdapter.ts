@@ -25,12 +25,11 @@ import {
   HttpRequestConfig,
   HttpRequestInit,
   ParamsAppender,
-  PathTransformer,
   RequestTransformer,
   ResponseTransformer,
 } from '@/http/types';
 import paramsSerializer from '@/http/utilities/paramsSerializer';
-import { assignConfig, Dictionary, isNil, optionalJoin, sequentialTransform } from '@/utilities';
+import { applyConfig, Dictionary, isNil, optionalJoin, sequentialTransform } from '@/utilities';
 
 /**
  * Adapter implementation for HTTP interaction using fetch.
@@ -54,18 +53,12 @@ export default class HttpAdapter implements AdapterI<Response> {
 
   private errorTransformers: ErrorTransformer[] = [];
 
-  private modelPathTransformer: PathTransformer | null = null;
-
-  private relationPathTransformer: PathTransformer | null = null;
-
   public constructor(config?: HttpAdapterConfig) {
     this.configure(config);
   }
 
-  public configure(config?: HttpAdapterConfig) {
-    assignConfig(this, config);
-
-    return this;
+  public configure(config?: HttpAdapterConfig, override = true) {
+    applyConfig(this, config, override);
   }
 
   /**
@@ -166,18 +159,15 @@ export default class HttpAdapter implements AdapterI<Response> {
   }
 
   protected async makeRequestURLEndpoint(context: HttpRequestConfig) {
-    const modelPathTransformer = this.modelPathTransformer ?? ((path: string) => path);
-    const relationPathTransformer = this.relationPathTransformer ?? ((path: string) => path);
-
     const modelPath = consumeModelPath(context, null);
     const id = consumeId(context, null);
     const relationPath = consumeRelationPath(context, null);
 
     const requestEndpoint = optionalJoin([
-      isNil(context.baseURL) ? this.baseURL : context.baseURL,
-      isNil(modelPath) ? undefined : modelPathTransformer(modelPath),
-      isNil(id) ? undefined : `${id}`,
-      isNil(relationPath) ? undefined : relationPathTransformer(relationPath),
+      context.baseURL ?? this.baseURL,
+      modelPath ?? undefined,
+      isNil(id) ? undefined : String(id),
+      relationPath ?? undefined,
       context.path,
     ], '/');
 

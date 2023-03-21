@@ -1,8 +1,8 @@
-import type { Model, ModelClass, ModelId, ModelInstance } from '@/core/model/types';
+import type { Model, ModelId, ModelInstance } from '@/core/model/types';
 import type { Awaitable } from '@/utilities';
 
 export type RegistryI = {
-  modelFor(type: string): Promise<Model>;
+  modelFor(rawType: string): Promise<Model | null>;
 };
 
 export type CacheI = {
@@ -15,10 +15,6 @@ export type CacheI = {
 export type AdapterI<Data> = {
   execute(context: {}): Awaitable<Data>;
   isNotFound(error: unknown): Awaitable<boolean>;
-};
-
-export type KeyNormalizerI = {
-  normalizeKey(model: ModelClass, key: string): Awaitable<string>;
 };
 
 export type SerializerI<Data> = {

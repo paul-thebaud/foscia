@@ -1,8 +1,7 @@
 import { ModelInstance, ModelRelation } from '@/core';
 import { ObjectSerializer } from '@/object';
 import { DataWrapper, RestNewResource, RestSerializerConfig } from '@/rest/types';
-import { assignConfig } from '@/utilities';
-import { Dictionary } from '@/utilities/types';
+import { applyConfig, Dictionary } from '@/utilities';
 
 export default class RestSerializer extends ObjectSerializer<Dictionary> {
   private dataWrapper: DataWrapper | null = null;
@@ -13,10 +12,8 @@ export default class RestSerializer extends ObjectSerializer<Dictionary> {
     this.configure(config);
   }
 
-  public configure(config?: RestSerializerConfig) {
-    assignConfig(this, config);
-
-    return this;
+  public configure(config?: RestSerializerConfig, override = true) {
+    applyConfig(this, config, override);
   }
 
   public async serialize(instance: ModelInstance, context: {}) {
@@ -50,7 +47,6 @@ export default class RestSerializer extends ObjectSerializer<Dictionary> {
    */
   protected async serializeRelatedInstance(
     _instance: ModelInstance,
-    _key: string,
     _def: ModelRelation,
     related: ModelInstance,
   ) {

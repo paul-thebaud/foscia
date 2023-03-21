@@ -21,6 +21,8 @@ or when defining a custom factory such as described in the
 Inside a model creation:
 
 ```javascript title="post.js"
+import { makeModel } from 'foscia/core';
+
 class Post extends makeModel(
     {
         type: 'posts',
@@ -68,6 +70,8 @@ You may define the type as the only configuration of the model or as a
 configuration property (if you want to define other properties):
 
 ```javascript title="post.js"
+import { makeModel } from 'foscia/core';
+
 class Post extends makeModel('posts', {
     /* ...definition */
 }) {}
@@ -88,6 +92,8 @@ In an HTTP API, it is used as the endpoint. In a SQL database, it would be the
 table.
 
 ```javascript title="post.js"
+import { makeModel } from 'foscia/core';
+
 class Post extends makeModel(
     {
         type: 'posts',
@@ -114,10 +120,13 @@ The following model configuration is equivalent to the default behavior of
 Foscia:
 
 ```javascript title="post.js"
+import { makeModel } from 'foscia/core';
+
 class Post extends makeModel(
     {
-        comparator: (newValue, prevValue) => nextValue === prevValue,
-        cloner: (value) => value,
+        type: 'posts',
+        compareValue: (newValue, prevValue) => nextValue === prevValue,
+        cloneValue: (value) => value,
     },
     {
         /* definition */
@@ -134,6 +143,31 @@ instance state. Keep in mind that:
 -   Making a real clone of a value without updating the comparator will break
     the history because of its default behavior
 
+### Type guesser
+
+To avoid defining types on all your relations even when necessary (for example
+in some cases with REST implementation), you may configure a type guesser on
+your models.
+
+Here is an example of a type guesser using hypothetical `toKebabCase` and
+`pluralize` functions. For example, if a `Comment` model has a `blogPost`
+relation, this would guess the type to `blog-posts`;
+
+```javascript title="post.js"
+import { makeModel, isManyRelationDef } from 'foscia/core';
+
+class Post extends makeModel(
+    {
+        type: 'posts',
+        guessType: (def: ModelRelationRaw) =>
+            toKebabCase(isManyRelationDef(def) ? def.key : pluralize(def.key)),
+    },
+    {
+        /* definition */
+    },
+) {}
+```
+
 ## HTTP
 
 The following configuration options are specific to HTTP models (JSON:API, JSON
@@ -145,6 +179,8 @@ You may define a `baseURL` configuration option on your models. It will replace
 the default base URL define on the adapter.
 
 ```javascript title="post.js"
+import { makeModel } from 'foscia/core';
+
 class Post extends makeModel(
     {
         type: 'posts',

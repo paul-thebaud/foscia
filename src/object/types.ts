@@ -20,5 +20,3 @@ export type ObjectExtractedData<R> = {
 export type ObjectDeserializerConfig = {};
 
 export type ObjectSerializerConfig = {};
-
-export type KeyTransformer = (key: string) => string;

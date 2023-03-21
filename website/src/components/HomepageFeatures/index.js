@@ -1,42 +1,49 @@
 import clsx from 'clsx';
 import React from 'react';
-import AlarmLightOutlineSvg from '../../icons/alarm-light-outline.svg';
-import SwapHorizontalSvg from '../../icons/swap-horizontal.svg';
-import ToyBrickOutlineSvg from '../../icons/toy-brick-outline.svg';
+import TypeSafeSvg from '../../icons/alert-decagram-outline.svg';
+import IntiutiveSvg from '../../icons/lightbulb-on-outline.svg';
+import DepsSvg from '../../icons/swap-horizontal.svg';
+import ModularSvg from '../../icons/toy-brick-outline.svg';
 import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    Icon: SwapHorizontalSvg,
-    title: 'Intuitive, REST/JSON:API ready',
+    Icon: IntiutiveSvg,
+    title: 'Intuitive',
     description: (
       <>
-        Foscia provides an intuitive API and comes with a set of tools to
-        quickly integrate with a REST or JSON:API backend.
-        <br />
-        You may also create your own implementations to fit your needs
-        (Soap, SQL, IndexedDB, etc.).
+        Foscia provides an intuitive API to declare your models and
+        interact with your data source.
       </>
     ),
   },
   {
-    Icon: ToyBrickOutlineSvg,
-    title: 'Modular and fully tree-shakable',
+    Icon: DepsSvg,
+    title: 'REST/JSON:API ready',
     description: (
       <>
-        With functional programming, Foscia can be used in many ways
-        and unused functions can be tree-shaken from your production build
-        automatically.
+        REST or JSON:API backend are already covered and you may
+        setup your own implementations for any other data sources.
       </>
     ),
   },
   {
-    Icon: AlarmLightOutlineSvg,
+    Icon: ModularSvg,
+    title: 'Modular',
+    description: (
+      <>
+        Foscia is composed of many independent functions, making it easy to
+        tree-shake to reduce your bundle size.
+      </>
+    ),
+  },
+  {
+    Icon: TypeSafeSvg,
     title: 'Type safe',
     description: (
       <>
-        Foscia was build at start with TypeScript to propose you
-        a secure typing experience with consistent generic types and inference.
+        API provides you a safe typing experience, even with edge cases
+        such as dot relations used for eager loading.
       </>
     ),
   },
@@ -44,7 +51,7 @@ const FeatureList = [
 
 function Feature({ Icon, title, description }) {
   return (
-    <div className={clsx('col col--4')}>
+    <div className={clsx('col col--3')}>
       <div className="text--center padding-horiz--md">
         <div className={`${styles.featureSvgWrapper} bg--primary margin-bottom--lg`}>
           <Icon className={styles.featureSvg} />

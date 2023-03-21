@@ -4,21 +4,27 @@ import { Model, ModelConfig, ModelInstance, ModelParsedDefinition } from '@/core
 
 export default function makeModelFactory<ND extends {} = {}>(
   baseRawDefinition?: ND & ThisType<ModelInstance<ModelParsedDefinition<ND>>>,
-  baseConfig?: Omit<ModelConfig, 'type'>,
+  baseConfig?: ModelConfig,
 ) {
   return <D extends {} = {}>(
-    config: ModelConfig | string,
+    rawConfig: string | (ModelConfig & { type: string; }),
     rawDefinition?: D & ThisType<ModelInstance<ModelParsedDefinition<ND & D>>>,
   ) => {
-    const mergedConfig = typeof config === 'string'
-      ? { ...baseConfig, type: config }
-      : { ...baseConfig, ...config };
+    const { type, ...config } = typeof rawConfig === 'string'
+      ? { type: rawConfig }
+      : rawConfig;
+
+    const mergedConfig: ModelConfig = {
+      ...baseConfig,
+      ...config,
+    };
+
     const mergedDefinition = {
       ...makeDefinition(baseRawDefinition),
       ...makeDefinition(rawDefinition),
     };
 
-    return makeModelClass(mergedConfig).extends(
+    return makeModelClass(type, mergedConfig).extends(
       mergedDefinition,
     ) as Model<ModelParsedDefinition<ND & D>, ModelInstance<ModelParsedDefinition<ND & D>>>;
   };

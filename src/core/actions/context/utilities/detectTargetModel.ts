@@ -10,5 +10,5 @@ export default async function detectTargetModel(
     return registry.modelFor(type);
   }
 
-  return undefined;
+  return null;
 }

@@ -7,7 +7,7 @@ export default function isSame(
 ): boolean {
   return isInstance(value)
     && isInstance(otherValue)
-    && value.$model.$config.type === otherValue.$model.$config.type
+    && value.$model.$type === otherValue.$model.$type
     && !isNil(value.id)
     && value.id === otherValue.id;
 }

@@ -5,37 +5,34 @@ import {
   eachRelations,
   ModelAttribute,
   ModelInstance,
-  ModelProp,
   ModelRelation,
-  normalizeKeys,
+  normalizeKey,
   SerializerError,
   SerializerI,
+  shouldSyncProp,
 } from '@/core';
 import useTransform from '@/core/transformers/useTransform';
 import { ObjectSerializerConfig } from '@/object/types';
-import { assignConfig } from '@/utilities';
+import { applyConfig } from '@/utilities';
 
 export default abstract class ObjectSerializer<Data> implements SerializerI<Data> {
   public constructor(config?: ObjectSerializerConfig) {
     this.configure(config);
   }
 
-  public configure(config?: ObjectSerializerConfig) {
-    assignConfig(this, config);
-
-    return this;
+  public configure(config?: ObjectSerializerConfig, override = true) {
+    applyConfig(this, config, override);
   }
 
   public async serialize(instance: ModelInstance, context: {}) {
     const resource = await this.makeResource(instance, context);
 
-    await Promise.all(eachAttributes(instance, async (key, def) => {
-      const rawValue = instance[key];
-      if (await this.shouldSerializeAttribute(instance, key, def, rawValue, context)) {
-        const serializedKey = await this.serializeAttributeKey(instance, key, def, context);
+    await Promise.all(eachAttributes(instance, async (def) => {
+      const rawValue = instance[def.key];
+      if (await this.shouldSerializeAttribute(instance, def, rawValue, context)) {
+        const serializedKey = await this.serializeAttributeKey(instance, def, context);
         const serializedValue = await this.serializeAttributeValue(
           instance,
-          key,
           def,
           rawValue,
           context,
@@ -45,13 +42,12 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
       }
     }));
 
-    await Promise.all(eachRelations(instance, async (key, def) => {
-      const rawValue = instance[key];
-      if (await this.shouldSerializeRelation(instance, key, def, rawValue, context)) {
-        const serializedKey = await this.serializeRelationKey(instance, key, def, context);
+    await Promise.all(eachRelations(instance, async (def) => {
+      const rawValue = instance[def.key];
+      if (await this.shouldSerializeRelation(instance, def, rawValue, context)) {
+        const serializedKey = await this.serializeRelationKey(instance, def, context);
         const serializedValue = await this.serializeRelationValue(
           instance,
-          key,
           def,
           rawValue,
           context,
@@ -68,7 +64,6 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
 
   protected abstract serializeRelatedInstance(
     instance: ModelInstance,
-    key: string,
     def: ModelRelation,
     related: ModelInstance,
     context: {},
@@ -102,57 +97,51 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
 
   protected async serializeAttributeKey(
     instance: ModelInstance,
-    key: string,
-    _def: ModelAttribute,
-    context: {},
+    def: ModelAttribute,
+    _context: {},
   ) {
-    return (await normalizeKeys(context, instance.$model, [key]))[0];
+    return normalizeKey(instance.$model, def.key);
   }
 
   protected async serializeRelationKey(
     instance: ModelInstance,
-    key: string,
-    _def: ModelRelation,
-    context: {},
+    def: ModelRelation,
+    _context: {},
   ) {
-    return (await normalizeKeys(context, instance.$model, [key]))[0];
+    return normalizeKey(instance.$model, def.key);
   }
 
   protected shouldSerializeAttribute(
     instance: ModelInstance,
-    key: string,
     def: ModelAttribute,
     rawValue: unknown,
     context: {},
   ) {
-    return this.shouldSerializeProp(instance, key, def, rawValue, context);
+    return this.shouldSerializeProp(instance, def, rawValue, context);
   }
 
   protected shouldSerializeRelation(
     instance: ModelInstance,
-    key: string,
     def: ModelRelation,
     rawValue: unknown,
     context: {},
   ) {
-    return this.shouldSerializeProp(instance, key, def, rawValue, context);
+    return this.shouldSerializeProp(instance, def, rawValue, context);
   }
 
   protected async shouldSerializeProp(
     instance: ModelInstance,
-    key: string,
-    def: ModelProp,
+    def: ModelAttribute | ModelRelation,
     rawValue: unknown,
     _context: {},
   ) {
-    return !def.noSending
+    return shouldSyncProp(def, ['write'])
       && rawValue !== undefined
-      && changed(instance, key);
+      && changed(instance, def.key);
   }
 
   protected async serializeAttributeValue(
     _instance: ModelInstance,
-    _key: string,
     def: ModelAttribute,
     rawValue: unknown,
     _context: {},
@@ -164,14 +153,12 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
 
   protected async serializeRelationValue(
     instance: ModelInstance,
-    key: string,
     def: ModelRelation,
     rawValue: unknown,
     context: {},
   ) {
     const serializeRelatedInstance = (related: ModelInstance) => this.serializeRelatedInstance(
       instance,
-      key,
       def,
       related,
       context,

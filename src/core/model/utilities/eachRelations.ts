@@ -3,11 +3,11 @@ import { ModelInstance, ModelRelation } from '@/core/model/types';
 
 export default function eachRelations<R>(
   instance: ModelInstance,
-  callback: (key: string, def: ModelRelation) => R,
+  callback: (def: ModelRelation) => R,
 ) {
-  return Object.entries(instance.$model.$schema).reduce((stack, [key, def]) => {
+  return Object.values(instance.$model.$schema).reduce((stack, def) => {
     if (isRelationDef(def)) {
-      stack.push(callback(key, def));
+      stack.push(callback(def));
     }
 
     return stack;

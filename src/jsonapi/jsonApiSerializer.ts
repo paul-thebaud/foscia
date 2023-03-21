@@ -1,6 +1,6 @@
 import { ModelId, ModelInstance, ModelRelation } from '@/core';
-import { ObjectSerializer } from '@/object';
 import { JsonApiDocument, JsonApiNewResource } from '@/jsonapi/types';
+import { ObjectSerializer } from '@/object';
 import { isNil, Optional } from '@/utilities';
 
 /**
@@ -51,7 +51,6 @@ export default class JsonApiSerializer extends ObjectSerializer<JsonApiDocument>
    */
   protected async serializeRelatedInstance(
     _instance: ModelInstance,
-    _key: string,
     _def: ModelRelation,
     related: ModelInstance,
   ) {
@@ -65,7 +64,7 @@ export default class JsonApiSerializer extends ObjectSerializer<JsonApiDocument>
    */
   protected serializeInstanceIdentifier(instance: ModelInstance) {
     return {
-      type: instance.$model.$config.type,
+      type: instance.$model.$type,
       id: this.serializeId(instance.id),
       lid: this.serializeId(instance.lid),
     };
