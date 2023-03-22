@@ -1,7 +1,7 @@
 {
   "name": "foscia",
   "type": "module",
-  "version": "1.0.0-alpha.92",
+  "version": "0.0.0",
   "license": "MIT",
   "description": "Type safe, modular and intuitive API client.",
   "homepage": "https://paul-thebaud.github.io/foscia",
@@ -61,11 +61,12 @@
     }
   },
   "scripts": {
-    "lint": "eslint --ext .ts src test",
-    "test": "vitest",
-    "typecheck": "vitest typecheck",
-    "coverage": "vitest run --coverage",
     "dev": "vite",
+    "lint": "eslint --ext .ts src test",
+    "test:watch": "vitest --watch",
+    "test:typecheck": "vitest typecheck --run",
+    "test:coverage": "vitest --run --coverage",
+    "test": "pnpm test:typecheck && pnpm test:coverage",
     "build:pre-clear": "rimraf ./dist ./dist-temp",
     "build:lib:es": "BUILD_FORMAT=es vite build",
     "build:lib:cjs": "BUILD_FORMAT=cjs vite build",
@@ -74,10 +75,10 @@
     "build:declaration": "tsc --declaration --emitDeclarationOnly --declarationDir dist-temp/ && tsc-alias",
     "build:declaration:bundle": "rollup -c rollup.dts.config.js",
     "build:post-clear": "rimraf \"./dist/index.@(js|cjs|d.ts)?(.map)\" && rimraf ./dist-temp",
-    "build": "pnpm build:pre-clear && pnpm build:lib && pnpm build:declaration && pnpm build:declaration:bundle && pnpm build:post-clear",
-    "prepublishOnly": "pnpm build"
+    "build": "pnpm build:pre-clear && pnpm build:lib && pnpm build:declaration && pnpm build:declaration:bundle && pnpm build:post-clear"
   },
   "devDependencies": {
+    "@release-it/conventional-changelog": "^5.1.1",
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "@typescript-eslint/parser": "^5.54.1",
     "@vitest/coverage-istanbul": "^0.29.2",
@@ -88,6 +89,7 @@
     "eslint-import-resolver-typescript": "^3.5.3",
     "eslint-plugin-import": "^2.27.5",
     "jsdom": "^21.1.1",
+    "release-it": "^15.9.1",
     "rimraf": "^4.4.0",
     "rollup": "^3.18.0",
     "rollup-plugin-dts": "^5.2.0",

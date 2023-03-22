@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "before:init": [
+      "pnpm lint",
+      "pnpm test",
+      "pnpm build"
+    ],
+    "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}."
+  },
+  "git": {
+    "requireBranch": "main",
+    "commitMessage": "chore: release v${version}",
+    "requireCleanWorkingDir": false
+  },
+  "github": {
+    "release": true,
+    "assets": ["dist/*.zip"]
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "angular",
+      "infile": "CHANGELOG.md",
+      "header": "# Changelog"
+    }
+  }
+}
