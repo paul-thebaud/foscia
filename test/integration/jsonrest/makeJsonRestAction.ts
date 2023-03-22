@@ -1,6 +1,6 @@
 import { makeJsonRest } from '@/blueprints';
-import Comment from '@test/integration/jsonrest/models/comment';
-import Post from '@test/integration/jsonrest/models/post';
+import Comment from '@test/utilities/models/comment';
+import Post from '@test/utilities/models/post';
 
 export default function makeJsonRestAction() {
   const { action, registry } = makeJsonRest({

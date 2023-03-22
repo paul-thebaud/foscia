@@ -23,7 +23,7 @@ function when<C extends {}, V, TC extends {} = C, FC extends {} = C>(
 function when<C extends {}, V, TR>(
   expression: V,
   truthyCallback: (action: Action<C>, value: OnlyTruthy<Awaited<Value<V>>>) => TR,
-): ContextRunner<C, TR>;
+): ContextRunner<C, TR | void>;
 function when<C extends {}, V, TR, FR>(
   expression: V,
   truthyCallback: (action: Action<C>, value: OnlyTruthy<Awaited<Value<V>>>) => TR,
@@ -88,7 +88,7 @@ type EnhancerExtension = ActionParsedExtension<{
     this: Action<C, E>,
     expression: V,
     truthyCallback: (action: Action<C, E>, value: OnlyTruthy<Awaited<Value<V>>>) => TR,
-  ): Promise<TR>;
+  ): Promise<TR | void>;
   when<C extends {}, E extends {}, V, TR, FR>(
     this: Action<C, E>,
     expression: V,

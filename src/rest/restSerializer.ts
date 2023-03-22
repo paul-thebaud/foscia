@@ -26,7 +26,7 @@ export default class RestSerializer extends ObjectSerializer<Dictionary> {
    * @inheritDoc
    */
   protected async makeResource(instance: ModelInstance) {
-    return { id: instance.id };
+    return { id: instance.id, lid: instance.lid };
   }
 
   /**

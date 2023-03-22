@@ -63,6 +63,7 @@
   "scripts": {
     "lint": "eslint --ext .ts src test",
     "test": "vitest",
+    "typecheck": "vitest typecheck",
     "coverage": "vitest run --coverage",
     "dev": "vite --config vite.config.js",
     "build:pre-clear": "rimraf ./dist ./dist-temp",

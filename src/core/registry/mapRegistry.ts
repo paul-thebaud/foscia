@@ -1,5 +1,5 @@
 import logger from '@/core/logger/logger';
-import isModel from '@/core/model/guards/isModel';
+import isModel from '@/core/model/props/checks/isModel';
 import { Model } from '@/core/model/types';
 import normalize from '@/core/normalization/normalize';
 import { Normalizer } from '@/core/normalization/types';

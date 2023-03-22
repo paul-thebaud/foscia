@@ -3,8 +3,6 @@ import { Normalizer } from '@/core/normalization/types';
 import { Transform } from '@/core/transformers/types';
 import { Constructor, DescriptorHolder, Dictionary, Optional, Prev } from '@/utilities';
 
-export type ModelRelationTypeGuesser = (model: ModelClass, def: ModelRelation) => Optional<string>;
-
 /**
  * Configuration of a model class.
  */
@@ -60,8 +58,8 @@ export type ModelConfig = {
    *
    * @param value
    *
-   * @see {@link reset}
-   * @see {@link syncOriginal}
+   * @see {@link restore}
+   * @see {@link markSynced}
    */
   cloneValue?: Optional<(<T>(value: T) => T)>;
   /**
@@ -69,6 +67,11 @@ export type ModelConfig = {
    */
   baseURL?: Optional<string>;
 };
+
+/**
+ * Guess a model's relation related type.
+ */
+export type ModelRelationTypeGuesser = (model: ModelClass, def: ModelRelation) => Optional<string>;
 
 /**
  * Unique identifier for a model instance.
@@ -236,12 +239,12 @@ export type ModelInstance<D extends {} = any> = {
   readonly $model: ModelClass<D>;
   // FIXME Should the model id be nullable in its type?
   id: ModelId;
-  lid?: ModelId;
+  lid: Optional<ModelId>;
   exists: boolean;
-  $raw: any;
   $loaded: Dictionary<true>;
-  $original: Partial<ModelValues<ModelClass<D>>>;
-  $values: Partial<ModelValues<ModelClass<D>>>;
+  $values: Partial<ModelValues<ModelInstance<D>>>;
+  $raw: any;
+  $original: ModelSnapshot<ModelInstance<D>>;
 } & {
   [K in keyof D]: D[K] extends ModelAttribute<K, infer T>
     ? T : D[K] extends ModelRelation<K, infer T>
@@ -250,13 +253,27 @@ export type ModelInstance<D extends {} = any> = {
 };
 
 /**
+ * Model class or instance snapshot.
+ */
+export type ModelSnapshot<M> = {
+  id: Optional<ModelId>;
+  lid: Optional<ModelId>;
+  exists: boolean;
+  $raw: any;
+  $loaded: Dictionary<true>;
+  $values: Partial<ModelValues<M>>;
+};
+
+export type ModelClassOrInstance<D extends {}> = ModelClass<D> | ModelClassInstance<D>;
+
+/**
  * Infer the definition from a model class or model instance.
  */
-export type ModelInferDefinition<M> = M extends ModelClass<infer D>
+export type ModelInferDefinition<M> = M extends ModelClassOrInstance<infer D>
   ? D
-  : M extends ModelClassInstance<infer D>
-    ? D
-    : {};
+  : M extends {}
+    ? M
+    : never;
 
 /**
  * Infer the schema from a model class or model instance.
@@ -268,8 +285,8 @@ export type ModelInferSchema<M> = ModelSchema<ModelInferDefinition<M>>;
  */
 export type ModelValues<M> = {
   [K in keyof ModelInferSchema<M>]:
-  ModelInferSchema<M>[K] extends ModelAttribute<infer T>
-    ? T : ModelInferSchema<M>[K] extends ModelRelation<infer T>
+  ModelInferSchema<M>[K] extends ModelAttribute<any, infer T>
+    ? T : ModelInferSchema<M>[K] extends ModelRelation<any, infer T>
       ? T : never;
 };
 
@@ -306,7 +323,7 @@ export type ModelRelationDotKey<M, Depth extends number = 5> =
       ? K extends string & keyof ModelInferSchema<M>
         ? ModelInferSchema<M>[K] extends never
           ? never
-          : ModelInferSchema<M>[K] extends ModelRelation<infer T>
+          : ModelInferSchema<M>[K] extends ModelRelation<any, infer T>
             ? T extends any[]
               ? K | `${K}.${ModelRelationDotKey<T[number], Prev[Depth]>}`
               : K | `${K}.${ModelRelationDotKey<T, Prev[Depth]>}`

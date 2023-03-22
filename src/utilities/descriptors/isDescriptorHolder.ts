@@ -1,5 +1,5 @@
 import { DescriptorHolder } from '@/utilities/descriptors/types';
-import isNil from '@/utilities/isNil';
+import isNil from '@/utilities/checks/isNil';
 
 export default function isDescriptorHolder(
   value: unknown,

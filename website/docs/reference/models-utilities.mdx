@@ -28,72 +28,34 @@ const post = fill(new Post(), { title: 'Hello', description: 'World' });
 
 `{I}`, the affected instance.
 
-### `changed`
+### `isSame`
 
-Check if the given keys have been changed since last instance sync.
-If no keys are provided, will check all instance keys.
+Check if two values are the same model instance. Ensure the equality by
+checking if the two instances:
+
+- Are Foscia model instances
+- Have the same type
+- Have the same and non-NIL ID
+
+**This function does not deeply compare instances' values.**
 
 #### Example
 
 ```javascript
-import { changed } from 'foscia/core';
+import { isSame } from 'foscia/core';
 
-const wasChanged = changed(post, ['title', 'description']);
-if (wasChanged) { /* do something */ }
+const areSameInstances = isSame(foo, bar);
+if (areSameInstances) { /* do something */ }
 ```
 
 #### Arguments
 
-- [`{I extends ModelInstance}`](/docs/reference/api/modules/core#modelinstance) `instance`
-- [`{ArrayableVariadic<ModelKey<I>}`](/docs/reference/api/modules/core#modelkey) `...keys`
+- `{unknown}` `value`
+- `{unknown}` `otherValue`
 
 #### Returns
 
 `{boolean}`
-
-### `syncOriginal`
-
-Sync the model instance's values as it was the original data source values.
-If no keys are provided, will sync all instance keys.
-
-#### Example
-
-```javascript
-import { syncOriginal } from 'foscia/core';
-
-syncOriginal(post, ['title', 'description']);
-```
-
-#### Arguments
-
-- [`{I extends ModelInstance}`](/docs/reference/api/modules/core#modelinstance) `instance`
-- [`{ArrayableVariadic<ModelKey<I>>}`](/docs/reference/api/modules/core#modelkey) `...keys`
-
-#### Returns
-
-`{I}`, the affected instance.
-
-### `reset`
-
-Reset the model instance's original values.
-If no keys are provided, will reset all instance keys.
-
-#### Example
-
-```javascript
-import { reset } from 'foscia/core';
-
-reset(post, ['title', 'description']);
-```
-
-#### Arguments
-
-- [`{I extends ModelInstance}`](/docs/reference/api/modules/core#modelinstance) `instance`
-- [`{ArrayableVariadic<ModelKey<I>>}`](/docs/reference/api/modules/core#modelkey) `...keys`
-
-#### Returns
-
-`{I}`, the affected instance.
 
 ### `loaded`
 
@@ -120,32 +82,115 @@ if (!isFullyLoaded) { /* do something */ }
 
 `{boolean}`
 
-### `isSame`
+### `changed`
 
-Check if two values are the same model instance. Ensure the equality by
-checking if the two instances:
-
-- Are Foscia model instances
-- Have the same type
-- Have the same and non-NIL ID
+Check if the given keys have been changed since last instance sync.
+If no keys are provided, will check whole original snapshot (including IDs).
 
 #### Example
 
 ```javascript
-import { isSame } from 'foscia/core';
+import { changed } from 'foscia/core';
 
-const areSameInstances = isSame(foo, bar);
-if (areSameInstances) { /* do something */ }
+const wasChanged = changed(post, ['title', 'description']);
+if (wasChanged) { /* do something */ }
 ```
 
 #### Arguments
 
-- `{unknown}` `value`
-- `{unknown}` `otherValue`
+- [`{I extends ModelInstance}`](/docs/reference/api/modules/core#modelinstance) `instance`
+- [`{ArrayableVariadic<ModelKey<I>}`](/docs/reference/api/modules/core#modelkey) `...only`
 
 #### Returns
 
 `{boolean}`
+
+### `synced`
+
+Mark the model instance's values as synced.
+If no keys are provided, will replace whole original snapshot (including IDs).
+
+#### Example
+
+```javascript
+import { markSynced } from 'foscia/core';
+
+markSynced(post, ['title', 'description']);
+```
+
+#### Arguments
+
+- [`{I extends ModelInstance}`](/docs/reference/api/modules/core#modelinstance) `instance`
+- [`{ArrayableVariadic<ModelKey<I>>}`](/docs/reference/api/modules/core#modelkey) `...only`
+
+#### Returns
+
+`{I}`, the affected instance.
+
+### `restore`
+
+Restore the model instance's original values.
+If no keys are provided, will restore whole original snapshot (including IDs).
+
+#### Example
+
+```javascript
+import { restore } from 'foscia/core';
+
+restore(post, ['title', 'description']);
+```
+
+#### Arguments
+
+- [`{I extends ModelInstance}`](/docs/reference/api/modules/core#modelinstance) `instance`
+- [`{ArrayableVariadic<ModelKey<I>>}`](/docs/reference/api/modules/core#modelkey) `...only`
+
+#### Returns
+
+`{I}`, the affected instance.
+
+### `takeSnapshot`
+
+Take a snapshot of the model's state (IDs, values, etc.).
+
+#### Example
+
+```javascript
+import { takeSnapshot } from 'foscia/core';
+
+const postSnapshot = takeSnapshot(post);
+```
+
+#### Arguments
+
+- [`{I extends ModelInstance}`](/docs/reference/api/modules/core#modelinstance) `instance`
+
+#### Returns
+
+[`{ModelSnapshot<I>}`](/docs/reference/api/modules/core#modelsnapshot), the snapshot.
+
+### `restoreSnapshot`
+
+Restore a snapshot of the model's state (IDs, values, etc.).
+If no keys are provided, will restore whole original snapshot (including IDs).
+
+#### Example
+
+```javascript
+import { restoreSnapshot } from 'foscia/core';
+
+restoreSnapshot(post, postSnapshot, ['title', 'description']);
+```
+
+#### Arguments
+
+- [`{I extends ModelInstance}`](/docs/reference/api/modules/core#modelinstance) `instance`
+- [`{ModelSnapshot<I>}`](/docs/reference/api/modules/core#modelsnapshot) `snapshot`
+- [`{ArrayableVariadic<ModelKey<I>>}`](/docs/reference/api/modules/core#modelkey) `...only`
+
+#### Returns
+
+`{I}`, the affected instance.
 
 ## Factories
 

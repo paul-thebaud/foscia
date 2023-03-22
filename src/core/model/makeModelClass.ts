@@ -1,19 +1,18 @@
+import { takeSnapshot } from '@/core';
 import FosciaError from '@/core/errors/fosciaError';
 import logger from '@/core/logger/logger';
-import isPropDef from '@/core/model/guards/isPropDef';
-import { Model, ModelConfig, ModelInstance, ModelSchema } from '@/core/model/types';
-import { applyConfig, Dictionary, eachDescriptors, isNil, value } from '@/utilities';
+import isPropDef from '@/core/model/props/checks/isPropDef';
+import { Model, ModelConfig, ModelInstance } from '@/core/model/types';
+import { applyConfig, eachDescriptors, isNil, value } from '@/utilities';
 
-export default function makeModelClass(type: string, config: ModelConfig): Model {
-  function ModelClass(this: ModelInstance) {
+export default function makeModelClass(type: string, config: ModelConfig) {
+  const ModelClass = function ModelConstructor(this: ModelInstance) {
     Object.defineProperty(this, '$MODEL_TYPE', { value: 'instance' });
     Object.defineProperty(this, '$model', { value: ModelClass });
     Object.defineProperty(this, 'exists', { writable: true, value: false });
     Object.defineProperty(this, '$raw', { writable: true, value: null });
     Object.defineProperty(this, '$loaded', { writable: true, value: {} });
-    Object.defineProperty(this, '$original', { writable: true, value: {} });
     Object.defineProperty(this, '$values', { writable: true, value: {} });
-
     Object.defineProperty(this, 'id', {
       writable: true,
       enumerable: true,
@@ -25,7 +24,9 @@ export default function makeModelClass(type: string, config: ModelConfig): Model
       value: undefined,
     });
 
-    Object.values(ModelClass.$schema as ModelSchema<any>).forEach((def) => {
+    Object.defineProperty(this, '$original', { writable: true, value: takeSnapshot(this) });
+
+    Object.values(ModelClass.$schema).forEach((def) => {
       Object.defineProperty(this, def.key, {
         enumerable: true,
         get: () => this.$values[def.key],
@@ -50,16 +51,18 @@ export default function makeModelClass(type: string, config: ModelConfig): Model
         }
       }
     });
-  }
+  } as unknown as Model;
 
-  ModelClass.$MODEL_TYPE = 'model';
-  ModelClass.$type = type;
-  ModelClass.$config = config;
-  ModelClass.$schema = {} as Dictionary;
-  ModelClass.$hooks = {};
+  Object.defineProperty(ModelClass, '$MODEL_TYPE', { value: 'model' });
+  Object.defineProperty(ModelClass, '$type', { value: type });
+  Object.defineProperty(ModelClass, '$config', { value: config });
+  Object.defineProperty(ModelClass, '$schema', { value: {} });
+  Object.defineProperty(ModelClass, '$hooks', { writable: true, value: {} });
+
   ModelClass.configure = (rawConfig?: ModelConfig, override = true) => {
     applyConfig(ModelClass.$config, rawConfig, override);
   };
+
   ModelClass.extends = (rawDefinition?: object) => {
     eachDescriptors(rawDefinition ?? {}, (key, descriptor) => {
       if (['id', 'lid', 'type', 'exists'].indexOf(key) !== -1) {
@@ -78,5 +81,5 @@ export default function makeModelClass(type: string, config: ModelConfig): Model
     return ModelClass;
   };
 
-  return ModelClass as unknown as Model;
+  return ModelClass;
 }

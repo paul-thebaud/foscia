@@ -9,7 +9,7 @@ import {
   normalizeKey,
   SerializerError,
   SerializerI,
-  shouldSyncProp,
+  shouldSync,
 } from '@/core';
 import useTransform from '@/core/transformers/useTransform';
 import { ObjectSerializerConfig } from '@/object/types';
@@ -135,7 +135,7 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
     rawValue: unknown,
     _context: {},
   ) {
-    return shouldSyncProp(def, ['write'])
+    return shouldSync(def, ['write'])
       && rawValue !== undefined
       && changed(instance, def.key);
   }

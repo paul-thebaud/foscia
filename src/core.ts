@@ -1,3 +1,4 @@
+import normalizeInclude from '@/core/actions/context/utilities/normalizeInclude';
 import RefsCache from '@/core/cache/refsCache';
 import weakRefCacheMode from '@/core/cache/weakRefCacheMode';
 import AdapterError from '@/core/errors/adapterError';
@@ -10,12 +11,6 @@ import runHook from '@/core/hooks/runHook';
 import unregisterHook from '@/core/hooks/unregisterHook';
 import withoutHooks from '@/core/hooks/withoutHooks';
 import logger from '@/core/logger/logger';
-import isAttributeDef from '@/core/model/guards/isAttributeDef';
-import isInstance from '@/core/model/guards/isInstance';
-import isPluralRelationDef from '@/core/model/guards/isPluralRelationDef';
-import isModel from '@/core/model/guards/isModel';
-import isPropDef from '@/core/model/guards/isPropDef';
-import isRelationDef from '@/core/model/guards/isRelationDef';
 import onCreated from '@/core/model/hooks/onCreated';
 import onCreating from '@/core/model/hooks/onCreating';
 import onDestroyed from '@/core/model/hooks/onDestroyed';
@@ -25,23 +20,32 @@ import onSaved from '@/core/model/hooks/onSaved';
 import onSaving from '@/core/model/hooks/onSaving';
 import onUpdated from '@/core/model/hooks/onUpdated';
 import onUpdating from '@/core/model/hooks/onUpdating';
+import isSame from '@/core/model/isSame';
 import makeComposable from '@/core/model/makeComposable';
 import makeModel from '@/core/model/makeModel';
 import makeModelFactory from '@/core/model/makeModelFactory';
-import attr from '@/core/model/props/attr';
-import hasMany from '@/core/model/props/hasMany';
-import hasOne from '@/core/model/props/hasOne';
-import changed from '@/core/model/utilities/changed';
-import eachAttributes from '@/core/model/utilities/eachAttributes';
-import eachRelations from '@/core/model/utilities/eachRelations';
-import fill from '@/core/model/utilities/fill';
-import isSame from '@/core/model/utilities/isSame';
-import loaded from '@/core/model/utilities/loaded';
-import reset from '@/core/model/utilities/reset';
-import shouldSyncProp from '@/core/model/utilities/shouldSyncProp';
-import syncOriginal from '@/core/model/utilities/syncOriginal';
+import isAttributeDef from '@/core/model/props/checks/isAttributeDef';
+import isInstance from '@/core/model/props/checks/isInstance';
+import isModel from '@/core/model/props/checks/isModel';
+import isPluralRelationDef from '@/core/model/props/checks/isPluralRelationDef';
+import isPropDef from '@/core/model/props/checks/isPropDef';
+import isRelationDef from '@/core/model/props/checks/isRelationDef';
+import eachAttributes from '@/core/model/props/eachAttributes';
+import eachProps from '@/core/model/props/eachProps';
+import eachRelations from '@/core/model/props/eachRelations';
+import attr from '@/core/model/props/factories/attr';
+import hasMany from '@/core/model/props/factories/hasMany';
+import hasOne from '@/core/model/props/factories/hasOne';
+import shouldSync from '@/core/model/props/shouldSync';
+import loaded from '@/core/model/relations/loaded';
+import changed from '@/core/model/snapshots/changed';
+import compareSnapshots from '@/core/model/snapshots/compareSnapshots';
+import restore from '@/core/model/snapshots/restore';
+import restoreSnapshot from '@/core/model/snapshots/restoreSnapshot';
+import markSynced from '@/core/model/snapshots/markSynced';
+import takeSnapshot from '@/core/model/snapshots/takeSnapshot';
+import fill from '@/core/model/fill';
 import normalizeDotRelations from '@/core/normalization/normalizeDotRelations';
-import normalizeInclude from '@/core/normalization/normalizeInclude';
 import normalizeKey from '@/core/normalization/normalizeKey';
 import MapRegistry from '@/core/registry/mapRegistry';
 import toBoolean from '@/core/transformers/toBoolean';
@@ -69,21 +73,15 @@ export {
   MapRegistry,
   RefsCache,
   weakRefCacheMode,
-  normalizeDotRelations,
-  normalizeInclude,
-  normalizeKey,
   attr,
   hasMany,
   hasOne,
   loaded,
   fill,
-  reset,
-  shouldSyncProp,
-  syncOriginal,
-  changed,
   isSame,
-  eachAttributes,
-  eachRelations,
+  changed,
+  restore,
+  markSynced,
   makeComposable,
   makeModel,
   makeModelFactory,
@@ -100,6 +98,9 @@ export {
   onSaved,
   onDestroying,
   onDestroyed,
+  compareSnapshots,
+  restoreSnapshot,
+  takeSnapshot,
   runHook,
   registerHook,
   unregisterHook,
@@ -110,5 +111,12 @@ export {
   isPluralRelationDef,
   isModel,
   isInstance,
+  eachProps,
+  eachAttributes,
+  eachRelations,
+  shouldSync,
+  normalizeDotRelations,
+  normalizeInclude,
+  normalizeKey,
   logger,
 };

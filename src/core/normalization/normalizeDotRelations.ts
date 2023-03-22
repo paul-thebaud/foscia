@@ -1,15 +1,15 @@
-import detectTargetModel from '@/core/actions/context/utilities/detectTargetModel';
 import logger from '@/core/logger/logger';
-import isRelationDef from '@/core/model/guards/isRelationDef';
+import isRelationDef from '@/core/model/props/checks/isRelationDef';
 import { ModelClass, ModelRelationDotKey, ModelRelationKey } from '@/core/model/types';
-import detectRelationType from '@/core/model/utilities/detectRelationType';
+import detectModel from '@/core/model/types/detectModel';
 import normalizeKey from '@/core/normalization/normalizeKey';
-import { isNone } from '@/utilities';
+import { RegistryI } from '@/core/types';
+import { isNone, Optional } from '@/utilities';
 
 export default function normalizeDotRelations<D extends {}>(
-  context: {},
   model: ModelClass<D>,
   relations: ModelRelationDotKey<ModelClass<D>>[],
+  registry?: Optional<RegistryI>,
 ): Promise<string[]> {
   return Promise.all(relations.map(async (dotKey) => {
     const [currentKey, ...subKeys] = dotKey.split('.');
@@ -28,7 +28,7 @@ export default function normalizeDotRelations<D extends {}>(
       return normalizedKey;
     }
 
-    const subModel = await detectTargetModel(context, detectRelationType(def, model));
+    const subModel = await detectModel(model, def, registry);
     if (!subModel) {
       logger.info(
         `Could not detect model for relation \`${model.$type}.${def.key}\`. Skipping sub-keys normalization.`,
@@ -39,7 +39,7 @@ export default function normalizeDotRelations<D extends {}>(
 
     return [
       normalizedKey,
-      ...await normalizeDotRelations(context, subModel, [subKeys.join('.')]),
+      ...await normalizeDotRelations(subModel, [subKeys.join('.')], registry),
     ].join('.');
   }));
 }

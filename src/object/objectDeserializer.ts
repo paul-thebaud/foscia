@@ -8,7 +8,6 @@ import {
   DeserializedData,
   DeserializerError,
   DeserializerI,
-  detectTargetType,
   eachAttributes,
   eachRelations,
   ModelAttribute,
@@ -17,10 +16,11 @@ import {
   ModelRelation,
   normalizeKey,
   runHook,
-  shouldSyncProp,
-  syncOriginal,
+  shouldSync,
+  markSynced,
 } from '@/core';
-import detectRelationType from '@/core/model/utilities/detectRelationType';
+import consumeType from '@/core/actions/context/consumers/consumeType';
+import detectRelationType from '@/core/model/types/detectRelationType';
 import useTransform from '@/core/transformers/useTransform';
 import {
   ObjectDeserializerConfig,
@@ -223,9 +223,9 @@ export default abstract class ObjectDeserializer<
 
     if (isNil(identifier.type)) {
       if (isNil(relation)) {
-        identifier.type = detectTargetType(context);
+        identifier.type = consumeType(context);
       } else {
-        identifier.type = detectRelationType(relation, parent!.$model);
+        identifier.type = detectRelationType(parent!.$model, relation);
       }
 
       if (isNil(identifier.type)) {
@@ -301,12 +301,14 @@ export default abstract class ObjectDeserializer<
     instance: ModelInstance,
     context: {},
   ) {
+    const action = consumeAction(context, null);
+
     // eslint-disable-next-line no-param-reassign
-    instance.exists = true;
+    instance.exists = action !== 'destroy';
     // eslint-disable-next-line no-param-reassign
     instance.$raw = resource;
 
-    syncOriginal(instance);
+    markSynced(instance);
 
     await runHook(instance.$model, 'retrieved', instance);
 
@@ -416,7 +418,7 @@ export default abstract class ObjectDeserializer<
     rawValue: unknown,
     _context: {},
   ) {
-    return shouldSyncProp(def, ['retrieve'])
+    return shouldSync(def, ['retrieve'])
       && rawValue !== undefined;
   }
 

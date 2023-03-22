@@ -1,4 +1,4 @@
-import isAttributeDef from '@/core/model/guards/isAttributeDef';
+import isAttributeDef from '@/core/model/props/checks/isAttributeDef';
 import { ModelClass, ModelKey } from '@/core/model/types';
 import normalize from '@/core/normalization/normalize';
 

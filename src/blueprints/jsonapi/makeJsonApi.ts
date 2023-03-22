@@ -1,10 +1,10 @@
 import appendJsonApiParams from '@/blueprints/jsonapi/appendJsonApiParams';
 import makeCache from '@/blueprints/makeCache';
 import makeRegistry from '@/blueprints/makeRegistry';
-import { context, makeAction } from '@/core';
+import { context, makeActionClass } from '@/core';
 import { bodyAsJson, deepParamsSerializer, HttpAdapter } from '@/http';
 import { JsonApiDeserializer, JsonApiSerializer } from '@/jsonapi';
-import { toKebab } from '@/utilities';
+import { toKebabCase } from '@/utilities';
 
 /**
  * Create the dependencies and action factory to interact with a
@@ -20,9 +20,9 @@ export default function makeJsonApi<
 } = {}) {
   const cache = makeCache();
   const registry = makeRegistry({
-    normalizeType: toKebab,
+    normalizeType: toKebabCase,
     prepareModel: (model) => model.configure({
-      normalizePath: toKebab,
+      normalizePath: toKebabCase,
     }),
   });
   const adapter = new HttpAdapter({
@@ -38,7 +38,7 @@ export default function makeJsonApi<
   const deserializer = new JsonApiDeserializer();
   const serializer = new JsonApiSerializer();
 
-  const Action = makeAction(config.extensions);
+  const Action = makeActionClass(config.extensions);
   const withDependencies = context({
     cache, registry, adapter, deserializer, serializer,
   });

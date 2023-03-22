@@ -1,10 +1,10 @@
 import makeCache from '@/blueprints/makeCache';
 import makeRegistry from '@/blueprints/makeRegistry';
-import { context, makeAction } from '@/core';
-import guessRelationType from '@/core/model/utilities/relations/guessRelationType';
+import { context, makeActionClass } from '@/core';
+import guessRelationType from '@/core/model/types/guessRelationType';
 import { bodyAsJson, HttpAdapter } from '@/http';
 import { RestDeserializer, RestSerializer } from '@/rest';
-import { toKebab } from '@/utilities';
+import { toKebabCase } from '@/utilities';
 
 /**
  * Create the dependencies and action factory to interact with a
@@ -18,9 +18,9 @@ export default function makeJsonRest<Extension extends {} = {}>(config: {
 } = {}) {
   const cache = makeCache();
   const registry = makeRegistry({
-    normalizeType: toKebab,
+    normalizeType: toKebabCase,
     prepareModel: (model) => model.configure({
-      normalizePath: toKebab,
+      normalizePath: toKebabCase,
       guessRelationType: (_, def) => guessRelationType(def),
     }),
   });
@@ -39,7 +39,7 @@ export default function makeJsonRest<Extension extends {} = {}>(config: {
   });
   const serializer = new RestSerializer();
 
-  const Action = makeAction(config.extensions);
+  const Action = makeActionClass(config.extensions);
   const withDependencies = context({
     cache, registry, adapter, deserializer, serializer,
   });

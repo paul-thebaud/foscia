@@ -12,7 +12,7 @@ import {
   ContextRunner,
 } from '@/core/actions/types';
 import { Model, ModelInstance } from '@/core/model/types';
-import loaded from '@/core/model/utilities/loaded';
+import loaded from '@/core/model/relations/loaded';
 import { Awaitable, isNil } from '@/utilities';
 
 export type CachedData<I extends ModelInstance> = {

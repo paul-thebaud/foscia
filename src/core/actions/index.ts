@@ -41,11 +41,9 @@ import oneOr, { OneData } from '@/core/actions/context/runners/oneOr';
 import oneOrCurrent from '@/core/actions/context/runners/oneOrCurrent';
 import oneOrFail from '@/core/actions/context/runners/oneOrFail';
 import raw from '@/core/actions/context/runners/raw';
-import detectTargetModel from '@/core/actions/context/utilities/detectTargetModel';
-import detectTargetType from '@/core/actions/context/utilities/detectTargetType';
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
 import makeRunnersExtension from '@/core/actions/extensions/makeRunnersExtension';
-import makeAction from '@/core/actions/makeAction';
+import makeActionClass from '@/core/actions/makeActionClass';
 import when from '@/core/actions/when';
 
 export type { AllData, OneData };
@@ -95,9 +93,7 @@ export {
   onSuccess,
   onError,
   onFinally,
-  detectTargetModel,
-  detectTargetType,
   makeEnhancersExtension,
   makeRunnersExtension,
-  makeAction,
+  makeActionClass,
 };

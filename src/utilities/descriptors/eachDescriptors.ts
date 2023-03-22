@@ -1,5 +1,5 @@
 import isDescriptorHolder from '@/utilities/descriptors/isDescriptorHolder';
-import isNil from '@/utilities/isNil';
+import isNil from '@/utilities/checks/isNil';
 
 export default function eachDescriptors(
   obj: object,

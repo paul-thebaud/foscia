@@ -1,6 +1,6 @@
 import { makeJsonApi } from '@/blueprints';
-import Comment from '@test/integration/jsonapi/models/comment';
-import Post from '@test/integration/jsonapi/models/post';
+import Comment from '@test/utilities/models/comment';
+import Post from '@test/utilities/models/post';
 
 export default function makeJsonApiAction() {
   const { action, registry } = makeJsonApi({

@@ -1,4 +1,4 @@
-import isPropDef from '@/core/model/guards/isPropDef';
+import isPropDef from '@/core/model/props/checks/isPropDef';
 import { ModelParsedDefinition } from '@/core/model/types';
 import { Dictionary, eachDescriptors, makeDescriptorHolder } from '@/utilities';
 
