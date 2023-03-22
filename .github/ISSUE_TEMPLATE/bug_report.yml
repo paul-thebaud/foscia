@@ -1,5 +1,6 @@
 name: 🐛 Bug report
 description: Report an issue with Foscia
+labels: [ 't:bug' ]
 body:
   - type: markdown
     attributes:
