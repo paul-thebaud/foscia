@@ -1,7 +1,7 @@
-import { takeSnapshot } from '@/core';
 import FosciaError from '@/core/errors/fosciaError';
 import logger from '@/core/logger/logger';
 import isPropDef from '@/core/model/props/checks/isPropDef';
+import takeSnapshot from '@/core/model/snapshots/takeSnapshot';
 import { Model, ModelConfig, ModelInstance } from '@/core/model/types';
 import { applyConfig, eachDescriptors, isNil, value } from '@/utilities';
 
