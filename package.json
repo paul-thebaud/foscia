@@ -1,7 +1,7 @@
 {
   "name": "foscia",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.1.0-alpha.0",
   "license": "MIT",
   "description": "Type safe, modular and intuitive API client.",
   "homepage": "https://paul-thebaud.github.io/foscia",
