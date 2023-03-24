@@ -1,41 +1,59 @@
 name: tests
 
-on:
-  push:
-  pull_request:
-    branches: [ main, develop ]
-  schedule:
-    - cron: '0 0 1 * *'
+on: [push, pull_request]
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  lint-build:
-    name: Lint and build
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2.2.4
+      - uses: pnpm/action-setup@v2
         with:
           version: 7
       - uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install
+      - run: pnpm install
 
       - name: Lint
         run: pnpm lint
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+      - run: pnpm install
 
       - name: Build
         run: pnpm build
-
-      - name: Typecheck
-        run: pnpm typecheck
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+      - run: pnpm install
 
       - name: Test
-        run: pnpm coverage
-
+        run: pnpm test
       - name: Coverage upload
         uses: codecov/codecov-action@v3
         with:

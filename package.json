@@ -67,7 +67,7 @@
     "test:typecheck": "vitest typecheck --run",
     "test:coverage": "vitest --run --coverage",
     "test": "pnpm test:typecheck && pnpm test:coverage",
-    "build:pre-clear": "rimraf ./dist ./dist-temp",
+    "build:pre-clear": "rimraf ./dist ./dist-temp dist.tar.gz dist.zip",
     "build:lib:es": "BUILD_FORMAT=es vite build",
     "build:lib:cjs": "BUILD_FORMAT=cjs vite build",
     "build:lib:umd": "BUILD_FORMAT=umd vite build",
@@ -75,7 +75,11 @@
     "build:declaration": "tsc --declaration --emitDeclarationOnly --declarationDir dist-temp/ && tsc-alias",
     "build:declaration:bundle": "rollup -c rollup.dts.config.js",
     "build:post-clear": "rimraf \"./dist/index.@(js|cjs|d.ts)?(.map)\" && rimraf ./dist-temp",
-    "build": "pnpm build:pre-clear && pnpm build:lib && pnpm build:declaration && pnpm build:declaration:bundle && pnpm build:post-clear"
+    "build:archive:tar": "cd dist && tar -czvf dist.tar.gz * && mv dist.tar.gz ../dist.tar.gz",
+    "build:archive:zip": "cd dist && zip dist.zip * && mv dist.zip ../dist.zip",
+    "build:archive": "pnpm build:archive:tar && pnpm build:archive:zip",
+    "build": "pnpm build:pre-clear && pnpm build:lib && pnpm build:declaration && pnpm build:declaration:bundle && pnpm build:post-clear && pnpm build:archive",
+    "release": "release-it --dry-run"
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^5.1.1",

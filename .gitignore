@@ -7,6 +7,8 @@
 /coverage/
 /dist/
 /dist-temp/
+dist.tar.gz
+dist.zip
 
 # log files
 npm-debug.log*

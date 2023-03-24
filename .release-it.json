@@ -10,11 +10,14 @@
   "git": {
     "requireBranch": "main",
     "commitMessage": "chore: release v${version}",
+    "tagName": "v${version}",
+    "tagAnnotation": "Release v${version}",
     "requireCleanWorkingDir": false
   },
   "github": {
     "release": true,
-    "assets": ["dist/*.zip"]
+    "assets": ["dist.tar.gz", "dist.zip"],
+    "releaseName": "v${version}"
   },
   "plugins": {
     "@release-it/conventional-changelog": {

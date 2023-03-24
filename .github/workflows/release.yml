@@ -1,0 +1,86 @@
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        type: choice
+        description: Choose release
+        options:
+          - auto
+          - patch
+          - minor
+          - major
+          - alpha
+          - beta
+        default: auto
+      dry:
+        type: boolean
+        description: Dry release
+        default: false
+
+jobs:
+  publish:
+    name: Publish release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+          registry-url: 'https://registry.npmjs.org'
+      - run: pnpm install
+
+      - name: Git config
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+      - name: Release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TYPE_ARG: ${{ fromJSON('{"auto":"", "patch":"--patch", "minor":"--minor", "major":"--major", "beta":"--preRelease=beta --npm.tag=next", "alpha":"--preRelease=alpha --npm.tag=next"}')[github.event.inputs.type] }}
+          DRY_ARG: ${{ github.event.inputs.dry == 'true' && '--dry-run' || '' }}
+        run: pnpm run release --ci --verbose $TYPE_ARG $DRY_ARG
+  deploy:
+    name: Deploy docs
+    needs: ['publish']
+    runs-on: ubuntu-latest
+    run:
+      working-directory: ./website
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: pnpm install
+        working-directory: ./
+      - name: Build lib
+        run: pnpm build
+        working-directory: ./
+
+      - run: pnpm install
+      - name: Build website
+        run: pnpm build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./website/build
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
