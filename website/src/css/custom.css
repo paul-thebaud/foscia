@@ -14,7 +14,6 @@
     --ifm-background-color: transparent;
     --ifm-background-surface-color: #fef7fa;
     --ifm-hero-background-color: transparent;
-    --ifm-navbar-background-color: transparent;
     --ifm-footer-background-color: #fef7fa;
     --ifm-code-background: #fef7fa;
     --ifm-navbar-shadow: none;
@@ -33,7 +32,6 @@ html[data-theme="dark"] {
     --ifm-background-color: #130c0f;
     --ifm-background-surface-color: #0f0a0c;
     --ifm-hero-background-color: transparent;
-    --ifm-navbar-background-color: transparent;
     --ifm-footer-background-color: #0f0a0c;
     --ifm-code-background: #1c1216;
     --ifm-color-primary: #ff6bc1;
@@ -103,6 +101,10 @@ div[class^="language-"] {
 
 aside, .table-of-contents__left-border {
     border: none !important;
+}
+
+.navbar {
+    background: transparent;
 }
 
 .navbar:before {
