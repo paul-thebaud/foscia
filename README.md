@@ -21,11 +21,15 @@
 
 <p align="center">
 <a href="https://paul-thebaud.github.io/foscia">
-  Foscia Website
+  Website
 </a>
-|
+•
+<a href="https://paul-thebaud.github.io/foscia/docs/getting-started">
+  Documentation
+</a>
+•
 <a href="https://stackblitz.com/edit/foscia?file=playground.ts">
-  StackBlitz Playground
+  Playground
 </a>
 </p>
 
