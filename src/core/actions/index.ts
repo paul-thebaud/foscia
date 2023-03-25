@@ -35,6 +35,7 @@ import all, { AllData } from '@/core/actions/context/runners/all';
 import cached from '@/core/actions/context/runners/cached';
 import cachedOr from '@/core/actions/context/runners/cachedOr';
 import cachedOrFail from '@/core/actions/context/runners/cachedOrFail';
+import catchWith from '@/core/actions/context/runners/catchWith';
 import none from '@/core/actions/context/runners/none';
 import one from '@/core/actions/context/runners/one';
 import oneOr, { OneData } from '@/core/actions/context/runners/oneOr';
@@ -64,6 +65,21 @@ export {
   update,
   save,
   destroy,
+  when,
+  catchWith,
+  context,
+  forId,
+  forInstance,
+  forModel,
+  forRelation,
+  target,
+  include,
+  instanceData,
+  onPreparing,
+  onRunning,
+  onSuccess,
+  onError,
+  onFinally,
   consumeAction,
   consumeAdapter,
   consumeCache,
@@ -79,20 +95,6 @@ export {
   consumeRelation,
   consumeRelationPath,
   consumeSerializer,
-  context,
-  forId,
-  forInstance,
-  forModel,
-  forRelation,
-  target,
-  include,
-  instanceData,
-  when,
-  onPreparing,
-  onRunning,
-  onSuccess,
-  onError,
-  onFinally,
   makeEnhancersExtension,
   makeRunnersExtension,
   makeActionClass,

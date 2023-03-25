@@ -3,6 +3,7 @@ sidebar_position: 3
 description: Available actions runners.
 ---
 
+
 import Chip from '@site/src/components/Chip';
 import FunctionInfo from '@site/src/components/FunctionInfo';
 
@@ -266,6 +267,33 @@ const post = await action().run(cachedOr(() => null));
 `{Promise<I>}` where `I` is an instance of the targeted model,
 a transformed data if `transform` callback was provided
 or the `nilRunner` result.
+
+### `catchWith`
+
+<FunctionInfo />
+
+Run given runner and catch errors using catchCallback.
+If catchCallback is omitted, will return void on error.
+If catchCallback returns a function, will run it as an action's runner.
+Else, will return void on error only if callback for error is falsy.
+
+#### Example
+
+```javascript
+import { catchWith, one } from 'foscia/core';
+
+const post = await action().run(catchWith(one(), (error) => error instanceof ErrorToCatch));
+```
+
+#### Arguments
+
+- `{Function}` `runner` the runner to run and catch errors from
+- `{Function | undefined}` `catchCallback` the callback to use when an error is caught
+
+#### Returns
+
+`{Promise<T>}` where `T` is either the runner result or null or the catch
+callback runner result.
 
 ## JSON:API
 
