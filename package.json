@@ -79,7 +79,7 @@
     "build:archive:zip": "cd dist && zip dist.zip * && mv dist.zip ../dist.zip",
     "build:archive": "pnpm build:archive:tar && pnpm build:archive:zip",
     "build": "pnpm build:pre-clear && pnpm build:lib && pnpm build:declaration && pnpm build:declaration:bundle && pnpm build:post-clear && pnpm build:archive",
-    "release": "release-it --dry-run"
+    "release": "release-it"
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^5.1.1",
