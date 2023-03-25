@@ -37,6 +37,10 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: pnpm install
 
+      - name: NPM config
+        run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Git config
         run: |
           git config user.name "${GITHUB_ACTOR}"
@@ -52,8 +56,9 @@ jobs:
     name: Deploy docs
     needs: ['publish']
     runs-on: ubuntu-latest
-    run:
-      working-directory: ./website
+    defaults:
+      run:
+        working-directory: ./website
     steps:
       - uses: actions/checkout@v3
         with:

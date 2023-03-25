@@ -35,9 +35,15 @@ jobs:
           node-version: 18
           cache: pnpm
       - run: pnpm install
+      - run: pnpm install
+        working-directory: ./website
 
       - name: Build
         run: pnpm build
+
+      - name: Build website
+        run: pnpm build
+        working-directory: ./website
   test:
     name: Tests
     runs-on: ubuntu-latest
