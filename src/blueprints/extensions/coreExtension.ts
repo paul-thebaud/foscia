@@ -1,5 +1,5 @@
 import {
-  catchWith,
+  catchIf,
   context,
   find,
   forId,
@@ -21,5 +21,5 @@ export default {
   ...target.extension,
   ...context.extension,
   ...when.extension,
-  ...catchWith.extension,
+  ...catchIf.extension,
 };

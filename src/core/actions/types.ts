@@ -48,8 +48,8 @@ export type ExtendedAction<E extends {}> = {
   [K in keyof E]: E[K] extends DescriptorHolder<infer T> ? T : E[K];
 };
 
-export type ContextEnhancer<PC extends {}, NC extends {}> = (
-  action: Action<PC>,
+export type ContextEnhancer<C extends {}, NC extends {}> = (
+  action: Action<C>,
 ) => Awaitable<Action<NC> | void>;
 
 export type ContextRunner<C extends {}, R> = (

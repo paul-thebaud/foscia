@@ -10,14 +10,14 @@ type CatchCallback<C extends {}, CD> = (
  * Run given runner and catch errors using catchCallback.
  * If catchCallback is omitted, will return null on error.
  * If catchCallback returns a function, will run it as an action's runner.
- * Else, will return null on error only if callback for error is falsy.
+ * Else, will ignore error and return null only if callback for error is truthy.
  *
  * @param runner
  * @param catchCallback
  *
  * @category Runners
  */
-export default function catchWith<C extends {}, RD, CD = null>(
+export default function catchIf<C extends {}, RD, CD = null>(
   runner: ContextRunner<C, Awaitable<RD>>,
   catchCallback?: CatchCallback<C, CD>,
 ) {
@@ -40,11 +40,11 @@ export default function catchWith<C extends {}, RD, CD = null>(
 }
 
 type RunnerExtension = ActionParsedExtension<{
-  catchWith<C extends {}, RD, CD = null>(
+  catchIf<C extends {}, RD, CD = null>(
     this: Action<C>,
     runner: ContextRunner<C, Awaitable<RD>>,
     catchCallback?: CatchCallback<C, CD>,
   ): Promise<Awaited<RD> | Awaited<CD>>;
 }>;
 
-catchWith.extension = makeRunnersExtension({ catchWith }) as RunnerExtension;
+catchIf.extension = makeRunnersExtension({ catchIf }) as RunnerExtension;

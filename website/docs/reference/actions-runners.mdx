@@ -268,21 +268,23 @@ const post = await action().run(cachedOr(() => null));
 a transformed data if `transform` callback was provided
 or the `nilRunner` result.
 
-### `catchWith`
+### `catchIf`
 
 <FunctionInfo />
 
 Run given runner and catch errors using catchCallback.
-If catchCallback is omitted, will return void on error.
+If catchCallback is omitted, will return null on error.
 If catchCallback returns a function, will run it as an action's runner.
-Else, will return void on error only if callback for error is falsy.
+Else, will ignore error and return null only if callback for error is truthy.
 
 #### Example
 
 ```javascript
-import { catchWith, one } from 'foscia/core';
+import { catchIf, one } from 'foscia/core';
 
-const post = await action().run(catchWith(one(), (error) => error instanceof ErrorToCatch));
+const postOrNull = await action().run(
+  catchIf(one(), (error) => error instanceof ErrorToCatch),
+);
 ```
 
 #### Arguments
@@ -292,8 +294,8 @@ const post = await action().run(catchWith(one(), (error) => error instanceof Err
 
 #### Returns
 
-`{Promise<T>}` where `T` is either the runner result or null or the catch
-callback runner result.
+`{Promise<T>}` where `T` is either the runner result, the catch runner result
+or null.
 
 ## JSON:API
 

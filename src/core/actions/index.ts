@@ -35,7 +35,7 @@ import all, { AllData } from '@/core/actions/context/runners/all';
 import cached from '@/core/actions/context/runners/cached';
 import cachedOr from '@/core/actions/context/runners/cachedOr';
 import cachedOrFail from '@/core/actions/context/runners/cachedOrFail';
-import catchWith from '@/core/actions/context/runners/catchWith';
+import catchIf from '@/core/actions/context/runners/catchIf';
 import none from '@/core/actions/context/runners/none';
 import one from '@/core/actions/context/runners/one';
 import oneOr, { OneData } from '@/core/actions/context/runners/oneOr';
@@ -66,7 +66,7 @@ export {
   save,
   destroy,
   when,
-  catchWith,
+  catchIf,
   context,
   forId,
   forInstance,
