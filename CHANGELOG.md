@@ -1,5 +1,23 @@
 # Changelog
 
+# [0.1.0-alpha.2](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.1...v0.1.0-alpha.2) (2023-03-28)
+
+
+### Bug Fixes
+
+* enhancers/runners with sub propagate extensions ([e36a3b7](https://github.com/paul-thebaud/foscia/commit/e36a3b7634547ba813ad343d2f90975224fc622f)), closes [#18](https://github.com/paul-thebaud/foscia/issues/18)
+
+
+### Features
+
+* rename catchWith runner ([4155972](https://github.com/paul-thebaud/foscia/commit/41559729854fa918da6ba1f74a920e4c7d0a1a55))
+
+
+### BREAKING CHANGES
+
+* signatures of multiple generics in enhancers/runners and actions types have changed
+* catchWith runner is renamed to catchIf
+
 # [0.1.0-alpha.1](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.0...v0.1.0-alpha.1) (2023-03-25)
 
 
