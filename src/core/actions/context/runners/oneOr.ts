@@ -32,17 +32,18 @@ export type OneData<
  */
 export default function oneOr<
   C extends {},
+  E extends {},
   I extends InferConsumedInstance<C>,
   AD,
   DD extends DeserializedData,
   RD,
   ND = I,
 >(
-  nilRunner: ContextRunner<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD>, Awaitable<RD>>,
+  nilRunner: ContextRunner<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD>, E, Awaitable<RD>>,
   transform?: (data: OneData<AD, DeserializedDataOf<I, DD>, I>) => Awaitable<ND>,
 ) {
   return async (
-    action: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD>>,
+    action: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD>, E>,
   ) => {
     try {
       const result = await action.run(all((data) => {
@@ -70,14 +71,15 @@ export default function oneOr<
 type RunnerExtension = ActionParsedExtension<{
   oneOr<
     C extends {},
+    E extends {},
     I extends InferConsumedInstance<C>,
     AD,
     DD extends DeserializedData,
     RD,
     ND = I,
   >(
-    this: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD>>,
-    nilRunner: ContextRunner<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD>, RD>,
+    this: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD>, E>,
+    nilRunner: ContextRunner<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD>, E, RD>,
     transform?: (data: OneData<AD, DeserializedDataOf<I, DD>, I>) => Awaitable<ND>,
   ): Promise<Awaited<ND> | Awaited<RD>>;
 }>;

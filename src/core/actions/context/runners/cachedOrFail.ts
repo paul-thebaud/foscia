@@ -25,7 +25,7 @@ export default function cachedOrFail<
   I extends InstanceType<M>,
   ND = I,
 >(transform?: (data: CachedData<I>) => Awaitable<ND>) {
-  return cachedOr<C, M, I, never, ND>(() => {
+  return cachedOr<C, any, M, I, never, ND>(() => {
     throw new ExpectedRunFailureError(
       '`cachedOrFail` failed. You may handle this error globally as a "not found" record error.',
     );

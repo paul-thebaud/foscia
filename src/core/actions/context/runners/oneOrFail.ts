@@ -27,7 +27,7 @@ export default function oneOrFail<
 >(
   transform?: (data: OneData<AD, DeserializedDataOf<I, DD>, I>) => Awaitable<ND>,
 ) {
-  return oneOr<C, I, AD, DD, never, ND>(() => {
+  return oneOr<C, any, I, AD, DD, never, ND>(() => {
     throw new ExpectedRunFailureError(
       '`oneOrFail` failed. You may handle this error globally as a "not found" record error.',
     );

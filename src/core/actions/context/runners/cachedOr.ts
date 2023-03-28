@@ -11,8 +11,8 @@ import {
   ConsumeModel,
   ContextRunner,
 } from '@/core/actions/types';
-import { Model, ModelInstance } from '@/core/model/types';
 import loaded from '@/core/model/relations/loaded';
+import { Model, ModelInstance } from '@/core/model/types';
 import { Awaitable, isNil } from '@/utilities';
 
 export type CachedData<I extends ModelInstance> = {
@@ -31,16 +31,17 @@ export type CachedData<I extends ModelInstance> = {
  */
 export default function cachedOr<
   C extends {},
+  E extends {},
   M extends Model,
   I extends InstanceType<M>,
   RD,
   ND = I,
 >(
-  nilRunner: ContextRunner<C & ConsumeCache & ConsumeModel<M>, Awaitable<RD>>,
+  nilRunner: ContextRunner<C & ConsumeCache & ConsumeModel<M>, E, Awaitable<RD>>,
   transform?: (data: CachedData<I>) => Awaitable<ND>,
 ) {
   return async (
-    action: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeInclude & ConsumeId>,
+    action: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeInclude & ConsumeId, E>,
   ) => {
     // TODO How could we manage the "forRelation" case?
     const context = await action.useContext();
@@ -57,13 +58,14 @@ export default function cachedOr<
 type RunnerExtension = ActionParsedExtension<{
   cachedOr<
     C extends {},
+    E extends {},
     M extends Model,
     I extends InstanceType<M>,
     RD,
     ND = I,
   >(
-    this: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeInclude & ConsumeId>,
-    nilRunner: ContextRunner<C & ConsumeCache & ConsumeModel<M>, Awaitable<RD>>,
+    this: Action<C & ConsumeCache & ConsumeModel<M> & ConsumeInclude & ConsumeId, E>,
+    nilRunner: ContextRunner<C & ConsumeCache & ConsumeModel<M>, E, Awaitable<RD>>,
     transform?: (data: CachedData<I>) => Awaitable<ND>,
   ): Promise<Awaited<ND> | Awaited<RD>>;
 }>;

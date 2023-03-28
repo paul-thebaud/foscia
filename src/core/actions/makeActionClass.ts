@@ -15,7 +15,7 @@ export default function makeActionClass<Extension extends {} = {}>(extensions?: 
   class Action {
     public $hooks: HooksRegistrar<ActionHooksDefinition> | null;
 
-    private $enhancementsQueue: ContextEnhancer<any, any>[];
+    private $enhancementsQueue: ContextEnhancer<any, any, any>[];
 
     private $context: Dictionary;
 
@@ -49,13 +49,13 @@ export default function makeActionClass<Extension extends {} = {}>(extensions?: 
       return this;
     }
 
-    public use(enhancer: ContextEnhancer<any, any>) {
+    public use(enhancer: ContextEnhancer<any, any, any>) {
       this.$enhancementsQueue.push(enhancer);
 
       return this;
     }
 
-    public async run(runner: ContextRunner<any, any>) {
+    public async run(runner: ContextRunner<any, any, any>) {
       await runHook(this, 'preparing', undefined);
 
       const context = await this.useContext();

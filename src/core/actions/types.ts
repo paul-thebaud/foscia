@@ -25,10 +25,10 @@ export type Action<Context extends {} = {}, Extension extends {} = {}> =
       newContext: NewContext,
     ): Action<NewContext, Extension>;
     use<NewContext extends {} = Context>(
-      enhancer: ContextEnhancer<Context, NewContext>,
+      enhancer: ContextEnhancer<Context, Extension, NewContext>,
     ): Action<NewContext, Extension>;
     run<Result>(
-      runner: ContextRunner<Context, Result>,
+      runner: ContextRunner<Context, Extension, Result>,
     ): Promise<Awaited<Result>>;
   }
   & Hookable<ActionHooksDefinition<Context>>
@@ -48,12 +48,12 @@ export type ExtendedAction<E extends {}> = {
   [K in keyof E]: E[K] extends DescriptorHolder<infer T> ? T : E[K];
 };
 
-export type ContextEnhancer<C extends {}, NC extends {}> = (
-  action: Action<C>,
-) => Awaitable<Action<NC> | void>;
+export type ContextEnhancer<C extends {}, E extends {}, NC extends {}> = (
+  action: Action<C, E>,
+) => Awaitable<Action<NC, E> | Action<NC> | void>;
 
-export type ContextRunner<C extends {}, R> = (
-  action: Action<C>,
+export type ContextRunner<C extends {}, E extends {}, R> = (
+  action: Action<C, E>,
 ) => R;
 
 export type InferConsumedInstance<C extends {}> =

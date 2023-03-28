@@ -1,34 +1,39 @@
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
-import { Action, ActionParsedExtension, ContextEnhancer, ContextRunner } from '@/core/actions/types';
+import {
+  Action,
+  ActionParsedExtension,
+  ContextEnhancer,
+  ContextRunner,
+} from '@/core/actions/types';
 import { Awaitable, OnlyFalsy, OnlyTruthy, Value, value } from '@/utilities';
 
-function when<C extends {}, V, TC extends {} = C>(
+function when<C extends {}, E extends {}, V, TC extends {} = C>(
   expression: V,
   truthyCallback: (
-    action: Action<C>,
+    action: Action<C, E>,
     value: OnlyTruthy<Awaited<Value<V>>>,
-  ) => Awaitable<Action<TC> | void>,
-): ContextEnhancer<C, TC>;
-function when<C extends {}, V, TC extends {} = C, FC extends {} = C>(
+  ) => Awaitable<Action<TC, E> | void>,
+): ContextEnhancer<C, E, TC>;
+function when<C extends {}, E extends {}, V, TC extends {} = C, FC extends {} = C>(
   expression: V,
   truthyCallback: (
-    action: Action<C>,
+    action: Action<C, E>,
     value: OnlyTruthy<Awaited<Value<V>>>,
-  ) => Awaitable<Action<TC> | void>,
+  ) => Awaitable<Action<TC, E> | void>,
   falsyCallback: (
-    action: Action<C>,
+    action: Action<C, E>,
     value: OnlyFalsy<Awaited<Value<V>>>,
-  ) => Awaitable<Action<FC> | void>,
-): ContextEnhancer<C, TC | FC>;
-function when<C extends {}, V, TR>(
+  ) => Awaitable<Action<FC, E> | void>,
+): ContextEnhancer<C, E, TC | FC>;
+function when<C extends {}, E extends {}, V, TR>(
   expression: V,
-  truthyCallback: (action: Action<C>, value: OnlyTruthy<Awaited<Value<V>>>) => TR,
-): ContextRunner<C, TR | void>;
-function when<C extends {}, V, TR, FR>(
+  truthyCallback: (action: Action<C, E>, value: OnlyTruthy<Awaited<Value<V>>>) => TR,
+): ContextRunner<C, E, TR | void>;
+function when<C extends {}, E extends {}, V, TR, FR>(
   expression: V,
-  truthyCallback: (action: Action<C>, value: OnlyTruthy<Awaited<Value<V>>>) => TR,
-  falsyCallback: (action: Action<C>, value: OnlyFalsy<Awaited<Value<V>>>) => FR,
-): ContextRunner<C, TR | FR>;
+  truthyCallback: (action: Action<C, E>, value: OnlyTruthy<Awaited<Value<V>>>) => TR,
+  falsyCallback: (action: Action<C, E>, value: OnlyFalsy<Awaited<Value<V>>>) => FR,
+): ContextRunner<C, E, TR | FR>;
 
 /**
  * Create a new enhancer or runner from a conditional expression and given
@@ -42,12 +47,12 @@ function when<C extends {}, V, TR, FR>(
  * @param truthyCallback
  * @param falsyCallback
  */
-function when<C extends {}, V, TR, FR = void>(
+function when<C extends {}, E extends {}, V, TR, FR = void>(
   expression: V,
-  truthyCallback: (action: Action<C>, value: OnlyTruthy<Awaited<Value<V>>>) => TR,
-  falsyCallback?: (action: Action<C>, value: OnlyFalsy<Awaited<Value<V>>>) => FR,
+  truthyCallback: (action: Action<C, E>, value: OnlyTruthy<Awaited<Value<V>>>) => TR,
+  falsyCallback?: (action: Action<C, E>, value: OnlyFalsy<Awaited<Value<V>>>) => FR,
 ) {
-  return async (action: Action<C>) => {
+  return async (action: Action<C, E>) => {
     const exprValue = await value(expression as Function);
     if (exprValue) {
       return truthyCallback(action, exprValue as OnlyTruthy<Awaited<Value<V>>>);

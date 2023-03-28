@@ -2,9 +2,9 @@ import makeRunnersExtension from '@/core/actions/extensions/makeRunnersExtension
 import { Action, ActionParsedExtension, ContextRunner } from '@/core/actions/types';
 import { Awaitable } from '@/utilities';
 
-type CatchCallback<C extends {}, CD> = (
+type CatchCallback<C extends {}, E extends {}, CD> = (
   error: unknown,
-) => Awaitable<ContextRunner<C, Awaitable<CD>> | boolean>;
+) => Awaitable<ContextRunner<C, E, Awaitable<CD>> | boolean>;
 
 /**
  * Run given runner and catch errors using catchCallback.
@@ -17,11 +17,11 @@ type CatchCallback<C extends {}, CD> = (
  *
  * @category Runners
  */
-export default function catchIf<C extends {}, RD, CD = null>(
-  runner: ContextRunner<C, Awaitable<RD>>,
-  catchCallback?: CatchCallback<C, CD>,
+export default function catchIf<C extends {}, E extends {}, RD, CD = null>(
+  runner: ContextRunner<C, E, Awaitable<RD>>,
+  catchCallback?: CatchCallback<C, E, CD>,
 ) {
-  return async (action: Action<C>): Promise<RD | CD> => {
+  return async (action: Action<C, E>): Promise<RD | CD> => {
     try {
       return await action.run(runner);
     } catch (error) {
@@ -40,10 +40,10 @@ export default function catchIf<C extends {}, RD, CD = null>(
 }
 
 type RunnerExtension = ActionParsedExtension<{
-  catchIf<C extends {}, RD, CD = null>(
-    this: Action<C>,
-    runner: ContextRunner<C, Awaitable<RD>>,
-    catchCallback?: CatchCallback<C, CD>,
+  catchIf<C extends {}, E extends {}, RD, CD = null>(
+    this: Action<C, E>,
+    runner: ContextRunner<C, E, Awaitable<RD>>,
+    catchCallback?: CatchCallback<C, E, CD>,
   ): Promise<Awaited<RD> | Awaited<CD>>;
 }>;
 

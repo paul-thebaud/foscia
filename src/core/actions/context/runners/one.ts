@@ -26,7 +26,7 @@ export default function one<
 >(
   transform?: (data: OneData<AD, DeserializedDataOf<I, DD>, I>) => Awaitable<ND>,
 ) {
-  return oneOr<C, I, AD, DD, null, ND>(() => null, transform);
+  return oneOr<C, any, I, AD, DD, null, ND>(() => null, transform);
 }
 
 type RunnerExtension = ActionParsedExtension<{

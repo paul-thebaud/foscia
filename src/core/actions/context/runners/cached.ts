@@ -24,7 +24,7 @@ export default function cached<
   I extends InstanceType<M>,
   ND = I,
 >(transform?: (data: CachedData<I>) => Awaitable<ND>) {
-  return cachedOr<C, M, I, null, ND>(() => null, transform);
+  return cachedOr<C, any, M, I, null, ND>(() => null, transform);
 }
 
 type RunnerExtension = ActionParsedExtension<{

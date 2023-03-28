@@ -30,7 +30,7 @@ export default function oneOrCurrent<
 >(
   transform?: (data: OneData<AD, DeserializedDataOf<I, DD>, I>) => Awaitable<ND>,
 ) {
-  return oneOr<C & ConsumeInstance<CI>, I, AD, DD, CI, ND>(
+  return oneOr<C & ConsumeInstance<CI>, any, I, AD, DD, CI, ND>(
     async (action) => consumeInstance(await action.useContext()) as Promise<CI>,
     transform,
   );

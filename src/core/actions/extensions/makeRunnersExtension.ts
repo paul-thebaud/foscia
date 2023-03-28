@@ -11,7 +11,7 @@ import { Dictionary } from '@/utilities';
  * @todo This function returns value should be generically typed.
  */
 export default function makeRunnersExtension<
-  R extends Dictionary<(...args: any[]) => ContextRunner<any, any>> = {},
+  R extends Dictionary<(...args: any[]) => ContextRunner<any, any, any>> = {},
 >(runnersMap: R) {
   return makeExtension(
     Object.entries(runnersMap).reduce((extension, [key, runner]) => {
