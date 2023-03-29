@@ -5,7 +5,9 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
-    "build": "docusaurus build",
+    "build:docs": "docusaurus build",
+    "build:post-clear": "rimraf ./docs/reference/api/namespaces",
+    "build": "pnpm build:docs && pnpm build:post-clear",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -31,7 +33,8 @@
     "typescript": "^4.9.5"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "2.4.0"
+    "@docusaurus/module-type-aliases": "2.4.0",
+    "rimraf": "^4.4.1"
   },
   "browserslist": {
     "production": [
