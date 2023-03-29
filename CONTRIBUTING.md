@@ -47,6 +47,8 @@ to automated tests.
 pnpm dev
 ```
 
+> Changes to `playground` directory must not be committed.
+
 #### Build
 
 ``` shell
@@ -62,13 +64,19 @@ pnpm lint
 #### Test watch
 
 ``` shell
-pnpm test
+pnpm test:watch
 ```
 
 #### Test coverage
 
 ``` shell
-pnpm coverage
+pnpm test:coverage
+```
+
+#### Test types
+
+``` shell
+pnpm test:typecheck
 ```
 
 ### Documentation development
