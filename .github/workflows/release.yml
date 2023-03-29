@@ -1,4 +1,5 @@
 name: release
+run-name: release by @${{ github.actor }} ${{ inputs.type }}${{ github.event.inputs.dry == 'true' && ' (dry run)' || '' }}
 
 on:
   workflow_dispatch:
@@ -57,36 +58,6 @@ jobs:
     name: Deploy docs
     needs: ['publish']
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./website
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 7
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: pnpm
-          registry-url: 'https://registry.npmjs.org'
-
-      - run: pnpm install
-        working-directory: ./
-      - name: Build lib
-        run: pnpm build
-        working-directory: ./
-
-      - run: pnpm install
-      - name: Build website
-        run: pnpm build
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./website/build
-          user_name: github-actions[bot]
-          user_email: 41898282+github-actions[bot]@users.noreply.github.com
+      - name: Call deploy workflow
+        uses: ./.github/workflows/deploy.yml
