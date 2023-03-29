@@ -1,7 +1,7 @@
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import '@fontsource/fira-mono';
-import '@fontsource/readex-pro';
+import '@fontsource/poppins';
 import HomepageExamples from '@site/src/components/HomepageExamples';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Layout from '@theme/Layout';

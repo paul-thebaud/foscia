@@ -33,9 +33,9 @@ makeModel('posts', {
 ```
 
 `makeModel` is the default model factory function. It defines a new model using
-2 arguments:
+2 arguments and returns an ES6 class:
 
--   The string `type` or a configuration object.
+-   The string `type` or a [configuration object](/docs/guides/models-configuration).
 -   The optional `definition` of the model: an object map containing
     attributes/relations definitions and custom properties and methods.
 
@@ -69,6 +69,23 @@ timestamps, client side ID generation, etc.
 If you wish to learn more about the composition capabilities of models, you
 should read the
 [advanced guide about models composition](/docs/guides/models-composition).
+
+#### Note on exported value
+
+In many Foscia guides and examples, you will see that the ES6 class
+returned by `makeModel` is extended before exporting:
+we use `export default class Post extends makeModel...` instead of
+`export default makeModel...`.
+
+This has two benefits:
+
+-   When using TypeScript, it allows only importing type of the class using
+    `import type Post from './models/post'`, and thus avoiding circular
+    dependencies when models have circular relationships
+-   It gives more flexibility as you can quickly add custom properties or
+    methods in the future
+
+That being said, you can use the syntax you prefer.
 
 ### Using models classes
 

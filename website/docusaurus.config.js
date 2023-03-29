@@ -62,7 +62,11 @@ const config = {
   themeConfig:
   /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      docs: {},
+      algolia: {
+        appId: 'AK1H2HG8VZ',
+        apiKey: '5b22541919060b702fe9c7bb5711807c',
+        indexName: 'foscia',
+      },
       announcementBar: {
         id: 'alpha_stage',
         content: 'Foscia is currently in alpha stage, <a target="_blank" rel="noopener noreferrer" href="https://github.com/paul-thebaud/foscia/issues">please fill an issue</a> to give your feedback.',

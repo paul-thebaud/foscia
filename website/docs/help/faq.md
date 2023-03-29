@@ -62,25 +62,12 @@ const posts = await action()
     .run(all());
 ```
 
-## Why classes are used for models in Typescript?
+## Why extending models' classes?
 
-We extend the `makeModel` call when using Typescript to be able to only
-`import type` of the class type when typing our relations.
+Mainly because **it prevents dependency cycles** when using TypeScript.
 
-**This prevents dependency cycles.**
-
-```typescript title="comment.ts"
-export default class Comment extends makeModel('posts') {}
-```
-
-```typescript title="post.ts"
-// Notice the `import type` usage instead of simple `import`.
-import type Comment from './comment';
-
-export default class Post extends makeModel('posts', {
-    comments: hasMany<Comment>(),
-}) {}
-```
+This is clearly explained in the
+[Models guide](/docs/core-concepts/models#note-on-exported-value).
 
 ## What are the downsides of Foscia approach?
 

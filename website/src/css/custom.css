@@ -10,8 +10,8 @@
     --accent-color: #ffc107;
 
     --ifm-font-family-monospace: "Fira Mono", monospace;
-    --ifm-font-family-base: "Readex Pro", sans-serif;
-    --ifm-background-color: transparent;
+    --ifm-font-family-base: "Poppins", sans-serif;
+    --ifm-background-color: #ffffff;
     --ifm-background-surface-color: #fef7fa;
     --ifm-hero-background-color: transparent;
     --ifm-footer-background-color: #fef7fa;
@@ -41,6 +41,16 @@ html[data-theme="dark"] {
     --ifm-color-primary-light: #ff8fd0;
     --ifm-color-primary-lighter: #ffa1d8;
     --ifm-color-primary-lightest: #ffd8ee;
+}
+
+.DocSearch {
+    --docsearch-modal-background: var(--ifm-background-surface-color);
+    --docsearch-footer-background: var(--ifm-background-color);
+    --docsearch-key-gradient: linear-gradient(
+            -26.5deg,
+            var(--ifm-color-emphasis-200) 0%,
+            var(--ifm-color-emphasis-100) 100%
+    );
 }
 
 .header-github-link:hover {
@@ -117,6 +127,10 @@ aside, .table-of-contents__left-border {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     background-color: rgba(var(--nav-background-color), 0.6);
+}
+
+.navbar .navbar__brand {
+    font-family: var(--ifm-font-family-monospace) !important;
 }
 
 .navbar .navbar__inner {

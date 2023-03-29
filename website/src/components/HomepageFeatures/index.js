@@ -1,22 +1,11 @@
 import clsx from 'clsx';
 import React from 'react';
 import TypeSafeSvg from '../../icons/alert-decagram-outline.svg';
-import IntiutiveSvg from '../../icons/lightbulb-on-outline.svg';
 import DepsSvg from '../../icons/swap-horizontal.svg';
 import ModularSvg from '../../icons/toy-brick-outline.svg';
 import styles from './styles.module.css';
 
 const FeatureList = [
-  {
-    Icon: IntiutiveSvg,
-    title: 'Intuitive',
-    description: (
-      <>
-        Foscia provides an intuitive API to declare your models and
-        interact with your data source.
-      </>
-    ),
-  },
   {
     Icon: DepsSvg,
     title: 'REST/JSON:API ready',
@@ -51,7 +40,7 @@ const FeatureList = [
 
 function Feature({ Icon, title, description }) {
   return (
-    <div className={clsx('col col--3')}>
+    <div className={clsx('col col--4')}>
       <div className="text--center padding-horiz--md">
         <div className={`${styles.featureSvgWrapper} bg--primary margin-bottom--lg`}>
           <Icon className={styles.featureSvg} />

@@ -25,7 +25,7 @@ get type safe interactions with your data source.
 ### Defining a model
 
 To declare a model, you just need to use the `makeModel` function. This function
-takes up to 2 arguments:
+takes up to 2 arguments and returns an ES6 class:
 
 -   The model `type`, which is used by other services to identify your model or
     interact with a data source.
@@ -52,19 +52,9 @@ export default class Post extends makeModel('posts', {
 }) {}
 ```
 
-:::tip
-
-If you never need to import only a model's type (such as in Typescript to avoid
-circular deps), you can directly use the `makeModel` returned value instead of
-extending it: `export default makeModel('posts', {});`
-
-[**Read the FAQ to understand the why.**](/docs/help/faq#why-classes-are-used-for-models-in-typescript)
-
-:::
-
 ### Using models classes
 
-Model classes can be used as any classical ES6 class. It can be instantiated,
+Model classes can be used like any ES6 class. It can be instantiated,
 manipulated, etc. Properties will be defined on each instance from the model
 definition.
 
