@@ -1,5 +1,12 @@
 # Changelog
 
+# [0.1.0-alpha.3](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.2...v0.1.0-alpha.3) (2023-03-31)
+
+
+### Bug Fixes
+
+* remove dts bundling ([95d2e56](https://github.com/paul-thebaud/foscia/commit/95d2e56c024719748654be3c3ccfade3d43233f3))
+
 # [0.1.0-alpha.2](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.1...v0.1.0-alpha.2) (2023-03-28)
 
 
