@@ -120,14 +120,15 @@ export default class HttpAdapter implements AdapterI<Response> {
     let headers = { ...this.defaultHeaders };
     let body = context.body ?? consumeData(context, null) ?? undefined;
 
-    if (body instanceof FormData || body instanceof URLSearchParams) {
+    const keepBodyFormat = body instanceof FormData || body instanceof URLSearchParams;
+    if (keepBodyFormat) {
       delete headers['Content-Type'];
     }
 
     headers = { ...headers, ...context.headers };
 
     const bodyAs = context.bodyAs ?? this.defaultBodyAs;
-    if (bodyAs && body !== undefined) {
+    if (bodyAs && body !== undefined && !keepBodyFormat) {
       body = await bodyAs(body, headers);
     }
 
