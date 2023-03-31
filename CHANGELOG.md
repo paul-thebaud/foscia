@@ -1,5 +1,12 @@
 # Changelog
 
+# [0.1.0-alpha.4](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.3...v0.1.0-alpha.4) (2023-03-31)
+
+
+### Bug Fixes
+
+* **actions:** request body transformation ([ec9308c](https://github.com/paul-thebaud/foscia/commit/ec9308c5f12be9e1e0cf1b973fd786fb56fdc928))
+
 # [0.1.0-alpha.3](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.2...v0.1.0-alpha.3) (2023-03-31)
 
 
