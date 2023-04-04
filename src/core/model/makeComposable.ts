@@ -7,7 +7,7 @@ import { ModelInstance, ModelParsedDefinition } from '@/core/model/types';
  * @param rawDefinition
  */
 export default function makeComposable<D extends {} = {}>(
-  rawDefinition?: D & ThisType<ModelInstance<D>>,
+  rawDefinition?: D & ThisType<ModelInstance<ModelParsedDefinition<D>>>,
 ) {
   return makeDefinition(rawDefinition) as ModelParsedDefinition<D>;
 }
