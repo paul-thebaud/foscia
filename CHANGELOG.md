@@ -1,5 +1,12 @@
 # Changelog
 
+# [0.1.0-alpha.5](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.4...v0.1.0-alpha.5) (2023-04-04)
+
+
+### Bug Fixes
+
+* **models:** composables this context typing ([df5c042](https://github.com/paul-thebaud/foscia/commit/df5c0426689dddaabc7a9323fa814b43ba6ac037))
+
 # [0.1.0-alpha.4](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.3...v0.1.0-alpha.4) (2023-03-31)
 
 
