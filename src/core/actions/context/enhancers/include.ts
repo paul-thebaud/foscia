@@ -1,7 +1,12 @@
 import context from '@/core/actions/context/enhancers/context';
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
-import { Action, ActionParsedExtension, ConsumeInclude, ConsumeModel } from '@/core/actions/types';
-import { Model, ModelRelationDotKey } from '@/core/model/types';
+import {
+  Action,
+  ActionParsedExtension,
+  ConsumeInclude,
+  InferConsumedInstance,
+} from '@/core/actions/types';
+import { ModelRelationDotKey } from '@/core/model/types';
 import { ArrayableVariadic, uniqueValues, wrapVariadic } from '@/utilities';
 
 /**
@@ -15,10 +20,10 @@ import { ArrayableVariadic, uniqueValues, wrapVariadic } from '@/utilities';
  */
 export default function include<
   C extends {},
-  M extends Model,
->(...relations: ArrayableVariadic<ModelRelationDotKey<M>>) {
+  I extends InferConsumedInstance<C>,
+>(...relations: ArrayableVariadic<ModelRelationDotKey<I>>) {
   return async (
-    action: Action<C & ConsumeInclude & ConsumeModel<M>>,
+    action: Action<C & ConsumeInclude>,
   ) => action.use(context({
     include: uniqueValues([
       ...((await action.useContext()).include ?? []),
@@ -28,9 +33,9 @@ export default function include<
 }
 
 type EnhancerExtension = ActionParsedExtension<{
-  include<C extends {}, E extends {}, M extends Model>(
-    this: Action<C & ConsumeModel<M>, E>,
-    ...relations: ArrayableVariadic<ModelRelationDotKey<M>>
+  include<C extends {}, E extends {}, I extends InferConsumedInstance<C>>(
+    this: Action<C, E>,
+    ...relations: ArrayableVariadic<ModelRelationDotKey<I>>
   ): Action<C, E>;
 }>;
 

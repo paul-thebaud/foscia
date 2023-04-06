@@ -1,14 +1,17 @@
 import {
   Action,
   ActionParsedExtension,
-  ConsumeModel,
   consumeModel,
+  consumeRegistry,
+  consumeRelation,
+  FosciaError,
+  InferConsumedInstance,
   makeEnhancersExtension,
-  Model,
   ModelKey,
 } from '@/core';
+import detectModel from '@/core/model/types/detectModel';
 import fieldsFor from '@/jsonapi/actions/context/enhancers/fieldsFor';
-import { ArrayableVariadic } from '@/utilities';
+import { ArrayableVariadic, isNil } from '@/utilities';
 
 /**
  * [Select the given JSON:API fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets)
@@ -19,20 +22,35 @@ import { ArrayableVariadic } from '@/utilities';
  *
  * @category Enhancers
  */
-export default function fields<C extends {}, M extends Model>(
-  ...fieldset: ArrayableVariadic<ModelKey<M>>
+export default function fields<
+  C extends {},
+  I extends InferConsumedInstance<C>,
+>(
+  ...fieldset: ArrayableVariadic<ModelKey<I>>
 ) {
-  return async (action: Action<C & ConsumeModel<M>>) => {
-    const model = consumeModel(await action.useContext());
+  return async (action: Action<C>) => {
+    const context = await action.useContext();
+    const registry = consumeRegistry(context, null);
+    const model = await detectModel(
+      consumeModel(context, null),
+      consumeRelation(context, null),
+      registry,
+    );
 
-    return action.use(fieldsFor(model, ...fieldset));
+    if (isNil(model)) {
+      throw new FosciaError(
+        'Could not detect context\'s model when applying fieldsets.',
+      );
+    }
+
+    return action.use(fieldsFor(model as any, ...fieldset));
   };
 }
 
 type FieldsEnhancerExtension = ActionParsedExtension<{
-  fields<C extends {}, E extends {}, M extends Model>(
+  fields<C extends {}, E extends {}, I extends InferConsumedInstance<C>>(
     this: Action<C, E>,
-    ...fieldset: ArrayableVariadic<ModelKey<M>>
+    ...fieldset: ArrayableVariadic<ModelKey<I>>
   ): Action<C, E>;
 }>;
 

@@ -176,6 +176,14 @@ export type ModelSchema<D extends {} = {}> = {
 };
 
 /**
+ Extract model's relations from the whole definition.
+ */
+export type ModelSchemaRelations<D extends {} = {}> = {
+  [K in keyof D]: D[K] extends ModelRelation<K>
+    ? D[K] : never;
+};
+
+/**
  * Model hook callback function.
  */
 export type ModelHookCallback = HookCallback<ModelInstance>;

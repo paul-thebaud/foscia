@@ -84,8 +84,8 @@ export type ConsumeInstance<I extends ModelInstance = ModelInstance> = {
   instance: I;
 };
 
-export type ConsumeRelation = {
-  relation: ModelRelation;
+export type ConsumeRelation<R extends ModelRelation = ModelRelation> = {
+  relation: R;
 };
 
 export type ConsumeRelationPath = {
