@@ -1,5 +1,12 @@
 # Changelog
 
+# [0.1.0-alpha.6](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.5...v0.1.0-alpha.6) (2023-04-06)
+
+
+### Bug Fixes
+
+* **actions:** enhancers compatilibity with forRelation contexts ([1152812](https://github.com/paul-thebaud/foscia/commit/1152812305158f3a9fc9f4263abb4b2f9ed5bad1))
+
 # [0.1.0-alpha.5](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.4...v0.1.0-alpha.5) (2023-04-04)
 
 
