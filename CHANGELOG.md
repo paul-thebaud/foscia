@@ -1,5 +1,12 @@
 # Changelog
 
+# [0.1.0-alpha.7](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.6...v0.1.0-alpha.7) (2023-04-22)
+
+
+### Bug Fixes
+
+* fields for array spread when no previous fields ([5359efd](https://github.com/paul-thebaud/foscia/commit/5359efd4e0170ebba1dd97dbaeae506411613bc7))
+
 # [0.1.0-alpha.6](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.5...v0.1.0-alpha.6) (2023-04-06)
 
 
