@@ -31,7 +31,7 @@ export default function fieldsFor<C extends {}, M extends Model>(
     return action.use(param('fields', {
       ...prevFields,
       [model.$type]: optionalJoin(uniqueValues([
-        ...(prevFields ?? {})[model.$type],
+        ...((prevFields ?? {})[model.$type] ?? []),
         ...nextFields,
       ]), ','),
     }));
