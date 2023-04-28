@@ -4,21 +4,21 @@ import { wrapVariadic } from '@/utilities';
 import { ArrayableVariadic } from '@/utilities/types';
 
 /**
- * Shortcut for the {@link sortBy} function with a desc direction.
+ * Shortcut for the {@link sortBy} function with an asc direction.
  *
  * @param keys
  *
  * @category Enhancers
  */
-export default function sortByDesc(...keys: ArrayableVariadic<string>) {
-  return sortBy(wrapVariadic(...keys), 'desc');
+export default function sortByAsc(...keys: ArrayableVariadic<string>) {
+  return sortBy(wrapVariadic(...keys), 'asc');
 }
 
-type SortByDescEnhancerExtension = ActionParsedExtension<{
-  sortByDesc<C extends {}, E extends {}>(
+type SortByAscEnhancerExtension = ActionParsedExtension<{
+  sortByAsc<C extends {}, E extends {}>(
     this: Action<C, E>,
     ...keys: ArrayableVariadic<string>
   ): Action<C, E>;
 }>;
 
-sortByDesc.extension = makeEnhancersExtension({ sortByDesc }) as SortByDescEnhancerExtension;
+sortByAsc.extension = makeEnhancersExtension({ sortByAsc }) as SortByAscEnhancerExtension;

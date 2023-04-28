@@ -552,7 +552,7 @@ action().use(filterBy('isPublished', true));
 <FunctionInfo only="JSON:API" />
 
 [Sort the JSON:API resource](https://jsonapi.org/format/#fetching-sorting)
-by the given key and direction. The new sort will be merged with the
+by the given keys and directions. The new sort will be merged with the
 previous ones. **Sorts priority are kept**.
 
 #### Example
@@ -561,12 +561,33 @@ previous ones. **Sorts priority are kept**.
 import { sortBy } from 'foscia/jsonapi';
 
 action().use(sortBy('createdAt'));
+action().use(sortBy('createdAt', 'desc'));
+action().use(sortBy(['name', 'createdAt'], ['asc', 'asc']));
+action().use(sortBy({ name: 'asc', createdAt: 'asc'}));
 ```
 
 #### Arguments
 
-- `{string | string[]}` `key` the key(s) for the sort
-- `{'asc' | 'desc' = 'asc'}` `direction` the direction for the sort
+- `{Arrayable<string> | Dictionary<SortDirection>}` `key` the key(s) for the sort
+- `{Arrayable<'asc' | 'desc'> = 'asc'}` `direction` the direction(s) for the sort
+
+### `sortByAsc`
+
+<FunctionInfo only="JSON:API" />
+
+Shortcut for the [`sortBy` function](#sortby) with an `asc` direction.
+
+#### Example
+
+```javascript
+import { sortByAsc } from 'foscia/jsonapi';
+
+action().use(sortByAsc('createdAt'));
+```
+
+#### Arguments
+
+- `{ArrayableVariadic<string>}` `...keys` the key(s) for the sort
 
 ### `sortByDesc`
 
@@ -584,7 +605,7 @@ action().use(sortByDesc('createdAt'));
 
 #### Arguments
 
-- `{string | string[]}` `key` the key(s) for the sort
+- `{ArrayableVariadic<string>}` `...keys` the key(s) for the sort
 
 ### `paginate`
 
