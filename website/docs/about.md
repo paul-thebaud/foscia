@@ -8,8 +8,8 @@ sidebar_position: 0
 
 _Type safe, modular and intuitive API client._
 
-**Foscia** is a simple API client built with functional programming in mind. It
-is framework-agnostic and can integrate with any Web app using JavaScript or
+**Foscia** is a simple, framework-agnostic, API client built with functional
+programming in mind. It can integrate with any Web app using JavaScript or
 TypeScript, and with any data source.
 
 -   Modular, highly extensible and fully tree-shakable thanks to functional
@@ -42,20 +42,6 @@ You may start to discover Foscia from different point of view.
     using a fake JSON REST API
 -   [Check out examples](/docs/category/examples) built with Foscia to know if
     the API fits your needs
-
-## Structure of the documentation
-
--   [Installation](/docs/installation): installation instructions
--   [Getting started](/docs/getting-started): quick start guide with concrete
-    examples
--   [Core concepts](/docs/category/core-concepts): Core concepts of Foscia
-    (models and actions)
--   [Guides](/docs/category/guides): guides for special use case or customized
-    behaviors
--   [Examples](/docs/category/examples): concrete examples of usage
--   [Reference](/docs/category/reference): API reference and concrete functions
-    listing and documentation
--   [Help](/docs/category/help): useful links and FAQ for Foscia
 
 ## Structure of the package
 

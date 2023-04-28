@@ -116,7 +116,7 @@ const { action, registry } = makeJsonApi({
 
 // We need to register the models to allow the deserializer to know
 // to which model it should deserialize from an API record.
-registry.register(Comment, Post /* User, Tag */);
+registry.register(Comment, Post);
 
 export default action;
 ```
@@ -146,7 +146,7 @@ const { action, registry } = makeJsonRest({
 
 // We need to register the models to allow the deserializer to know
 // to which model it should deserialize from an API record.
-registry.register(Comment, Post /* User, Tag */);
+registry.register(Comment, Post);
 
 export default action;
 ```
@@ -190,10 +190,8 @@ You may configure the behavior or implementation in two ways:
 #### Builder pattern syntax
 
 If you want to use the builder pattern syntax (e.g. `action().forModel(Post)`
-instead of `action().use(forModel(Post))`), you should provide the extensions
+instead of `action().use(forModel(Post))`), you must provide the extensions
 you want to use during your action factory creation.
-
-For this, you should provide an `extension` configuration option:
 
 <Tabs groupId="implementation">
   <TabItem
@@ -227,7 +225,7 @@ const { action, registry } = makeJsonRest({
   </TabItem>
 </Tabs>
 
-You may [learn more about extensions](/docs/core-concepts/actions#extensions),
+You can [learn more about extensions](/docs/core-concepts/actions#extensions),
 check the [available extensions packs](/docs/reference/actions-extensions) or
 import manually enhancers and runners extensions using the following code:
 
@@ -260,7 +258,7 @@ import action from './action';
 const posts = await action().use(forModel(Post)).run(all());
 ```
 
-Generally in Foscia, the context enhancers are doing the majority of work to
+In Foscia, the context enhancers are doing the majority of work to
 customize the action you will run. Context runners only exists to tell how you
 wish to run the action and retrieve the result (raw result, model instance,
 etc.).
@@ -300,19 +298,23 @@ const response = await action().use(create(post)).run(oneOrCurrent());
 
 ### Running HTTP custom actions
 
-Using JSON:API or REST blueprints, you may also want to use Foscia to
+Using JSON:API or REST blueprints, you can also use Foscia to
 make non-standard API calls.
+
+This way, you can standardize all API calls across your application, even when
+those are non JSON:API/REST related.
 
 ```javascript
 import { forInstance, raw } from 'foscia/core';
 import { makePost } from 'foscia/http';
+import Comment from './comment';
 import action from './action';
 
-const post = await action().use(find(Post, 'abc-123')).run(oneOrFail());
+const comment = await action().use(find(Comment, 'abc-123')).run(oneOrFail());
 
-// Make a POST call to "https://example.com/api/v1/services/posts/1/publish"
+// Make a POST call to "https://example.com/api/v1/services/comments/1/publish"
 const response = await action()
-    .use(forInstance(post))
+    .use(forInstance(comment))
     .use(
         makePost('publish', {
             data: { publishedAt: new Date() },
@@ -323,6 +325,3 @@ const response = await action()
 // This is a raw `fetch` Response object.
 console.log(response.status);
 ```
-
-This way, you can standardize all API calls across your application, even when
-those are non JSON:API/REST related.

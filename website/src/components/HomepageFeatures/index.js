@@ -12,7 +12,7 @@ const FeatureList = [
     description: (
       <>
         REST or JSON:API backend are already covered and you may
-        setup your own implementations for any other data sources.
+        add your own implementations for any other data sources.
       </>
     ),
   },
@@ -21,8 +21,8 @@ const FeatureList = [
     title: 'Modular',
     description: (
       <>
-        Foscia is composed of many independent functions, making it easy to
-        tree-shake to reduce your bundle size.
+        Foscia is composed of many independent functions, fully
+        tree-shakable and lightweight.
       </>
     ),
   },
@@ -31,7 +31,7 @@ const FeatureList = [
     title: 'Type safe',
     description: (
       <>
-        API provides you a safe typing experience, even with edge cases
+        The API provides you a safe typing experience, even with edge cases
         such as dot relations used for eager loading.
       </>
     ),

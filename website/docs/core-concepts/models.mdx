@@ -17,6 +17,15 @@ import Link from '@docusaurus/Link';
 
 ## Model factory
 
+`makeModel` is the default model factory function. It defines a new model using
+2 arguments and returns an ES6 class:
+
+-   The string `type` or a [configuration object](/docs/guides/models-configuration).
+-   The optional `definition` of the model: an object map containing
+attributes/relations definitions and custom properties and methods.
+
+The attributes and relations definition represents the `schema` of the model.
+
 ```javascript
 import { makeModel, attr, hasMany, toDate } from 'foscia/core';
 
@@ -32,15 +41,6 @@ makeModel('posts', {
 });
 ```
 
-`makeModel` is the default model factory function. It defines a new model using
-2 arguments and returns an ES6 class:
-
--   The string `type` or a [configuration object](/docs/guides/models-configuration).
--   The optional `definition` of the model: an object map containing
-    attributes/relations definitions and custom properties and methods.
-
-The attributes and relations definition represents the `schema` of the model.
-
 ### Extending a model class
 
 `makeModel` will return a model class which can be extended by an ES6 class.
@@ -53,13 +53,17 @@ The returned model class also provides static methods to extend the definition
 already provided to `makeModel`.
 
 ```javascript
-/* Initial model creation with(out) definition */
+/* Initial model creation without definition */
 makeModel('posts')
     .extends({
-        /* additional definition */
+        title: attr<string>(),
+        description: attr<string>(),
     })
     .extends({
-        /* another additional definition */
+        publishedAt: attr<Date | undefined>(toDate()),
+        get published() {
+            return !!this.publishedAt;
+        },
     });
 ```
 
@@ -79,17 +83,17 @@ we use `export default class Post extends makeModel...` instead of
 
 This has two benefits:
 
--   When using TypeScript, it allows only importing type of the class using
-    `import type Post from './models/post'`, and thus avoiding circular
+-   When using TypeScript, it allows to only import the type of the class using
+    `import type Post from './models/post'` and avoids circular
     dependencies when models have circular relationships
--   It gives more flexibility as you can quickly add custom properties or
+-   It gives you more flexibility as you can quickly add custom properties and
     methods in the future
 
-That being said, you can use the syntax you prefer.
+However, both syntax are valid. Use the one you prefer! 🦄
 
 ### Using models classes
 
-Model classes can be used as any classical ES6 class. It can be instantiated,
+Model classes can be used like any ES6 class. It can be instantiated,
 manipulated, etc. Properties will be defined on each instance from the model
 definition.
 
@@ -102,13 +106,18 @@ console.log(post.published); // true
 console.log(post.exists); // false
 ```
 
+:::info
+
 Please note that most model's interaction (fetching, updating, etc.) are done
-through actions, so you may [read the actions guide](/docs/core-concepts/actions)
-to learn more about those.
+through actions, you can
+[**read the actions guide**](/docs/core-concepts/actions) to learn more
+about those.
+
+:::
 
 **Foscia proposes you multiple utilities functions to interact with models**
 
-<Link className="button bg--primary" to="/docs/core-concepts/models">
+<Link className="button bg--primary" to="/docs/reference/models-utilities">
     Read the models' utilities API guide
 </Link>
 
@@ -124,9 +133,14 @@ or may be used by dependencies (e.g. JSON:API adapter).
 
 ### Attributes
 
-`attr` is an attribute definition factory function to use when you wish to
-define your model's attributes. It may take 0 to 2 arguments, depending on what
+`attr` is an attribute definition factory function used to define your
+model's attributes. It takes 0 to 2 arguments, depending on what
 you want to do.
+
+Foscia consider your attributes as non-nullable values by default.
+When one of your model contains nullable attributes, you can pass a type
+to the factory (e.g. `attr<string | null>()`) or set a default attribute value
+(e.g. `attr({ default: '' })`).
 
 ```ts
 import { attr, toDate } from 'foscia/core';
@@ -138,31 +152,25 @@ attr(toDate(), { readOnly: true }); // With a transformer and config.
 attr({ default: () => [] }); // With a factory default (required for objects props).
 ```
 
-Note that Foscia consider your attributes as non-nullable values by default.
-When one of your model contains nullable attributes, you may want to pass a type
-to the factory (e.g. `attr<string | null>()`) or set a default attribute value
-(e.g. `attr({ default: '' })`).
-
 #### Configuration
 
-You may customize your attribute with the following config:
+You can customize your attribute with the following options:
 
-| Key            | Type           | Defaults    | Description                                                                           |
-|----------------|----------------|-------------|---------------------------------------------------------------------------------------|
-| `transformer`  | `Transform<T>` | `undefined` | The transformer for the prop's value when interacting with your backend.              |
-| `default`      | `T`            | `undefined` | The default value for the prop when initializing a model instance.                    |
-| `alias`        | `string`       | `undefined` | The key to (de)serialize the prop's value from/in when interacting with your backend. |
-| `readOnly`     | `boolean`      | `false`     | Makes the property read-only.                                                         |
-| `noRetrieving` | `boolean`      | `false`     | Avoid retrieving the property's value (won't be deserialized from data source).       |
-| `noSending`    | `boolean`      | `false`     | Avoid sending the property's value (won't be serialized from data source).            |
+| Key           | Type                               | Default     | Description                                                                  |
+|---------------|------------------------------------|-------------|------------------------------------------------------------------------------|
+| `transformer` | `Transform<T>`                     | `undefined` | The transformer for the property's value when interacting with your backend. |
+| `default`     | `T`                                | `undefined` | The default value for the property when initializing a model instance.       |
+| `alias`       | `string`                           | `undefined` | Alias of your backend key used for (de)serializing.                          |
+| `readOnly`    | `boolean`                          | `false`     | Makes the property read-only.                                                |
+| `sync`        | `boolean \| 'retrieve' \| 'write'` | `true`      | Avoid retrieving/writing the property's value from/to the backend.           |
 
 #### Transform
 
-You can use a transform to convert an attribute value when (de)serializing
+You can use a `transformer` to convert an attribute value when (de)serializing
 from/to your data source. There are two types or transformer within Foscia:
 
--   `FunctionTransform`: a function to call to transform the value whether we
-    are serializing or deserializing it.
+-   `FunctionTransform`: a function called to transform the value when
+    serializing or deserializing.
 -   `ObjectTransform`: an object with two methods: `serialize` and
     `deserialize`.
 
@@ -183,10 +191,17 @@ learn more about those.
 
 ### Relations
 
-`hasMany` and `hasOne` are relation definition factory function to use when you
-wish to define your model's relations. As suggested by their names, `hasMany`
-represents a relation to a list of model and `hasOne` represents a relation to a
-single model. It may take 0 to 1 argument, depending on what you want to do.
+`hasMany` and `hasOne` are relation definition factory function used
+to define your model's relations. As suggested by their names, `hasMany`
+represents a relation to a list of models and `hasOne` represents a relation to
+a single model. Those take 0 to 1 argument, depending on what you want to do.
+
+Foscia consider your relations as non-nullable values by default.
+When one of your model contains nullable relations, you can pass a type
+to the factory (e.g. `hasOne<User | null>()`) or set a default relation value
+(e.g. `hasOne({ default: null as User | null })`).
+
+Also consider that non-loaded relations will have a value of `undefined`.
 
 ```ts
 // file: models/user.ts noEmit
@@ -213,13 +228,6 @@ hasMany<Comment>('comments'); // With explicit type.
 hasMany<Comment>({ type: 'comments' }); // With explicit type.
 ```
 
-Note that Foscia consider your relations as non-nullable values by default.
-When one of your model contains nullable relations, you may want to pass a type
-to the factory (e.g. `hasOne<User | null>()`) or set a default relation value
-(e.g. `hasOne({ default: null as User | null })`).
-
-Also consider that non-loaded relations will have a value of `undefined`.
-
 :::tip
 
 When using TypeScript, you should define the type of the relation to get a
@@ -230,22 +238,22 @@ circular dependencies when having circular model relations.
 
 #### Configuration
 
-You may customize your relation with the following config:
+You can customize your relation with the following options:
 
-| Key            | Type      | Defaults    | Description                                                                                                |
-|----------------|-----------|-------------|------------------------------------------------------------------------------------------------------------|
-| `default`      | `T`       | `undefined` | The default value for the prop when initializing a model instance.                                         |
-| `alias`        | `string`  | `undefined` | The key to (de)serialize the prop's value from/in when interacting with your backend.                      |
-| `path`         | `string`  | `undefined` | Path which is used to query the relation. Defaults to the relation's key.                                  |
-| `type`         | `string`  | `undefined` | The explicit type of related model. Might be used by the deserializer to known which model to instantiate. |
-| `readOnly`     | `boolean` | `false`     | Makes the property read-only.                                                                              |
-| `noRetrieving` | `boolean` | `false`     | Avoid retrieving the property's value (won't be deserialized from data source).                            |
-| `noSending`    | `boolean` | `false`     | Avoid sending the property's value (won't be serialized from data source).                                 |
+| Key            | Type      | Default     | Description                                                                                               |
+|----------------|-----------|-------------|-----------------------------------------------------------------------------------------------------------|
+| `default`      | `T`       | `undefined` | The default value for the property when initializing a model instance.                                    |
+| `alias`        | `string`  | `undefined` | Alias of your backend key used for (de)serializing.                                                       |
+| `path`         | `string`  | `undefined` | Path used to query the relation. Defaults to the relation's key.                                          |
+| `type`         | `string`  | `undefined` | The explicit type of related model. Might be used by the deserializer to know which model to instantiate. |
+| `readOnly`     | `boolean` | `false`     | Makes the property read-only.                                                                             |
+| `noRetrieving` | `boolean` | `false`     | Avoid retrieving the property's value (won't be deserialized from data source).                           |
+| `noSending`    | `boolean` | `false`     | Avoid sending the property's value (won't be serialized from data source).                                |
 
 ### Custom properties
 
-In addition to attributes and relations, you may want to implement additional
-properties to your model. It will be useful when you need computed values
+In addition to attributes and relations, you can implement additional
+properties to your model. It's useful when you need computed values
 (getters) or specific instance methods.
 
 This can be done using the definition or an extending class:
@@ -273,7 +281,7 @@ export default class User extends makeModel('users', {
 
 ## Hooks
 
-You may hook on multiple events which occurs on model instance using the hook
+You can hook multiple events from your model instances using the hook
 registration functions:
 
 -   `onRetrieved`: instance was deserialized from a backend response.
@@ -289,8 +297,8 @@ registration functions:
 -   `onDestroyed`: action to destroy instance was ran successfully.
 
 To register a hook callback, you must pass a model class and a callback function
-to the registration function. It will return a function which you may call to
-unregister the hook. All model hook callback will have the concerned model
+to the registration function. It will return a function that you can call to
+unregister the hook. All model hooks' callbacks have the concerned model
 instance as the only provided argument.
 
 ```javascript
@@ -307,13 +315,13 @@ unregisterThisHook();
 
 :::info
 
-Hooks callback may be async and will be ran sequentially (one by one, not
-parallelized).
+Hooks' callbacks are async and executed in a sequential fashion (one by one,
+not parallelized).
 
 :::
 
-You can disable hook execution on a given model by using the `withoutHooks`
-function.
+You can temporally disable hook execution for a given model by using the
+`withoutHooks` function.
 
 ```javascript
 import { withoutHooks } from 'foscia/core';

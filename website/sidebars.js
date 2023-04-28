@@ -41,7 +41,7 @@ const sidebars = {
       link: {
         type: 'generated-index',
         title: 'Core concepts',
-        description: 'Learn about the most important Foscia concepts.',
+        description: 'Learn more about the core concepts of Foscia.',
         slug: '/category/core-concepts',
       },
     },

@@ -40,6 +40,10 @@ export type ActionClass<Context extends {} = {}, Extension extends {} = {}> = {
   ): ActionClass<Context, Extension & NewExtension>;
 } & Constructor<Action<Context, Extension>>;
 
+export type ActionFactory<Args extends any[], Context extends {}, Extension extends {}> = (
+  ...args: Args
+) => Action<Context, Extension>;
+
 export type ActionParsedExtension<E extends {} = {}> = {
   [K in keyof E]: E[K] extends DescriptorHolder<any> ? E[K] : DescriptorHolder<E[K]>;
 };

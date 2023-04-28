@@ -38,13 +38,13 @@ export default class Post extends makeModel('posts', {
 `.trim();
 
 const playExampleMeta = {
-  title: 'Play with your models',
+  title: 'Discover actions\' capabilities',
   link: { to: '/docs/core-concepts/actions', text: 'Learn more about actions' },
   description: (
     <>
-      The <code>action()</code> factory you will define provides an easy way to
+      The <code>action()</code> factory provides an easy way to
       interact with any data source.
-      Possibilities are pretty infinite and provided set of functions is wide.
+      Possibilities are endless and provided set of functions is wide.
       <br />
       Not a fan of functional programming?
       You can even plug functional capabilities onto your actions to get a

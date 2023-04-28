@@ -12,7 +12,7 @@ import Link from '@docusaurus/Link';
 -   Enhancing actions
 -   Running actions
 -   Extending actions for builder pattern calls
--   Conditionally enhancing and running
+-   Conditionally enhancing and running actions
 -   Registering hooks on actions
 
 :::
@@ -20,7 +20,7 @@ import Link from '@docusaurus/Link';
 :::caution Before reading this guide
 
 This guide is only about using actions. You can read more about action factories
-to set up your environment easily:
+setups here:
 
 - [**Make your first action factory**](/docs/getting-started#action-factory)
 - [**Configure your action factory**](/docs/guides/action-factory-configuration)
@@ -34,10 +34,10 @@ As stated in the [getting started guide](/docs/getting-started#running-simple-ac
 actions are instantiated through your action factory. In this guide, we'll admit
 you have a setup action factory.
 
-## Enhancements
+## Enhancers
 
-An action instance may receive none to many enhancements, which will provide an
-appropriate context to run a request through data source.
+An action instance can receive multiple enhancements that will build an
+appropriate context to run requests to your data sources.
 
 Each enhancer can be applied using the `use` action method. Note that those
 enhancers are not instantly applied to the action context, but during the action
@@ -57,17 +57,17 @@ action()
   Available enhancers API guide
 </Link>
 
-## Run
+## Runners
 
-An action instance can be run using the `run` method. The runner may use
-enhancers or runners internally.
+An action instance can be run using the `run` method. The runner can execute
+multiple enhancers or runners.
 
 When an action run, it does 3 things:
 
--   Dequeue all enhancers since the action instantiation and build context
+-   Dequeue all enhancers since the action instantiation and builds context
 -   Execute the runner and each of its internal enhancers/runners (this may
 update the context)
--   Return the runner's result (might be any value, including void or an error
+-   Return the runner result (might be any value, including void or an error
 throwing)
 
 Internally, action running will also trigger [actions hooks](#hooks).
@@ -225,12 +225,12 @@ action().use(onFinally(({ context }) => /* ... */));
 
 :::info
 
-Hooks callback may be async and will be ran sequentially (one by one, not
-parallelized).
+Hooks' callbacks are async and executed in a sequential fashion (one by one,
+not parallelized).
 
 :::
 
-You can disable hook execution on a given action instance by using the
+You can temporally disable hook execution for a given action by using the
 `withoutHooks` function.
 
 ```javascript
