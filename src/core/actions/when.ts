@@ -66,8 +66,6 @@ function when<C extends {}, E extends {}, V, TR, FR = void>(
   };
 }
 
-export default when;
-
 type EnhancerExtension = ActionParsedExtension<{
   when<C extends {}, E extends {}, V, TC extends {} = C>(
     this: Action<C, E>,
@@ -103,3 +101,5 @@ type EnhancerExtension = ActionParsedExtension<{
 }>;
 
 when.extension = makeEnhancersExtension({ when }) as EnhancerExtension;
+
+export default when;
