@@ -1,4 +1,4 @@
-import { ModelId, ModelInstance, ModelRelation } from '@/core';
+import { ModelIdType, ModelInstance, ModelRelation } from '@/core';
 import { JsonApiDocument, JsonApiNewResource } from '@/jsonapi/types';
 import { ObjectSerializer } from '@/object';
 import { isNil, Optional } from '@/utilities';
@@ -75,7 +75,7 @@ export default class JsonApiSerializer extends ObjectSerializer<JsonApiDocument>
    *
    * @param id
    */
-  protected serializeId(id?: Optional<ModelId>) {
+  protected serializeId(id?: Optional<ModelIdType>) {
     return isNil(id) ? undefined : String(id);
   }
 }

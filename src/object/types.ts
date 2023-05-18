@@ -1,16 +1,16 @@
-import { ModelId } from '@/core';
+import { ModelIdType } from '@/core';
 import { Optional } from '@/utilities';
 
 export type ObjectOptionalIdentifier = {
   type?: string;
-  id?: ModelId;
-  lid?: ModelId;
+  id?: ModelIdType;
+  lid?: ModelIdType;
 };
 
 export type ObjectNormalizedIdentifier = {
   type: string;
-  id?: ModelId;
-  lid?: ModelId;
+  id?: ModelIdType;
+  lid?: ModelIdType;
 };
 
 export type ObjectExtractedData<R> = {

@@ -1,5 +1,5 @@
 import { Hookable, HookCallback } from '@/core/hooks/types';
-import { Model, ModelId, ModelInstance, ModelRelation, ModelRelationRaw } from '@/core/model/types';
+import { Model, ModelIdType, ModelInstance, ModelRelation, ModelRelationRaw } from '@/core/model/types';
 import {
   AdapterI,
   CacheI,
@@ -97,7 +97,7 @@ export type ConsumeRelationPath = {
 };
 
 export type ConsumeId = {
-  id?: ModelId;
+  id?: ModelIdType;
 };
 
 export type ConsumeInclude = {

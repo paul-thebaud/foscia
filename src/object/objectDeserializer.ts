@@ -11,7 +11,7 @@ import {
   eachAttributes,
   eachRelations,
   ModelAttribute,
-  ModelId,
+  ModelIdType,
   ModelInstance,
   ModelRelation,
   normalizeKey,
@@ -81,12 +81,12 @@ export default abstract class ObjectDeserializer<
   ): Promise<ObjectOptionalIdentifier>;
 
   protected async initInstancesMap() {
-    return new IdentifiersMap<string, ModelId, Promise<ModelInstance>>();
+    return new IdentifiersMap<string, ModelIdType, Promise<ModelInstance>>();
   }
 
   protected async prepareInstancesMap(
     extractedData: Extract,
-    instancesMap: IdentifiersMap<string, ModelId, Promise<ModelInstance>>,
+    instancesMap: IdentifiersMap<string, ModelIdType, Promise<ModelInstance>>,
     context: {},
   ) {
     // Handle a singular creation context to map a non-identified instance
@@ -118,7 +118,7 @@ export default abstract class ObjectDeserializer<
 
   protected async deserializeResource(
     extractedData: Extract,
-    instancesMap: IdentifiersMap<string, ModelId, Promise<ModelInstance>>,
+    instancesMap: IdentifiersMap<string, ModelIdType, Promise<ModelInstance>>,
     resource: Resource,
     context: {},
     parent?: ModelInstance,
@@ -155,7 +155,7 @@ export default abstract class ObjectDeserializer<
 
   protected async deserializeResourceOnInstance(
     extractedData: Extract,
-    instancesMap: IdentifiersMap<string, ModelId, Promise<ModelInstance>>,
+    instancesMap: IdentifiersMap<string, ModelIdType, Promise<ModelInstance>>,
     resource: Resource,
     identifier: ObjectNormalizedIdentifier,
     instance: ModelInstance,
@@ -435,7 +435,7 @@ export default abstract class ObjectDeserializer<
 
   protected async deserializeRelationValue(
     extractedData: Extract,
-    instancesMap: IdentifiersMap<string, ModelId, Promise<ModelInstance>>,
+    instancesMap: IdentifiersMap<string, ModelIdType, Promise<ModelInstance>>,
     instance: ModelInstance,
     def: ModelRelation,
     rawValue: Optional<Resource[] | Resource>,

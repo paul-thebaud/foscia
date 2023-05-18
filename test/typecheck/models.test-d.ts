@@ -7,17 +7,25 @@ import { expectTypeOf, test } from 'vitest';
 test('Models are type safe', () => {
   const post = new Post();
 
+  expectTypeOf(post.id).toMatchTypeOf<string | number>();
+  expectTypeOf(post.lid).toMatchTypeOf<string | number | null>();
   expectTypeOf(post.title).toMatchTypeOf<string>();
   expectTypeOf(post.body).toMatchTypeOf<string | null>();
   expectTypeOf(post.comments).toMatchTypeOf<Comment[]>();
 
   const comment = new Comment();
 
+  expectTypeOf(comment.id).toMatchTypeOf<number | null>();
+  expectTypeOf(comment.lid).toMatchTypeOf<string>();
   expectTypeOf(comment.body).toMatchTypeOf<string>();
   expectTypeOf(comment.postedAt).toMatchTypeOf<Date>();
   expectTypeOf(comment.postedBy).toMatchTypeOf<User>();
 
   fill(comment, { body: 'Hello World', postedAt: new Date() });
+  // @ts-expect-error id is a number
+  comment.id = 'foo';
+  // @ts-expect-error lid is a string
+  comment.lid = 42;
   // @ts-expect-error body is a string
   fill(comment, { body: new Date() });
   // @ts-expect-error postedAt is a date

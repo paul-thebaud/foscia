@@ -1,4 +1,4 @@
-import type { Model, ModelId, ModelInstance } from '@/core/model/types';
+import type { Model, ModelIdType, ModelInstance } from '@/core/model/types';
 import type { Awaitable } from '@/utilities';
 
 export type RegistryI = {
@@ -6,9 +6,9 @@ export type RegistryI = {
 };
 
 export type CacheI = {
-  find(type: string, id: ModelId): Promise<ModelInstance | null>;
-  put(type: string, id: ModelId, instance: ModelInstance): Promise<void>;
-  forget(type: string, id: ModelId): Promise<void>;
+  find(type: string, id: ModelIdType): Promise<ModelInstance | null>;
+  put(type: string, id: ModelIdType, instance: ModelInstance): Promise<void>;
+  forget(type: string, id: ModelIdType): Promise<void>;
   forgetAll(type: string): Promise<void>;
 };
 

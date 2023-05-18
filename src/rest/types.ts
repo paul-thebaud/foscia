@@ -1,8 +1,8 @@
-import { ModelId } from '@/core';
+import { ModelIdType } from '@/core';
 import { ObjectDeserializerConfig, ObjectSerializerConfig } from '@/object';
 import { Awaitable, Dictionary } from '@/utilities';
 
-export type RestResourceId = ModelId;
+export type RestResourceId = ModelIdType;
 
 export type RestAbstractResource = Dictionary & {
   type?: string;

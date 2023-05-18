@@ -74,9 +74,9 @@ export type ModelConfig = {
 export type ModelRelationTypeGuesser = (model: ModelClass, def: ModelRelation) => Optional<string>;
 
 /**
- * Unique identifier for a model instance.
+ * Model instance ID default typing.
  */
-export type ModelId = string | number;
+export type ModelIdType = string | number;
 
 /**
  * Sync precise configuration for a property (will only do defined action).
@@ -89,6 +89,21 @@ export type ModelPropSync = 'retrieve' | 'write';
 export type ModelPropNormalized<K = string> = {
   key: K;
 };
+
+/**
+ * Raw Definition for a model's ID.
+ */
+export type ModelIdRaw<T extends ModelIdType | null = ModelIdType> = {
+  $MODEL_TYPE: 'id' | 'lid';
+  transformer?: Transform<T | null> | undefined;
+};
+
+/**
+ * Definition for a model's ID.
+ */
+export type ModelId<K = string, T extends ModelIdType | null = ModelIdType> =
+  ModelIdRaw<T>
+  & ModelPropNormalized<K>;
 
 /**
  * Raw definition for a model's property (attribute or relation).
@@ -162,8 +177,9 @@ export type ModelRelation<K = string, T = any> = ModelPropNormalized<K> & ModelR
 export type ModelParsedDefinition<D extends {} = {}> = {
   [K in keyof D]: D[K] extends ModelAttributeRaw
     ? D[K] & ModelPropNormalized<K> : D[K] extends ModelRelationRaw
-      ? D[K] & ModelPropNormalized<K> : D[K] extends DescriptorHolder<any>
-        ? D[K] : DescriptorHolder<D[K]>;
+      ? D[K] & ModelPropNormalized<K> : D[K] extends ModelIdRaw<any>
+        ? D[K] : D[K] extends DescriptorHolder<any>
+          ? D[K] : DescriptorHolder<D[K]>;
 };
 
 /**
@@ -236,6 +252,10 @@ export type ModelClassInstance<D extends {} = any> = {
   readonly $model: ModelClass<D>;
 };
 
+export type ModelIdsDefaults<D extends {}> =
+  & (D extends { id: any } ? {} : { id: ModelIdType })
+  & (D extends { lid: any } ? {} : { lid: ModelIdType | null });
+
 /**
  * Model instance holding state and values.
  */
@@ -245,9 +265,6 @@ export type ModelInstance<D extends {} = any> = {
    */
   readonly $MODEL_TYPE: 'instance';
   readonly $model: ModelClass<D>;
-  // FIXME Should the model id be nullable in its type?
-  id: ModelId;
-  lid: Optional<ModelId>;
   exists: boolean;
   $loaded: Dictionary<true>;
   $values: Partial<ModelValues<ModelInstance<D>>>;
@@ -256,16 +273,19 @@ export type ModelInstance<D extends {} = any> = {
 } & {
   [K in keyof D]: D[K] extends ModelAttribute<K, infer T>
     ? T : D[K] extends ModelRelation<K, infer T>
-      ? T : D[K] extends DescriptorHolder<infer T>
-        ? T : D[K];
-};
+      ? T : D[K] extends ModelId<K, infer T>
+        ? T : D[K] extends DescriptorHolder<infer T>
+          ? T : D[K];
+} & ModelIdsDefaults<D>;
 
 /**
  * Model class or instance snapshot.
  */
 export type ModelSnapshot<M> = {
-  id: Optional<ModelId>;
-  lid: Optional<ModelId>;
+  id: ModelInferDefinition<M> extends { id: ModelId<'id', infer T> }
+    ? T | null : ModelIdType | null;
+  lid: ModelInferDefinition<M> extends { lid: ModelId<'lid', infer T> }
+    ? T | null : ModelIdType | null;
   exists: boolean;
   $raw: any;
   $loaded: Dictionary<true>;
@@ -287,6 +307,19 @@ export type ModelInferDefinition<M> = M extends ModelClassOrInstance<infer D>
  * Infer the schema from a model class or model instance.
  */
 export type ModelInferSchema<M> = ModelSchema<ModelInferDefinition<M>>;
+
+/**
+ * Model IDs typings based on model class or model instance.
+ */
+export type ModelIds<M, OT = never> =
+  &
+  (ModelInferDefinition<M> extends { lid: ModelId<'lid', infer T> } ? { lid: T | OT } : {
+    lid: ModelIdType | null | OT
+  })
+  &
+  (ModelInferDefinition<M> extends { id: ModelId<'id', infer T> } ? { id: T | OT } : {
+    id: ModelIdType | OT
+  });
 
 /**
  * Model class or instance values map (only attributes/relations).

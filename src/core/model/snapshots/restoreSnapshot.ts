@@ -1,7 +1,14 @@
 /* eslint-disable no-param-reassign */
-import eachProps from '@/core/model/props/eachProps';
-import { ModelInstance, ModelKey, ModelSnapshot } from '@/core/model/types';
+import eachAttributes from '@/core/model/props/eachAttributes';
+import eachRelations from '@/core/model/props/eachRelations';
 import cloneModelValue from '@/core/model/snapshots/cloneModelValue';
+import {
+  ModelAttribute,
+  ModelInstance,
+  ModelKey,
+  ModelRelation,
+  ModelSnapshot,
+} from '@/core/model/types';
 import { wrapVariadic } from '@/utilities';
 import { ArrayableVariadic } from '@/utilities/types';
 
@@ -20,7 +27,7 @@ export default function restoreSnapshot<I extends ModelInstance>(
     instance.$loaded = snapshot.$loaded;
   }
 
-  eachProps(instance, (def) => {
+  const restoreForDef = (def: ModelAttribute | ModelRelation) => {
     if (keys.length && keys.indexOf(def.key) === -1) {
       return;
     }
@@ -30,7 +37,10 @@ export default function restoreSnapshot<I extends ModelInstance>(
     } else {
       delete instance.$values[def.key];
     }
-  });
+  };
+
+  eachAttributes(instance, restoreForDef);
+  eachRelations(instance, restoreForDef);
 
   return instance;
 }

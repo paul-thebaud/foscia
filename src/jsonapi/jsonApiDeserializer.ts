@@ -1,4 +1,4 @@
-import { DeserializedData, DeserializerError, ModelId, ModelInstance } from '@/core';
+import { DeserializedData, DeserializerError, ModelIdType, ModelInstance } from '@/core';
 import { ObjectDeserializer, ObjectExtractedData } from '@/object';
 import { JsonApiDocument, JsonApiNewResource, JsonApiResource, JsonApiResourceIdentifier } from '@/jsonapi/types';
 import { IdentifiersMap, wrap } from '@/utilities';
@@ -7,7 +7,7 @@ import { IdentifiersMap, wrap } from '@/utilities';
  * Extracted data from a JSON:API backend Response object.
  */
 export type JsonApiExtractedData = ObjectExtractedData<JsonApiNewResource> & {
-  included: IdentifiersMap<string, ModelId, JsonApiResource>;
+  included: IdentifiersMap<string, ModelIdType, JsonApiResource>;
   document: JsonApiDocument;
   response: Response;
 };
@@ -44,7 +44,7 @@ export default class JsonApiDeserializer extends ObjectDeserializer
   protected async extractData(response: Response) {
     const document: JsonApiDocument = response.status === 204 ? {} : await response.json();
 
-    const included = new IdentifiersMap<string, ModelId, JsonApiResource>();
+    const included = new IdentifiersMap<string, ModelIdType, JsonApiResource>();
     document.included?.map((r) => included.set(r.type, r.id, r));
 
     return {

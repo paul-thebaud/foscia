@@ -5,7 +5,7 @@ export type RelationOptions<T> = ModelPropRaw<T> & {
   path?: string;
 };
 
-export default function relation<T>(
+export default function makeRelation<T>(
   relationType: ModelRelationType,
   config: string | RelationOptions<T> = {},
 ): ModelRelationRaw<T> {

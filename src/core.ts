@@ -11,6 +11,7 @@ import runHook from '@/core/hooks/runHook';
 import unregisterHook from '@/core/hooks/unregisterHook';
 import withoutHooks from '@/core/hooks/withoutHooks';
 import logger from '@/core/logger/logger';
+import fill from '@/core/model/fill';
 import onCreated from '@/core/model/hooks/onCreated';
 import onCreating from '@/core/model/hooks/onCreating';
 import onDestroyed from '@/core/model/hooks/onDestroyed';
@@ -31,7 +32,6 @@ import isPluralRelationDef from '@/core/model/props/checks/isPluralRelationDef';
 import isPropDef from '@/core/model/props/checks/isPropDef';
 import isRelationDef from '@/core/model/props/checks/isRelationDef';
 import eachAttributes from '@/core/model/props/eachAttributes';
-import eachProps from '@/core/model/props/eachProps';
 import eachRelations from '@/core/model/props/eachRelations';
 import attr from '@/core/model/props/factories/attr';
 import hasMany from '@/core/model/props/factories/hasMany';
@@ -40,11 +40,10 @@ import shouldSync from '@/core/model/props/shouldSync';
 import loaded from '@/core/model/relations/loaded';
 import changed from '@/core/model/snapshots/changed';
 import compareSnapshots from '@/core/model/snapshots/compareSnapshots';
+import markSynced from '@/core/model/snapshots/markSynced';
 import restore from '@/core/model/snapshots/restore';
 import restoreSnapshot from '@/core/model/snapshots/restoreSnapshot';
-import markSynced from '@/core/model/snapshots/markSynced';
 import takeSnapshot from '@/core/model/snapshots/takeSnapshot';
-import fill from '@/core/model/fill';
 import normalizeDotRelations from '@/core/normalization/normalizeDotRelations';
 import normalizeKey from '@/core/normalization/normalizeKey';
 import MapRegistry from '@/core/registry/mapRegistry';
@@ -111,7 +110,6 @@ export {
   isPluralRelationDef,
   isModel,
   isInstance,
-  eachProps,
   eachAttributes,
   eachRelations,
   shouldSync,

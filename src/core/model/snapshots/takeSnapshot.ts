@@ -1,5 +1,5 @@
-import { ModelInstance, ModelSnapshot } from '@/core/model/types';
 import cloneModelValue from '@/core/model/snapshots/cloneModelValue';
+import { ModelInstance, ModelSnapshot } from '@/core/model/types';
 
 export default function takeSnapshot<I extends ModelInstance>(
   instance: I,

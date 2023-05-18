@@ -11,7 +11,7 @@ export type AttrOptionsVariadic<T> =
   | [Transform<T | null>]
   | [Transform<T | null>, Omit<AttrOptions<T>, 'transformer'>];
 
-function attr<T>(
+export default function attr<T>(
   ...config: AttrOptionsVariadic<T>
 ): ModelAttributeRaw<T> {
   const attribute: ModelAttributeRaw<T> = { $MODEL_TYPE: 'attribute' };
@@ -40,5 +40,3 @@ function attr<T>(
     ...config[1],
   };
 }
-
-export default attr;

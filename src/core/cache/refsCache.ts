@@ -1,11 +1,11 @@
 import { RefsCacheConfig, RefsCacheMode } from '@/core/cache/types';
 import weakRefCacheMode from '@/core/cache/weakRefCacheMode';
-import { ModelId, ModelInstance } from '@/core/model/types';
+import { ModelIdType, ModelInstance } from '@/core/model/types';
 import { CacheI } from '@/core/types';
 import { applyConfig, IdentifiersMap } from '@/utilities';
 
 export default class RefsCache implements CacheI {
-  private readonly instances: IdentifiersMap<string, ModelId, unknown>;
+  private readonly instances: IdentifiersMap<string, ModelIdType, unknown>;
 
   private mode: RefsCacheMode<unknown> = weakRefCacheMode;
 
@@ -18,7 +18,7 @@ export default class RefsCache implements CacheI {
     applyConfig(this, config, override);
   }
 
-  public async find(type: string, id: ModelId) {
+  public async find(type: string, id: ModelIdType) {
     const ref = this.instances.get(type, id);
     if (!ref) {
       return null;
@@ -34,11 +34,11 @@ export default class RefsCache implements CacheI {
     return instance;
   }
 
-  public async put(type: string, id: ModelId, instance: ModelInstance) {
+  public async put(type: string, id: ModelIdType, instance: ModelInstance) {
     this.instances.set(type, id, await this.mode.ref(instance));
   }
 
-  public async forget(type: string, id: ModelId) {
+  public async forget(type: string, id: ModelIdType) {
     this.instances.delete(type, id);
   }
 
