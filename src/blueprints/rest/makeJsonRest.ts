@@ -4,6 +4,7 @@ import { context, makeActionClass } from '@/core';
 import guessRelationType from '@/core/model/types/guessRelationType';
 import { bodyAsJson, HttpAdapter } from '@/http';
 import { RestDeserializer, RestSerializer } from '@/rest';
+import { makeActionFactoryMockable } from '@/test';
 import { toKebabCase } from '@/utilities';
 
 /**
@@ -52,6 +53,6 @@ export default function makeJsonRest<Extension extends {} = {}>(config: {
     serializer,
     withDependencies,
     Action,
-    action: () => new Action().use(withDependencies),
+    action: makeActionFactoryMockable(() => new Action().use(withDependencies)),
   };
 }

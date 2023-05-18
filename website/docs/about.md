@@ -56,3 +56,4 @@ You may start to discover Foscia from different point of view.
 -   [`foscia/jsonapi`](/docs/reference/api/modules/jsonapi):
     [JSON:API](https://jsonapi.org) implementation
 -   [`foscia/rest`](/docs/reference/api/modules/rest): REST implementation
+-   [`foscia/test`](/docs/reference/api/modules/test): Test utilities

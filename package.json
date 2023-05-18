@@ -29,6 +29,7 @@
     "object.d.ts",
     "jsonapi.d.ts",
     "rest.d.ts",
+    "test.d.ts",
     "blueprints.d.ts",
     "index.d.ts"
   ],
@@ -54,6 +55,10 @@
     "./rest": {
       "import": "./dist/rest.js",
       "require": "./dist/rest.cjs"
+    },
+    "./test": {
+      "import": "./dist/test.js",
+      "require": "./dist/test.cjs"
     },
     "./blueprints": {
       "import": "./dist/blueprints.js",

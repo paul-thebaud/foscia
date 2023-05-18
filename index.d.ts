@@ -4,3 +4,4 @@
 /// <reference path="./http.d.ts" />
 /// <reference path="./jsonapi.d.ts" />
 /// <reference path="./rest.d.ts" />
+/// <reference path="./test.d.ts" />

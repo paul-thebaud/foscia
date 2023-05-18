@@ -52,6 +52,7 @@ const config = {
         '../src/object.ts',
         '../src/jsonapi.ts',
         '../src/rest.ts',
+        '../src/test.ts',
         '../src/blueprints.ts',
       ],
       tsconfig: '../tsconfig.json',

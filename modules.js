@@ -5,5 +5,6 @@ export default [
   'object',
   'jsonapi',
   'rest',
+  'test',
   'utilities',
 ];

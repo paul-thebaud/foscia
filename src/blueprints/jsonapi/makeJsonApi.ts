@@ -4,6 +4,7 @@ import makeRegistry from '@/blueprints/makeRegistry';
 import { context, makeActionClass } from '@/core';
 import { bodyAsJson, deepParamsSerializer, HttpAdapter } from '@/http';
 import { JsonApiDeserializer, JsonApiSerializer } from '@/jsonapi';
+import { makeActionFactoryMockable } from '@/test';
 import { toKebabCase } from '@/utilities';
 
 /**
@@ -51,6 +52,6 @@ export default function makeJsonApi<
     serializer,
     withDependencies,
     Action,
-    action: () => new Action().use(withDependencies),
+    action: makeActionFactoryMockable(() => new Action().use(withDependencies)),
   };
 }
