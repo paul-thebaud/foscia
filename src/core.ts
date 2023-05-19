@@ -26,6 +26,7 @@ import makeComposable from '@/core/model/makeComposable';
 import makeModel from '@/core/model/makeModel';
 import makeModelFactory from '@/core/model/makeModelFactory';
 import isAttributeDef from '@/core/model/props/checks/isAttributeDef';
+import isIdDef from '@/core/model/props/checks/isIdDef';
 import isInstance from '@/core/model/props/checks/isInstance';
 import isModel from '@/core/model/props/checks/isModel';
 import isPluralRelationDef from '@/core/model/props/checks/isPluralRelationDef';
@@ -36,6 +37,7 @@ import eachRelations from '@/core/model/props/eachRelations';
 import attr from '@/core/model/props/factories/attr';
 import hasMany from '@/core/model/props/factories/hasMany';
 import hasOne from '@/core/model/props/factories/hasOne';
+import id from '@/core/model/props/factories/id';
 import shouldSync from '@/core/model/props/shouldSync';
 import loaded from '@/core/model/relations/loaded';
 import changed from '@/core/model/snapshots/changed';
@@ -75,6 +77,7 @@ export {
   attr,
   hasMany,
   hasOne,
+  id,
   loaded,
   fill,
   isSame,
@@ -107,6 +110,7 @@ export {
   isPropDef,
   isAttributeDef,
   isRelationDef,
+  isIdDef,
   isPluralRelationDef,
   isModel,
   isInstance,

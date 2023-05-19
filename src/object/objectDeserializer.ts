@@ -10,6 +10,7 @@ import {
   DeserializerI,
   eachAttributes,
   eachRelations,
+  markSynced,
   ModelAttribute,
   ModelIdType,
   ModelInstance,
@@ -17,7 +18,6 @@ import {
   normalizeKey,
   runHook,
   shouldSync,
-  markSynced,
 } from '@/core';
 import consumeType from '@/core/actions/context/consumers/consumeType';
 import detectRelationType from '@/core/model/types/detectRelationType';
@@ -161,10 +161,17 @@ export default abstract class ObjectDeserializer<
     instance: ModelInstance,
     context: {},
   ) {
-    // eslint-disable-next-line no-param-reassign
-    instance.id = instance.id ?? identifier.id;
-    // eslint-disable-next-line no-param-reassign
-    instance.lid = instance.lid ?? identifier.lid;
+    const newId = identifier.id ?? instance.id;
+    if (newId !== instance.$values.id) {
+      // eslint-disable-next-line no-param-reassign
+      instance.$values.id = newId;
+    }
+
+    const newLid = identifier.lid ?? instance.lid;
+    if (newLid !== instance.$values.lid) {
+      // eslint-disable-next-line no-param-reassign
+      instance.$values.lid = newLid;
+    }
 
     await Promise.all(eachAttributes(instance, async (def) => {
       const serializedKey = await this.serializeAttributeKey(instance, def, context);

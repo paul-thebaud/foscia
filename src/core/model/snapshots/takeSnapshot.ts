@@ -5,8 +5,6 @@ export default function takeSnapshot<I extends ModelInstance>(
   instance: I,
 ): ModelSnapshot<I> {
   return {
-    id: instance.id,
-    lid: instance.lid,
     exists: instance.exists,
     $raw: instance.$raw,
     $loaded: { ...instance.$loaded },

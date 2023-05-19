@@ -91,21 +91,6 @@ export type ModelPropNormalized<K = string> = {
 };
 
 /**
- * Raw Definition for a model's ID.
- */
-export type ModelIdRaw<T extends ModelIdType | null = ModelIdType> = {
-  $MODEL_TYPE: 'id' | 'lid';
-  transformer?: Transform<T | null> | undefined;
-};
-
-/**
- * Definition for a model's ID.
- */
-export type ModelId<K = string, T extends ModelIdType | null = ModelIdType> =
-  ModelIdRaw<T>
-  & ModelPropNormalized<K>;
-
-/**
  * Raw definition for a model's property (attribute or relation).
  */
 export type ModelPropRaw<T = unknown> = {
@@ -126,6 +111,21 @@ export type ModelPropRaw<T = unknown> = {
    */
   sync?: boolean | ModelPropSync;
 };
+
+/**
+ * Raw Definition for a model's ID.
+ */
+export type ModelIdRaw<T extends ModelIdType | null = any> = ModelPropRaw<T> & {
+  $MODEL_TYPE: 'id';
+  transformer?: Transform<T | null> | undefined;
+};
+
+/**
+ * Definition for a model's ID.
+ */
+export type ModelId<K = string, T extends ModelIdType | null = any> =
+  ModelPropNormalized<K>
+  & ModelIdRaw<T>;
 
 /**
  * Raw definition for a model's attribute.
@@ -177,18 +177,19 @@ export type ModelRelation<K = string, T = any> = ModelPropNormalized<K> & ModelR
 export type ModelParsedDefinition<D extends {} = {}> = {
   [K in keyof D]: D[K] extends ModelAttributeRaw
     ? D[K] & ModelPropNormalized<K> : D[K] extends ModelRelationRaw
-      ? D[K] & ModelPropNormalized<K> : D[K] extends ModelIdRaw<any>
-        ? D[K] : D[K] extends DescriptorHolder<any>
+      ? D[K] & ModelPropNormalized<K> : D[K] extends ModelIdRaw
+        ? D[K] & ModelPropNormalized<K> : D[K] extends DescriptorHolder<any>
           ? D[K] : DescriptorHolder<D[K]>;
 };
 
 /**
- * Extract model's attributes and relations from the whole definition.
+ * Extract model's IDs, attributes and relations from the whole definition.
  */
 export type ModelSchema<D extends {} = {}> = {
   [K in keyof D]: D[K] extends ModelAttribute<K>
     ? D[K] : D[K] extends ModelRelation<K>
-      ? D[K] : never;
+      ? D[K] : D[K] extends ModelId<K>
+        ? D[K] : never;
 };
 
 /**
@@ -252,6 +253,9 @@ export type ModelClassInstance<D extends {} = any> = {
   readonly $model: ModelClass<D>;
 };
 
+/**
+ * Model defaults IDs typing when not defined by definition.
+ */
 export type ModelIdsDefaults<D extends {}> =
   & (D extends { id: any } ? {} : { id: ModelIdType })
   & (D extends { lid: any } ? {} : { lid: ModelIdType | null });
@@ -282,16 +286,15 @@ export type ModelInstance<D extends {} = any> = {
  * Model class or instance snapshot.
  */
 export type ModelSnapshot<M> = {
-  id: ModelInferDefinition<M> extends { id: ModelId<'id', infer T> }
-    ? T | null : ModelIdType | null;
-  lid: ModelInferDefinition<M> extends { lid: ModelId<'lid', infer T> }
-    ? T | null : ModelIdType | null;
   exists: boolean;
   $raw: any;
   $loaded: Dictionary<true>;
   $values: Partial<ModelValues<M>>;
 };
 
+/**
+ * Model class or instance.
+ */
 export type ModelClassOrInstance<D extends {}> = ModelClass<D> | ModelClassInstance<D>;
 
 /**
@@ -309,27 +312,15 @@ export type ModelInferDefinition<M> = M extends ModelClassOrInstance<infer D>
 export type ModelInferSchema<M> = ModelSchema<ModelInferDefinition<M>>;
 
 /**
- * Model IDs typings based on model class or model instance.
- */
-export type ModelIds<M, OT = never> =
-  &
-  (ModelInferDefinition<M> extends { lid: ModelId<'lid', infer T> } ? { lid: T | OT } : {
-    lid: ModelIdType | null | OT
-  })
-  &
-  (ModelInferDefinition<M> extends { id: ModelId<'id', infer T> } ? { id: T | OT } : {
-    id: ModelIdType | OT
-  });
-
-/**
  * Model class or instance values map (only attributes/relations).
  */
 export type ModelValues<M> = {
   [K in keyof ModelInferSchema<M>]:
   ModelInferSchema<M>[K] extends ModelAttribute<any, infer T>
     ? T : ModelInferSchema<M>[K] extends ModelRelation<any, infer T>
-      ? T : never;
-};
+      ? T : ModelInferSchema<M>[K] extends ModelId<any, infer T>
+        ? T : never;
+} & ModelIdsDefaults<ModelInferDefinition<M>>;
 
 /**
  * Model class or instance attributes/relations key.

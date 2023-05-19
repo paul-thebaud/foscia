@@ -20,8 +20,6 @@ export default function restoreSnapshot<I extends ModelInstance>(
   const keys = wrapVariadic(...only);
 
   if (!keys.length) {
-    instance.id = snapshot.id!;
-    instance.lid = snapshot.lid;
     instance.exists = snapshot.exists;
     instance.$raw = snapshot.$raw;
     instance.$loaded = snapshot.$loaded;

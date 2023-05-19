@@ -1,5 +1,5 @@
-import { ModelClass, ModelKey, ModelSnapshot } from '@/core/model/types';
 import compareModelValue from '@/core/model/snapshots/compareModelValue';
+import { ModelClass, ModelKey, ModelSnapshot } from '@/core/model/types';
 import { wrapVariadic } from '@/utilities';
 import { ArrayableVariadic } from '@/utilities/types';
 
@@ -10,11 +10,7 @@ export default function compareSnapshots<M extends ModelClass>(
   ...only: ArrayableVariadic<ModelKey<M>>
 ) {
   const keys = wrapVariadic(...only);
-  if (!keys.length && (
-    nextSnapshot.id !== prevSnapshot.id
-    || nextSnapshot.lid !== prevSnapshot.lid
-    || nextSnapshot.exists !== prevSnapshot.exists
-  )) {
+  if (!keys.length && nextSnapshot.exists !== prevSnapshot.exists) {
     return false;
   }
 

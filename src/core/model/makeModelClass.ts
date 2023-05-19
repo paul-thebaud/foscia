@@ -1,9 +1,9 @@
 import FosciaError from '@/core/errors/fosciaError';
 import logger from '@/core/logger/logger';
+import makeDefinition from '@/core/model/makeDefinition';
 import isIdDef from '@/core/model/props/checks/isIdDef';
 import isPropDef from '@/core/model/props/checks/isPropDef';
 import id from '@/core/model/props/factories/id';
-import lid from '@/core/model/props/factories/lid';
 import takeSnapshot from '@/core/model/snapshots/takeSnapshot';
 import {
   Model,
@@ -33,17 +33,9 @@ export default function makeModelClass(type: string, config: ModelConfig) {
     Object.defineProperty(this, '$loaded', { writable: true, value: {} });
     Object.defineProperty(this, '$values', { writable: true, value: {} });
 
+    Object.defineProperty(this, '$original', { writable: true, value: takeSnapshot(this) });
+
     Object.values(ModelClass.$schema).forEach((def) => {
-      if (isIdDef(def)) {
-        Object.defineProperty(this, def.key, {
-          enumerable: true,
-          writable: true,
-          value: undefined,
-        });
-
-        return;
-      }
-
       Object.defineProperty(this, def.key, {
         enumerable: true,
         get: () => this.$values[def.key],
@@ -62,14 +54,12 @@ export default function makeModelClass(type: string, config: ModelConfig) {
         this.$values[def.key] = computeDefault(this, def.default);
       }
     });
-
-    Object.defineProperty(this, '$original', { writable: true, value: takeSnapshot(this) });
   } as unknown as Model;
 
   Object.defineProperty(ModelClass, '$MODEL_TYPE', { value: 'model' });
   Object.defineProperty(ModelClass, '$type', { value: type });
   Object.defineProperty(ModelClass, '$config', { value: config });
-  Object.defineProperty(ModelClass, '$schema', { value: { id: id(), lid: lid() } });
+  Object.defineProperty(ModelClass, '$schema', { value: {} });
   Object.defineProperty(ModelClass, '$hooks', { writable: true, value: {} });
 
   ModelClass.configure = (rawConfig?: ModelConfig, override = true) => {
@@ -87,7 +77,7 @@ export default function makeModelClass(type: string, config: ModelConfig) {
       if (!isNil(descriptor.value) && isPropDef(descriptor.value)) {
         if (!isIdDef(descriptor.value) && ['id', 'lid'].indexOf(key) !== -1) {
           throw new FosciaError(
-            `\`id\`, \`lid\` are forbidden as attribute, relation or properties (found \`${key}\`). Use \`id()\` and \`lid\` factories instead.`,
+            `\`id\`, \`lid\` are forbidden as attribute, relation or properties (found \`${key}\`). Use \`id()\` factory instead.`,
           );
         }
 
@@ -99,6 +89,11 @@ export default function makeModelClass(type: string, config: ModelConfig) {
 
     return ModelClass;
   };
+
+  ModelClass.extends(makeDefinition({
+    id: id(),
+    lid: id(),
+  }));
 
   return ModelClass;
 }
