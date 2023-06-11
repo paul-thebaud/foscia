@@ -1,5 +1,12 @@
 # Changelog
 
+# [0.1.0-alpha.9](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.8...v0.1.0-alpha.9) (2023-06-11)
+
+
+### Reverts
+
+* "fix: strong type support for read only properties on models" ([57cb5f3](https://github.com/paul-thebaud/foscia/commit/57cb5f36caee6534650c727bf57290708476f731))
+
 # [0.1.0-alpha.8](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.7...v0.1.0-alpha.8) (2023-06-11)
 
 
