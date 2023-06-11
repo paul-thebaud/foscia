@@ -131,6 +131,34 @@ or may be used by dependencies (e.g. JSON:API adapter).
 
 :::
 
+### IDs
+
+`id` is an ID definition factory function used to define your
+model's IDs property. It takes 1 argument.
+
+Foscia consider your IDs as `string`, `number` or `null` values by default.
+Each model have `id` and `lid` properties representing record identification.
+If you want to change the typing of those properties or transform values, you
+can use the `id` function.
+
+```ts
+import { id, toString } from 'foscia/core';
+
+id<string>(); // Without config.
+id(toString()); // With a transformer.
+```
+
+#### Transform
+
+IDs transform works the same as [attributes transform](#transforms).
+
+:::caution
+`id` can only be used on `id` and `lid` keyed model's properties.
+There is currently no way of aliasing an ID in Foscia.
+[Please fill an issue](https://github.com/paul-thebaud/foscia/issues/new/choose)
+if this is something you need.
+:::
+
 ### Attributes
 
 `attr` is an attribute definition factory function used to define your
