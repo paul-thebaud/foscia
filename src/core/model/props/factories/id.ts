@@ -1,7 +1,7 @@
 import { ModelIdRaw, ModelIdType, ModelPropRaw } from '@/core/model/types';
 import { Transform } from '@/core/transformers/types';
 
-export type IdOptions<T> = Omit<ModelPropRaw<T>, 'readOnly' | 'sync'> & {
+export type IdOptions<T> = Omit<ModelPropRaw<T>, 'sync'> & {
   transformer?: Transform<T | null> | undefined;
 };
 

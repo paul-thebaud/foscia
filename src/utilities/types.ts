@@ -19,7 +19,3 @@ export type Falsy = null | undefined | false | 0 | -0 | 0n | '';
 export type OnlyTruthy<T> = T extends Falsy ? never : T;
 
 export type OnlyFalsy<T> = T extends Falsy ? T : never;
-
-export type OmitNever<T> = {
-  [K in keyof T as T[K] extends never ? never : K]: T[K];
-};

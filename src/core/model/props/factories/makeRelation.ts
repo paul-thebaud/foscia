@@ -1,6 +1,6 @@
 import { ModelPropRaw, ModelRelationRaw, ModelRelationType } from '@/core/model/types';
 
-export type RelationOptions<T> = Omit<ModelPropRaw<T>, 'readOnly'> & {
+export type RelationOptions<T> = ModelPropRaw<T> & {
   type?: string;
   path?: string;
 };
