@@ -38,6 +38,7 @@ import attr from '@/core/model/props/factories/attr';
 import hasMany from '@/core/model/props/factories/hasMany';
 import hasOne from '@/core/model/props/factories/hasOne';
 import id from '@/core/model/props/factories/id';
+import readOnly from '@/core/model/props/factories/readOnly';
 import shouldSync from '@/core/model/props/shouldSync';
 import loaded from '@/core/model/relations/loaded';
 import changed from '@/core/model/snapshots/changed';
@@ -78,6 +79,7 @@ export {
   hasMany,
   hasOne,
   id,
+  readOnly,
   loaded,
   fill,
   isSame,

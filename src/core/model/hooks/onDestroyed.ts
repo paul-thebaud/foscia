@@ -1,10 +1,10 @@
 import registerHook from '@/core/hooks/registerHook';
-import { Model, ModelInstance } from '@/core/model/types';
+import { Model, ModelHookCallback, ModelInstance } from '@/core/model/types';
 import { Awaitable } from '@/utilities';
 
 export default function onDestroyed<I extends ModelInstance>(
   model: Model<any, I>,
   callback: (instance: I) => Awaitable<void>,
 ) {
-  return registerHook(model, 'destroyed', callback);
+  return registerHook(model, 'destroyed', callback as ModelHookCallback);
 }

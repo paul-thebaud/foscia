@@ -12,7 +12,7 @@ import {
   ContextRunner,
 } from '@/core/actions/types';
 import loaded from '@/core/model/relations/loaded';
-import { Model, ModelInstance } from '@/core/model/types';
+import { Model, ModelInstance, ModelRelationDotKey } from '@/core/model/types';
 import { Awaitable, isNil } from '@/utilities';
 
 export type CachedData<I extends ModelInstance> = {
@@ -46,8 +46,8 @@ export default function cachedOr<
     // TODO How could we manage the "forRelation" case?
     const context = await action.useContext();
     const instance = await consumeCache(context)
-      .find(consumeModel(context).$type, consumeId(context));
-    if (isNil(instance) || !loaded(instance, context.include ?? [])) {
+      .find(consumeModel(context).$type, consumeId(context)) as I | null;
+    if (isNil(instance) || !loaded(instance, (context.include ?? []) as ModelRelationDotKey<I>[])) {
       return action.run(nilRunner);
     }
 

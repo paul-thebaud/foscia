@@ -41,7 +41,10 @@ export default function all<
   return async (
     action: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD>>,
   ) => action.run(raw(async (data) => {
-    const deserialized = await deserializeInstances(action, data) as DeserializedDataOf<I, DD>;
+    const deserialized = await deserializeInstances(
+      action,
+      data,
+    ) as unknown as DeserializedDataOf<I, DD>;
 
     return (
       transform
