@@ -1,4 +1,4 @@
-import { Action, ActionParsedExtension, ContextEnhancer, makeEnhancersExtension } from '@/core';
+import { Action, ActionParsedExtension, makeEnhancersExtension } from '@/core';
 import { param } from '@/http';
 import consumePrevParams from '@/http/actions/context/consumers/consumePrevParams';
 import { Arrayable, Dictionary, optionalJoin, uniqueValues, wrap } from '@/utilities';
@@ -35,13 +35,13 @@ function serializeSort(key: string, direction: SortDirection) {
   return `${direction === 'desc' ? '-' : ''}${key}`;
 }
 
-function sortBy<C extends {}, E extends {}>(
+function sortBy(
   keys: Dictionary<SortDirection>,
-): ContextEnhancer<C, E, C>;
-function sortBy<C extends {}, E extends {}>(
+): <C extends {}, E extends {}>(action: Action<C, E>) => Promise<void>;
+function sortBy(
   keys: Arrayable<string>,
   directions?: Arrayable<SortDirection>,
-): ContextEnhancer<C, E, C>;
+): <C extends {}, E extends {}>(action: Action<C, E>) => Promise<void>;
 
 /**
  * [Sort the JSON:API resource](https://jsonapi.org/format/#fetching-sorting)
@@ -58,10 +58,10 @@ function sortBy(
   keys: Arrayable<string> | Dictionary<SortDirection>,
   directions: Arrayable<SortDirection> = 'asc',
 ) {
-  return async <C extends {}>(action: Action<C>) => {
+  return async <C extends {}, E extends {}>(action: Action<C, E>) => {
     const [newKeys, newDirections] = resolveKeysDirections(keys, directions);
 
-    return action.use(param(
+    action.use(param(
       'sort',
       optionalJoin(uniqueValues([
         consumePrevParams(await action.useContext(), null)?.sort,
