@@ -1,5 +1,21 @@
 # Changelog
 
+# [0.1.0-alpha.8](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.7...v0.1.0-alpha.8) (2023-06-11)
+
+
+### Bug Fixes
+
+* correctly detect dev env using process ([5dfc786](https://github.com/paul-thebaud/foscia/commit/5dfc78682845a43f346889c0f5bc3e122f7bc600))
+* strong type support for read only properties on models ([067d2b8](https://github.com/paul-thebaud/foscia/commit/067d2b83a0f800d1c14acc3116e562b6b77e81fc)), closes [#12](https://github.com/paul-thebaud/foscia/issues/12)
+
+
+### Features
+
+* **actions:** add support for more parameters for sorts enhancers ([b072b34](https://github.com/paul-thebaud/foscia/commit/b072b3468439bf74ab826f6fd7e5f0e50566fc1a)), closes [#20](https://github.com/paul-thebaud/foscia/issues/20)
+* IDs will now be managed as any classical model's props ([8a82e7f](https://github.com/paul-thebaud/foscia/commit/8a82e7fdf970e3626df1832b2c20e11f647e02a6)), closes [#22](https://github.com/paul-thebaud/foscia/issues/22)
+* overridable IDs definition ([26dc2c6](https://github.com/paul-thebaud/foscia/commit/26dc2c644325f047865d930ef6ffef2157cf41e5)), closes [#21](https://github.com/paul-thebaud/foscia/issues/21)
+* unit testing utilities and docs ([16e1d33](https://github.com/paul-thebaud/foscia/commit/16e1d33a1c2317eb1153a616c72f5fa98b2fa236)), closes [#16](https://github.com/paul-thebaud/foscia/issues/16)
+
 # [0.1.0-alpha.7](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.6...v0.1.0-alpha.7) (2023-04-22)
 
 
