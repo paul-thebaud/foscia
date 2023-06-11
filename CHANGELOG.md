@@ -1,5 +1,12 @@
 # Changelog
 
+# [0.1.0-alpha.10](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.9...v0.1.0-alpha.10) (2023-06-11)
+
+
+### Bug Fixes
+
+* define correct typing on sortBy enhancer ([245305b](https://github.com/paul-thebaud/foscia/commit/245305bafafab78049a8aaa1686a386351fc7d65))
+
 # [0.1.0-alpha.9](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.8...v0.1.0-alpha.9) (2023-06-11)
 
 
