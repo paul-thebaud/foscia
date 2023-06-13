@@ -1,5 +1,12 @@
 # Changelog
 
+# [0.1.0-alpha.11](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.10...v0.1.0-alpha.11) (2023-06-13)
+
+
+### Bug Fixes
+
+* **models:** strong type support for readonly properties ([f94cc67](https://github.com/paul-thebaud/foscia/commit/f94cc670ff6e051f1b7ba5408a0a1d19f43ba8c9)), closes [#12](https://github.com/paul-thebaud/foscia/issues/12)
+
 # [0.1.0-alpha.10](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.9...v0.1.0-alpha.10) (2023-06-11)
 
 
