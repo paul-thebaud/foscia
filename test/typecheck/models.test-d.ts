@@ -7,11 +7,25 @@ import { expectTypeOf, test } from 'vitest';
 test('Models are type safe', () => {
   const post = new Post();
 
-  expectTypeOf(post.id).toMatchTypeOf<string | number>();
+  expectTypeOf(post.id).toMatchTypeOf<string | number | null>();
   expectTypeOf(post.lid).toMatchTypeOf<string | number | null>();
   expectTypeOf(post.title).toMatchTypeOf<string>();
   expectTypeOf(post.body).toMatchTypeOf<string | null>();
+  expectTypeOf(post.publishedAt).toMatchTypeOf<Date>();
   expectTypeOf(post.comments).toMatchTypeOf<Comment[]>();
+  expectTypeOf(post.published).toMatchTypeOf<boolean>();
+
+  post.title = 'Hello World';
+  // @ts-expect-error publishedAt is readonly
+  post.publishedAt = new Date();
+  // @ts-expect-error published is readonly
+  post.published = false;
+
+  fill(post, { title: 'Hello World' });
+  // @ts-expect-error publishedAt is readonly
+  fill(post, { publishedAt: new Date() });
+  // @ts-expect-error published is not a model's value
+  fill(post, { published: false });
 
   const comment = new Comment();
 

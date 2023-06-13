@@ -93,7 +93,7 @@ export type ModelPropNormalized<K = string> = {
 /**
  * Raw definition for a model's property (attribute or relation).
  */
-export type ModelPropRaw<T = unknown> = {
+export type ModelPropRaw<T = unknown, R extends boolean = boolean> = {
   /**
    * Default value for the property.
    */
@@ -105,7 +105,7 @@ export type ModelPropRaw<T = unknown> = {
   /**
    * Makes the property read-only.
    */
-  readOnly?: boolean;
+  readOnly?: R;
   /**
    * Tells if the property should be synced with the data store.
    */
@@ -115,37 +115,35 @@ export type ModelPropRaw<T = unknown> = {
 /**
  * Raw Definition for a model's ID.
  */
-export type ModelIdRaw<T extends ModelIdType | null = any> = ModelPropRaw<T> & {
+export type ModelIdRaw<T extends ModelIdType | null = any, R extends boolean = boolean> = {
   $MODEL_TYPE: 'id';
   transformer?: Transform<T | null> | undefined;
-};
+} & ModelPropRaw<T, R>;
 
 /**
  * Definition for a model's ID.
  */
-export type ModelId<K = string, T extends ModelIdType | null = any> =
-  ModelPropNormalized<K>
-  & ModelIdRaw<T>;
+export type ModelId<K = string, T extends ModelIdType | null = any, R extends boolean = boolean> =
+  & ModelPropNormalized<K>
+  & ModelIdRaw<T, R>;
 
 /**
  * Raw definition for a model's attribute.
  */
-export type ModelAttributeRaw<
-  T = unknown,
-> = ModelPropRaw<T> & {
+export type ModelAttributeRaw<T = unknown, R extends boolean = boolean> = {
   /**
    * Internal type identifier for Foscia's type guards.
    */
   $MODEL_TYPE: 'attribute';
   transformer?: Transform<T | null> | undefined;
-};
+} & ModelPropRaw<T, R>;
 
 /**
  * Definition for a model's attribute.
  */
-export type ModelAttribute<K = string, T = any> =
-  ModelPropNormalized<K>
-  & ModelAttributeRaw<T>;
+export type ModelAttribute<K = string, T = any, R extends boolean = boolean> =
+  & ModelPropNormalized<K>
+  & ModelAttributeRaw<T, R>;
 
 /**
  * Available model relation types.
@@ -155,7 +153,7 @@ export type ModelRelationType = 'hasOne' | 'hasMany';
 /**
  * Raw definition for a model's relation.
  */
-export type ModelRelationRaw<T = any> = ModelPropRaw<T> & {
+export type ModelRelationRaw<T = any, R extends boolean = boolean> = {
   /**
    * Internal type identifier for Foscia's type guards.
    */
@@ -163,21 +161,23 @@ export type ModelRelationRaw<T = any> = ModelPropRaw<T> & {
   $RELATION_TYPE: ModelRelationType;
   type?: string;
   path?: string;
-};
+} & ModelPropRaw<T, R>;
 
 /**
  * Definition for a model's attribute.
  */
-export type ModelRelation<K = string, T = any> = ModelPropNormalized<K> & ModelRelationRaw<T>;
+export type ModelRelation<K = string, T = any, R extends boolean = boolean> =
+  & ModelPropNormalized<K>
+  & ModelRelationRaw<T, R>;
 
 /**
  * The parsed model definition with non attributes/relations properties'
  * descriptors wrapped in holders.
  */
 export type ModelParsedDefinition<D extends {} = {}> = {
-  [K in keyof D]: D[K] extends ModelAttributeRaw
-    ? D[K] & ModelPropNormalized<K> : D[K] extends ModelRelationRaw
-      ? D[K] & ModelPropNormalized<K> : D[K] extends ModelIdRaw
+  [K in keyof D]: D[K] extends ModelAttributeRaw<any, any>
+    ? D[K] & ModelPropNormalized<K> : D[K] extends ModelRelationRaw<any, any>
+      ? D[K] & ModelPropNormalized<K> : D[K] extends ModelIdRaw<any, any>
         ? D[K] & ModelPropNormalized<K> : D[K] extends DescriptorHolder<any>
           ? D[K] : DescriptorHolder<D[K]>;
 };
@@ -186,9 +186,9 @@ export type ModelParsedDefinition<D extends {} = {}> = {
  * Extract model's IDs, attributes and relations from the whole definition.
  */
 export type ModelSchema<D extends {} = {}> = {
-  [K in keyof D]: D[K] extends ModelAttribute<K>
-    ? D[K] : D[K] extends ModelRelation<K>
-      ? D[K] : D[K] extends ModelId<K>
+  [K in keyof D]: D[K] extends ModelAttribute<K, any, any>
+    ? D[K] : D[K] extends ModelRelation<K, any, any>
+      ? D[K] : D[K] extends ModelId<K, any, any>
         ? D[K] : never;
 };
 
@@ -201,7 +201,7 @@ export type ModelSchemaRelations<D extends {} = {}> = {
 };
 
 /**
- * Model hook callback function.
+ * Model generic hook callback function.
  */
 export type ModelHookCallback = HookCallback<ModelInstance>;
 
@@ -257,8 +257,69 @@ export type ModelClassInstance<D extends {} = any> = {
  * Model defaults IDs typing when not defined by definition.
  */
 export type ModelIdsDefaults<D extends {}> =
-  & (D extends { id: any } ? {} : { id: ModelIdType })
+  & (D extends { id: any } ? {} : { id: ModelIdType | null })
   & (D extends { lid: any } ? {} : { lid: ModelIdType | null });
+
+/**
+ * Model properties map (IDs/attributes/relations/custom props).
+ */
+export type ModelDefinitionProperties<D extends {}> = ModelIdsDefaults<D> & {
+  [K in keyof D]: D[K] extends ModelAttribute<K, infer T, any>
+    ? T : D[K] extends ModelRelation<K, infer T, any>
+      ? T : D[K] extends ModelId<K, infer T, any>
+        ? T : D[K] extends DescriptorHolder<infer T>
+          ? T : D[K];
+};
+
+/**
+ * Model properties key (only writable IDs/attributes/relations).
+ */
+export type ModelDefinitionWritableKey<D extends {}> = {
+  [K in keyof D]: D[K] extends DescriptorHolder<any>
+    ? never
+    : D[K] extends { readOnly: true } ? never : K;
+}[keyof D] | keyof ModelIdsDefaults<D>;
+
+/**
+ * Model properties key (only readonly IDs/attributes/relations).
+ */
+export type ModelDefinitionReadOnlyKey<D extends {}> = {
+  [K in keyof D]: D[K] extends DescriptorHolder<any>
+    ? never
+    : D[K] extends { readOnly: true } ? K : never;
+}[keyof D];
+
+/**
+ * Model descriptors key (only custom properties).
+ */
+export type ModelDefinitionDescriptorKey<D extends {}> = {
+  [K in keyof D]: D[K] extends DescriptorHolder<any> ? K : never;
+}[keyof D];
+
+/**
+ * Model properties map (only writable IDs/attributes/relations).
+ */
+export type ModelDefinitionWritableValues<D extends {}> =
+  Pick<ModelDefinitionProperties<D>, ModelDefinitionWritableKey<D>>;
+
+/**
+ * Model properties map (only readonly IDs/attributes/relations).
+ */
+export type ModelDefinitionReadOnlyValues<D extends {}> =
+  Readonly<Pick<ModelDefinitionProperties<D>, ModelDefinitionReadOnlyKey<D>>>;
+
+/**
+ * Model properties map (IDs/attributes/relations).
+ */
+export type ModelDefinitionValues<D extends {}> =
+  & ModelDefinitionWritableValues<D>
+  & ModelDefinitionReadOnlyValues<D>;
+
+/**
+ * Model descriptors map (only custom properties).
+ */
+export type ModelDefinitionDescriptors<D extends {}> =
+  Pick<ModelDefinitionProperties<D>, ModelDefinitionDescriptorKey<D>>;
 
 /**
  * Model instance holding state and values.
@@ -271,16 +332,10 @@ export type ModelInstance<D extends {} = any> = {
   readonly $model: ModelClass<D>;
   exists: boolean;
   $loaded: Dictionary<true>;
-  $values: Partial<ModelValues<ModelInstance<D>>>;
+  $values: Partial<ModelValues<D>>;
   $raw: any;
-  $original: ModelSnapshot<ModelInstance<D>>;
-} & {
-  [K in keyof D]: D[K] extends ModelAttribute<K, infer T>
-    ? T : D[K] extends ModelRelation<K, infer T>
-      ? T : D[K] extends ModelId<K, infer T>
-        ? T : D[K] extends DescriptorHolder<infer T>
-          ? T : D[K];
-} & ModelIdsDefaults<D>;
+  $original: ModelSnapshot<D>;
+} & ModelDefinitionValues<D> & ModelDefinitionDescriptors<D>;
 
 /**
  * Model class or instance snapshot.
@@ -312,20 +367,27 @@ export type ModelInferDefinition<M> = M extends ModelClassOrInstance<infer D>
 export type ModelInferSchema<M> = ModelSchema<ModelInferDefinition<M>>;
 
 /**
- * Model class or instance values map (only attributes/relations).
+ * Model class or instance values map (only IDs/attributes/relations).
  */
-export type ModelValues<M> = {
-  [K in keyof ModelInferSchema<M>]:
-  ModelInferSchema<M>[K] extends ModelAttribute<any, infer T>
-    ? T : ModelInferSchema<M>[K] extends ModelRelation<any, infer T>
-      ? T : ModelInferSchema<M>[K] extends ModelId<any, infer T>
-        ? T : never;
-} & ModelIdsDefaults<ModelInferDefinition<M>>;
+export type ModelValues<M> = ModelDefinitionValues<ModelInferDefinition<M>>;
 
 /**
- * Model class or instance attributes/relations key.
+ * Model class or instance values map (only writable IDs/attributes/relations).
  */
-export type ModelKey<M> = keyof ModelInferSchema<M>;
+export type ModelWritableValues<M> = ModelDefinitionWritableValues<ModelInferDefinition<M>>;
+
+/**
+ * Model class or instance values map (only readonly IDs/attributes/relations).
+ */
+export type ModelReadOnlyValues<M> = ModelDefinitionReadOnlyValues<ModelInferDefinition<M>>;
+
+/**
+ * Model class or instance IDs/attributes/relations key.
+ */
+export type ModelKey<M> =
+  & string
+  & keyof ModelInferSchema<M>
+  & keyof ModelValues<M>;
 
 /**
  * Model class or instance relations key (only direct relations).

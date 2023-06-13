@@ -1,6 +1,6 @@
 import { ModelPropRaw, ModelRelationRaw, ModelRelationType } from '@/core/model/types';
 
-export type RelationOptions<T> = ModelPropRaw<T> & {
+export type RelationOptions<T> = Omit<ModelPropRaw<T>, 'readOnly'> & {
   type?: string;
   path?: string;
 };
@@ -8,7 +8,7 @@ export type RelationOptions<T> = ModelPropRaw<T> & {
 export default function makeRelation<T>(
   relationType: ModelRelationType,
   config: string | RelationOptions<T> = {},
-): ModelRelationRaw<T> {
+): ModelRelationRaw<T, false> {
   return {
     $MODEL_TYPE: 'relation',
     $RELATION_TYPE: relationType,

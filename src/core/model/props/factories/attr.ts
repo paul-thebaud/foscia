@@ -1,7 +1,7 @@
 import { ModelAttributeRaw, ModelPropRaw } from '@/core/model/types';
 import { Transform } from '@/core/transformers/types';
 
-export type AttrOptions<T> = ModelPropRaw<T> & {
+export type AttrOptions<T> = Omit<ModelPropRaw<T>, 'readOnly'> & {
   transformer?: Transform<T | null> | undefined;
 };
 
@@ -13,8 +13,8 @@ export type AttrOptionsVariadic<T> =
 
 export default function attr<T>(
   ...config: AttrOptionsVariadic<T>
-): ModelAttributeRaw<T> {
-  const attribute: ModelAttributeRaw<T> = { $MODEL_TYPE: 'attribute' };
+): ModelAttributeRaw<T, false> {
+  const attribute: ModelAttributeRaw<T, false> = { $MODEL_TYPE: 'attribute' };
 
   if (config.length === 0) {
     return attribute;

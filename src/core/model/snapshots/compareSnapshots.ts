@@ -17,7 +17,7 @@ export default function compareSnapshots<M extends ModelClass>(
   return (
     keys.length > 0
     || Object.keys(nextSnapshot.$values).length === Object.keys(prevSnapshot.$values).length
-  ) && (keys.length ? keys : Object.keys(nextSnapshot.$values)).every(
+  ) && (keys.length ? keys : Object.keys(nextSnapshot.$values) as ModelKey<M>[]).every(
     (key) => compareModelValue(
       model,
       nextSnapshot.$values[key],

@@ -1,9 +1,9 @@
 import isRelationDef from '@/core/model/props/checks/isRelationDef';
-import { ModelInstance, ModelRelation } from '@/core/model/types';
+import { ModelInstance, ModelKey, ModelRelation } from '@/core/model/types';
 
-export default function eachRelations<R>(
-  instance: ModelInstance,
-  callback: (def: ModelRelation) => R,
+export default function eachRelations<I extends ModelInstance, R>(
+  instance: I,
+  callback: (def: ModelRelation<ModelKey<I>>) => R,
 ) {
   return Object.values(instance.$model.$schema).reduce((stack, def) => {
     if (isRelationDef(def)) {

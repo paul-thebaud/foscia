@@ -51,7 +51,7 @@ export default function cachedOr<
       return action.run(nilRunner);
     }
 
-    return (transform ? transform({ instance }) : instance) as ND;
+    return (transform ? transform({ instance: instance as I }) : instance) as ND;
   };
 }
 

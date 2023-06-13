@@ -5,6 +5,6 @@ import { ModelAttribute, ModelId, ModelRelation } from '@/core/model/types';
 
 export default function isPropDef(
   def: unknown,
-): def is ModelId | ModelAttribute | ModelRelation {
+): def is ModelId<any> | ModelAttribute<any> | ModelRelation<any> {
   return isIdDef(def) || isAttributeDef(def) || isRelationDef(def);
 }

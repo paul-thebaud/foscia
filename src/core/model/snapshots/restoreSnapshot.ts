@@ -1,9 +1,11 @@
 /* eslint-disable no-param-reassign */
 import eachAttributes from '@/core/model/props/eachAttributes';
+import eachIds from '@/core/model/props/eachIds';
 import eachRelations from '@/core/model/props/eachRelations';
 import cloneModelValue from '@/core/model/snapshots/cloneModelValue';
 import {
   ModelAttribute,
+  ModelId,
   ModelInstance,
   ModelKey,
   ModelRelation,
@@ -25,7 +27,9 @@ export default function restoreSnapshot<I extends ModelInstance>(
     instance.$loaded = snapshot.$loaded;
   }
 
-  const restoreForDef = (def: ModelAttribute | ModelRelation) => {
+  const restoreForDef = <K extends ModelKey<I>>(
+    def: ModelId<K> | ModelAttribute<K> | ModelRelation<K>,
+  ) => {
     if (keys.length && keys.indexOf(def.key) === -1) {
       return;
     }
@@ -37,6 +41,7 @@ export default function restoreSnapshot<I extends ModelInstance>(
     }
   };
 
+  eachIds(instance, restoreForDef);
   eachAttributes(instance, restoreForDef);
   eachRelations(instance, restoreForDef);
 

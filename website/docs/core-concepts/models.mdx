@@ -176,7 +176,7 @@ import { attr, toDate } from 'foscia/core';
 attr<string>(); // Without config.
 attr(toDate()); // With a transformer.
 attr({ default: null, transformer: toDate() }); // With config.
-attr(toDate(), { readOnly: true }); // With a transformer and config.
+attr(toDate(), { sync: 'retrieve' }); // With a transformer and config.
 attr({ default: () => [] }); // With a factory default (required for objects props).
 ```
 
@@ -189,7 +189,6 @@ You can customize your attribute with the following options:
 | `transformer` | `Transform<T>`                     | `undefined` | The transformer for the property's value when interacting with your backend. |
 | `default`     | `T`                                | `undefined` | The default value for the property when initializing a model instance.       |
 | `alias`       | `string`                           | `undefined` | Alias of your backend key used for (de)serializing.                          |
-| `readOnly`    | `boolean`                          | `false`     | Makes the property read-only.                                                |
 | `sync`        | `boolean \| 'retrieve' \| 'write'` | `true`      | Avoid retrieving/writing the property's value from/to the backend.           |
 
 #### Transform
@@ -246,14 +245,14 @@ import type User from './user';
 import type Comment from './comment';
 
 hasOne<User>(); // Without config.
-hasOne<User>({ readOnly: true }); // With config.
+hasOne<User>({ sync: 'retrieve' }); // With config.
 hasOne<User>('users'); // With explicit type.
-hasOne<User>({ type: 'users' }); // With explicit type.
+hasOne<User>({ type: 'users', sync: 'retrieve' }); // With explicit type.
 
 hasMany<Comment>(); // Without config.
-hasMany<Comment>({ readOnly: true }); // With config.
+hasMany<Comment>({ sync: 'retrieve' }); // With config.
 hasMany<Comment>('comments'); // With explicit type.
-hasMany<Comment>({ type: 'comments' }); // With explicit type.
+hasMany<Comment>({ type: 'comments', sync: 'retrieve' }); // With explicit type.
 ```
 
 :::tip
@@ -268,19 +267,38 @@ circular dependencies when having circular model relations.
 
 You can customize your relation with the following options:
 
-| Key            | Type      | Default     | Description                                                                                               |
-|----------------|-----------|-------------|-----------------------------------------------------------------------------------------------------------|
-| `default`      | `T`       | `undefined` | The default value for the property when initializing a model instance.                                    |
-| `alias`        | `string`  | `undefined` | Alias of your backend key used for (de)serializing.                                                       |
-| `path`         | `string`  | `undefined` | Path used to query the relation. Defaults to the relation's key.                                          |
-| `type`         | `string`  | `undefined` | The explicit type of related model. Might be used by the deserializer to know which model to instantiate. |
-| `readOnly`     | `boolean` | `false`     | Makes the property read-only.                                                                             |
-| `noRetrieving` | `boolean` | `false`     | Avoid retrieving the property's value (won't be deserialized from data source).                           |
-| `noSending`    | `boolean` | `false`     | Avoid sending the property's value (won't be serialized from data source).                                |
+| Key       | Type                               | Default     | Description                                                                                               |
+|-----------|------------------------------------|-------------|-----------------------------------------------------------------------------------------------------------|
+| `default` | `T`                                | `undefined` | The default value for the property when initializing a model instance.                                    |
+| `alias`   | `string`                           | `undefined` | Alias of your backend key used for (de)serializing.                                                       |
+| `path`    | `string`                           | `undefined` | Path used to query the relation. Defaults to the relation's key.                                          |
+| `type`    | `string`                           | `undefined` | The explicit type of related model. Might be used by the deserializer to know which model to instantiate. |
+| `sync`    | `boolean \| 'retrieve' \| 'write'` | `true`      | Avoid retrieving/writing the property's value from/to the backend.                                        |
+
+### Readonly properties
+
+You can make any ID, attribute or relation readonly using the `readOnly`
+modifier function. `readOnly` will work on `id`, `attr`, `hasOne`
+and `hasMany` factories.
+
+Making a property readonly will throw an error when trying to affect a value
+to it, and emit a TypeScript error on compile (if using TypeScript).
+
+```javascript
+import { attr, makeModel, readOnly, toDate } from 'foscia/core';
+
+export default class User extends makeModel('users', {
+  verifiedAt: readOnly(attr(toDate())),
+}) {}
+
+const user = new User();
+// TS error on compile and error on runtime:
+user.verifiedAt = new Date();
+```
 
 ### Custom properties
 
-In addition to attributes and relations, you can implement additional
+In addition to IDs, attributes and relations, you can implement additional
 properties to your model. It's useful when you need computed values
 (getters) or specific instance methods.
 

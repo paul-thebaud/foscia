@@ -21,7 +21,7 @@ export default function forInstance<
   return (action: Action<C>) => action
     .use(forModel(instance.$model as Model<D, I>))
     .use(context({ instance: instance as I }))
-    .use(forId(instance.id));
+    .use(forId(instance.id ?? undefined));
 }
 
 type EnhancerExtension = ActionParsedExtension<{
