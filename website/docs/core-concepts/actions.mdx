@@ -198,7 +198,6 @@ action()
 You may hook on multiple events which occurs on action instance using the hook
 registration function:
 
--   `onPreparing`: before context computation through enhancers dequeueing.
 -   `onRunning`: after context computation, before context runner execution.
 -   `onSuccess`: after context runner successful execution (no error thrown).
 -   `onError`: after context runner failed execution (error thrown).
@@ -209,14 +208,12 @@ building action.
 
 ```javascript
 import {
-    onPreparing,
     onRunning,
     onSuccess,
     onError,
     onFinally,
 } from 'foscia/core';
 
-action().use(onPreparing(() => /* ... */));
 action().use(onRunning(({ context }) => /* ... */));
 action().use(onSuccess(({ context, result }) => /* ... */));
 action().use(onError(({ context, error }) => /* ... */));
@@ -232,6 +229,9 @@ not parallelized).
 
 You can temporally disable hook execution for a given action by using the
 `withoutHooks` function.
+
+Be aware that `withoutHooks` will always return a promise, even when
+your callback is a sync function.
 
 ```javascript
 import { withoutHooks } from 'foscia/core';

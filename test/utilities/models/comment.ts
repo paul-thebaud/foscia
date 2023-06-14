@@ -1,5 +1,4 @@
-import { attr, hasOne, makeModel, toDate, toNumber, toString } from '@/core';
-import id from '@/core/model/props/factories/id';
+import { attr, hasOne, id, makeModel, toDate, toNumber, toString } from '@/core';
 import type User from '@test/utilities/models/user';
 
 export default class Comment extends makeModel('comments', {

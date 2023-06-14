@@ -1,4 +1,5 @@
 import {
+  Action,
   ActionClass,
   ActionHooksDefinition,
   ContextEnhancer,
@@ -11,8 +12,10 @@ import withoutHooks from '@/core/hooks/withoutHooks';
 import logger from '@/core/logger/logger';
 import { Dictionary, eachDescriptors, sequentialTransform } from '@/utilities';
 
-export default function makeActionClass<Extension extends {} = {}>(extensions?: Extension) {
-  class Action {
+export default function makeActionClass<Extension extends {} = {}>(
+  extensions?: Extension & ThisType<Action<{}, Extension>>,
+) {
+  class CustomActionClass {
     public $hooks: HooksRegistrar<ActionHooksDefinition> | null;
 
     private $enhancementsQueue: ContextEnhancer<any, any, any>[];
@@ -32,9 +35,9 @@ export default function makeActionClass<Extension extends {} = {}>(extensions?: 
       this.$context = {};
       this.$hooks = {};
 
-      registerHook(this, 'running', (event) => logger.debug('Action running. ', [event]));
-      registerHook(this, 'success', (event) => logger.debug('Action success. ', [event]));
-      registerHook(this, 'error', (event) => logger.debug('Action error. ', [event]));
+      registerHook(this, 'running', (event) => logger.debug('Action running.', [event]));
+      registerHook(this, 'success', (event) => logger.debug('Action success.', [event]));
+      registerHook(this, 'error', (event) => logger.debug('Action error.', [event]));
     }
 
     public async useContext() {
@@ -56,8 +59,6 @@ export default function makeActionClass<Extension extends {} = {}>(extensions?: 
     }
 
     public async run(runner: ContextRunner<any, any, any>) {
-      await runHook(this, 'preparing', undefined);
-
       const context = await this.useContext();
 
       await runHook(this, 'running', { context, runner });
@@ -94,5 +95,5 @@ export default function makeActionClass<Extension extends {} = {}>(extensions?: 
     }
   }
 
-  return Action.extends(extensions) as ActionClass<{}, Extension>;
+  return CustomActionClass.extends(extensions) as ActionClass<{}, Extension>;
 }

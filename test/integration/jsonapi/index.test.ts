@@ -9,8 +9,8 @@ import {
   none,
   one,
   save,
+  when,
 } from '@/core';
-import { when } from '@/core/actions';
 import makeJsonApiAction from '@test/integration/jsonapi/makeJsonApiAction';
 import createFetchMock from '@test/utilities/http/createFetchMock';
 import createFetchResponse from '@test/utilities/http/createFetchResponse';

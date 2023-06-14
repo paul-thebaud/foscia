@@ -631,26 +631,6 @@ action().use(paginate({ number: 1, size: 10 }));
 
 ## Hooks
 
-### `onPreparing`
-
-Register a `preparing` hook callback on action.
-Callback may be async.
-
-#### Example
-
-```javascript
-import { onPreparing } from 'foscia/jsonapi';
-
-
-action().use(onPreparing(() => {
-  /* Do something */
-}));
-```
-
-#### Arguments
-
-- `{() => Awaitable<void>}` `callback` callback to run on event
-
 ### `onRunning`
 
 Register a `running` hook callback on action.

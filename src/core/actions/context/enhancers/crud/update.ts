@@ -1,8 +1,9 @@
 import context from '@/core/actions/context/enhancers/context';
 import instanceData from '@/core/actions/context/enhancers/crud/instanceData';
 import forInstance from '@/core/actions/context/enhancers/forInstance';
-import changeInstanceExistence from '@/core/actions/context/enhancers/hooks/changeInstanceExistence';
-import onPreparing from '@/core/actions/context/enhancers/hooks/onPreparing';
+import changeInstanceExistence
+  from '@/core/actions/context/enhancers/hooks/changeInstanceExistence';
+import onRunning from '@/core/actions/context/enhancers/hooks/onRunning';
 import onSuccess from '@/core/actions/context/enhancers/hooks/onSuccess';
 import runInstanceHooks from '@/core/actions/context/enhancers/hooks/runInstanceHooks';
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
@@ -34,7 +35,7 @@ export default function update<
     .use(instanceData(instance))
     .use(context({ action: 'update' }))
     .use(changeInstanceExistence(true))
-    .use(onPreparing(runInstanceHooks(instance, ['updating', 'saving'])))
+    .use(onRunning(runInstanceHooks(instance, ['updating', 'saving'])))
     .use(onSuccess(runInstanceHooks(instance, ['updated', 'saved'])));
 }
 

@@ -26,7 +26,6 @@ import forModel from '@/core/actions/context/enhancers/forModel';
 import forRelation from '@/core/actions/context/enhancers/forRelation';
 import onError from '@/core/actions/context/enhancers/hooks/onError';
 import onFinally from '@/core/actions/context/enhancers/hooks/onFinally';
-import onPreparing from '@/core/actions/context/enhancers/hooks/onPreparing';
 import onRunning from '@/core/actions/context/enhancers/hooks/onRunning';
 import onSuccess from '@/core/actions/context/enhancers/hooks/onSuccess';
 import include from '@/core/actions/context/enhancers/include';
@@ -75,7 +74,6 @@ export {
   target,
   include,
   instanceData,
-  onPreparing,
   onRunning,
   onSuccess,
   onError,

@@ -369,12 +369,11 @@ not parallelized).
 You can temporally disable hook execution for a given model by using the
 `withoutHooks` function.
 
+Be aware that `withoutHooks` will always return a promise, even when
+your callback is a sync function.
+
 ```javascript
 import { withoutHooks } from 'foscia/core';
-
-const syncResultOfYourCallback = withoutHooks(User, () => {
-    // TODO Do something sync and return it.
-});
 
 const asyncResultOfYourCallback = await withoutHooks(User, async () => {
     // TODO Do something async and return it.

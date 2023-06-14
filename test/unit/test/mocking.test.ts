@@ -1,5 +1,5 @@
 import { makeJsonRest } from '@/blueprints';
-import { context, raw } from '@/core/actions';
+import { context, raw } from '@/core';
 import { mockAction, unmockAction } from '@/test';
 import { describe, expect, it, vi } from 'vitest';
 

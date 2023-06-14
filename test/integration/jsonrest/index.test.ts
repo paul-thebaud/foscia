@@ -9,8 +9,8 @@ import {
   none,
   one,
   save,
+  when,
 } from '@/core';
-import { when } from '@/core/actions';
 import makeJsonRestAction from '@test/integration/jsonrest/makeJsonRestAction';
 import createFetchMock from '@test/utilities/http/createFetchMock';
 import createFetchResponse from '@test/utilities/http/createFetchResponse';

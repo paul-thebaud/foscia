@@ -75,7 +75,6 @@ Combination of:
 
 ### `hooksExtension`
 
--   [`onPreparing`](/docs/reference/actions-enhancers#onpreparing)
 -   [`onRunning`](/docs/reference/actions-enhancers#onrunning)
 -   [`onSuccess`](/docs/reference/actions-enhancers#onsuccess)
 -   [`onError`](/docs/reference/actions-enhancers#onerror)

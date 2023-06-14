@@ -2,11 +2,6 @@
 import { Hookable } from '@/core/hooks/types';
 import { Awaitable } from '@/utilities';
 
-function withoutHooks<T extends Hookable<any>, R>(
-  hookable: T,
-  callback: (hookable: T) => R,
-): R;
-
 async function withoutHooks<T extends Hookable<any>, R>(
   hookable: T,
   callback: (hookable: T) => Awaitable<R>,

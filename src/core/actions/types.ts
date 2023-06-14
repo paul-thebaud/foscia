@@ -11,7 +11,6 @@ import {
 import { Awaitable, Constructor, DescriptorHolder } from '@/utilities';
 
 export type ActionHooksDefinition<C extends {} = any> = {
-  preparing: HookCallback<undefined>;
   running: HookCallback<{ context: C; runner: Function; }>;
   success: HookCallback<{ context: C; result: unknown; }>;
   error: HookCallback<{ context: C; error: unknown; }>;
@@ -36,7 +35,7 @@ export type Action<Context extends {} = {}, Extension extends {} = {}> =
 
 export type ActionClass<Context extends {} = {}, Extension extends {} = {}> = {
   extends<NewExtension extends {} = {}>(
-    newExtensions?: NewExtension,
+    newExtensions?: NewExtension & ThisType<Action<Context, Extension & NewExtension>>,
   ): ActionClass<Context, Extension & NewExtension>;
 } & Constructor<Action<Context, Extension>>;
 

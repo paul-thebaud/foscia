@@ -1,11 +1,18 @@
 import context from '@/core/actions/context/enhancers/context';
 import forInstance from '@/core/actions/context/enhancers/forInstance';
-import changeInstanceExistence from '@/core/actions/context/enhancers/hooks/changeInstanceExistence';
-import onPreparing from '@/core/actions/context/enhancers/hooks/onPreparing';
+import changeInstanceExistence
+  from '@/core/actions/context/enhancers/hooks/changeInstanceExistence';
+import onRunning from '@/core/actions/context/enhancers/hooks/onRunning';
 import onSuccess from '@/core/actions/context/enhancers/hooks/onSuccess';
 import runInstanceHooks from '@/core/actions/context/enhancers/hooks/runInstanceHooks';
 import makeEnhancersExtension from '@/core/actions/extensions/makeEnhancersExtension';
-import { Action, ActionParsedExtension, ConsumeId, ConsumeInstance, ConsumeModel } from '@/core/actions/types';
+import {
+  Action,
+  ActionParsedExtension,
+  ConsumeId,
+  ConsumeInstance,
+  ConsumeModel,
+} from '@/core/actions/types';
 import { Model, ModelClassInstance, ModelInstance } from '@/core/model/types';
 
 /**
@@ -24,7 +31,7 @@ export default function destroy<
     .use(forInstance<C, D, I>(instance))
     .use(context({ action: 'destroy' }))
     .use(changeInstanceExistence(false))
-    .use(onPreparing(runInstanceHooks(instance, ['destroying'])))
+    .use(onRunning(runInstanceHooks(instance, ['destroying'])))
     .use(onSuccess(runInstanceHooks(instance, ['destroyed'])));
 }
 
