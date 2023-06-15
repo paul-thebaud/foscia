@@ -14,9 +14,9 @@ export default function normalizeDotRelations<D extends {}>(
   return Promise.all(relations.map(async (dotKey) => {
     const [currentKey, ...subKeys] = dotKey.split('.');
     const def = model.$schema[currentKey as ModelRelationKey<ModelClass<D>>];
-    if (!isRelationDef(def)) {
+    if (!def || !isRelationDef(def)) {
       logger.warn(
-        `Trying to normalize non-relation \`${model.$type}.${def.key}\`. Either this is not a relation or relation is not declared.`,
+        `Trying to normalize non-relation \`${model.$type}.${def?.key ?? currentKey}\`. Either this is not a relation or relation is not declared.`,
       );
 
       return dotKey;
@@ -30,7 +30,7 @@ export default function normalizeDotRelations<D extends {}>(
 
     const subModel = await detectModel(model, def, registry);
     if (!subModel) {
-      logger.info(
+      logger.debug(
         `Could not detect model for relation \`${model.$type}.${def.key}\`. Skipping sub-keys normalization.`,
       );
 
