@@ -24,7 +24,7 @@ export default class RefsCache implements CacheI {
       return null;
     }
 
-    const instance = await this.mode.deref(ref);
+    const instance = await this.mode.value(ref);
     if (!instance) {
       await this.forget(type, id);
 

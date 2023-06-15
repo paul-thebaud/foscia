@@ -3,7 +3,7 @@ import { Awaitable } from '@/utilities';
 
 export type RefsCacheMode<R> = {
   ref(instance: ModelInstance): Awaitable<R>;
-  deref(ref: R): Awaitable<ModelInstance | undefined>;
+  value(ref: R): Awaitable<ModelInstance | undefined>;
 };
 
 export type RefsCacheConfig<R = unknown> = {

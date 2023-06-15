@@ -8,6 +8,9 @@ export default defineConfig({
     coverage: {
       provider: 'istanbul',
     },
+    setupFiles: [
+      './test/setup/logger.ts',
+    ],
   },
   resolve: {
     alias: {
