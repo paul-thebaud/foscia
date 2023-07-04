@@ -12,9 +12,13 @@ test('Actions are type safe', async () => {
     .forModel(Post)
     .include('comments.postedBy')
     .all();
+  const postsUsingVariadic = await action()
+    .use(forModel(Post), include('comments.postedBy'))
+    .run(all());
 
   expectTypeOf(postsUsingFunc).toMatchTypeOf<Post[]>();
   expectTypeOf(postsUsingBuild).toMatchTypeOf<Post[]>();
+  expectTypeOf(postsUsingVariadic).toMatchTypeOf<Post[]>();
 
   const postUsingFunc = await action()
     .use(forInstance(postsUsingBuild[0]))

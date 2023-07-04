@@ -50,6 +50,19 @@ action()
     .use(include('comments'));
 ```
 
+`use` also support variadic enhancers.
+Number of arguments might be limited, check the function signature for details.
+
+```javascript
+action()
+    .use(
+      forModel(Post),
+      include('comments'),
+      sortByDesc('publishedAt'),
+      // etc.
+    );
+```
+
 <Link
   className="button bg--primary"
   to="/docs/reference/actions-enhancers"

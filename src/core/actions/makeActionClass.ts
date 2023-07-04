@@ -52,8 +52,8 @@ export default function makeActionClass<Extension extends {} = {}>(
       return this;
     }
 
-    public use(enhancer: ContextEnhancer<any, any, any>) {
-      this.$enhancementsQueue.push(enhancer);
+    public use(...enhancers: ContextEnhancer<any, any, any>[]) {
+      this.$enhancementsQueue.push(...enhancers);
 
       return this;
     }

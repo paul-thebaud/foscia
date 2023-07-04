@@ -1,5 +1,12 @@
+import { ActionVariadicUse } from '@/core/actions/actionVariadicUse';
 import { Hookable, HookCallback } from '@/core/hooks/types';
-import { Model, ModelIdType, ModelInstance, ModelRelation, ModelRelationRaw } from '@/core/model/types';
+import {
+  Model,
+  ModelIdType,
+  ModelInstance,
+  ModelRelation,
+  ModelRelationRaw,
+} from '@/core/model/types';
 import {
   AdapterI,
   CacheI,
@@ -30,6 +37,7 @@ export type Action<Context extends {} = {}, Extension extends {} = {}> =
       runner: ContextRunner<Context, Extension, Result>,
     ): Promise<Awaited<Result>>;
   }
+  & ActionVariadicUse<Context, Extension>
   & Hookable<ActionHooksDefinition<Context>>
   & ExtendedAction<Extension>;
 
