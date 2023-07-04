@@ -397,7 +397,7 @@ export type ModelKey<M> =
  */
 export type ModelRelationKey<M> =
   keyof ModelInferSchema<M> extends infer K
-    ? K extends string & keyof ModelInferSchema<M>
+    ? K extends string & keyof ModelInferSchema<M> & keyof ModelValues<M>
       ? ModelInferSchema<M>[K] extends never
         ? never
         : ModelInferSchema<M>[K] extends ModelRelation
@@ -414,7 +414,7 @@ export type ModelRelationDotKey<M, Depth extends number = 5> =
   [Depth] extends [0]
     ? never
     : keyof ModelInferSchema<M> extends infer K
-      ? K extends string & keyof ModelInferSchema<M>
+      ? K extends string & keyof ModelInferSchema<M> & keyof ModelValues<M>
         ? ModelInferSchema<M>[K] extends never
           ? never
           : ModelInferSchema<M>[K] extends ModelRelation<any, infer T>

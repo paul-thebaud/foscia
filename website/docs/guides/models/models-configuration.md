@@ -16,7 +16,7 @@ description: Configuring a model behavior.
 
 You may configure your model when creating them through your factory `makeModel`
 or when defining a custom factory such as described in the
-[model composition guide](/docs/guides/models-composition).
+[model composition guide](/docs/guides/models/models-composition).
 
 Inside a model creation:
 

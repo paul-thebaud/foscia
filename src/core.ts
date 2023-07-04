@@ -42,6 +42,8 @@ import id from '@/core/model/props/factories/id';
 import readOnly from '@/core/model/props/factories/readOnly';
 import shouldSync from '@/core/model/props/shouldSync';
 import loaded from '@/core/model/relations/loaded';
+import makeForRelationLoader from '@/core/model/relations/makeForRelationLoader';
+import makeRefreshIncludeLoader from '@/core/model/relations/makeRefreshIncludeLoader';
 import changed from '@/core/model/snapshots/changed';
 import compareSnapshots from '@/core/model/snapshots/compareSnapshots';
 import markSynced from '@/core/model/snapshots/markSynced';
@@ -90,6 +92,8 @@ export {
   makeComposable,
   makeModel,
   makeModelFactory,
+  makeForRelationLoader,
+  makeRefreshIncludeLoader,
   toBoolean,
   toDate,
   toNumber,

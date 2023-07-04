@@ -23,8 +23,8 @@ This guide is only about using actions. You can read more about action factories
 setups here:
 
 - [**Make your first action factory**](/docs/getting-started#action-factory)
-- [**Configure your action factory**](/docs/guides/action-factory-configuration)
-- [**Implement custom action factory**](/docs/guides/custom-action-factory)
+- [**Configure your action factory**](/docs/guides/actions/action-factory-configuration)
+- [**Implement custom action factory**](/docs/guides/actions/custom-action-factory)
 
 :::
 
@@ -99,7 +99,7 @@ to your actions' instances. As an action, extensions can avoid you writing
 The first step to use one or many extensions is to update your action factory
 in which you should provide an `extension` configuration option.
 If you are using a custom action factory, you should check the
-[custom action factory guide](/docs/guides/custom-action-factory).
+[custom action factory guide](/docs/guides/actions/custom-action-factory).
 
 ```javascript title="action.js"
 import { forModel, include, all } from 'foscia/core';
