@@ -1,5 +1,13 @@
 # Changelog
 
+# [0.1.0-alpha.12](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.11...v0.1.0-alpha.12) (2023-07-04)
+
+
+### Features
+
+* **actions:** support loading relations using loaders ([bb60e42](https://github.com/paul-thebaud/foscia/commit/bb60e4229e32e9c4facf179492520fe57be90fbc)), closes [#8](https://github.com/paul-thebaud/foscia/issues/8)
+* add variadic enhancers support to action.use ([9a4fbbd](https://github.com/paul-thebaud/foscia/commit/9a4fbbdb23e1313eac2a834bf1f705de8eb789a5)), closes [#26](https://github.com/paul-thebaud/foscia/issues/26)
+
 # [0.1.0-alpha.11](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.10...v0.1.0-alpha.11) (2023-06-13)
 
 
