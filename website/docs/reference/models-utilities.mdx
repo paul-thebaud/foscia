@@ -103,9 +103,9 @@ if (wasChanged) { /* do something */ }
 
 #### Returns
 
-`{boolean}`
+`{boolean}` if keys (or instance) changed since last sync.
 
-### `synced`
+### `markSynced`
 
 Mark the model instance's values as synced.
 If no keys are provided, will replace whole original snapshot (including IDs).
@@ -191,6 +191,29 @@ restoreSnapshot(post, postSnapshot, ['title', 'description']);
 #### Returns
 
 `{I}`, the affected instance.
+
+### `compareSnapshots`
+
+Check if the given keys are different between two snapshots.
+If no keys are provided, will check whole snapshots (including IDs).
+
+#### Example
+
+```javascript
+import { compareSnapshots } from 'foscia/core';
+
+compareSnapshots(nextSnapshot, prevSnapshot, ['title', 'description']);
+```
+
+#### Arguments
+
+- [`{ModelSnapshot<I>}`](/docs/reference/api/modules/core#modelsnapshot) `nextSnapshot`
+- [`{ModelSnapshot<I>}`](/docs/reference/api/modules/core#modelsnapshot) `prevSnapshot`
+- [`{ArrayableVariadic<ModelKey<I>>}`](/docs/reference/api/modules/core#modelkey) `...only`
+
+#### Returns
+
+`{boolean}` if keys (or all values) are different on given snapshots.
 
 ## Factories
 
