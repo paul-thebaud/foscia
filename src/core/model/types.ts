@@ -341,6 +341,7 @@ export type ModelInstance<D extends {} = any> = {
  * Model class or instance snapshot.
  */
 export type ModelSnapshot<M> = {
+  $model: ModelClass;
   exists: boolean;
   $raw: any;
   $loaded: Dictionary<true>;

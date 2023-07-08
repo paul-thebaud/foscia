@@ -8,7 +8,6 @@ export default function changed<I extends ModelInstance>(
   ...only: ArrayableVariadic<ModelKey<I>>
 ) {
   return !compareSnapshots(
-    instance.$model,
     takeSnapshot(instance),
     instance.$original,
     ...only,

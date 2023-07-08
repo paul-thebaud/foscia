@@ -4,11 +4,14 @@ import { wrapVariadic } from '@/utilities';
 import { ArrayableVariadic } from '@/utilities/types';
 
 export default function compareSnapshots<M extends ModelClass>(
-  model: M,
   nextSnapshot: ModelSnapshot<M>,
   prevSnapshot: ModelSnapshot<M>,
   ...only: ArrayableVariadic<ModelKey<M>>
 ) {
+  if (nextSnapshot.$model !== prevSnapshot.$model) {
+    return false;
+  }
+
   const keys = wrapVariadic(...only);
   if (!keys.length && nextSnapshot.exists !== prevSnapshot.exists) {
     return false;
@@ -19,7 +22,7 @@ export default function compareSnapshots<M extends ModelClass>(
     || Object.keys(nextSnapshot.$values).length === Object.keys(prevSnapshot.$values).length
   ) && (keys.length ? keys : Object.keys(nextSnapshot.$values) as ModelKey<M>[]).every(
     (key) => compareModelValue(
-      model,
+      nextSnapshot.$model,
       nextSnapshot.$values[key],
       prevSnapshot.$values[key],
     ),
