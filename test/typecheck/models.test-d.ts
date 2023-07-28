@@ -11,7 +11,7 @@ test('Models are type safe', () => {
   expectTypeOf(post.lid).toMatchTypeOf<string | number | null>();
   expectTypeOf(post.title).toMatchTypeOf<string>();
   expectTypeOf(post.body).toMatchTypeOf<string | null>();
-  expectTypeOf(post.publishedAt).toMatchTypeOf<Date>();
+  expectTypeOf(post.publishedAt).toMatchTypeOf<Date | null>();
   expectTypeOf(post.comments).toMatchTypeOf<Comment[]>();
   expectTypeOf(post.published).toMatchTypeOf<boolean>();
 

@@ -11,6 +11,9 @@ export default defineConfig({
     setupFiles: [
       './test/setup/logger.ts',
     ],
+    typecheck: {
+      tsconfig: 'test/tsconfig.json',
+    },
   },
   resolve: {
     alias: {

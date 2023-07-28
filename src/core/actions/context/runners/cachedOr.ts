@@ -45,8 +45,10 @@ export default function cachedOr<
   ) => {
     // TODO How could we manage the "forRelation" case?
     const context = await action.useContext();
-    const instance = await consumeCache(context)
-      .find(consumeModel(context).$type, consumeId(context));
+    const id = consumeId(context);
+    const instance = !isNil(id)
+      ? await consumeCache(context).find(consumeModel(context).$type, id)
+      : null;
     if (isNil(instance) || !loaded(instance, context.include ?? [])) {
       return action.run(nilRunner);
     }
