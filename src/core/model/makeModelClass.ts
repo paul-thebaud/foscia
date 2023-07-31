@@ -51,7 +51,7 @@ export default function makeModelClass(type: string, config: ModelConfig) {
       });
 
       if (def.default !== undefined) {
-        this.$values[def.key] = computeDefault(this, def.default);
+        this.$values[def.key] = computeDefault(this, def);
       }
     });
   } as unknown as Model;
