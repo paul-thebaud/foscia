@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   changed,
-  eachAttributes,
-  eachRelations,
+  mapAttributes,
+  mapRelations,
   ModelAttribute,
   ModelInstance,
   ModelRelation,
@@ -27,7 +27,7 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
   public async serialize(instance: ModelInstance, context: {}) {
     const resource = await this.makeResource(instance, context);
 
-    await Promise.all(eachAttributes(instance, async (def) => {
+    await Promise.all(mapAttributes(instance, async (def) => {
       const rawValue = instance[def.key];
       if (await this.shouldSerializeAttribute(instance, def, rawValue, context)) {
         const serializedKey = await this.serializeAttributeKey(instance, def, context);
@@ -42,7 +42,7 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
       }
     }));
 
-    await Promise.all(eachRelations(instance, async (def) => {
+    await Promise.all(mapRelations(instance, async (def) => {
       const rawValue = instance[def.key];
       if (await this.shouldSerializeRelation(instance, def, rawValue, context)) {
         const serializedKey = await this.serializeRelationKey(instance, def, context);

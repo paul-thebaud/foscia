@@ -32,9 +32,10 @@ import isModel from '@/core/model/props/checks/isModel';
 import isPluralRelationDef from '@/core/model/props/checks/isPluralRelationDef';
 import isPropDef from '@/core/model/props/checks/isPropDef';
 import isRelationDef from '@/core/model/props/checks/isRelationDef';
-import eachAttributes from '@/core/model/props/eachAttributes';
-import eachIds from '@/core/model/props/eachIds';
-import eachRelations from '@/core/model/props/eachRelations';
+import mapAttributes from '@/core/model/props/mapAttributes';
+import mapIds from '@/core/model/props/mapIds';
+import mapProps from '@/core/model/props/mapProps';
+import mapRelations from '@/core/model/props/mapRelations';
 import attr from '@/core/model/props/factories/attr';
 import hasMany from '@/core/model/props/factories/hasMany';
 import hasOne from '@/core/model/props/factories/hasOne';
@@ -121,9 +122,10 @@ export {
   isPluralRelationDef,
   isModel,
   isInstance,
-  eachIds,
-  eachAttributes,
-  eachRelations,
+  mapIds,
+  mapAttributes,
+  mapRelations,
+  mapProps,
   shouldSync,
   normalizeDotRelations,
   normalizeInclude,

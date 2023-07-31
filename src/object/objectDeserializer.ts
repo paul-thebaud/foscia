@@ -8,8 +8,8 @@ import {
   DeserializedData,
   DeserializerError,
   DeserializerI,
-  eachAttributes,
-  eachRelations,
+  mapAttributes,
+  mapRelations,
   markSynced,
   ModelAttribute,
   ModelIdType,
@@ -173,7 +173,7 @@ export default abstract class ObjectDeserializer<
       instance.$values.lid = newLid;
     }
 
-    await Promise.all(eachAttributes(instance, async (def) => {
+    await Promise.all(mapAttributes(instance, async (def) => {
       const serializedKey = await this.serializeAttributeKey(instance, def, context);
       const rawValue = await this.extractAttributeValue(
         extractedData,
@@ -188,7 +188,7 @@ export default abstract class ObjectDeserializer<
       }
     }));
 
-    await Promise.all(eachRelations(instance, async (def) => {
+    await Promise.all(mapRelations(instance, async (def) => {
       const serializedKey = await this.serializeRelationKey(instance, def, context);
       const rawValue = await this.extractRelationValue(
         extractedData,
