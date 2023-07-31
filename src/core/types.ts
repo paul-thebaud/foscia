@@ -10,6 +10,7 @@ export type CacheI = {
   put(type: string, id: ModelIdType, instance: ModelInstance): Promise<void>;
   forget(type: string, id: ModelIdType): Promise<void>;
   forgetAll(type: string): Promise<void>;
+  clear(): Promise<void>;
 };
 
 export type AdapterI<Data> = {

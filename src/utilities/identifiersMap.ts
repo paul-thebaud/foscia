@@ -25,7 +25,11 @@ export default class IdentifiersMap<Type, Id, T> {
     this.valuesByTypes.get(type)?.delete(id);
   }
 
-  public clear(type: Type) {
+  public deleteAll(type: Type) {
     this.valuesByTypes.delete(type);
+  }
+
+  public clear() {
+    this.valuesByTypes.clear();
   }
 }

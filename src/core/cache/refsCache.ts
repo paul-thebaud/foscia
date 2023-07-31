@@ -43,6 +43,10 @@ export default class RefsCache implements CacheI {
   }
 
   public async forgetAll(type: string) {
-    this.instances.clear(type);
+    this.instances.deleteAll(type);
+  }
+
+  public async clear() {
+    this.instances.clear();
   }
 }
