@@ -1,8 +1,7 @@
 /* eslint-disable no-param-reassign */
-import eachAttributes from '@/core/model/props/eachAttributes';
-import eachIds from '@/core/model/props/eachIds';
-import eachRelations from '@/core/model/props/eachRelations';
+import mapProps from '@/core/model/props/mapProps';
 import cloneModelValue from '@/core/model/snapshots/cloneModelValue';
+import markSynced from '@/core/model/snapshots/markSynced';
 import {
   ModelAttribute,
   ModelId,
@@ -41,9 +40,8 @@ export default function restoreSnapshot<I extends ModelInstance>(
     }
   };
 
-  eachIds(instance, restoreForDef);
-  eachAttributes(instance, restoreForDef);
-  eachRelations(instance, restoreForDef);
+  mapProps(instance, restoreForDef);
+  markSynced(instance, ...only);
 
   return instance;
 }
