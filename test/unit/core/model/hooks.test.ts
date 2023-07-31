@@ -12,7 +12,7 @@ import {
 } from '@/core';
 import { describe, expect, it } from 'vitest';
 
-describe.concurrent('hooks', () => {
+describe.concurrent('unit: hooks', () => {
   it.each([
     [onCreated, 'created'],
     [onCreating, 'creating'],
@@ -23,7 +23,7 @@ describe.concurrent('hooks', () => {
     [onSaving, 'saving'],
     [onUpdated, 'updated'],
     [onUpdating, 'updating'],
-  ] as const)('should register %s', (fn, event) => {
+  ] as const)('should register hook callback', (fn, event) => {
     const callback = () => {
     };
     const model = makeModel('model');

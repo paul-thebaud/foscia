@@ -2,7 +2,7 @@ import { weakRefCacheMode } from '@/core';
 import Post from '@test/utilities/models/post';
 import { describe, expect, it } from 'vitest';
 
-describe.concurrent('weakRefCacheMode', () => {
+describe.concurrent('unit: weakRefCacheMode', () => {
   it('should use a weak ref instance', async () => {
     const post = new Post();
 

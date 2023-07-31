@@ -3,7 +3,7 @@ import { context, raw } from '@/core';
 import { mockAction, unmockAction } from '@/test';
 import { describe, expect, it, vi } from 'vitest';
 
-describe.concurrent('mocking', () => {
+describe.concurrent('unit: mocking', () => {
   const makeAction = () => {
     const { action, adapter } = makeJsonRest({
       baseURL: 'https://example.com',

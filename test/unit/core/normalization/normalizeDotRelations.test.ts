@@ -2,7 +2,7 @@ import { hasOne, logger, makeModel, normalizeDotRelations } from '@/core';
 import MapRegistry from '@/core/registry/mapRegistry';
 import { describe, expect, it, vi } from 'vitest';
 
-describe.concurrent('normalizeDotRelations', () => {
+describe.concurrent('unit: normalizeDotRelations', () => {
   it('should normalize only roots without registry', async () => {
     const loggerDebugSpy = vi.spyOn(logger, 'debug');
 

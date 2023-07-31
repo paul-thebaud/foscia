@@ -2,7 +2,7 @@ import { toDate, toString } from '@/core';
 import useTransform from '@/core/transformers/useTransform';
 import { describe, expect, it } from 'vitest';
 
-describe.concurrent('useTransform', () => {
+describe.concurrent('unit: useTransform', () => {
   it('should use adapted transform function', () => {
     const string = toString();
     const date = toDate();

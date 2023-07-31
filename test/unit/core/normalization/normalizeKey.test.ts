@@ -1,7 +1,7 @@
 import { attr, hasOne, makeModel, normalizeKey } from '@/core';
 import { describe, expect, it } from 'vitest';
 
-describe.concurrent('normalizeKey', () => {
+describe.concurrent('unit: normalizeKey', () => {
   it('should normalize aliased key', () => {
     const model = makeModel('model', {
       foo: attr({ alias: 'bar' }),

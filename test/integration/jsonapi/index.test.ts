@@ -18,7 +18,7 @@ import Comment from '@test/utilities/models/comment';
 import Post from '@test/utilities/models/post';
 import { describe, expect, it, vi } from 'vitest';
 
-describe.concurrent('JSON:API integration', () => {
+describe.concurrent('integration: JSON:API', () => {
   it('should run action: all records', async () => {
     const fetchMock = createFetchMock();
     fetchMock.mockImplementationOnce(createFetchResponse().json({

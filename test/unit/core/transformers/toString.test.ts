@@ -1,7 +1,7 @@
 import { toString } from '@/core';
 import { describe, expect, it } from 'vitest';
 
-describe.concurrent('toString', () => {
+describe.concurrent('unit: toString', () => {
   it.each([
     [null, null],
     [undefined, null],
@@ -10,7 +10,7 @@ describe.concurrent('toString', () => {
     [42, '42'],
     [42.42, '42.42'],
     [false, 'false'],
-  ])('toString(%s): %s', (value, expected) => {
+  ])('should convert to string', (value, expected) => {
     expect(toString()(value)).toStrictEqual(expected);
   });
 });

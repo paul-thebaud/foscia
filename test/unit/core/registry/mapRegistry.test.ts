@@ -4,7 +4,7 @@ import { toKebabCase } from '@/utilities';
 import wait from '@test/utilities/wait';
 import { describe, expect, it, vi } from 'vitest';
 
-describe.concurrent('mapRegistry', () => {
+describe.concurrent('unit: mapRegistry', () => {
   it('should register and resolve models', async () => {
     const loggerDebugSpy = vi.spyOn(logger, 'debug');
 

@@ -1,7 +1,7 @@
 import { toBoolean } from '@/core';
 import { describe, expect, it } from 'vitest';
 
-describe.concurrent('toBoolean', () => {
+describe.concurrent('unit: toBoolean', () => {
   it.each([
     [null, null],
     [undefined, null],
@@ -16,7 +16,7 @@ describe.concurrent('toBoolean', () => {
     ['0', false],
     ['false', false],
     ['no', false],
-  ])('toBoolean(%s): %s', (value, expected) => {
+  ])('should convert to boolean with default values', (value, expected) => {
     const defaultToBoolean = toBoolean();
     expect(defaultToBoolean(value)).toStrictEqual(expected);
   });
@@ -35,7 +35,7 @@ describe.concurrent('toBoolean', () => {
     ['0', false],
     ['false', false],
     ['no', false],
-  ])('toBoolean(%s): %s (custom values)', (value, expected) => {
+  ])('should convert to boolean with custom values', (value, expected) => {
     const defaultToBoolean = toBoolean([true, 1]);
     expect(defaultToBoolean(value)).toStrictEqual(expected);
   });

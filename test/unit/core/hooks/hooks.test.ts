@@ -3,7 +3,7 @@ import { Awaitable } from '@/utilities';
 import wait from '@test/utilities/wait';
 import { describe, expect, it, vi } from 'vitest';
 
-describe.concurrent('hooks', () => {
+describe.concurrent('unit: hooks', () => {
   const dummyHookable = {
     $hooks: {},
   } as Hookable<{ dummy: (value: string) => Awaitable<void> }>;

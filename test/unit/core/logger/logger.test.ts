@@ -1,7 +1,7 @@
 import { logger } from '@/core';
 import { describe, expect, it, vi } from 'vitest';
 
-describe.concurrent('logger', () => {
+describe.concurrent('unit: logger', () => {
   it('should only mock when required', () => {
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);

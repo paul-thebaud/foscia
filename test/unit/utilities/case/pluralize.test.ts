@@ -1,7 +1,7 @@
 import { pluralize } from '@/utilities';
 import { describe, expect, it } from 'vitest';
 
-describe.concurrent('pluralize', () => {
+describe.concurrent('unit: pluralize', () => {
   it.each([
     ['car', 'cars'],
     ['apple', 'apples'],
@@ -17,7 +17,7 @@ describe.concurrent('pluralize', () => {
     ['video', 'videos'],
     ['hero', 'heroes'],
     ['potato', 'potatoes'],
-  ])('pluralize(%s): %s', (value, kebab) => {
+  ])('should pluralize word', (value, kebab) => {
     expect(pluralize(value)).toStrictEqual(kebab);
   });
 });

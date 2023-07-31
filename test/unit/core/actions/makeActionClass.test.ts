@@ -11,7 +11,7 @@ import {
 import wait from '@test/utilities/wait';
 import { describe, expect, it, vi } from 'vitest';
 
-describe.concurrent('makeActionClass', () => {
+describe.concurrent('unit: makeActionClass', () => {
   it('should make an extended action', async () => {
     const dummyEnhancer = (dummy: string) => (action: Action) => action.updateContext({ dummy });
     const dummyRunner = () => async (action: Action<{ dummy: string }>) => (
