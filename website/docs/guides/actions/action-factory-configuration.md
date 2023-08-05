@@ -16,7 +16,8 @@ match your data source needs.
 
 You can customize the dependencies when
 [using a blueprint action factory](/docs/getting-started#with-blueprints) or
-when using a [custom action factory](/docs/guides/actions/custom-action-factory).
+when using a
+[custom action factory](/docs/guides/actions/custom-action-factory).
 
 In this guide, we will see how to customize dependencies configuration through
 the REST blueprint action factory as an example. For this, each configurable

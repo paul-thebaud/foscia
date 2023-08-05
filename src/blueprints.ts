@@ -8,6 +8,7 @@ import restExtension from '@/blueprints/extensions/restExtension';
 import jsonApiStarterExtensions from '@/blueprints/extensions/starters/jsonApiStarterExtensions';
 import restStarterExtensions from '@/blueprints/extensions/starters/restStarterExtensions';
 import writeExtensions from '@/blueprints/extensions/writeExtension';
+import makeHttpClient from '@/blueprints/http/makeHttpClient';
 import appendJsonApiParams from '@/blueprints/jsonapi/appendJsonApiParams';
 import makeJsonApi from '@/blueprints/jsonapi/makeJsonApi';
 import makeCache from '@/blueprints/makeCache';
@@ -20,6 +21,7 @@ export {
   makeJsonApi,
   appendJsonApiParams,
   makeJsonRest,
+  makeHttpClient,
   coreExtensions,
   readExtensions,
   writeExtensions,

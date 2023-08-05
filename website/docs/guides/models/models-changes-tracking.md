@@ -7,27 +7,27 @@ description: Tracking models states change (values, etc.).
 
 :::tip What you'll learn
 
-- Tracking a model's instance changes
-- Creating snapshots of a model's instance
-- Restoring snapshots of a model's instance
+-   Tracking a model's instance changes
+-   Creating snapshots of a model's instance
+-   Restoring snapshots of a model's instance
 
 :::
 
-Foscia will track changes over your instances properties (IDs, attributes
-or relations) throughout their existence.
+Foscia will track changes over your instances properties (IDs, attributes or
+relations) throughout their existence.
 
 Each time you send/fetch an instance to/from your data source, your instance's
 properties will be synced in an "original" snapshot.
 
-This original snapshot allows you to check if some properties have changed
-since last synchronization.
+This original snapshot allows you to check if some properties have changed since
+last synchronization.
 
 ## Taking a snapshot
 
-You can take a snapshot of an instance at any time using `takeSnapshot`.
-This is done automatically every time you send/fetch an instance to/form
-your data source, and the created snapshot is saved into the `$original`
-properties of your instance.
+You can take a snapshot of an instance at any time using `takeSnapshot`. This is
+done automatically every time you send/fetch an instance to/form your data
+source, and the created snapshot is saved into the `$original` properties of
+your instance.
 
 ```javascript
 import { takeSnapshot } from 'foscia/core';
@@ -37,10 +37,9 @@ const myPostSnapshot = takeSnapshot(myPost);
 
 ## Checking for changes
 
-To check for changes between two snapshots, you can use `compareSnapshots`.
-To check for changes between an instance and its original snapshot, you
-can use `changed` (this will automatically take a new snapshot
-and compare against it).
+To check for changes between two snapshots, you can use `compareSnapshots`. To
+check for changes between an instance and its original snapshot, you can use
+`changed` (this will automatically take a new snapshot and compare against it).
 
 ```javascript
 import { changed, compareSnapshots, takeSnapshot } from 'foscia/core';
@@ -58,8 +57,8 @@ compareSnapshots(takeSnapshot(myPost), myPost.$original, ['title']);
 
 ## Syncing changes
 
-You can mark your instance as synced any time using `markSynced`.
-Just like other helper functions, you can affect only specific properties.
+You can mark your instance as synced any time using `markSynced`. Just like
+other helper functions, you can affect only specific properties.
 
 ```javascript
 import { markSynced } from 'foscia/core';
@@ -72,9 +71,9 @@ markSynced(myPost, ['title']);
 
 ## Restoring changes
 
-You can restore a snapshot on your model as synced any time using `restore`
-and `restoreSnapshot`.
-Just like other helper functions, you can affect only specific properties.
+You can restore a snapshot on your model as synced any time using `restore` and
+`restoreSnapshot`. Just like other helper functions, you can affect only
+specific properties.
 
 ```javascript
 import { restore, restoreSnapshot } from 'foscia/core';

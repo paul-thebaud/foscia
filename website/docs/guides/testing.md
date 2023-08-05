@@ -71,8 +71,8 @@ the action factory function is already a mockable function (a mock can be
 installed on it) and you have nothing else to do.
 
 If you are building your
-[own action factory function](docs/guides/actions/custom-action-factory), you can make
-any factory function mockable using `makeActionFactoryMockable`:
+[own action factory function](docs/guides/actions/custom-action-factory), you
+can make any factory function mockable using `makeActionFactoryMockable`:
 
 ```typescript title="action.ts"
 function action() {
