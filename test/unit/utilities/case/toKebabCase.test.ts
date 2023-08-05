@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 describe.concurrent('unit: toKebabCase', () => {
   it.each([
+    ['', ''],
     ['foo', 'foo'],
     ['foo-bar', 'foo-bar'],
     ['foo_bar', 'foo-bar'],
