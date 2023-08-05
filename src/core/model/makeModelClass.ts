@@ -27,7 +27,7 @@ export default function makeModelClass(type: string, config: ModelConfig) {
 
   const ModelClass = function ModelConstructor(this: ModelInstance) {
     Object.defineProperty(this, '$MODEL_TYPE', { value: 'instance' });
-    Object.defineProperty(this, '$model', { value: ModelClass });
+    Object.defineProperty(this, '$model', { value: this.constructor });
     Object.defineProperty(this, 'exists', { writable: true, value: false });
     Object.defineProperty(this, '$raw', { writable: true, value: null });
     Object.defineProperty(this, '$loaded', { writable: true, value: {} });
