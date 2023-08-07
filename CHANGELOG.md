@@ -1,5 +1,21 @@
 # Changelog
 
+# [0.1.0-alpha.13](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.12...v0.1.0-alpha.13) (2023-08-07)
+
+
+### Bug Fixes
+
+* **models:** check for snapshot values existence on correct object ([9bc23e7](https://github.com/paul-thebaud/foscia/commit/9bc23e77771146b0c391d1e534c219edc63f60df))
+* **models:** define default values correctly ([8e17473](https://github.com/paul-thebaud/foscia/commit/8e17473ee00ebdfbdc5acbfd24829d41d21e6d54))
+* **models:** mark restored values from snapshot synced ([423499e](https://github.com/paul-thebaud/foscia/commit/423499ef4fde4e2e9ffad5756373794118c3e843))
+* **models:** use inherited constructor as $model in model factory ([ce760e1](https://github.com/paul-thebaud/foscia/commit/ce760e10cc2e684716f8121a0e7dc3c761debdff))
+
+
+### Features
+
+* **blueprints:** add a basic HTTP client factory blueprint ([06ef473](https://github.com/paul-thebaud/foscia/commit/06ef473e69b1ac8578436aa582803157bab98397)), closes [#27](https://github.com/paul-thebaud/foscia/issues/27)
+* **models:** add a clear method to cache ([a050c14](https://github.com/paul-thebaud/foscia/commit/a050c145c45e0c83f51e925ed8eb547ea0e0ce6e))
+
 # [0.1.0-alpha.12](https://github.com/paul-thebaud/foscia/compare/v0.1.0-alpha.11...v0.1.0-alpha.12) (2023-07-04)
 
 
