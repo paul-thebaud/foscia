@@ -110,7 +110,6 @@ function Example({ title, description, link, children }) {
 }
 
 export default function HomepageExamples() {
-  console.log(styles.examples);
   return (
     <section>
       <div className={`${styles.examples} container`}>

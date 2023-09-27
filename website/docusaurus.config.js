@@ -5,13 +5,19 @@ const { transpileCodeblocks } = require('remark-typescript-tools');
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
+require('dotenv').config();
+
+console.log('process.env.URL');
+console.log(process.env.URL);
+console.log('process.env.BASE_URL');
+console.log(process.env.BASE_URL);
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   favicon: '/img/favicon.ico',
   title: 'Foscia',
   tagline: 'Type safe, modular and intuitive API client.',
-  url: 'https://paul-thebaud.github.io',
-  baseUrl: '/foscia/',
+  url: process.env.URL || 'https://paul-thebaud.github.io',
+  baseUrl: process.env.BASE_URL || '/foscia/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',
   organizationName: 'paul-thebaud',

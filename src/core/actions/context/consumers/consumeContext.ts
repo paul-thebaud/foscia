@@ -24,5 +24,5 @@ export default function consumeContext<
     );
   }
 
-  return value!;
+  return value! as any;
 }

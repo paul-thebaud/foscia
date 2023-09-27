@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "docusaurus start",
+    "start": "docusaurus start  --host 0.0.0.0",
     "build:docs": "docusaurus build",
     "build:post-clear": "rimraf ./docs/reference/api/namespaces",
     "build": "pnpm build:docs && pnpm build:post-clear",
@@ -19,22 +19,23 @@
   "dependencies": {
     "@docusaurus/core": "2.4.1",
     "@docusaurus/preset-classic": "2.4.1",
-    "@fontsource/fira-mono": "^5.0.5",
-    "@fontsource/poppins": "^5.0.5",
+    "@fontsource/fira-mono": "^5.0.8",
+    "@fontsource/poppins": "^5.0.8",
     "@mdx-js/react": "^1.6.22",
     "clsx": "^1.2.1",
-    "docusaurus-plugin-typedoc": "^0.19.2",
+    "docusaurus-plugin-typedoc": "^0.20.2",
+    "dotenv": "^16.3.1",
     "prism-react-renderer": "^1.3.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "remark-typescript-tools": "^1.1.0",
-    "typedoc": "^0.24.8",
-    "typedoc-plugin-markdown": "^3.15.4",
-    "typescript": "^5.1.6"
+    "typedoc": "^0.25.1",
+    "typedoc-plugin-markdown": "^3.16.0",
+    "typescript": "^5.2.2"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "2.4.1",
-    "rimraf": "^5.0.1"
+    "rimraf": "^5.0.5"
   },
   "browserslist": {
     "production": [

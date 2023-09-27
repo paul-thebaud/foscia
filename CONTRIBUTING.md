@@ -12,10 +12,10 @@ features takes place in the
 ## Pull Requests
 
 - **Lint your code.** Make sure your code follows our coding standards by
-  running `pnpm lint` on the CLI.
+  running `make lint` on the CLI.
 
 - **Add tests!** Your patch won't be accepted if it does not have tests.
-  Run tests using `pnpm test`
+  Run tests using `make test-typecheck` and `make test-coverage`
 
 - **Document any change in behaviour.** Make sure the `README.md` and any other
   relevant documentation (inside `website/docs`) are kept up-to-date.
@@ -33,70 +33,29 @@ features takes place in the
 
 ## Useful commands
 
-> Notice that we use [PNPM](https://pnpm.io/) as our package manager.
+> Notice that we use [Docker](https://docker.com/) to work on the package.
 
 ### Package development
 
-#### Run local playground
+After cloning the repository, you can use the `Makefile` to quickly get started.
 
-This will run a local website which will run the `playground/main.ts` file.
-You should use it to locally test your new features/bug fixes in addition
-to automated tests.
-
-``` shell
-pnpm dev
+```shell
+# List all available rules.
+make help
+# Start working on the project.
+make first
 ```
 
-> Changes to `playground` directory must not be committed.
+Once the docker containers are fully running, you can visit two endpoint:
 
-#### Build
+- [`playground.foscia.localhost`](http://playground.foscia.localhost): to get a
+  local playground where you can try your new features or bug fixes.
+- [`docs.foscia.localhost`](http://docs.foscia.localhost): to get preview
+  of your documentation updates.
 
-``` shell
-pnpm build
-```
+You may also check out the test container logs to see if your changes are
+issuing errors in unit and features tests:
 
-#### Lint
-
-``` shell
-pnpm lint
-```
-
-#### Test watch
-
-``` shell
-pnpm test:watch
-```
-
-#### Test coverage
-
-``` shell
-pnpm test:coverage
-```
-
-#### Test types
-
-``` shell
-pnpm test:typecheck
-```
-
-### Documentation development
-
-You can work on documentation by moving to the `website` directory.
-
-#### Prettier docs
-
-``` shell
-pnpm prettier
-```
-
-#### Run local docs
-
-``` shell
-pnpm start
-```
-
-#### Build docs
-
-``` shell
-pnpm build
+```shell
+docker compose logs test -f
 ```

@@ -1,65 +1,23 @@
 name: tests
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  lint:
-    name: Lint
+  test:
+    name: Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 7
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: pnpm
-      - run: pnpm install
-
-      - name: Lint
-        run: pnpm lint
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 7
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: pnpm
-      - run: pnpm install
-      - run: pnpm install
-        working-directory: ./website
 
       - name: Build
-        run: pnpm build
-
-      - name: Build website
-        run: pnpm build
-        working-directory: ./website
-  test:
-    name: Tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 7
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: pnpm
-      - run: pnpm install
+        run: make build
 
       - name: Test
-        run: pnpm test
+        run: make test
+
       - name: Coverage upload
         uses: codecov/codecov-action@v3
         with:
