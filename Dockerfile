@@ -20,10 +20,10 @@ FROM build as playground
 
 CMD ["pnpm", "dev"]
 
-HEALTHCHECK --retries=15 --interval=15s --timeout=15s CMD ["curl", "-f", "http://localhost:5173"]
+HEALTHCHECK --retries=60 --interval=5s --timeout=5s CMD ["curl", "-f", "http://localhost:5173"]
 
 FROM build as docs
 
 CMD ["sh", "-c", "pnpm build && pnpm start"]
 
-HEALTHCHECK --retries=15 --interval=15s --timeout=15s CMD ["curl", "-f", "http://localhost:3000"]
+HEALTHCHECK --retries=60 --interval=5s --timeout=5s CMD ["curl", "-f", "http://localhost:3000"]
