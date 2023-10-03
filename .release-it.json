@@ -1,10 +1,5 @@
 {
   "hooks": {
-    "before:init": [
-      "pnpm lint",
-      "pnpm test",
-      "pnpm build"
-    ],
     "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}."
   },
   "git": {

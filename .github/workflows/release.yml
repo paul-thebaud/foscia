@@ -30,13 +30,14 @@ jobs:
           fetch-depth: 0
       - uses: pnpm/action-setup@v2
         with:
-          version: 7
+          version: 8
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: pnpm
           registry-url: 'https://registry.npmjs.org'
-      - run: pnpm install
+
+      - name: Build
+        run: make build
 
       - name: NPM config
         run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
@@ -46,6 +47,7 @@ jobs:
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+
       - name: Release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -53,6 +55,7 @@ jobs:
           TYPE_ARG: ${{ fromJSON('{"auto":"", "patch":"--patch", "minor":"--minor", "major":"--major", "beta":"--preRelease=beta --npm.tag=next", "alpha":"--preRelease=alpha --npm.tag=next"}')[github.event.inputs.type] }}
           DRY_ARG: ${{ github.event.inputs.dry == 'true' && '--dry-run' || '' }}
         run: pnpm run release --ci --verbose $TYPE_ARG $DRY_ARG
+
   deploy:
     if: ${{ github.event.inputs.dry == 'false' }}
     name: Deploy docs
