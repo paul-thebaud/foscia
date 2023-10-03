@@ -1,7 +1,7 @@
 import renderModel from '@/templates/renderModel';
 import promptForProperties from '@/utilities/input/promptForProperties';
 import makeFile, { MakeCommandOptions } from '@/utilities/makeFile';
-import { Command } from '@/utilities/types';
+import { Command } from '@/commands/types';
 import chalk from 'chalk';
 import { camelCase, kebabCase, upperFirst } from 'lodash-es';
 import { plural, singular } from 'pluralize';

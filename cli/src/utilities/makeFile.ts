@@ -1,7 +1,7 @@
 import resolvePath from '@/utilities/files/resolvePath';
 import writeOrPrintFile from '@/utilities/files/writeOrPrintFile';
 import promptForOverwrite from '@/utilities/input/promptForOverwrite';
-import { CommonCommandOptions } from '@/utilities/types';
+import { CommonCommandOptions } from '@/commands/types';
 
 export type MakePropertyType = {
   name: string;

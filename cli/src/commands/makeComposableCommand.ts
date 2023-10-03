@@ -1,7 +1,7 @@
 import renderComposable from '@/templates/renderComposable';
 import promptForProperties from '@/utilities/input/promptForProperties';
 import makeFile, { MakeCommandOptions } from '@/utilities/makeFile';
-import { Command } from '@/utilities/types';
+import { Command } from '@/commands/types';
 import chalk from 'chalk';
 import { camelCase } from 'lodash-es';
 

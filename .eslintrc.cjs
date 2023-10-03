@@ -14,6 +14,7 @@ module.exports = {
   parserOptions: {
     project: path.resolve(__dirname, 'tsconfig.json'),
   },
+  plugins: ['import'],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
@@ -24,6 +25,7 @@ module.exports = {
     // See https://github.com/typescript-eslint/typescript-eslint/issues/1103
     'class-methods-use-this': ['off'],
     'object-curly-newline': ['off'],
+    'import/no-unresolved': 'error',
     'import/extensions': [
       'error',
       'ignorePackages',
@@ -31,8 +33,17 @@ module.exports = {
     ],
   },
   settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts'],
+    },
     'import/resolver': {
-      typescript: {},
+      typescript: {
+        'project': [
+          'tsconfig.json',
+          'cli/tsconfig.json',
+          'test/tsconfig.json',
+        ],
+      },
     },
   },
 };

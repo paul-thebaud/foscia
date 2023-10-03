@@ -2,7 +2,7 @@ import renderActionFactory from '@/templates/renderActionFactory';
 import ensureValidUsage from '@/utilities/input/ensureValidUsage';
 import promptForActionFactoryOptions from '@/utilities/input/promptForActionFactoryOptions';
 import makeFile, { MakeCommandOptions } from '@/utilities/makeFile';
-import { Command } from '@/utilities/types';
+import { Command } from '@/commands/types';
 import chalk from 'chalk';
 import { camelCase } from 'lodash-es';
 

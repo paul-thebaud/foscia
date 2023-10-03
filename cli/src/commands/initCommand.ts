@@ -7,7 +7,7 @@ import findChoice from '@/utilities/input/findChoice';
 import promptForActionFactoryOptions from '@/utilities/input/promptForActionFactoryOptions';
 import promptForOverwrite from '@/utilities/input/promptForOverwrite';
 import logSymbols from '@/utilities/output/logSymbols';
-import { Command } from '@/utilities/types';
+import { Command } from '@/commands/types';
 import { select } from '@inquirer/prompts';
 import chalk from 'chalk';
 import { existsSync, readFileSync } from 'fs';

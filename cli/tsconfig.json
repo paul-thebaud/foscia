@@ -1,26 +1,17 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
-    "baseUrl": ".",
-    "newLine": "lf",
+    "sourceMap": false,
     "paths": {
       "@/*": [
-        "src/*"
+        "cli/src/*"
       ]
     }
   },
-  "include": [
-    "src/**/*.ts"
-  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist",
+    "playground",
+    "test"
   ]
 }

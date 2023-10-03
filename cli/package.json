@@ -1,8 +1,8 @@
 {
-  "name": "cli",
-  "version": "0.0.0",
   "private": true,
+  "name": "cli",
   "type": "module",
+  "version": "0.0.0",
   "scripts": {
     "build:tsc": "tsc --noEmit",
     "build:bin": "rollup -c rollup.config.cjs",
@@ -22,6 +22,7 @@
     "@rollup/plugin-commonjs": "^25.0.4",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.2.1",
+    "@rollup/plugin-terser": "^0.4.3",
     "@rollup/plugin-typescript": "^11.1.4",
     "@tsconfig/node16": "^16.1.1",
     "@types/lodash-es": "^4.17.9",
