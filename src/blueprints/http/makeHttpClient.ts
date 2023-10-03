@@ -1,5 +1,5 @@
 import { context, makeActionClass } from '@/core';
-import { HttpAdapter } from '@/http';
+import { ErrorTransformer, HttpAdapter, RequestTransformer, ResponseTransformer } from '@/http';
 import { makeActionFactoryMockable } from '@/test';
 
 /**
@@ -12,10 +12,16 @@ export default function makeHttpClient<
   Extension extends {} = {},
 >(config: {
   baseURL?: string;
+  requestTransformers?: RequestTransformer[];
+  responseTransformers?: ResponseTransformer[];
+  errorTransformers?: ErrorTransformer[];
   extensions?: Extension;
 } = {}) {
   const adapter = new HttpAdapter({
     baseURL: config.baseURL ?? '/api/v1',
+    requestTransformers: config.requestTransformers,
+    responseTransformers: config.responseTransformers,
+    errorTransformers: config.errorTransformers,
   });
 
   const Action = makeActionClass(config.extensions);

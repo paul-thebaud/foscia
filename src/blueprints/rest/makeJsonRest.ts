@@ -2,7 +2,13 @@ import makeCache from '@/blueprints/makeCache';
 import makeRegistry from '@/blueprints/makeRegistry';
 import { context, makeActionClass } from '@/core';
 import guessRelationType from '@/core/model/types/guessRelationType';
-import { bodyAsJson, HttpAdapter } from '@/http';
+import {
+  bodyAsJson,
+  ErrorTransformer,
+  HttpAdapter,
+  RequestTransformer,
+  ResponseTransformer,
+} from '@/http';
 import { RestDeserializer, RestSerializer } from '@/rest';
 import { makeActionFactoryMockable } from '@/test';
 import { toKebabCase } from '@/utilities';
@@ -15,6 +21,9 @@ import { toKebabCase } from '@/utilities';
  */
 export default function makeJsonRest<Extension extends {} = {}>(config: {
   baseURL?: string;
+  requestTransformers?: RequestTransformer[];
+  responseTransformers?: ResponseTransformer[];
+  errorTransformers?: ErrorTransformer[];
   extensions?: Extension;
 } = {}) {
   const cache = makeCache();
@@ -27,6 +36,9 @@ export default function makeJsonRest<Extension extends {} = {}>(config: {
   });
   const adapter = new HttpAdapter({
     baseURL: config.baseURL ?? '/api',
+    requestTransformers: config.requestTransformers,
+    responseTransformers: config.responseTransformers,
+    errorTransformers: config.errorTransformers,
     defaultBodyAs: bodyAsJson,
     defaultHeaders: {
       Accept: 'application/json',

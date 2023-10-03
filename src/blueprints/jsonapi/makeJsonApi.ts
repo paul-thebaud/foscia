@@ -2,7 +2,14 @@ import appendJsonApiParams from '@/blueprints/jsonapi/appendJsonApiParams';
 import makeCache from '@/blueprints/makeCache';
 import makeRegistry from '@/blueprints/makeRegistry';
 import { context, makeActionClass } from '@/core';
-import { bodyAsJson, deepParamsSerializer, HttpAdapter } from '@/http';
+import {
+  bodyAsJson,
+  deepParamsSerializer,
+  ErrorTransformer,
+  HttpAdapter,
+  RequestTransformer,
+  ResponseTransformer,
+} from '@/http';
 import { JsonApiDeserializer, JsonApiSerializer } from '@/jsonapi';
 import { makeActionFactoryMockable } from '@/test';
 import { toKebabCase } from '@/utilities';
@@ -17,6 +24,9 @@ export default function makeJsonApi<
   Extension extends {} = {},
 >(config: {
   baseURL?: string;
+  requestTransformers?: RequestTransformer[];
+  responseTransformers?: ResponseTransformer[];
+  errorTransformers?: ErrorTransformer[];
   extensions?: Extension;
 } = {}) {
   const cache = makeCache();
@@ -28,6 +38,9 @@ export default function makeJsonApi<
   });
   const adapter = new HttpAdapter({
     baseURL: config.baseURL ?? '/api/v1',
+    requestTransformers: config.requestTransformers,
+    responseTransformers: config.responseTransformers,
+    errorTransformers: config.errorTransformers,
     serializeParams: deepParamsSerializer,
     appendParams: appendJsonApiParams,
     defaultBodyAs: bodyAsJson,
