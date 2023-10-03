@@ -24,6 +24,7 @@
     --ifm-color-primary-light: #bd1e5d;
     --ifm-color-primary-lighter: #c61f62;
     --ifm-color-primary-lightest: #dd266f;
+    --ifm-table-stripe-background: rgba(0, 0, 0, 0.03);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -41,6 +42,7 @@ html[data-theme="dark"] {
     --ifm-color-primary-light: #ff8fd0;
     --ifm-color-primary-lighter: #ffa1d8;
     --ifm-color-primary-lightest: #ffd8ee;
+    --ifm-table-stripe-background: rgba(255, 255, 255, 0.02);
 }
 
 .DocSearch {
@@ -80,8 +82,32 @@ div[class^="language-"] {
     --prism-background-color: var(--ifm-code-background) !important;
 }
 
+div.language-shell code > .token-line > span.token:first-child:not(.comment):not(:empty):before {
+    content: "$";
+    color: var(--ifm-color-primary);
+    margin-right: 0.5rem;
+    opacity: 0.6;
+}
+
+table {
+    background-color: var(--ifm-code-background);
+    box-shadow: var(--ifm-global-shadow-lw);
+    border-radius: var(--ifm-code-border-radius);
+    border-spacing: 0;
+    border-collapse: separate;
+}
+
+table > thead > tr > th, table > tbody > tr > td {
+    border: none;
+}
+
+table > thead > tr > th:not(:last-child), table > tbody > tr > td:not(:last-child) {
+    border-right: 1px solid var(--ifm-color-emphasis-300);
+}
+
 .tabs-container {
     background-color: var(--ifm-code-background);
+    box-shadow: var(--ifm-global-shadow-lw);
     border-radius: var(--ifm-code-border-radius);
 }
 
@@ -91,6 +117,10 @@ div[class^="language-"] {
 
 .tabs-container > .tabs {
     border-bottom: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.tabs-container [role="tabpanel"] {
+    --ifm-global-shadow-lw: none;
 }
 
 .tabs-container [role="tabpanel"] > p {
