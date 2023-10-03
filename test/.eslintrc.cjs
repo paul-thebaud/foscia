@@ -1,6 +1,8 @@
+const path = require('path');
+
 module.exports = {
-  extends: '../.eslintrc.cjs',
+  extends: path.resolve(__dirname, '../.eslintrc.cjs'),
   parserOptions: {
-    project: './test/tsconfig.json',
+    project: path.resolve(__dirname, 'tsconfig.json'),
   },
 };

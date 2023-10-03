@@ -2,7 +2,6 @@
 DOCKER_COMPOSE?=docker compose
 DOCKER_EXEC?=$(DOCKER_COMPOSE) exec -it
 PNPM?=$(DOCKER_EXEC) test pnpm
-PNPM_DOCS?=$(DOCKER_EXEC) docs pnpm
 
 # Misc
 default: help
@@ -43,10 +42,6 @@ first: ## Setup project for first time on a local environment.
 .PHONY: pnpm
 pnpm: ## Run a PNPM command (e.g. make pnpm c="update").
 	@$(PNPM) $(c)
-
-.PHONY: pnpm-docs
-pnpm-docs: ## Run a PNPM command over docs directory (e.g. make pnpm-docs c="update").
-	@$(PNPM_DOCS) $(c)
 
 ##
 ## —— Lint and tests ———————————————————————————————————————————————————————————

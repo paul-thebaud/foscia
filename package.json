@@ -22,6 +22,9 @@
     "rest"
   ],
   "sideEffects": false,
+  "bin": {
+    "foscia": "dist/cli.cjs"
+  },
   "files": [
     "dist/*",
     "core.d.ts",
@@ -66,20 +69,20 @@
     }
   },
   "scripts": {
-    "dev": "vite --host",
-    "lint": "eslint --ext .ts src test",
+    "dev": "BUILD_TARGET=lib:es vite --host",
+    "lint": "eslint --ext .ts src cli test",
     "test:watch": "vitest --watch",
     "test:typecheck": "vitest typecheck --run",
     "test:coverage": "vitest --run --coverage",
     "test": "pnpm test:typecheck && pnpm test:coverage",
     "build:pre-clear": "rimraf ./dist ./dist-temp dist.tar.gz dist.zip",
-    "build:lib:es": "BUILD_FORMAT=es vite build",
-    "build:lib:cjs": "BUILD_FORMAT=cjs vite build",
-    "build:lib:umd": "BUILD_FORMAT=umd vite build",
+    "build:lib:es": "BUILD_TARGET=lib:es vite build",
+    "build:lib:cjs": "BUILD_TARGET=lib:cjs vite build",
+    "build:lib:umd": "BUILD_TARGET=lib:umd vite build",
     "build:lib": "concurrently \"pnpm build:lib:es\" \"pnpm build:lib:cjs\" \"pnpm build:lib:umd\"",
     "build:declaration": "tsc --declaration --emitDeclarationOnly --declarationDir dist-temp/ && tsc-alias",
     "build:declaration:bundle": "mv -v dist-temp/* dist",
-    "build:post-clear": "rimraf \"./dist/index.@(js|cjs|d.ts)?(.map)\" && rimraf ./dist-temp",
+    "build:post-clear": "rimraf \"./dist/index.@(js|cjs|d.ts)?(.map)\" && rimraf ./dist/cli/ && rimraf ./dist-temp",
     "build:archive:tar": "cd dist && tar -czvf dist.tar.gz * && mv dist.tar.gz ../dist.tar.gz",
     "build:archive:zip": "cd dist && zip dist.zip * && mv dist.zip ../dist.zip",
     "build:archive": "pnpm build:archive:tar && pnpm build:archive:zip",
@@ -107,6 +110,6 @@
     "vitest": "^0.33.0"
   },
   "engines": {
-    "node": "18"
+    "node": ">=16"
   }
 }

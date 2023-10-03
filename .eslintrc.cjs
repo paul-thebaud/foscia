@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   root: true,
   env: {
@@ -10,7 +12,7 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
+    project: path.resolve(__dirname, 'tsconfig.json'),
   },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
