@@ -19,6 +19,17 @@ services:
     volumes:
       - ./:/home/lib:consistent
     tty: true
+  cli:
+    container_name: cli
+    depends_on:
+      build:
+        condition: service_completed_successfully
+    build:
+      dockerfile: Dockerfile
+      target: cli
+    working_dir: /home/lib/cli
+    volumes:
+      - ./:/home/lib:consistent
   playground:
     container_name: playground
     depends_on:

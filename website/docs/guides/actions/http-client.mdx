@@ -14,10 +14,27 @@ import Link from '@docusaurus/Link';
 
 :::
 
+:::info
+
+If you are using JSON REST or JSON:API blueprints, you can already use your
+action factory as an HTTP client.
+
+:::
+
 ## Creating the action factory
 
-**If you are using a REST or JSON:API blueprints, you can already use your
-action as an HTTP client.**
+### Through CLI
+
+You can get started for Foscia as an HTTP client
+using the [Foscia CLI](/docs/guides/cli).
+It is available on any project where Foscia package is installed.
+
+```shell
+# Initialize Foscia and action factory inside "src/api" directory.
+foscia init src/http --usage=http
+```
+
+### Manually
 
 You can use Foscia as a simple HTTP client (just like Axios).
 For this, you can configure an HTTP client action factory.

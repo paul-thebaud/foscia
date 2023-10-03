@@ -24,6 +24,22 @@ Only here for a simple HTTP client? Check out
 
 :::
 
+## CLI
+
+You can get started for Foscia
+using the [Foscia CLI](/docs/guides/cli).
+It is available on any project where Foscia package is installed.
+
+```shell
+# Initialize Foscia and action factory inside "src/api" directory.
+foscia init src/api
+# Create your first model.
+foscia make:model post
+```
+
+Next sections of this guide explain how Foscia works and how you can set up
+files without using the CLI.
+
 ## Your first model
 
 Models represent the structure of your data and are used to simplify and
@@ -95,7 +111,7 @@ common use cases. Blueprints will also preconfigure registered models for those
 use cases.
 
 Currently, you may choose between the two available blueprints:
-[JSON:API](https://jsonapi.org) or REST.
+[JSON:API](https://jsonapi.org) or JSON REST.
 
 <Tabs groupId="implementation">
   <TabItem
@@ -103,6 +119,10 @@ Currently, you may choose between the two available blueprints:
     label="JSON:API"
     default
   >
+
+```shell
+foscia init src/api --usage=jsonapi
+```
 
 `makeJsonApi` is a blueprint to quickly initiate an action factory to interact
 with a normalized [JSON:API backend](https://jsonapi.org). It provides all the
@@ -133,6 +153,10 @@ export default action;
     value="jsonrest"
     label="JSON REST"
   >
+
+```shell
+foscia init src/api --usage=jsonrest
+```
 
 `makeJsonRest` is a blueprint to quickly initiate an action factory to interact
 with a normalized REST backend exchanging JSON.

@@ -16,6 +16,10 @@ FROM build as test
 
 CMD ["pnpm", "test:watch"]
 
+FROM build as cli
+
+CMD ["pnpm", "build"]
+
 FROM build as playground
 
 CMD ["pnpm", "dev"]

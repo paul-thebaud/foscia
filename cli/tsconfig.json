@@ -5,33 +5,22 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "importHelpers": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "sourceMap": true,
-    "outDir": "dist-temp",
     "baseUrl": ".",
     "newLine": "lf",
     "paths": {
       "@/*": [
         "src/*"
       ]
-    },
-    "lib": [
-      "esnext",
-      "dom"
-    ]
+    }
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "playground",
-    "cli",
-    "test"
+  "include": [
+    "src/**/*.ts"
   ],
-  "typedocOptions": {
-    "readme": "none"
-  }
+  "exclude": [
+    "node_modules"
+  ]
 }

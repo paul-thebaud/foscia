@@ -184,12 +184,12 @@ attr({ default: () => [] }); // With a factory default (required for objects pro
 
 You can customize your attribute with the following options:
 
-| Key           | Type                               | Default     | Description                                                                  |
-|---------------|------------------------------------|-------------|------------------------------------------------------------------------------|
-| `transformer` | `Transform<T>`                     | `undefined` | The transformer for the property's value when interacting with your backend. |
-| `default`     | `T`                                | `undefined` | The default value for the property when initializing a model instance.       |
-| `alias`       | `string`                           | `undefined` | Alias of your backend key used for (de)serializing.                          |
-| `sync`        | `boolean \| 'retrieve' \| 'write'` | `true`      | Avoid retrieving/writing the property's value from/to the backend.           |
+| Key           | Type                                       | Default     | Description                                                                  |
+|---------------|--------------------------------------------|-------------|------------------------------------------------------------------------------|
+| `transformer` | `Transform<T>`                             | `undefined` | The transformer for the property's value when interacting with your backend. |
+| `default`     | `T`                                        | `undefined` | The default value for the property when initializing a model instance.       |
+| `alias`       | `string`                                   | `undefined` | Alias of your backend key used for (de)serializing.                          |
+| `sync`        | `boolean`&vert;`'retrieve'`&vert;`'write'` | `true`      | Avoid retrieving/writing the property's value from/to the backend.           |
 
 #### Transform
 
@@ -267,13 +267,13 @@ circular dependencies when having circular model relations.
 
 You can customize your relation with the following options:
 
-| Key       | Type                               | Default     | Description                                                                                               |
-|-----------|------------------------------------|-------------|-----------------------------------------------------------------------------------------------------------|
-| `default` | `T`                                | `undefined` | The default value for the property when initializing a model instance.                                    |
-| `alias`   | `string`                           | `undefined` | Alias of your backend key used for (de)serializing.                                                       |
-| `path`    | `string`                           | `undefined` | Path used to query the relation. Defaults to the relation's key.                                          |
-| `type`    | `string`                           | `undefined` | The explicit type of related model. Might be used by the deserializer to know which model to instantiate. |
-| `sync`    | `boolean \| 'retrieve' \| 'write'` | `true`      | Avoid retrieving/writing the property's value from/to the backend.                                        |
+| Key       | Type                                       | Default     | Description                                                                                               |
+|-----------|--------------------------------------------|-------------|-----------------------------------------------------------------------------------------------------------|
+| `default` | `T`                                        | `undefined` | The default value for the property when initializing a model instance.                                    |
+| `alias`   | `string`                                   | `undefined` | Alias of your backend key used for (de)serializing.                                                       |
+| `path`    | `string`                                   | `undefined` | Path used to query the relation. Defaults to the relation's key.                                          |
+| `type`    | `string`                                   | `undefined` | The explicit type of related model. Might be used by the deserializer to know which model to instantiate. |
+| `sync`    | `boolean`&vert;`'retrieve'`&vert;`'write'` | `true`      | Avoid retrieving/writing the property's value from/to the backend.                                        |
 
 ### Readonly properties
 

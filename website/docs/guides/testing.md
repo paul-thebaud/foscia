@@ -160,9 +160,13 @@ actionMock.mockResultTimes(3, value);
 actionMock.mockResult(() => value);
 ```
 
-:::caution Mocking results indefinitely will prevent your next mocked runs to be
-used. Mocking for "n" times is therefore a safer way to mock results, since it
-will also fail if there are no more runs expected. :::
+:::caution
+
+Mocking results indefinitely will prevent your next mocked runs to be used.
+Mocking for "n" times is therefore a safer way to mock results, since it will
+also fail if there are no more runs expected.
+
+:::
 
 ##### Mocking context conditionally
 
