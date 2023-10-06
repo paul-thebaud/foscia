@@ -45,6 +45,9 @@ export default async function kernel(args: string[]) {
 
       process.exit(1);
     })
+    .help()
+    .describe('version', chalk.dim('Show version number.'))
+    .describe('help', chalk.dim('Show help.'))
     .config('config', chalk.dim('Path to configuration file.'), (path) => (
       target && target !== initCommand.name
         ? validateConfig(parseConfig(path))
@@ -52,14 +55,12 @@ export default async function kernel(args: string[]) {
     ))
     .alias('config', 'c')
     .default('config', '.fosciarc.json')
-    .help()
-    .describe('version', chalk.dim('Show version number.'))
-    .describe('help', chalk.dim('Show help.'))
+    // .group(['config', 'version', 'help'], 'Options:')
     .command(commands as any[]);
 
   if (target === undefined) {
     yargsInstance.showHelp();
-  } else if (!commands.some((c) => c.name === target)) {
+  } else if (!commands.some((c) => c.name === target) && ['--version', '--help'].indexOf(target) === -1) {
     console.error(`${logSymbols.error} Command ${target} does not exists.`);
     process.exit(1);
   }

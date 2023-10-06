@@ -6,6 +6,7 @@ toc_max_heading_level: 4
 import Link from '@docusaurus/Link';
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
+import ShellCommand from '@site/src/components/ShellCommand';
 
 # Getting started
 
@@ -30,15 +31,24 @@ You can get started for Foscia
 using the [Foscia CLI](/docs/guides/cli).
 It is available on any project where Foscia package is installed.
 
-```shell
-# Initialize Foscia and action factory inside "src/api" directory.
-foscia init src/api
-# Create your first model.
-foscia make:model post
-```
+Next sections of this guide explain how Foscia works and
+how you can get started without using the CLI.
 
-Next sections of this guide explain how Foscia works and how you can set up
-files without using the CLI.
+<ShellCommand
+  command={[
+    '# Initialize Foscia and action factory inside "src/api" directory.',
+    'foscia init src/api',
+    '# Create your first model.',
+    'foscia make:model post',
+  ]}
+/>
+
+:::info
+
+Since Foscia is not installed globally, you will need to prefix `foscia` with
+your package runner.
+
+:::
 
 ## Your first model
 
@@ -120,9 +130,7 @@ Currently, you may choose between the two available blueprints:
     default
   >
 
-```shell
-foscia init src/api --usage=jsonapi
-```
+<ShellCommand command="foscia init src/api --usage=jsonapi" />
 
 `makeJsonApi` is a blueprint to quickly initiate an action factory to interact
 with a normalized [JSON:API backend](https://jsonapi.org). It provides all the
@@ -154,9 +162,7 @@ export default action;
     label="JSON REST"
   >
 
-```shell
-foscia init src/api --usage=jsonrest
-```
+<ShellCommand command="foscia init src/api --usage=jsonrest" />
 
 `makeJsonRest` is a blueprint to quickly initiate an action factory to interact
 with a normalized REST backend exchanging JSON.

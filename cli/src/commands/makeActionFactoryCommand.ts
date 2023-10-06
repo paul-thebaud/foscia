@@ -1,8 +1,9 @@
+import { Command } from '@/commands/types';
 import renderActionFactory from '@/templates/renderActionFactory';
 import ensureValidUsage from '@/utilities/input/ensureValidUsage';
 import promptForActionFactoryOptions from '@/utilities/input/promptForActionFactoryOptions';
 import makeFile, { MakeCommandOptions } from '@/utilities/makeFile';
-import { Command } from '@/commands/types';
+import logSymbols from '@/utilities/output/logSymbols';
 import chalk from 'chalk';
 import { camelCase } from 'lodash-es';
 
@@ -34,12 +35,17 @@ export default {
   handler: async (args) => {
     const name = camelCase(args.name);
     const usage = ensureValidUsage(args.usage);
-    const options = await promptForActionFactoryOptions(args, usage);
 
-    await makeFile(args, `ActionFactory ${name}`, name, async () => renderActionFactory({
-      config: args,
-      usage,
-      options,
-    }));
+    await makeFile(args, `ActionFactory ${name}`, name, async () => {
+      console.log(
+        chalk.bold(`\n${logSymbols.foscia} Lets configure your action factory!\n`),
+      );
+
+      return renderActionFactory({
+        config: args,
+        usage,
+        options: await promptForActionFactoryOptions(args, usage),
+      });
+    });
   },
 } as Command<MakeActionFactoryCommandOptions>;

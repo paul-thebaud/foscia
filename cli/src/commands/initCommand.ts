@@ -1,3 +1,4 @@
+import { Command } from '@/commands/types';
 import { CLIConfig, CONFIG_LANGUAGES, CONFIG_MODULES, CONFIG_USAGES } from '@/config/config';
 import renderActionFactory from '@/templates/renderActionFactory';
 import resolvePath from '@/utilities/files/resolvePath';
@@ -7,8 +8,7 @@ import findChoice from '@/utilities/input/findChoice';
 import promptForActionFactoryOptions from '@/utilities/input/promptForActionFactoryOptions';
 import promptForOverwrite from '@/utilities/input/promptForOverwrite';
 import logSymbols from '@/utilities/output/logSymbols';
-import { Command } from '@/commands/types';
-import { select } from '@inquirer/prompts';
+import { confirm, input, select } from '@inquirer/prompts';
 import chalk from 'chalk';
 import { existsSync, readFileSync } from 'fs';
 
@@ -74,6 +74,20 @@ async function resolveEnvironment(args: InitCommandOptions) {
   return { language, modules };
 }
 
+async function resolveAlias(args: InitCommandOptions) {
+  const alias = await confirm({
+    message: 'Would you like to use an alias for paths (e.g. "@/*" for "src/*")?',
+    default: false,
+  });
+
+  return alias
+    ? input({
+      message: `What alias should be used for path "${args.path}"?`,
+      default: '@/',
+    })
+    : undefined;
+}
+
 export default {
   name: 'init',
   command: 'init <path>',
@@ -103,10 +117,8 @@ export default {
       description: chalk.dim('Show the generated configuration instead of writing a file.'),
     }),
   handler: async (args) => {
-    // TODO ask to autoload models into registry?
-
     console.log(
-      chalk.bold(`${logSymbols.foscia} Welcome to Foscia initialization wizard!`),
+      chalk.bold(`${logSymbols.foscia} Start by configuring your Foscia environment!\n`),
     );
 
     const configPath = args.config ?? '.fosciarc.json';
@@ -116,9 +128,11 @@ export default {
 
     const usage = await resolveUsage(args);
     const { language, modules } = await resolveEnvironment(args);
+    const alias = await resolveAlias(args);
 
     const config: CLIConfig = {
       path: args.path,
+      alias: alias || undefined,
       usage,
       language,
       modules,
@@ -127,6 +141,10 @@ export default {
 
     const configContent = JSON.stringify(config, null, 2);
     writeOrPrintFile('Config', configPath, configContent, 'json', args.show);
+
+    console.log(
+      chalk.bold(`\n${logSymbols.foscia} Now, lets configure your action factory!\n`),
+    );
 
     const factoryPath = resolvePath(config, `action.${config.language === 'ts' ? 'ts' : 'js'}`);
     if (!args.show) {

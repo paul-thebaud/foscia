@@ -25,6 +25,8 @@
     --ifm-color-primary-lighter: #c61f62;
     --ifm-color-primary-lightest: #dd266f;
     --ifm-table-stripe-background: rgba(0, 0, 0, 0.03);
+    --ifm-tabs-padding-vertical: 0.5rem;
+    --ifm-breadcrumb-item-background-active: var(--ifm-code-background);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -80,13 +82,6 @@ html[data-theme="dark"] .header-github-link:before {
 
 div[class^="language-"] {
     --prism-background-color: var(--ifm-code-background) !important;
-}
-
-div.language-shell code > .token-line > span.token:first-child:not(.comment):not(:empty):before {
-    content: "$";
-    color: var(--ifm-color-primary);
-    margin-right: 0.5rem;
-    opacity: 0.6;
 }
 
 table {

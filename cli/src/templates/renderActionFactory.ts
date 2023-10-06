@@ -24,7 +24,7 @@ registry.register(Object.values(models${modelsCast}));
 `.trim();
   }
 
-  return 'registry.register([/* TODO Register models. */]);';
+  return 'registry.register([/* TODO Post, Comment, [...] */]);';
 }
 
 function renderBlueprintActionFactory({ config, usage, options }: ActionFactoryTemplateData) {

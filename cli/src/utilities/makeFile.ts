@@ -1,9 +1,9 @@
+import { CommonCommandOptions } from '@/commands/types';
 import resolvePath from '@/utilities/files/resolvePath';
 import writeOrPrintFile from '@/utilities/files/writeOrPrintFile';
 import promptForOverwrite from '@/utilities/input/promptForOverwrite';
-import { CommonCommandOptions } from '@/commands/types';
 
-export type MakePropertyType = {
+export type MakeType = {
   name: string;
   from?: string;
 };
@@ -11,7 +11,7 @@ export type MakePropertyType = {
 export type MakeProperty = {
   name: string;
   typology: typeof MAKE_PROPERTY_TYPOLOGIES[number]['value'];
-  type?: MakePropertyType;
+  type?: MakeType;
 };
 
 export const MAKE_PROPERTY_TYPOLOGIES = [

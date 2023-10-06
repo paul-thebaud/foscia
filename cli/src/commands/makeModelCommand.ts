@@ -1,7 +1,9 @@
 import renderModel from '@/templates/renderModel';
+import promptForComposables from '@/utilities/input/promptForComposables';
 import promptForProperties from '@/utilities/input/promptForProperties';
 import makeFile, { MakeCommandOptions } from '@/utilities/makeFile';
 import { Command } from '@/commands/types';
+import logSymbols from '@/utilities/output/logSymbols';
 import chalk from 'chalk';
 import { camelCase, kebabCase, upperFirst } from 'lodash-es';
 import { plural, singular } from 'pluralize';
@@ -33,11 +35,18 @@ export default {
     const fileName = `models/${name}`;
     const className = upperFirst(name);
     const typeName = kebabCase(plural(name));
-    await makeFile(args, `Model ${className}`, fileName, async () => renderModel({
-      config: args,
-      className,
-      typeName,
-      properties: await promptForProperties(args),
-    }));
+    await makeFile(args, `Model ${className}`, fileName, async () => {
+      console.log(
+        `${logSymbols.foscia} Lets configure your model's definition (attributes, etc.).\n`,
+      );
+
+      return renderModel({
+        config: args,
+        className,
+        typeName,
+        composables: await promptForComposables(args),
+        properties: await promptForProperties(args),
+      });
+    });
   },
 } as Command<MakeModelCommandOptions>;

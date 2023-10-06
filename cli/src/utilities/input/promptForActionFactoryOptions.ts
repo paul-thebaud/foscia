@@ -40,7 +40,7 @@ export default async function promptForActionFactoryOptions(config: CLIConfig, u
     };
 
     options.automaticRegistration = await select({
-      message: 'Register models automatically?',
+      message: 'Would you like to register models automatically?',
       choices: [
         {
           name: 'Using import.meta.glob (e.g. when using Vite)',
@@ -49,7 +49,7 @@ export default async function promptForActionFactoryOptions(config: CLIConfig, u
           description: automaticRegistrationDescription('import.meta.glob'),
         },
         {
-          name: 'No. Register models manually.',
+          name: 'No, register models manually',
           value: undefined,
           description: automaticRegistrationDescription(),
         },

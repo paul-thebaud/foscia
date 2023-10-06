@@ -1,20 +1,41 @@
 import { CLIConfig } from '@/config/config';
 import promptForModelType from '@/utilities/input/promptForModelType';
 import { MAKE_PROPERTY_TYPOLOGIES, MakeProperty } from '@/utilities/makeFile';
-import logSymbols from '@/utilities/output/logSymbols';
 import { input, select } from '@inquirer/prompts';
 
-async function promptForProperty(config: CLIConfig) {
-  const name = await input({
-    message: 'Name of your next property:',
+const VALID_NAME_REGEX = /^(?!\d)[\w$]+$/;
+
+async function promptForProperty(
+  config: CLIConfig,
+  properties: MakeProperty[] = [],
+) {
+  const typology = await select({
+    message: 'What property would you like to add?',
+    choices: [
+      ...MAKE_PROPERTY_TYPOLOGIES,
+      {
+        name: 'None, stop property definition',
+        value: undefined,
+      },
+    ] as const,
   });
-  if (!name) {
+  if (!typology) {
     return null;
   }
 
-  const typology = await select({
-    message: 'Kind of property:',
-    choices: MAKE_PROPERTY_TYPOLOGIES,
+  const name = await input({
+    message: 'Give a name:',
+    validate: (v) => {
+      if (VALID_NAME_REGEX.test(v)) {
+        if (properties.every((p) => p.name !== v)) {
+          return true;
+        }
+
+        return 'Property name is already taken.';
+      }
+
+      return 'Property name must be a valid object property key.';
+    },
   });
 
   const property = { name, typology } as MakeProperty;
@@ -22,8 +43,9 @@ async function promptForProperty(config: CLIConfig) {
   if (config.language === 'ts') {
     if (typology === 'attr') {
       const type = await input({
-        message: 'Type:',
+        message: 'Give a type:',
         default: 'unknown',
+        validate: (v) => VALID_NAME_REGEX.test(v) || 'Type must be a valid type name.',
       });
 
       property.type = { name: type };
@@ -37,8 +59,8 @@ async function promptForProperty(config: CLIConfig) {
 
 async function promptForPropertiesWhile(
   config: CLIConfig,
-  properties: MakeProperty[],
   next: MakeProperty | null,
+  properties: MakeProperty[] = [],
 ): Promise<MakeProperty[]> {
   if (!next) {
     return properties;
@@ -46,13 +68,9 @@ async function promptForPropertiesWhile(
 
   properties.push(next);
 
-  return promptForPropertiesWhile(config, properties, await promptForProperty(config));
+  return promptForPropertiesWhile(config, await promptForProperty(config, properties), properties);
 }
 
 export default async function promptForProperties(config: CLIConfig) {
-  console.log(
-    `${logSymbols.info} You can now configure properties. Leave the name blank to skip/stop properties configuration.`,
-  );
-
-  return promptForPropertiesWhile(config, [], await promptForProperty(config));
+  return promptForPropertiesWhile(config, await promptForProperty(config));
 }

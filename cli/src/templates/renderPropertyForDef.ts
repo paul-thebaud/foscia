@@ -1,10 +1,10 @@
 import { MakeProperty } from '@/utilities/makeFile';
 
-type PropertyTemplateData = {
+type PropertyForDefTemplateData = {
   property: MakeProperty;
 };
 
-export default function renderProperty({ property }: PropertyTemplateData) {
+export default function renderPropertyForDef({ property }: PropertyForDefTemplateData) {
   return `
 ${property.name}: ${property.typology}${property.type ? `<${property.type.name}>` : ''}()
 `.trim();
