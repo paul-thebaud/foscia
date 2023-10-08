@@ -2,6 +2,7 @@ import initCommand from '@/commands/initCommand';
 import makeActionFactoryCommand from '@/commands/makeActionFactoryCommand';
 import makeComposableCommand from '@/commands/makeComposableCommand';
 import makeModelCommand from '@/commands/makeModelCommand';
+import makeTransformerCommand from '@/commands/makeTransformerCommand';
 import parseConfig from '@/config/parseConfig';
 import validateConfig from '@/config/validateConfig';
 import cancel from '@/utilities/output/cancel';
@@ -20,6 +21,7 @@ export default async function kernel(args: string[]) {
     makeModelCommand,
     makeComposableCommand,
     makeActionFactoryCommand,
+    makeTransformerCommand,
   ];
 
   yargsInstance
