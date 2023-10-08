@@ -1,4 +1,6 @@
-import { ObjectTransform } from '@/core/transformers/types';
+import logger from '@/core/logger/logger';
+import makeTransformer from '@/core/transformers/makeTransformer';
+import warnTransformingNil from '@/core/transformers/warnTransformingNil';
 
 function dateFromUnix(unix: number): Date {
   const date = new Date();
@@ -8,17 +10,20 @@ function dateFromUnix(unix: number): Date {
   return date;
 }
 
-export default function toDate(): ObjectTransform<Date | null, unknown> {
-  return {
-    serialize(value: Date | null) {
-      return value ? value.toISOString() : null;
-    },
-    deserialize(value: unknown) {
-      if (typeof value === 'string') {
-        return dateFromUnix(Date.parse(value));
-      }
+export default makeTransformer(
+  (value: unknown) => {
+    warnTransformingNil('toDate', value);
 
-      return null;
-    },
-  };
-}
+    const date = dateFromUnix(typeof value === 'string' ? Date.parse(value) : Number.NaN);
+    if (Number.isNaN(date.getTime())) {
+      logger.warn('Transformer `toDate` transform resulted in NaN date value.', [{ value }]);
+    }
+
+    return date;
+  },
+  (value: Date) => {
+    warnTransformingNil('toDate', value);
+
+    return value.toISOString();
+  },
+);

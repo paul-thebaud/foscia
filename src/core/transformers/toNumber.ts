@@ -1,8 +1,14 @@
-import { FunctionTransform } from '@/core/transformers/types';
-import { isNone } from '@/utilities';
+import logger from '@/core/logger/logger';
+import makeTransformer from '@/core/transformers/makeTransformer';
+import warnTransformingNil from '@/core/transformers/warnTransformingNil';
 
-export default function toNumber(): FunctionTransform<number | null, unknown> {
-  return (value: unknown) => (
-    isNone(value) ? null : Number(value)
-  );
-}
+export default makeTransformer((value: unknown) => {
+  warnTransformingNil('toNumber', value);
+
+  const number = Number(value);
+  if (Number.isNaN(number)) {
+    logger.warn('Transformer `toNumber` transform resulted in NaN value.', [{ value }]);
+  }
+
+  return number;
+});

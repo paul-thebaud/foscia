@@ -6,7 +6,7 @@ export default class Post extends makeModel('posts', {
   body: attr<string | null>(),
   commentsCount: attr({ default: 0, sync: 'retrieve' }),
   comments: hasMany<Comment>(),
-  publishedAt: readOnly(attr<Date | null>(toDate())),
+  publishedAt: readOnly(attr(toDate({ nullable: true }))),
   get published() {
     return !!this.publishedAt;
   },

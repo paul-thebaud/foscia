@@ -32,7 +32,7 @@ class Post extends makeModel('posts', {
     title: attr({ default: '' }), // Infered to string.
     description: attr<string>(), // Custom types are also supported.
     createdAt: attr(toDate()), // Infered from transformers.
-    publishedAt: attr<Date | null>(toDate()),
+    publishedAt: attr(toDate({ nullable: true })),
     comments: hasMany<Comment>(),
     // `this` context is available and strongly typed in definition methods.
     get isPublished() {

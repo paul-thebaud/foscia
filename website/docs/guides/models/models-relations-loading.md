@@ -65,7 +65,7 @@ You can now use the loader on any instance.
 import refreshLoad from './loaders/refreshLoad';
 
 await refreshLoad(myPost, 'comments');
-await refreshLoad(myPostArray, ['comments', 'comments.author']);
+await refreshLoad(myPostsArray, ['comments', 'comments.author']);
 ```
 
 :::info

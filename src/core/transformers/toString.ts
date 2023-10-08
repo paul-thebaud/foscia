@@ -1,8 +1,8 @@
-import { FunctionTransform } from '@/core/transformers/types';
-import { isNone } from '@/utilities';
+import makeTransformer from '@/core/transformers/makeTransformer';
+import warnTransformingNil from '@/core/transformers/warnTransformingNil';
 
-export default function toString(): FunctionTransform<string | null, unknown> {
-  return (value: unknown) => (
-    isNone(value) ? null : String(value)
-  );
-}
+export default makeTransformer((value: unknown) => {
+  warnTransformingNil('toString', value);
+
+  return String(value);
+});

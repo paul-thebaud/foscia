@@ -1,6 +1,6 @@
 import { Hookable, HookCallback } from '@/core/hooks/types';
 import { Normalizer } from '@/core/normalization/types';
-import { Transform } from '@/core/transformers/types';
+import { ObjectTransformer } from '@/core/transformers/types';
 import { Constructor, DescriptorHolder, Dictionary, Optional, Prev } from '@/utilities';
 
 /**
@@ -117,7 +117,7 @@ export type ModelPropRaw<T = unknown, R extends boolean = boolean> = {
  */
 export type ModelIdRaw<T extends ModelIdType | null = any, R extends boolean = boolean> = {
   $MODEL_TYPE: 'id';
-  transformer?: Transform<T | null> | undefined;
+  transformer?: ObjectTransformer<T> | undefined;
 } & ModelPropRaw<T, R>;
 
 /**
@@ -135,7 +135,7 @@ export type ModelAttributeRaw<T = unknown, R extends boolean = boolean> = {
    * Internal type identifier for Foscia's type guards.
    */
   $MODEL_TYPE: 'attribute';
-  transformer?: Transform<T | null> | undefined;
+  transformer?: ObjectTransformer<T> | undefined;
 } & ModelPropRaw<T, R>;
 
 /**

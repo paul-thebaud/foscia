@@ -54,10 +54,12 @@ import takeSnapshot from '@/core/model/snapshots/takeSnapshot';
 import normalizeDotRelations from '@/core/normalization/normalizeDotRelations';
 import normalizeKey from '@/core/normalization/normalizeKey';
 import MapRegistry from '@/core/registry/mapRegistry';
+import toArrayOf from '@/core/transformers/toArrayOf';
 import toBoolean from '@/core/transformers/toBoolean';
 import toDate from '@/core/transformers/toDate';
 import toNumber from '@/core/transformers/toNumber';
 import toString from '@/core/transformers/toString';
+import makeTransformer from '@/core/transformers/makeTransformer';
 
 export * from '@/core/actions/types';
 export * from '@/core/cache/types';
@@ -95,10 +97,12 @@ export {
   makeModelFactory,
   makeForRelationLoader,
   makeRefreshIncludeLoader,
+  toArrayOf,
   toBoolean,
   toDate,
   toNumber,
   toString,
+  makeTransformer,
   onRetrieved,
   onCreating,
   onCreated,

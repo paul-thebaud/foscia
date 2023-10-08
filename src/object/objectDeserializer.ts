@@ -21,7 +21,6 @@ import {
 } from '@/core';
 import consumeType from '@/core/actions/context/consumers/consumeType';
 import detectRelationType from '@/core/model/types/detectRelationType';
-import useTransform from '@/core/transformers/useTransform';
 import {
   ObjectDeserializerConfig,
   ObjectExtractedData,
@@ -435,9 +434,7 @@ export default abstract class ObjectDeserializer<
     rawValue: unknown,
     _context: {},
   ) {
-    const transform = useTransform(def.transformer, 'deserialize');
-
-    return transform(rawValue);
+    return def.transformer ? def.transformer.deserialize(rawValue) : rawValue;
   }
 
   protected async deserializeRelationValue(

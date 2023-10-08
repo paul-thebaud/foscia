@@ -11,7 +11,6 @@ import {
   SerializerI,
   shouldSync,
 } from '@/core';
-import useTransform from '@/core/transformers/useTransform';
 import { ObjectSerializerConfig } from '@/object/types';
 import { applyConfig } from '@/utilities';
 
@@ -146,9 +145,7 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
     rawValue: unknown,
     _context: {},
   ) {
-    const transform = useTransform(def.transformer, 'serialize');
-
-    return transform(rawValue);
+    return def.transformer ? def.transformer.serialize(rawValue) : rawValue;
   }
 
   protected async serializeRelationValue(

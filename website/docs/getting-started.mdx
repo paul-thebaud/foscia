@@ -77,7 +77,7 @@ import type Comment from './comment';
 export default class Post extends makeModel('posts', {
     title: attr<string>(),
     description: attr<string>(),
-    publishedAt: attr<Date | undefined>(toDate()),
+    publishedAt: attr(toDate({ nullable: true })),
     comments: hasMany<Comment>(),
     get published() {
         return !!this.publishedAt;

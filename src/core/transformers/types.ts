@@ -1,12 +1,18 @@
-import { Awaitable } from '@/utilities';
+import { Awaitable, Optional } from '@/utilities';
 
-export type FunctionTransform<T, S> = (value: S) => Awaitable<T>;
+export type FunctionTransformer<T, S> = (value: S) => Awaitable<T>;
 
-export type ObjectTransform<T, S> = {
-  serialize(value: T): Awaitable<S>;
-  deserialize(value: S): Awaitable<T>;
+export type ObjectTransformer<T, DS = unknown, SR = unknown> = {
+  deserialize: FunctionTransformer<T, DS>;
+  serialize: FunctionTransformer<SR, T>;
 };
 
-export type Transform<T, S = unknown> =
-  | FunctionTransform<T, S>
-  | ObjectTransform<T, S>;
+export type ObjectTransformerFactoryOptions<N extends boolean> = {
+  nullable?: N;
+};
+
+export type ObjectTransformerFactoryResult<T, DS, SR> = <N extends boolean = false>(
+  options?: ObjectTransformerFactoryOptions<N>,
+) => N extends true
+  ? ObjectTransformer<T | null, Optional<DS>, SR | null>
+  : ObjectTransformer<T, DS, SR>;

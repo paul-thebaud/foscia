@@ -33,7 +33,7 @@ makeModel('posts', {
     /* The model definition */
     title: attr<string>(),
     description: attr<string>(),
-    publishedAt: attr<Date | undefined>(toDate()),
+    publishedAt: attr(toDate({ nullable: true })),
     comments: hasMany<Comment>(),
     get published() {
         return !!this.publishedAt;
@@ -60,7 +60,7 @@ makeModel('posts')
         description: attr<string>(),
     })
     .extends({
-        publishedAt: attr<Date | undefined>(toDate()),
+        publishedAt: attr(toDate({ nullable: true })),
         get published() {
             return !!this.publishedAt;
         },
@@ -175,7 +175,7 @@ import { attr, toDate } from 'foscia/core';
 
 attr<string>(); // Without config.
 attr(toDate()); // With a transformer.
-attr({ default: null, transformer: toDate() }); // With config.
+attr({ default: null, transformer: toDate({ nullable: true }) }); // With config.
 attr(toDate(), { sync: 'retrieve' }); // With a transformer and config.
 attr({ default: () => [] }); // With a factory default (required for objects props).
 ```
@@ -184,34 +184,30 @@ attr({ default: () => [] }); // With a factory default (required for objects pro
 
 You can customize your attribute with the following options:
 
-| Key           | Type                                       | Default     | Description                                                                  |
-|---------------|--------------------------------------------|-------------|------------------------------------------------------------------------------|
-| `transformer` | `Transform<T>`                             | `undefined` | The transformer for the property's value when interacting with your backend. |
-| `default`     | `T`                                        | `undefined` | The default value for the property when initializing a model instance.       |
-| `alias`       | `string`                                   | `undefined` | Alias of your backend key used for (de)serializing.                          |
-| `sync`        | `boolean`&vert;`'retrieve'`&vert;`'write'` | `true`      | Avoid retrieving/writing the property's value from/to the backend.           |
+| Key           | Type                                       | Default     | Description                                                                            |
+|---------------|--------------------------------------------|-------------|----------------------------------------------------------------------------------------|
+| `transformer` | `Transform<T>`                             | `undefined` | The transformer for the property's value when interacting with your backend.           |
+| `default`     | `T`                                        | `undefined` | The default value for the property when initializing a model instance.                 |
+| `alias`       | `string`                                   | `undefined` | Alias of your backend key used for (de)serializing.                                    |
+| `sync`        | `boolean`&vert;`'retrieve'`&vert;`'write'` | `true`      | Only sync (push/pull) the property's value from/to the backend on specific operations. |
 
 #### Transform
 
 You can use a `transformer` to convert an attribute value when (de)serializing
-from/to your data source. There are two types or transformer within Foscia:
+from/to your data source.
 
--   `FunctionTransform`: a function called to transform the value when
-    serializing or deserializing.
--   `ObjectTransform`: an object with two methods: `serialize` and
-    `deserialize`.
-
-Foscia propose you 4 transformers out of the box:
-[`toDate`](/docs/reference/api/modules/core#todate),
-[`toNumber`](/docs/reference/api/modules/core#tonumber),
-[`toBoolean`](/docs/reference/api/modules/core#toboolean) and
-[`toString`](/docs/reference/api/modules/core#tostring).
+Foscia propose you 5 transformers out of the box:
+[`toDate`](/docs/guides/models/models-transformers#todate),
+[`toNumber`](/docs/guides/models/models-transformers#tonumber),
+[`toBoolean`](/docs/guides/models/models-transformers#toboolean),
+[`toString`](/docs/guides/models/models-transformers#tostring) and
+[`toArrayOf`](/docs/guides/models/models-transformers#toarrayof).
 
 :::info
 
 You may need other transformers in your implementation, for example when you are
 using a library to manage dates (momentjs, dayjs, etc.). You may read the
-[**advanced guide on transformers**](/docs/guides/models/custom-transformers) to
+[**advanced guide on transformers**](/docs/guides/models/models-transformers) to
 learn more about those.
 
 :::
@@ -273,7 +269,7 @@ You can customize your relation with the following options:
 | `alias`   | `string`                                   | `undefined` | Alias of your backend key used for (de)serializing.                                                       |
 | `path`    | `string`                                   | `undefined` | Path used to query the relation. Defaults to the relation's key.                                          |
 | `type`    | `string`                                   | `undefined` | The explicit type of related model. Might be used by the deserializer to know which model to instantiate. |
-| `sync`    | `boolean`&vert;`'retrieve'`&vert;`'write'` | `true`      | Avoid retrieving/writing the property's value from/to the backend.                                        |
+| `sync`    | `boolean`&vert;`'retrieve'`&vert;`'write'` | `true`      | Only sync (push/pull) the property's value from/to the backend on specific operations.                    |
 
 ### Readonly properties
 
@@ -288,7 +284,7 @@ to it, and emit a TypeScript error on compile (if using TypeScript).
 import { attr, makeModel, readOnly, toDate } from 'foscia/core';
 
 export default class User extends makeModel('users', {
-  verifiedAt: readOnly(attr(toDate())),
+  verifiedAt: readOnly(attr(toDate({ nullable: true }))),
 }) {}
 
 const user = new User();

@@ -42,7 +42,7 @@ import type Tag from './tag';
 export default class Post extends makeModel('posts', {
     title: attr<string>(),
     description: attr<string>(),
-    publishedAt: attr(toDate()),
+    publishedAt: attr(toDate({ nullable: true })),
     tags: hasMany<Tag>(),
     get published() {
         return !!this.publishedAt;

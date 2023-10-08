@@ -35,7 +35,7 @@ using composable in other models' definition.
 import { attr, makeComposable, toDate } from 'foscia/core';
 
 export default makeComposable({
-    publishedAt: attr(toDate()),
+    publishedAt: attr(toDate({ nullable: true })),
     get published() {
         return !!this.publishedAt;
     },
