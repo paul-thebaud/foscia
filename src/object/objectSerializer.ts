@@ -134,7 +134,7 @@ export default abstract class ObjectSerializer<Data> implements SerializerI<Data
     rawValue: unknown,
     _context: {},
   ) {
-    return shouldSync(def, ['write'])
+    return shouldSync(def, ['push'])
       && rawValue !== undefined
       && changed(instance, def.key);
   }

@@ -176,7 +176,7 @@ import { attr, toDate } from 'foscia/core';
 attr<string>(); // Without config.
 attr(toDate()); // With a transformer.
 attr({ default: null, transformer: toDate({ nullable: true }) }); // With config.
-attr(toDate(), { sync: 'retrieve' }); // With a transformer and config.
+attr(toDate(), { sync: 'pull' }); // With a transformer and config.
 attr({ default: () => [] }); // With a factory default (required for objects props).
 ```
 
@@ -184,12 +184,12 @@ attr({ default: () => [] }); // With a factory default (required for objects pro
 
 You can customize your attribute with the following options:
 
-| Key           | Type                                       | Default     | Description                                                                            |
-|---------------|--------------------------------------------|-------------|----------------------------------------------------------------------------------------|
-| `transformer` | `Transform<T>`                             | `undefined` | The transformer for the property's value when interacting with your backend.           |
-| `default`     | `T`                                        | `undefined` | The default value for the property when initializing a model instance.                 |
-| `alias`       | `string`                                   | `undefined` | Alias of your backend key used for (de)serializing.                                    |
-| `sync`        | `boolean`&vert;`'retrieve'`&vert;`'write'` | `true`      | Only sync (push/pull) the property's value from/to the backend on specific operations. |
+| Key           | Type                                  | Default     | Description                                                                            |
+|---------------|---------------------------------------|-------------|----------------------------------------------------------------------------------------|
+| `transformer` | `Transform<T>`                        | `undefined` | The transformer for the property's value when interacting with your backend.           |
+| `default`     | `T`                                   | `undefined` | The default value for the property when initializing a model instance.                 |
+| `alias`       | `string`                              | `undefined` | Alias of your backend key used for (de)serializing.                                    |
+| `sync`        | `boolean`&vert;`'pull'`&vert;`'push'` | `true`      | Only sync (push/pull) the property's value from/to the backend on specific operations. |
 
 #### Transform
 
@@ -241,14 +241,14 @@ import type User from './user';
 import type Comment from './comment';
 
 hasOne<User>(); // Without config.
-hasOne<User>({ sync: 'retrieve' }); // With config.
+hasOne<User>({ sync: 'pull' }); // With config.
 hasOne<User>('users'); // With explicit type.
-hasOne<User>({ type: 'users', sync: 'retrieve' }); // With explicit type.
+hasOne<User>({ type: 'users', sync: 'pull' }); // With explicit type.
 
 hasMany<Comment>(); // Without config.
-hasMany<Comment>({ sync: 'retrieve' }); // With config.
+hasMany<Comment>({ sync: 'pull' }); // With config.
 hasMany<Comment>('comments'); // With explicit type.
-hasMany<Comment>({ type: 'comments', sync: 'retrieve' }); // With explicit type.
+hasMany<Comment>({ type: 'comments', sync: 'pull' }); // With explicit type.
 ```
 
 :::tip
@@ -263,13 +263,13 @@ circular dependencies when having circular model relations.
 
 You can customize your relation with the following options:
 
-| Key       | Type                                       | Default     | Description                                                                                               |
-|-----------|--------------------------------------------|-------------|-----------------------------------------------------------------------------------------------------------|
-| `default` | `T`                                        | `undefined` | The default value for the property when initializing a model instance.                                    |
-| `alias`   | `string`                                   | `undefined` | Alias of your backend key used for (de)serializing.                                                       |
-| `path`    | `string`                                   | `undefined` | Path used to query the relation. Defaults to the relation's key.                                          |
-| `type`    | `string`                                   | `undefined` | The explicit type of related model. Might be used by the deserializer to know which model to instantiate. |
-| `sync`    | `boolean`&vert;`'retrieve'`&vert;`'write'` | `true`      | Only sync (push/pull) the property's value from/to the backend on specific operations.                    |
+| Key       | Type                                  | Default     | Description                                                                                               |
+|-----------|---------------------------------------|-------------|-----------------------------------------------------------------------------------------------------------|
+| `default` | `T`                                   | `undefined` | The default value for the property when initializing a model instance.                                    |
+| `alias`   | `string`                              | `undefined` | Alias of your backend key used for (de)serializing.                                                       |
+| `path`    | `string`                              | `undefined` | Path used to query the relation. Defaults to the relation's key.                                          |
+| `type`    | `string`                              | `undefined` | The explicit type of related model. Might be used by the deserializer to know which model to instantiate. |
+| `sync`    | `boolean`&vert;`'pull'`&vert;`'push'` | `true`      | Only sync (push/pull) the property's value from/to the backend on specific operations.                    |
 
 ### Readonly properties
 

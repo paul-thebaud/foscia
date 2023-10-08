@@ -424,7 +424,7 @@ export default abstract class ObjectDeserializer<
     rawValue: unknown,
     _context: {},
   ) {
-    return shouldSync(def, ['retrieve'])
+    return shouldSync(def, ['pull'])
       && rawValue !== undefined;
   }
 

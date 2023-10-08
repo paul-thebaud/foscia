@@ -81,7 +81,7 @@ export type ModelIdType = string | number;
 /**
  * Sync precise configuration for a property (will only do defined action).
  */
-export type ModelPropSync = 'retrieve' | 'write';
+export type ModelPropSync = 'pull' | 'push';
 
 /**
  * Normalized part of a property's definition (attribute or relation).
