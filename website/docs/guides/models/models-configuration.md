@@ -21,7 +21,7 @@ or when defining a custom factory such as described in the
 Inside a model creation:
 
 ```javascript title="post.js"
-import { makeModel } from 'foscia/core';
+import { makeModel } from '@foscia/core';
 
 class Post extends makeModel(
     {
@@ -37,7 +37,7 @@ class Post extends makeModel(
 Common to multiple models through a custom model factory:
 
 ```javascript title="makeModel.js"
-import { attr, makeModelFactory, toDate } from 'foscia/core';
+import { attr, makeModelFactory, toDate } from '@foscia/core';
 
 export default makeModelFactory(
     {
@@ -70,7 +70,7 @@ You may define the type as the only configuration of the model or as a
 configuration property (if you want to define other properties):
 
 ```javascript title="post.js"
-import { makeModel } from 'foscia/core';
+import { makeModel } from '@foscia/core';
 
 class Post extends makeModel('posts', {
     /* ...definition */
@@ -92,7 +92,7 @@ In an HTTP API, it is used as the endpoint. In a SQL database, it would be the
 table.
 
 ```javascript title="post.js"
-import { makeModel } from 'foscia/core';
+import { makeModel } from '@foscia/core';
 
 class Post extends makeModel(
     {
@@ -120,7 +120,7 @@ The following model configuration is equivalent to the default behavior of
 Foscia:
 
 ```javascript title="post.js"
-import { makeModel } from 'foscia/core';
+import { makeModel } from '@foscia/core';
 
 class Post extends makeModel(
     {
@@ -154,7 +154,7 @@ Here is an example of a type guesser using hypothetical `toKebabCase` and
 relation, this would guess the type to `blog-posts`;
 
 ```javascript title="post.js"
-import { makeModel, isManyRelationDef } from 'foscia/core';
+import { makeModel, isManyRelationDef } from '@foscia/core';
 
 class Post extends makeModel(
     {
@@ -179,7 +179,7 @@ You may define a `baseURL` configuration option on your models. It will replace
 the default base URL define on the adapter.
 
 ```javascript title="post.js"
-import { makeModel } from 'foscia/core';
+import { makeModel } from '@foscia/core';
 
 class Post extends makeModel(
     {

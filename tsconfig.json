@@ -10,13 +10,41 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "sourceMap": true,
-    "outDir": "dist-temp",
+    "sourceMap": false,
+    "outDir": "dist",
     "baseUrl": ".",
+    "rootDir": ".",
     "newLine": "lf",
     "paths": {
-      "@/*": [
-        "src/*"
+      "@foscia/*": [
+        "packages/*/src"
+      ],
+      "@foscia/cli/*": [
+        "packages/cli/src/*"
+      ],
+      "@foscia/blueprints/*": [
+        "packages/blueprints/src/*"
+      ],
+      "@foscia/core/*": [
+        "packages/core/src/*"
+      ],
+      "@foscia/http/*": [
+        "packages/http/src/*"
+      ],
+      "@foscia/jsonapi/*": [
+        "packages/jsonapi/src/*"
+      ],
+      "@foscia/object/*": [
+        "packages/object/src/*"
+      ],
+      "@foscia/rest/*": [
+        "packages/rest/src/*"
+      ],
+      "@foscia/test/*": [
+        "packages/test/src/*"
+      ],
+      "@foscia/utils/*": [
+        "packages/utils/src/*"
       ]
     },
     "lib": [
@@ -24,14 +52,8 @@
       "dom"
     ]
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "playground",
-    "cli",
-    "test"
-  ],
-  "typedocOptions": {
-    "readme": "none"
-  }
+  "include": [
+    "packages/*/src",
+    "packages/*/tests"
+  ]
 }

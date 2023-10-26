@@ -23,7 +23,7 @@ JS, React, Vue, etc.).
 // file: models/post.ts noEmit
 export default class Post {}
 // file: models/tag.ts
-import { attr, hasMany, makeModel } from 'foscia/core';
+import { attr, hasMany, makeModel } from '@foscia/core';
 import type Post from './post';
 
 export default class Tag extends makeModel('tags', {
@@ -36,7 +36,7 @@ export default class Tag extends makeModel('tags', {
 // file: models/tag.ts noEmit
 export default class Tag {}
 // file: models/post.ts
-import { attr, hasMany, makeModel, toDate } from 'foscia/core';
+import { attr, hasMany, makeModel, toDate } from '@foscia/core';
 import type Tag from './tag';
 
 export default class Post extends makeModel('posts', {
@@ -55,13 +55,13 @@ export default class Post extends makeModel('posts', {
 ### View many
 
 ```javascript
-import { forModel, when, all } from 'foscia/core';
+import { forModel, when, all } from '@foscia/core';
 import {
     filterBy,
     sortByDesc,
     paginate,
     usingDocument,
-} from 'foscia/jsonapi';
+} from '@foscia/jsonapi';
 import action from './action';
 import Post from './models/post';
 
@@ -80,7 +80,7 @@ const { instances, document } = await fetchAllPost({ search: 'Hello' });
 ### View one
 
 ```javascript
-import { find, include, oneOrFail } from 'foscia/core';
+import { find, include, oneOrFail } from '@foscia/core';
 import action from './action';
 import Post from './models/post';
 
@@ -94,7 +94,7 @@ const post = await fetchOnePost('123-abc');
 ### Create or update one
 
 ```javascript
-import { changed, fill, oneOrCurrent, reset, save, when } from 'foscia/core';
+import { changed, fill, oneOrCurrent, reset, save, when } from '@foscia/core';
 import action from './action';
 import Post from './models/post';
 
@@ -131,7 +131,7 @@ await savePost(post, {
 ### Delete one
 
 ```javascript
-import { destroy, none } from 'foscia/core';
+import { destroy, none } from '@foscia/core';
 import action from './action';
 import Post from './models/post';
 
@@ -152,8 +152,8 @@ Thanks to functional programming, you can easily combine non-standard action
 with classical context enhancers and runners.
 
 ```javascript
-import { forModel, forInstance, include, when, oneOrFail } from 'foscia/core';
-import { makeGet, makePost } from 'foscia/http';
+import { forModel, forInstance, include, when, oneOrFail } from '@foscia/core';
+import { makeGet, makePost } from '@foscia/http';
 import action from './action';
 import Post from './models/post';
 

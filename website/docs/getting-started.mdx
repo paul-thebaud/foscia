@@ -67,11 +67,11 @@ takes up to 2 arguments and returns an ES6 class:
 
 ```ts title="models/post.ts"
 // file: models/comment.ts noEmit
-import { makeModel } from 'foscia/core';
+import { makeModel } from '@foscia/core';
 export default class Comment extends makeModel('comments') {}
 
 // file: models/post.ts
-import { makeModel, attr, hasMany, toDate } from 'foscia/core';
+import { makeModel, attr, hasMany, toDate } from '@foscia/core';
 import type Comment from './comment';
 
 export default class Post extends makeModel('posts', {
@@ -267,8 +267,8 @@ check the [available extensions packs](/docs/reference/actions-extensions) or
 import manually enhancers and runners extensions using the following code:
 
 ```javascript
-import { forModel, include, all } from 'foscia/core';
-import { makeJsonApi, hooksExtensions } from 'foscia/blueprints';
+import { forModel, include, all } from '@foscia/core';
+import { makeJsonApi, hooksExtensions } from '@foscia/blueprints';
 
 const { action, registry } = makeJsonApi({
     extensions: {
@@ -288,7 +288,7 @@ modify the action context. When you are ready, you can `run` the action with a
 given **context runner**.
 
 ```javascript
-import { all, forModel } from 'foscia/core';
+import { all, forModel } from '@foscia/core';
 import Post from './models/post';
 import action from './action';
 
@@ -306,7 +306,7 @@ and a `oneOrFail` context runner. This way, you are able to do a find query and
 retrieve a raw result when needed.
 
 ```javascript
-import { find, oneOrFail } from 'foscia/core';
+import { find, oneOrFail } from '@foscia/core';
 import Post from './models/post';
 import action from './action';
 
@@ -317,7 +317,7 @@ This works the same to send write operations through actions. In the following
 example, we are retrieving a raw adapter response instead of model instances.
 
 ```javascript
-import { create, fill, oneOrCurrent } from 'foscia/core';
+import { create, fill, oneOrCurrent } from '@foscia/core';
 import Post from './models/post';
 import action from './action';
 
@@ -342,8 +342,8 @@ This way, you can standardize all API calls across your application, even when
 those are non JSON:API/REST related.
 
 ```javascript
-import { forInstance, raw } from 'foscia/core';
-import { makePost } from 'foscia/http';
+import { forInstance, raw } from '@foscia/core';
+import { makePost } from '@foscia/http';
 import Comment from './comment';
 import action from './action';
 

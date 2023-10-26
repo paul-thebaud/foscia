@@ -1,0 +1,14 @@
+{
+  "disableGit": true,
+  "sourceLinkTemplate": "https://github.com/paul-thebaud/foscia/tree/main/{path}#L{line}",
+  "groupOrder": [
+    "Classes",
+    "*",
+    "Namespaces"
+  ],
+  "categoryOrder": [
+    "Enhancers",
+    "Runners",
+    "*"
+  ]
+}

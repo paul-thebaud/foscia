@@ -27,7 +27,7 @@ attributes/relations definitions and custom properties and methods.
 The attributes and relations definition represents the `schema` of the model.
 
 ```javascript
-import { makeModel, attr, hasMany, toDate } from 'foscia/core';
+import { makeModel, attr, hasMany, toDate } from '@foscia/core';
 
 makeModel('posts', {
     /* The model definition */
@@ -142,7 +142,7 @@ If you want to change the typing of those properties or transform values, you
 can use the `id` function.
 
 ```ts
-import { id, toString } from 'foscia/core';
+import { id, toString } from '@foscia/core';
 
 id<string>(); // Without config.
 id(toString()); // With a transformer.
@@ -171,7 +171,7 @@ to the factory (e.g. `attr<string | null>()`) or set a default attribute value
 (e.g. `attr({ default: '' })`).
 
 ```ts
-import { attr, toDate } from 'foscia/core';
+import { attr, toDate } from '@foscia/core';
 
 attr<string>(); // Without config.
 attr(toDate()); // With a transformer.
@@ -228,15 +228,15 @@ Also consider that non-loaded relations will have a value of `undefined`.
 
 ```ts
 // file: models/user.ts noEmit
-import { makeModel } from 'foscia/core';
+import { makeModel } from '@foscia/core';
 export default class User extends makeModel('users') {}
 
 // file: models/comment.ts noEmit
-import { makeModel } from 'foscia/core';
+import { makeModel } from '@foscia/core';
 export default class Comment extends makeModel('comments') {}
 
 // file: models/example.ts
-import { hasOne, hasMany } from 'foscia/core';
+import { hasOne, hasMany } from '@foscia/core';
 import type User from './user';
 import type Comment from './comment';
 
@@ -281,7 +281,7 @@ Making a property readonly will throw an error when trying to affect a value
 to it, and emit a TypeScript error on compile (if using TypeScript).
 
 ```javascript
-import { attr, makeModel, readOnly, toDate } from 'foscia/core';
+import { attr, makeModel, readOnly, toDate } from '@foscia/core';
 
 export default class User extends makeModel('users', {
   verifiedAt: readOnly(attr(toDate({ nullable: true }))),
@@ -344,7 +344,7 @@ unregister the hook. All model hooks' callbacks have the concerned model
 instance as the only provided argument.
 
 ```javascript
-import { onSaving } from 'foscia/core';
+import { onSaving } from '@foscia/core';
 
 // After this, the hook will run on each User instance saving.
 const unregisterThisHook = onSaving(User, async (user) => {
@@ -369,7 +369,7 @@ Be aware that `withoutHooks` will always return a promise, even when
 your callback is a sync function.
 
 ```javascript
-import { withoutHooks } from 'foscia/core';
+import { withoutHooks } from '@foscia/core';
 
 const asyncResultOfYourCallback = await withoutHooks(User, async () => {
     // TODO Do something async and return it.

@@ -23,13 +23,13 @@ import {
     when,
     include,
     all,
-} from 'foscia/core';
+} from '@foscia/core';
 import {
     filterBy,
     sortByDesc,
     paginate,
     usingDocument,
-} from 'foscia/jsonapi';
+} from '@foscia/jsonapi';
 import action from './action';
 import Post from './models/post';
 
@@ -70,7 +70,7 @@ import {
     when,
     include,
     oneOrFail,
-} from 'foscia/core';
+} from '@foscia/core';
 import action from './action';
 import Post from './models/post';
 
@@ -109,7 +109,7 @@ import {
     reset,
     save,
     when,
-} from 'foscia/core';
+} from '@foscia/core';
 import action from './action';
 import Post from './models/post';
 
@@ -162,7 +162,7 @@ await saveOne(
 ### Delete one
 
 ```javascript
-import { destroy, none } from 'foscia/core';
+import { destroy, none } from '@foscia/core';
 import action from './action';
 import Post from './models/post';
 

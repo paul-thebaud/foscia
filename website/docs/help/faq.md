@@ -26,7 +26,7 @@ models objects and contexts changes.
 Here are a short example of the capabilities reusing the previous examples:
 
 ```typescript title="post.ts"
-import { makeModel, attr, hasMany, toDate } from 'foscia/core';
+import { makeModel, attr, hasMany, toDate } from '@foscia/core';
 
 class Post extends makeModel('posts', {
     title: attr({ default: '' }), // Infered to string.

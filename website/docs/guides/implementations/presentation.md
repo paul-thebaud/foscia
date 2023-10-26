@@ -27,8 +27,8 @@ have a specific implementation (HTTP, JSON:API, etc.).
 ## Core implementation
 
 Foscia propose core implementation for the `Cache` and `Registry` actions'
-dependencies. Both classes are available through `foscia/core` namespace and
-both factory are available through `foscia/blueprints`.
+dependencies. Both classes are available through `@foscia/core` namespace and
+both factory are available through `@foscia/blueprints`.
 
 Those dependencies may be used with any implementations.
 

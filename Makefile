@@ -1,7 +1,7 @@
 # Executables
 DOCKER_COMPOSE?=docker compose
 DOCKER_EXEC?=$(DOCKER_COMPOSE) exec -it
-PNPM?=$(DOCKER_EXEC) test pnpm
+PNPM?=$(DOCKER_EXEC) node pnpm
 
 # Misc
 default: help
@@ -70,7 +70,7 @@ test: lint test-typecheck test-coverage ## Lint and run tests.
 
 .PHONY: sh
 sh: ## Run sh on test container.
-	@$(DOCKER_EXEC) test sh
+	@$(DOCKER_EXEC) node sh
 
 .PHONY: help
 help: ## Show help for each of the Makefile recipes.

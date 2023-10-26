@@ -35,8 +35,8 @@ You are able to keep using the default blueprint factory and only replace some
 dependency by instantiating your action manually:
 
 ```javascript title="action.js"
-import { makeJsonRest } from 'foscia/blueprints';
-import { context } from 'foscia/core';
+import { makeJsonRest } from '@foscia/blueprints';
+import { context } from '@foscia/core';
 import CustomDeserializer from './action/customDeserializer';
 
 // Note that we are not using the exported action function,

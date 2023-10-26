@@ -1,115 +1,46 @@
 {
-  "name": "foscia",
+  "private": true,
   "type": "module",
-  "version": "0.1.0-alpha.14",
+  "version": "0.1.0",
   "license": "MIT",
-  "description": "Type safe, modular and intuitive API client.",
-  "homepage": "https://paul-thebaud.github.io/foscia",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/paul-thebaud/foscia.git"
-  },
-  "bugs": {
-    "url": "https://github.com/paul-thebaud/foscia/issues"
-  },
-  "keywords": [
-    "typescript",
-    "javascript",
-    "functional programming",
-    "model",
-    "api",
-    "json:api",
-    "rest"
-  ],
-  "sideEffects": false,
-  "bin": {
-    "foscia": "dist/cli.cjs"
-  },
-  "files": [
-    "dist/*",
-    "core.d.ts",
-    "http.d.ts",
-    "object.d.ts",
-    "jsonapi.d.ts",
-    "rest.d.ts",
-    "test.d.ts",
-    "blueprints.d.ts",
-    "index.d.ts"
-  ],
-  "types": "index.d.ts",
-  "main": "./dist/index.umd.cjs",
-  "exports": {
-    "./core": {
-      "import": "./dist/core.js",
-      "require": "./dist/core.cjs"
-    },
-    "./object": {
-      "import": "./dist/object.js",
-      "require": "./dist/object.cjs"
-    },
-    "./http": {
-      "import": "./dist/http.js",
-      "require": "./dist/http.cjs"
-    },
-    "./jsonapi": {
-      "import": "./dist/jsonapi.js",
-      "require": "./dist/jsonapi.cjs"
-    },
-    "./rest": {
-      "import": "./dist/rest.js",
-      "require": "./dist/rest.cjs"
-    },
-    "./test": {
-      "import": "./dist/test.js",
-      "require": "./dist/test.cjs"
-    },
-    "./blueprints": {
-      "import": "./dist/blueprints.js",
-      "require": "./dist/blueprints.cjs"
-    }
-  },
   "scripts": {
-    "dev": "BUILD_TARGET=lib:es vite --host",
-    "lint": "eslint --ext .ts src cli test",
     "test:watch": "vitest --watch",
     "test:typecheck": "vitest typecheck --run",
     "test:coverage": "vitest --run --coverage",
     "test": "pnpm test:typecheck && pnpm test:coverage",
-    "build:pre-clear": "rimraf ./dist ./dist-temp dist.tar.gz dist.zip",
-    "build:lib:es": "BUILD_TARGET=lib:es vite build",
-    "build:lib:cjs": "BUILD_TARGET=lib:cjs vite build",
-    "build:lib:umd": "BUILD_TARGET=lib:umd vite build",
-    "build:lib": "concurrently \"pnpm build:lib:es\" \"pnpm build:lib:cjs\" \"pnpm build:lib:umd\"",
-    "build:declaration": "tsc --declaration --emitDeclarationOnly --declarationDir dist-temp/ && tsc-alias",
-    "build:declaration:bundle": "mv -v dist-temp/* dist",
-    "build:post-clear": "rimraf \"./dist/index.@(js|cjs|d.ts)?(.map)\" && rimraf ./dist/cli/ && rimraf ./dist-temp",
-    "build:archive:tar": "cd dist && tar -czvf dist.tar.gz * && mv dist.tar.gz ../dist.tar.gz",
-    "build:archive:zip": "cd dist && zip dist.zip * && mv dist.zip ../dist.zip",
-    "build:archive": "pnpm build:archive:tar && pnpm build:archive:zip",
-    "build": "pnpm build:pre-clear && pnpm build:lib && pnpm build:declaration && pnpm build:declaration:bundle && pnpm build:post-clear && pnpm build:archive",
-    "release": "release-it"
+    "lint": "node scripts/lint.js",
+    "build": "node scripts/build.js",
+    "preinstall": "npx only-allow pnpm"
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^7.0.2",
+    "@rollup/plugin-commonjs": "^25.0.4",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.2.1",
+    "@rollup/plugin-terser": "^0.4.3",
+    "@rollup/plugin-typescript": "^11.1.4",
     "@typescript-eslint/eslint-plugin": "^6.7.3",
     "@typescript-eslint/parser": "^6.7.3",
     "@vitest/coverage-istanbul": "^0.33.0",
+    "chalk": "^5.3.0",
     "concurrently": "^8.2.1",
     "eslint": "^8.50.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.28.1",
+    "execa": "^8.0.1",
     "jsdom": "^22.1.0",
+    "minimist": "^1.2.8",
     "release-it": "^16.2.1",
     "rimraf": "^5.0.5",
+    "rollup": "^3.29.4",
     "tsc-alias": "^1.8.8",
     "tslib": "^2.6.2",
     "typescript": "^5.2.2",
-    "vite": "^4.4.9",
     "vitest": "^0.33.0"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   }
 }

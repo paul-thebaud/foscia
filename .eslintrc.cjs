@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('node:path');
 
 module.exports = {
   root: true,
@@ -27,9 +27,24 @@ module.exports = {
     'object-curly-newline': ['off'],
     'import/no-unresolved': 'error',
     'import/extensions': [
-      'error',
-      'ignorePackages',
-      { ts: 'never' },
+      'error', 'ignorePackages', { ts: 'never' },
+    ],
+    'import/no-extraneous-dependencies': [
+      'error', {
+        devDependencies: ['**/*.mock.ts', '**/*.test.ts', '**/*.test-d.ts'],
+        packageDir: [
+          '.',
+          './packages/blueprints',
+          './packages/cli',
+          './packages/core',
+          './packages/http',
+          './packages/jsonapi',
+          './packages/object',
+          './packages/rest',
+          './packages/test',
+          './packages/utils',
+        ],
+      },
     ],
   },
   settings: {
@@ -38,12 +53,12 @@ module.exports = {
     },
     'import/resolver': {
       typescript: {
-        'project': [
-          'tsconfig.json',
-          'cli/tsconfig.json',
-          'test/tsconfig.json',
-        ],
+        project: ['tsconfig.json'],
       },
     },
   },
+  ignorePatterns: [
+    'dist',
+    'node_modules',
+  ],
 };

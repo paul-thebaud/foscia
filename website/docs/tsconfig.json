@@ -1,40 +1,43 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "allowUnusedLabels": true,
-    "skipLibCheck": true,
-    "noEmitOnError": false,
+    "target": "esnext",
+    "module": "esnext",
     "strict": true,
-    "removeComments": false,
-    "module": "ESNext",
-    "target": "ESNext",
-    "allowJs": true,
-    "checkJs": true,
-    "alwaysStrict": false,
-    "jsx": "preserve",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "sourceMap": false,
+    "outDir": "dist",
     "baseUrl": "..",
+    "newLine": "lf",
     "paths": {
-      "foscia/core": [
-        "dist/core.d.ts"
+      "@foscia/blueprints": [
+        "packages/blueprints/dist/index.d.ts"
       ],
-      "foscia/http": [
-        "dist/http.d.ts"
+      "@foscia/core": [
+        "packages/core/dist/index.d.ts"
       ],
-      "foscia/json": [
-        "dist/json.d.ts"
+      "@foscia/http": [
+        "packages/http/dist/index.d.ts"
       ],
-      "foscia/jsonapi": [
-        "dist/jsonapi.d.ts"
+      "@foscia/object": [
+        "packages/object/dist/index.d.ts"
       ],
-      "foscia/jsonrest": [
-        "dist/jsonrest.d.ts"
+      "@foscia/jsonapi": [
+        "packages/jsonapi/dist/index.d.ts"
       ],
-      "foscia/blueprints": [
-        "dist/blueprints.d.ts"
+      "@foscia/rest": [
+        "packages/rest/dist/index.d.ts"
+      ],
+      "@foscia/test": [
+        "packages/test/dist/index.d.ts"
+      ],
+      "@foscia/utils": [
+        "packages/utils/dist/index.d.ts"
       ]
     }
   }

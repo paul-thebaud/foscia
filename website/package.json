@@ -1,13 +1,10 @@
 {
-  "name": "website",
-  "version": "0.0.0",
   "private": true,
+  "version": "0.0.0",
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "docusaurus start  --host 0.0.0.0",
-    "build:docs": "docusaurus build",
-    "build:post-clear": "rimraf ./docs/reference/api/namespaces",
-    "build": "pnpm build:docs && pnpm build:post-clear",
+    "start": "docusaurus start --host 0.0.0.0",
+    "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",

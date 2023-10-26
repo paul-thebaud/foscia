@@ -115,8 +115,8 @@ If you are using a custom action factory, you should check the
 [custom action factory guide](/docs/guides/actions/custom-action-factory).
 
 ```javascript title="action.js"
-import { forModel, include, all } from 'foscia/core';
-import { makeJsonApi, hooksExtensions } from 'foscia/blueprints';
+import { forModel, include, all } from '@foscia/core';
+import { makeJsonApi, hooksExtensions } from '@foscia/blueprints';
 
 const { action, registry } = makeJsonApi({
     extensions: {
@@ -168,8 +168,8 @@ an example, you may want to sort results differently based on the user's defined
 sort's direction. This can be done easily using the `when` helper:
 
 ```javascript
-import { when } from 'foscia/core';
-import { sortByDesc } from 'foscia/jsonapi';
+import { when } from '@foscia/core';
+import { sortByDesc } from '@foscia/jsonapi';
 
 action()
     .use(forModel(Post))
@@ -188,7 +188,7 @@ as any enhancers and runners.
 Here are further examples:
 
 ```javascript
-import { changed, create, oneOrFail, when } from 'foscia/core';
+import { changed, create, oneOrFail, when } from '@foscia/core';
 
 const post = fill(new Post(), userInputData);
 
@@ -225,7 +225,7 @@ import {
     onSuccess,
     onError,
     onFinally,
-} from 'foscia/core';
+} from '@foscia/core';
 
 action().use(onRunning(({ context }) => /* ... */));
 action().use(onSuccess(({ context, result }) => /* ... */));
@@ -247,7 +247,7 @@ Be aware that `withoutHooks` will always return a promise, even when
 your callback is a sync function.
 
 ```javascript
-import { withoutHooks } from 'foscia/core';
+import { withoutHooks } from '@foscia/core';
 
 // Retrieve a list of User instances without action hooks running.
 const users = await withoutHooks(action(), async (a) => {

@@ -44,8 +44,8 @@ This guide is a runner version of the `first` enhancer described in the
 Our implementation of `first` will paginate the context and fetch one instance.
 
 ```ts title="action/runners/first.ts"
-import {Action, ConsumeAdapter, ConsumeDeserializer, ConsumeModel, Model, one} from 'foscia/core';
-import {paginate} from 'foscia/jsonapi';
+import {Action, ConsumeAdapter, ConsumeDeserializer, ConsumeModel, Model, one} from '@foscia/core';
+import {paginate} from '@foscia/jsonapi';
 
 export default function first<
   Context extends {},
@@ -71,7 +71,7 @@ context propagation through other enhancers and runners.
 Once your runner is ready, you may use it like any other Foscia runner.
 
 ```javascript
-import { forModel } from 'foscia/core';
+import { forModel } from '@foscia/core';
 import action from './action';
 import first from './action/runners/first';
 import Post from './models/post';
@@ -98,8 +98,8 @@ Once your runner extension is ready, you will be able to use it
 [as any other runners of Foscia](/docs/core-concepts/actions#extensions).
 
 ```ts title="action/runners/first.ts"
-import {Action, ActionParsedExtension, ConsumeAdapter, ConsumeDeserializer, ConsumeModel, Model, makeRunnersExtension, one} from 'foscia/core';
-import {paginate} from 'foscia/jsonapi';
+import {Action, ActionParsedExtension, ConsumeAdapter, ConsumeDeserializer, ConsumeModel, Model, makeRunnersExtension, one} from '@foscia/core';
+import {paginate} from '@foscia/jsonapi';
 
 // Our previous enhancer code.
 export default function first<

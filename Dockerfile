@@ -1,4 +1,4 @@
-FROM node:18-alpine as build
+FROM node:18-alpine as dependencies
 
 RUN apk update && apk add --no-cache zip git curl
 
@@ -10,24 +10,16 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
-CMD ["pnpm", "build"]
+FROM dependencies as node
 
-FROM build as test
+CMD ["sh"]
 
-CMD ["pnpm", "test:watch"]
-
-FROM build as cli
+FROM node as build
 
 CMD ["pnpm", "build"]
 
-FROM build as playground
+FROM node as docs
 
-CMD ["pnpm", "dev"]
-
-HEALTHCHECK --retries=60 --interval=5s --timeout=5s CMD ["curl", "-f", "http://localhost:5173"]
-
-FROM build as docs
-
-CMD ["sh", "-c", "pnpm build && pnpm start"]
+CMD ["pnpm", "start"]
 
 HEALTHCHECK --retries=60 --interval=5s --timeout=5s CMD ["curl", "-f", "http://localhost:3000"]

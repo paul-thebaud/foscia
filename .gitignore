@@ -1,10 +1,11 @@
 /node_modules/
+/packages/*/node_modules/
 /.pnpm-store
 
 # build files
 /coverage/
 /dist/
-/dist-temp/
+/packages/*/dist/
 dist.tar.gz
 dist.zip
 

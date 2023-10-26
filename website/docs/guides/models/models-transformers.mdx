@@ -34,7 +34,7 @@ It will serialize values to an
 You can pass the `nullable` option to make your values nullable.
 
 ```javascript
-import { attr, makeModel, toDate } from 'foscia/core';
+import { attr, makeModel, toDate } from '@foscia/core';
 
 makeModel('posts', {
   createdAt: attr(toDate()),
@@ -56,7 +56,7 @@ makeModel('posts', {
 You can pass the `nullable` option to make your values nullable.
 
 ```javascript
-import { attr, makeModel, toNumber } from 'foscia/core';
+import { attr, makeModel, toNumber } from '@foscia/core';
 
 makeModel('products', {
   price: attr(toNumber({ nullable: true })),
@@ -80,7 +80,7 @@ You can also provide your own truthy values using `trueValues` option
 (defaults are `[true, 1, '1', 'true', 'yes']`).
 
 ```javascript
-import { attr, makeModel, toBoolean } from 'foscia/core';
+import { attr, makeModel, toBoolean } from '@foscia/core';
 
 makeModel('users', {
   verified: attr(toBoolean()),
@@ -96,7 +96,7 @@ makeModel('users', {
 You can pass the `nullable` option to make your values nullable.
 
 ```javascript
-import { attr, makeModel, toString } from 'foscia/core';
+import { attr, makeModel, toString } from '@foscia/core';
 
 makeModel('posts', {
   title: attr(toString()),
@@ -112,7 +112,7 @@ This can be useful when dealing with array of dates.
 You can pass the `nullable` option to make your values nullable.
 
 ```javascript
-import { attr, makeModel, toArrayOf, toDate } from 'foscia/core';
+import { attr, makeModel, toArrayOf, toDate } from '@foscia/core';
 
 makeModel('posts', {
   openingDates: attr(toArrayOf(toDate())),
@@ -138,13 +138,13 @@ and an optional `serialize` function (deserializer will be used as a default).
 Here are two examples of transformers:
 
 ```ts title="transformers/toNumber.ts"
-import { makeTransformer } from 'foscia/core';
+import { makeTransformer } from '@foscia/core';
 
 export default makeTransformer((value: string) => Number(value));
 ```
 
 ```ts title="transformers/toDate.ts"
-import { makeTransformer } from 'foscia/core';
+import { makeTransformer } from '@foscia/core';
 
 export default makeTransformer(
   (value: string) => {
@@ -161,7 +161,7 @@ The return value of `makeTransformer` is a transformer factory function
 which can take the same options as other Foscia transformers.
 
 ```javascript
-import { attr, makeModel } from 'foscia/core';
+import { attr, makeModel } from '@foscia/core';
 import toNumber from '../transformers/toNumber';
 import toDate from '../transformers/toDate';
 

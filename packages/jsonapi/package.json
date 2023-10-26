@@ -1,0 +1,37 @@
+{
+  "name": "@foscia/jsonapi",
+  "type": "module",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "Paul Thébaud",
+  "description": "Type safe, modular and intuitive API/data client.",
+  "homepage": "https://paul-thebaud.github.io/foscia",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/paul-thebaud/foscia.git",
+    "directory": "packages/jsonapi"
+  },
+  "bugs": {
+    "url": "https://github.com/paul-thebaud/foscia/issues"
+  },
+  "sideEffects": false,
+  "files": [
+    "./dist/*",
+    "LICENSE",
+    "README.md"
+  ],
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/index.global.js",
+  "jsdelivr": "./dist/index.global.js",
+  "main": "./dist/index.esm.js",
+  "exports": {
+    "import": "./dist/index.esm.js",
+    "require": "./dist/index.cjs.js"
+  },
+  "dependencies": {
+    "@foscia/core": "0.1.0",
+    "@foscia/http": "0.1.0",
+    "@foscia/object": "0.1.0",
+    "@foscia/utils": "0.1.0"
+  }
+}

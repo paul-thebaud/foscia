@@ -44,8 +44,8 @@ This guide is an enhancer version of the `first` runner described in the
 Our implementation of `first` will target the model and paginate the context.
 
 ```ts title="action/enhancers/first.ts"
-import { Action, Model, ModelInstance, forModel } from 'foscia/core';
-import { paginate } from 'foscia/jsonapi';
+import { Action, Model, ModelInstance, forModel } from '@foscia/core';
+import { paginate } from '@foscia/jsonapi';
 
 export default function first<
   Context extends {},
@@ -72,7 +72,7 @@ context propagation through other enhancers and runners.
 Once your enhancer is ready, you may use it like any other Foscia enhancer.
 
 ```javascript
-import { one } from 'foscia/core';
+import { one } from '@foscia/core';
 import action from './action';
 import first from './action/enhancers/first';
 import Post from './models/post';
@@ -99,8 +99,8 @@ Once your enhancer extension is ready, you will be able to use it
 [as any other enhancers of Foscia](/docs/core-concepts/actions#extensions).
 
 ```ts title="action/enhancers/first.ts"
-import {Action, ActionParsedExtension, ConsumeId, ConsumeModel, forModel, makeEnhancersExtension, Model, ModelInstance} from 'foscia/core';
-import {paginate} from 'foscia/jsonapi';
+import {Action, ActionParsedExtension, ConsumeId, ConsumeModel, forModel, makeEnhancersExtension, Model, ModelInstance} from '@foscia/core';
+import {paginate} from '@foscia/jsonapi';
 
 // Our previous enhancer code.
 export default function first<

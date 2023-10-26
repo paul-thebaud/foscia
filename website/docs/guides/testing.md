@@ -48,7 +48,7 @@ apply normally and make the context evolve, but when running the action it will
 intercept the run to provide your mocked result.
 
 ```typescript title="test/actionMock.ts"
-import { ActionFactoryMock, mockAction, unmockAction } from 'foscia/test';
+import { ActionFactoryMock, mockAction, unmockAction } from '@foscia/test';
 import action from './action';
 
 let actionMock: ActionFactoryMock;
@@ -89,7 +89,7 @@ export default makeActionFactoryMockable(action);
 Here is a simple example of a function we will write tests for:
 
 ```typescript title="src/registerUser.ts"
-import { create, fill, oneOrCurrent } from 'foscia/core';
+import { create, fill, oneOrCurrent } from '@foscia/core';
 import action from './action';
 import User from './models/user';
 
@@ -116,7 +116,7 @@ In this simple example, we will go through basics features of action mocking
 (e.g. mocking next results).
 
 ```typescript title="test/registerUser.test.ts"
-import { fill } from 'foscia/core';
+import { fill } from '@foscia/core';
 import User from '../src/models/user';
 import registerUser from '../src/registerUser';
 import actionMock from './actionMock';

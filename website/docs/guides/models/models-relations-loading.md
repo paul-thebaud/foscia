@@ -23,7 +23,7 @@ you can use the `loaded` function.
 loaded.
 
 ```javascript
-import { loaded } from 'foscia/core';
+import { loaded } from '@foscia/core';
 
 // True if comments is loaded.
 loaded(myPost, 'comments');
@@ -50,8 +50,8 @@ supports nested relations keys if your data source supports them.
 Here is an example when using a JSON:API backend with an `ids` filter available.
 
 ```javascript title="loaders/refreshLoad.ts"
-import { makeRefreshIncludeLoader } from 'foscia/core';
-import { filterBy } from 'foscia/jsonapi';
+import { makeRefreshIncludeLoader } from '@foscia/core';
+import { filterBy } from '@foscia/jsonapi';
 
 export default makeRefreshIncludeLoader({
     prepare: (action, { instances }) =>
@@ -101,7 +101,7 @@ such as JSON:API.
 It does not support nested relations keys as it will be dangerously inefficient.
 
 ```javascript title="loaders/forRelationLoad.ts"
-import { makeRefreshIncludeLoader } from 'foscia/core';
+import { makeRefreshIncludeLoader } from '@foscia/core';
 
 export default makeForRelationLoader();
 ```

@@ -32,7 +32,7 @@ rewritten to protect their descriptor. This allows using spread syntax when
 using composable in other models' definition.
 
 ```javascript title="composables/publishable.js"
-import { attr, makeComposable, toDate } from 'foscia/core';
+import { attr, makeComposable, toDate } from '@foscia/core';
 
 export default makeComposable({
     publishedAt: attr(toDate({ nullable: true })),
@@ -46,7 +46,7 @@ The easiest way to use your composable is to object-spread it inside your
 model's definition.
 
 ```javascript title="models/post.js"
-import { makeModel } from 'foscia/core';
+import { makeModel } from '@foscia/core';
 import publishable from '../composables/publishable';
 
 export default class Post extends makeModel('posts', {
@@ -58,7 +58,7 @@ export default class Post extends makeModel('posts', {
 You may also use the model `extends` method as follows:
 
 ```javascript title="models/post.js"
-import { makeModel } from 'foscia/core';
+import { makeModel } from '@foscia/core';
 import publishable from '../composables/publishable';
 
 export default class Post extends makeModel('posts').extends(publishable) {}
@@ -80,7 +80,7 @@ When you need to share features across **all** of your models, you should use a
 custom model factory. It will replace the Foscia's `makeModel` function.
 
 ```javascript title="makeModel.js"
-import { attr, makeModelFactory, toDate } from 'foscia/core';
+import { attr, makeModelFactory, toDate } from '@foscia/core';
 
 export default makeModelFactory(
     {

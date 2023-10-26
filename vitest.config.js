@@ -1,5 +1,9 @@
-import { resolve } from 'path';
+import typescript from '@rollup/plugin-typescript';
+import path from 'node:path';
 import { defineConfig } from 'vitest/config';
+import { useRootDirname } from './scripts/utils.js';
+
+const rootDirname = useRootDirname();
 
 export default defineConfig({
   test: {
@@ -8,17 +12,11 @@ export default defineConfig({
     coverage: {
       provider: 'istanbul',
     },
-    setupFiles: [
-      './test/setup/logger.ts',
-    ],
     typecheck: {
-      tsconfig: 'test/tsconfig.json',
+      tsconfig: './tsconfig.json',
     },
   },
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, './src'),
-      '@test': resolve(__dirname, './test'),
-    },
-  },
+  plugins: [
+    typescript({ tsconfig: path.resolve(rootDirname, 'tsconfig.json') }),
+  ],
 });

@@ -1,0 +1,21 @@
+import { ModelPropRaw, ModelRelationRaw, ModelRelationType } from '@foscia/core/model/types';
+
+export type RelationOptions<T> = Omit<ModelPropRaw<T>, 'readOnly'> & {
+  type?: string;
+  path?: string;
+};
+
+export default function makeRelation<T>(
+  relationType: ModelRelationType,
+  config: string | RelationOptions<T> = {},
+): ModelRelationRaw<T, false> {
+  return {
+    $MODEL_TYPE: 'relation',
+    $RELATION_TYPE: relationType,
+    ...(
+      typeof config === 'string' ? {
+        type: config,
+      } : config
+    ),
+  };
+}

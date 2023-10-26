@@ -6,7 +6,7 @@ sidebar_position: 0
 
 ## What is Foscia?
 
-_Type safe, modular and intuitive API client._
+_Type safe, modular and intuitive API/data client._
 
 **Foscia** is a simple, framework-agnostic, API client built with functional
 programming in mind. It can integrate with any Web app using JavaScript or

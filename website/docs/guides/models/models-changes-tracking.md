@@ -30,7 +30,7 @@ source, and the created snapshot is saved into the `$original` properties of
 your instance.
 
 ```javascript
-import { takeSnapshot } from 'foscia/core';
+import { takeSnapshot } from '@foscia/core';
 
 const myPostSnapshot = takeSnapshot(myPost);
 ```
@@ -42,7 +42,7 @@ check for changes between an instance and its original snapshot, you can use
 `changed` (this will automatically take a new snapshot and compare against it).
 
 ```javascript
-import { changed, compareSnapshots, takeSnapshot } from 'foscia/core';
+import { changed, compareSnapshots, takeSnapshot } from '@foscia/core';
 
 // True if any properties changed or instance does exists now.
 changed(myPost);
@@ -61,7 +61,7 @@ You can mark your instance as synced any time using `markSynced`. Just like
 other helper functions, you can affect only specific properties.
 
 ```javascript
-import { markSynced } from 'foscia/core';
+import { markSynced } from '@foscia/core';
 
 // Mark all properties synced in $original snapshot.
 markSynced(myPost);
@@ -76,7 +76,7 @@ You can restore a snapshot on your model as synced any time using `restore` and
 specific properties.
 
 ```javascript
-import { restore, restoreSnapshot } from 'foscia/core';
+import { restore, restoreSnapshot } from '@foscia/core';
 
 // Restore whole state.
 restore(myPost);

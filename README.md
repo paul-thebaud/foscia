@@ -35,7 +35,7 @@
 
 ## Foscia
 
-> Type safe, modular and intuitive API client.
+> Type safe, modular and intuitive API/data client.
 
 - Modular, highly extensible and fully tree-shakable thanks to functional
   programming
@@ -45,7 +45,7 @@
 - Framework-agnostic and dependency free (HTTP adapters are based on
   [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API))
 - Free and open-source under
-  [MIT license](https://opensource.org/licenses/MIT)
+  [MIT license](LICENSE)
 - _Coming soon:_ Fully tested and documented
 
 > Foscia is currently in alpha stage. It may contain bugs and the API may change.
@@ -69,4 +69,4 @@ features takes place in the
 ## License
 
 `foscia` is an open-sourced software licensed under the
-[MIT license](https://opensource.org/licenses/MIT).
+[MIT license](LICENSE).

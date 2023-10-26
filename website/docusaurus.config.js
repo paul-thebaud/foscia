@@ -1,21 +1,18 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
-const { resolve } = require('path');
+const path = require('node:path');
 const { transpileCodeblocks } = require('remark-typescript-tools');
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const packages = require('../scripts/entries.cjs')();
 
 require('dotenv').config();
 
-console.log('process.env.URL');
-console.log(process.env.URL);
-console.log('process.env.BASE_URL');
-console.log(process.env.BASE_URL);
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   favicon: '/img/favicon.ico',
   title: 'Foscia',
-  tagline: 'Type safe, modular and intuitive API client.',
+  tagline: 'Type safe, modular and intuitive API/data client.',
   url: process.env.URL || 'https://paul-thebaud.github.io',
   baseUrl: process.env.BASE_URL || '/foscia/',
   onBrokenLinks: 'throw',
@@ -37,10 +34,21 @@ const config = {
           showLastUpdateTime: true,
           remarkPlugins: [[transpileCodeblocks, {
             compilerSettings: {
-              tsconfig: resolve(__dirname, './docs/tsconfig.json'),
-              externalResolutions: {},
+              tsconfig: path.resolve(__dirname, '../tsconfig.json'),
+              externalResolutions: packages.reduce((resolutions, pkg) => ({
+                ...resolutions,
+                [pkg.path]: {
+                  resolvedPath: path.resolve(__dirname, `../packages/${pkg.name}/dist`),
+                  packageId: {
+                    name: pkg.path,
+                    subModuleName: 'index.d.ts',
+                    version: '1.0',
+                  },
+                },
+              }), {}),
             },
           }]],
+          exclude: ['reference/api/index.md'],
         },
         blog: false,
         theme: {
@@ -52,18 +60,13 @@ const config = {
   plugins: [
     ['docusaurus-plugin-typedoc', {
       id: 'api',
-      entryPoints: [
-        '../src/core.ts',
-        '../src/http.ts',
-        '../src/object.ts',
-        '../src/jsonapi.ts',
-        '../src/rest.ts',
-        '../src/test.ts',
-        '../src/blueprints.ts',
-      ],
-      tsconfig: '../tsconfig.json',
+      name: 'API reference',
+      readme: 'none',
       out: 'reference/api',
-      sidebar: { position: 5, categoryLabel: 'API' },
+      entryPointStrategy: 'packages',
+      entryPoints: packages.map((pkg) => `../packages/${pkg.name}`),
+      tsconfig: path.resolve(__dirname, '../tsconfig.json'),
+      sidebar: { fullNames: true, position: 5, categoryLabel: 'API' },
     }],
   ],
   themeConfig:

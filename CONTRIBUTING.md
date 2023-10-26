@@ -15,7 +15,7 @@ features takes place in the
   running `make lint` on the CLI.
 
 - **Add tests!** Your patch won't be accepted if it does not have tests.
-  Run tests using `make test-typecheck` and `make test-coverage`
+  Run tests using `make test`.
 
 - **Document any change in behaviour.** Make sure the `README.md` and any other
   relevant documentation (inside `website/docs`) are kept up-to-date.
@@ -31,11 +31,11 @@ features takes place in the
 
 **Happy coding**!
 
-## Useful commands
+## Package development
+
+### Useful commands
 
 > Notice that we use [Docker](https://docker.com/) to work on the package.
-
-### Package development
 
 After cloning the repository, you can use the `Makefile` to quickly get started.
 
@@ -46,16 +46,34 @@ make help
 make first
 ```
 
-Once the docker containers are fully running, you can visit two endpoint:
+Once the docker containers are fully running, you can visit docs at
+[`docs.foscia.localhost`](http://docs.foscia.localhost)
+to get preview of your documentation updates.
 
-- [`playground.foscia.localhost`](http://playground.foscia.localhost): to get a
-  local playground where you can try your new features or bug fixes.
-- [`docs.foscia.localhost`](http://docs.foscia.localhost): to get preview
-  of your documentation updates.
-
-You may also check out the test container logs to see if your changes are
-issuing errors in unit and features tests:
+You may also run lint and tests:
 
 ```shell
-docker compose logs test -f
+make lint
+make test
 ```
+
+### Adding a new package
+
+This repository contains multiple individual package release under
+the `@foscia/` namespace.
+
+To add a new package, you must add a new corresponding repository
+inside the `packages` folder.
+
+You must also define multiple files
+(like inside [`packages/core`](packages/core)):
+
+- `src/index.ts`: contains all exported modules
+- `buildOptions.json` contains the build options to use when building the
+  package for release.
+- `LICENSE`
+- `package.json`
+- `README.md`
+- `typedoc.json`
+
+You must also add an entry to the `tsconfig.json` `paths` compiler option.
