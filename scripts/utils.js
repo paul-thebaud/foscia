@@ -1,23 +1,42 @@
-import { readdirSync, statSync } from 'node:fs';
-import path from 'node:path';
+import { readdir } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import ora from 'ora';
 
 export function useRootDirname() {
   return fileURLToPath(new URL('..', import.meta.url));
 }
 
-export function listFiles(dir) {
-  const files = readdirSync(dir);
+export async function withProgress(pendingText, successText, callback) {
+  const loader = ora({ color: 'magenta', text: pendingText }).start();
+  try {
+    const result = await callback(() => loader.stop());
 
-  return files.reduce((allFiles, file) => {
-    const name = path.join(dir, file);
+    loader.succeed(
+      typeof successText === 'function' ? successText(result) : successText,
+    );
 
-    if (statSync(name).isDirectory()) {
-      allFiles.push(...listFiles(name));
+    return result;
+  } catch (error) {
+    loader.stop();
+
+    throw error;
+  }
+}
+
+export async function listFiles(path) {
+  const files = await readdir(path, { withFileTypes: true });
+
+  return files.reduce(async (allFilesPromise, file) => {
+    const allFiles = await allFilesPromise;
+
+    const fullPath = resolve(file.path, file.name);
+    if (file.isDirectory()) {
+      allFiles.push(...(await listFiles(fullPath)));
     } else {
-      allFiles.push(name);
+      allFiles.push(fullPath);
     }
 
     return allFiles;
-  }, []);
+  }, Promise.resolve([]));
 }

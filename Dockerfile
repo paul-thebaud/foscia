@@ -16,7 +16,7 @@ CMD ["sh"]
 
 FROM node as build
 
-CMD ["pnpm", "build"]
+CMD ["pnpm", "build", "--verbose"]
 
 FROM node as docs
 

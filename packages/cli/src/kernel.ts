@@ -3,12 +3,12 @@ import makeActionFactoryCommand from '@foscia/cli/commands/makeActionFactoryComm
 import makeComposableCommand from '@foscia/cli/commands/makeComposableCommand';
 import makeModelCommand from '@foscia/cli/commands/makeModelCommand';
 import makeTransformerCommand from '@foscia/cli/commands/makeTransformerCommand';
-import parseConfig from '@foscia/cli/config/parseConfig';
-import validateConfig from '@foscia/cli/config/validateConfig';
+import { AUTO_DETECT_CONFIG } from '@foscia/cli/utils/config/parseConfig';
+import CLIError from '@foscia/cli/utils/errors/cliError';
 import cancel from '@foscia/cli/utils/output/cancel';
 import logSymbols from '@foscia/cli/utils/output/logSymbols';
 import boxen from 'boxen';
-import chalk from 'chalk';
+import pc from 'picocolors';
 import { hideBin } from 'yargs/helpers';
 import yargs from 'yargs/yargs';
 
@@ -27,11 +27,12 @@ export default async function kernel(args: string[]) {
   yargsInstance
     .usage([
       boxen('Type safe, modular and intuitive API/data client.', {
-        title: chalk.bold.magentaBright(`${logSymbols.foscia} foscia`),
+        title: pc.bold(pc.magenta(`${logSymbols.foscia} foscia`)),
         titleAlignment: 'center',
+        borderColor: 'magenta',
         padding: 1,
       }),
-      `Usage: ${chalk.magentaBright('foscia')} ${chalk.bold('<command>')} [options]`,
+      `Usage: ${pc.magenta('foscia')} ${pc.bold('<command>')} [options]`,
     ].join('\n'))
     .scriptName('')
     .fail((message, error) => {
@@ -39,8 +40,11 @@ export default async function kernel(args: string[]) {
         cancel();
       }
 
-      if (message) {
-        console.error(`${logSymbols.error} ${message}`);
+      const errorMessage = error instanceof CLIError
+        ? error.message
+        : message;
+      if (errorMessage) {
+        console.error(`${logSymbols.error} ${errorMessage}`);
       } else if (error) {
         throw error;
       }
@@ -48,16 +52,15 @@ export default async function kernel(args: string[]) {
       process.exit(1);
     })
     .help()
-    .describe('version', chalk.dim('Show version number.'))
-    .describe('help', chalk.dim('Show help.'))
-    .config('config', chalk.dim('Path to configuration file.'), (path) => (
-      target && target !== initCommand.name
-        ? validateConfig(parseConfig(path))
-        : {}
-    ))
-    .alias('config', 'c')
-    .default('config', '.fosciarc.json')
-    // .group(['config', 'version', 'help'], 'Options:')
+    .describe('version', pc.dim('Show version number.'))
+    .describe('help', pc.dim('Show help.'))
+    .option('config', {
+      alias: 'c',
+      type: 'string',
+      description: pc.dim('Path to configuration file.'),
+      default: AUTO_DETECT_CONFIG,
+      defaultDescription: 'detect automatically',
+    })
     .command(commands as any[]);
 
   if (target === undefined) {

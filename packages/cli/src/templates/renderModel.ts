@@ -1,11 +1,11 @@
-import { CLIConfig } from '@foscia/cli/config/config';
+import { CLIConfig } from '@foscia/cli/utils/config/config';
 import {
   renderFosciaImports,
   renderDefinition,
   renderDefinitionImports,
 } from '@foscia/cli/templates/renderComposable';
 import renderExport from '@foscia/cli/templates/renderExport';
-import { MakeProperty, MakeType } from '@foscia/cli/utils/makeFile';
+import { MakeProperty, MakeType } from '@foscia/cli/utils/make';
 
 type ModelTemplateData = {
   config: CLIConfig;

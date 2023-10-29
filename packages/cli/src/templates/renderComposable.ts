@@ -1,11 +1,11 @@
-import { CLIConfig } from '@foscia/cli/config/config';
+import { CLIConfig } from '@foscia/cli/utils/config/config';
 import renderComposableForDef from '@foscia/cli/templates/renderComposableForDef';
 import renderExport from '@foscia/cli/templates/renderExport';
 import renderImport from '@foscia/cli/templates/renderImport';
 import renderPropertyForDef from '@foscia/cli/templates/renderPropertyForDef';
-import { MakeProperty, MakeType } from '@foscia/cli/utils/makeFile';
 import toIndent from '@foscia/cli/utils/output/toIndent';
 import toJoinMultiline from '@foscia/cli/utils/output/toJoinMultiline';
+import { MakeProperty, MakeType } from '@foscia/cli/utils/make';
 import { sortBy, uniq } from 'lodash-es';
 
 type ComposableTemplateData = {
@@ -20,7 +20,7 @@ export function renderFosciaImports(
   return renderImport({
     config,
     name: [name, ...properties.map((p) => p.typology)],
-    from: 'foscia/core',
+    from: '@foscia/core',
   });
 }
 

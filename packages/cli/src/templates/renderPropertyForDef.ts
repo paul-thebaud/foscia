@@ -1,4 +1,4 @@
-import { MakeProperty } from '@foscia/cli/utils/makeFile';
+import { MakeProperty } from '@foscia/cli/utils/make';
 
 type PropertyForDefTemplateData = {
   property: MakeProperty;

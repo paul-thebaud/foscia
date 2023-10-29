@@ -1,4 +1,4 @@
-import { CLIConfig } from '@foscia/cli/config/config';
+import { CLIConfig } from '@foscia/cli/utils/config/config';
 
 type ExportTemplateData = {
   config: CLIConfig;

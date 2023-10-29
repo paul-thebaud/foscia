@@ -1,4 +1,4 @@
-import { CLIConfig } from '@foscia/cli/config/config';
+import { CLIConfig } from '@foscia/cli/utils/config/config';
 import renderExport from '@foscia/cli/templates/renderExport';
 import renderImport from '@foscia/cli/templates/renderImport';
 import type { ActionFactoryOptions } from '@foscia/cli/utils/input/promptForActionFactoryOptions';
@@ -44,7 +44,7 @@ function renderBlueprintActionFactory({ config, usage, options }: ActionFactoryT
   const blueprintImportStatement = renderImport({
     config,
     name: `{ ${factoryFunction} }`,
-    from: 'foscia/blueprints',
+    from: '@foscia/blueprints',
   });
 
   const coreImports = [] as string[];
@@ -55,7 +55,7 @@ function renderBlueprintActionFactory({ config, usage, options }: ActionFactoryT
     ? `\n${renderImport({
       config,
       name: `{ ${sortBy(coreImports).join(', ')} }`,
-      from: 'foscia/core',
+      from: '@foscia/core',
     })}`
     : '';
 

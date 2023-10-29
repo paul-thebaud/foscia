@@ -1,6 +1,6 @@
-import { CLIConfig } from '@foscia/cli/config/config';
+import { CLIConfig } from '@foscia/cli/utils/config/config';
 import promptForModelType from '@foscia/cli/utils/input/promptForModelType';
-import { MAKE_PROPERTY_TYPOLOGIES, MakeProperty } from '@foscia/cli/utils/makeFile';
+import { MAKE_PROPERTY_TYPOLOGIES, MakeProperty } from '@foscia/cli/utils/make';
 import { input, select } from '@inquirer/prompts';
 
 const VALID_NAME_REGEX = /^(?!\d)[\w$]+$/;

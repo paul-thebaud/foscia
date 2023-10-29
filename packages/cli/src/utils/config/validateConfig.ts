@@ -1,14 +1,15 @@
-import { CLIConfig, CONFIG_LANGUAGES, CONFIG_MODULES, CONFIG_USAGES } from '@foscia/cli/config/config';
+import {
+  CLIConfig,
+  CONFIG_LANGUAGES,
+  CONFIG_MODULES,
+  CONFIG_PACKAGE_MANAGERS,
+  CONFIG_USAGES,
+} from '@foscia/cli/utils/config/config';
+import CLIError from '@foscia/cli/utils/errors/cliError';
 import toTree from '@foscia/cli/utils/output/toTree';
-import chalk from 'chalk';
+import pc from 'picocolors';
 
-export default function validateConfig(config: unknown) {
-  if (config === null || typeof config !== 'object') {
-    throw new Error(
-      'No configuration defined.\nPlease run "foscia init <path>".',
-    );
-  }
-
+export default function validateConfig(config: object) {
   const validateRequired = (value: unknown) => (
     (value !== undefined && value !== null && value !== '') || 'value must be defined'
   );
@@ -23,11 +24,12 @@ export default function validateConfig(config: unknown) {
   );
 
   const errors = Object.entries({
-    path: [validateRequired, validateString],
-    alias: [validateString],
     usage: [validateIn(CONFIG_USAGES.map(({ value }) => value))],
+    packageManager: [validateIn(CONFIG_PACKAGE_MANAGERS.map(({ value }) => value))],
     language: [validateIn(CONFIG_LANGUAGES.map(({ value }) => value))],
     modules: [validateIn(CONFIG_MODULES.map(({ value }) => value))],
+    path: [validateRequired, validateString],
+    alias: [validateString],
     tabSize: [validateUnsignedInt],
   }).reduce((messages, [key, rules]) => {
     const value = config[key as keyof typeof config];
@@ -39,15 +41,15 @@ export default function validateConfig(config: unknown) {
     });
 
     if (message !== true) {
-      messages.push(`${chalk.bold(key)}: ${message}`);
+      messages.push(`${pc.bold(key)}: ${message}`);
     }
 
     return messages;
   }, [] as string[]);
 
   if (errors.length > 0) {
-    throw new Error(
-      `Invalid configuration values:\n${toTree(errors, chalk.red)}\nPlease fix your configuration or re-run "foscia init <path>".`,
+    throw new CLIError(
+      `Invalid configuration values:\n${toTree(errors, pc.red)}\nPlease fix your configuration or re-run "foscia init <path>".`,
     );
   }
 

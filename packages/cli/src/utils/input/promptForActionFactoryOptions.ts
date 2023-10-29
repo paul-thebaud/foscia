@@ -1,5 +1,5 @@
-import { CLIConfig } from '@foscia/cli/config/config';
 import { renderRegistryRegister } from '@foscia/cli/templates/renderActionFactory';
+import { CLIConfig } from '@foscia/cli/utils/config/config';
 import { input, select } from '@inquirer/prompts';
 import boxen from 'boxen';
 import { highlight } from 'cli-highlight';

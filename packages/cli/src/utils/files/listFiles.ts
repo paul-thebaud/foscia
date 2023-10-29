@@ -1,18 +1,19 @@
-import { readdirSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+import { readdir } from 'node:fs/promises';
+import { resolve } from 'node:path';
 
-export default function listFiles(path: string) {
-  const files = readdirSync(path);
+export default async function listFiles(path: string) {
+  const files = await readdir(path, { withFileTypes: true });
 
-  return files.reduce((allFiles, file) => {
-    const name = join(path, file);
+  return files.reduce(async (allFilesPromise, file) => {
+    const allFiles = await allFilesPromise;
 
-    if (statSync(name).isDirectory()) {
-      allFiles.push(...listFiles(name));
+    const fullPath = resolve(file.path, file.name);
+    if (file.isDirectory()) {
+      allFiles.push(...(await listFiles(fullPath)));
     } else {
-      allFiles.push(name);
+      allFiles.push(fullPath);
     }
 
     return allFiles;
-  }, [] as string[]);
+  }, Promise.resolve([] as string[]));
 }

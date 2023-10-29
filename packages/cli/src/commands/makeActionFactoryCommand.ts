@@ -1,51 +1,53 @@
+import useShowable, { ShowableOptions } from '@foscia/cli/commands/composables/useShowable';
+import useUsage, { UsageOptions } from '@foscia/cli/commands/composables/useUsage';
 import { Command } from '@foscia/cli/commands/types';
 import renderActionFactory from '@foscia/cli/templates/renderActionFactory';
-import ensureValidUsage from '@foscia/cli/utils/input/ensureValidUsage';
+import useConfig from '@foscia/cli/utils/config/useConfig';
+import warnMissingDependencies from '@foscia/cli/utils/dependencies/warnMissingDependencies';
 import promptForActionFactoryOptions from '@foscia/cli/utils/input/promptForActionFactoryOptions';
-import makeFile, { MakeCommandOptions } from '@foscia/cli/utils/makeFile';
+import makeFile from '@foscia/cli/utils/makeFile';
 import logSymbols from '@foscia/cli/utils/output/logSymbols';
-import chalk from 'chalk';
 import { camelCase } from 'lodash-es';
+import pc from 'picocolors';
 
-export type MakeActionFactoryCommandOptions = MakeCommandOptions & {
+export type MakeActionFactoryCommandOptions = {
   name: string;
   usage: string;
-};
+} & UsageOptions & ShowableOptions;
+
+const [usageOptions, getUsage] = useUsage();
+const [showOptions, getShow] = useShowable();
 
 export default {
   name: 'make:action',
   command: 'make:action [name]',
-  describe: chalk.dim('Create an action factory file.'),
+  describe: pc.dim('Create an action factory file.'),
   builder: (argv) => argv
-    .usage(`Usage: ${chalk.magentaBright('foscia')} ${chalk.bold('make:action')} [name] [options]`)
+    .usage(`Usage: ${pc.magenta('foscia')} ${pc.bold('make:action')} [name] [options]`)
     .positional('name', {
       type: 'string',
-      description: chalk.dim('Name to use for new action factory.'),
+      description: pc.dim('Name to use for new action factory.'),
       default: 'action',
     })
-    .option('usage', {
-      type: 'string',
-      description: chalk.dim('Custom typology of Foscia usage within: jsonapi, jsonrest, http'),
-      defaultDescription: 'configuration\'s value',
-    })
-    .option('show', {
-      type: 'boolean',
-      description: chalk.dim('Show the generated code instead of writing a file.'),
-    }),
+    .options(usageOptions)
+    .options(showOptions),
   handler: async (args) => {
-    const name = camelCase(args.name);
-    const usage = ensureValidUsage(args.usage);
+    const config = await useConfig(args.config);
+    const usage = await getUsage(args, async () => config.usage);
+    const show = getShow(args);
+    await warnMissingDependencies(config, usage);
 
-    await makeFile(args, `ActionFactory ${name}`, name, async () => {
+    const name = camelCase(args.name);
+    await makeFile(config, `ActionFactory ${name}`, name, async () => {
       console.log(
-        chalk.bold(`\n${logSymbols.foscia} Lets configure your action factory!\n`),
+        pc.bold(`\n${logSymbols.foscia} Lets configure your action factory!\n`),
       );
 
       return renderActionFactory({
-        config: args,
+        config,
         usage,
-        options: await promptForActionFactoryOptions(args, usage),
+        options: await promptForActionFactoryOptions(config, usage),
       });
-    });
+    }, show);
   },
 } as Command<MakeActionFactoryCommandOptions>;

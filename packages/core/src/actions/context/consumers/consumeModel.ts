@@ -14,6 +14,7 @@ export default function consumeModel<C extends {}, M extends Model, D = never>(
     'save',
     'destroy',
     'forInstance',
+    'forRelation',
     'target',
   ], defaultValue);
 }

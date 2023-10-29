@@ -4,6 +4,7 @@
 
 # build files
 /coverage/
+/playground/
 /dist/
 /packages/*/dist/
 dist.tar.gz

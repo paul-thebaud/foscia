@@ -1,4 +1,4 @@
-import { CLIConfig } from '@foscia/cli/config/config';
+import { CLIConfig } from '@foscia/cli/utils/config/config';
 import { renderFosciaImports } from '@foscia/cli/templates/renderComposable';
 import renderExport from '@foscia/cli/templates/renderExport';
 import toIndent from '@foscia/cli/utils/output/toIndent';

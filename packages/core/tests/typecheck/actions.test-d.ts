@@ -1,9 +1,13 @@
 import {
   AdapterI,
   all,
-  cachedOr, CacheI, context, DeserializerI,
+  cachedOr,
+  CacheI,
+  context,
+  DeserializerI,
   forInstance,
   forModel,
+  forRelation,
   include,
   makeActionClass,
   one,
@@ -11,6 +15,7 @@ import {
   when,
 } from '@foscia/core';
 import { expectTypeOf, test } from 'vitest';
+import CommentMock from '../mocks/models/comment.mock';
 import PostMock from '../mocks/models/post.mock';
 
 test('Actions are type safe', async () => {
@@ -18,6 +23,7 @@ test('Actions are type safe', async () => {
     const ActionClass = makeActionClass().extends({
       ...forModel.extension,
       ...forInstance.extension,
+      ...forRelation.extension,
       ...include.extension,
       ...all.extension,
       ...cachedOr.extension,
@@ -48,23 +54,23 @@ test('Actions are type safe', async () => {
   expectTypeOf(postsUsingVariadic).toMatchTypeOf<PostMock[]>();
 
   const postUsingFunc = await action()
-    .use(forInstance(postsUsingBuild[0]))
+    .use(forInstance(new PostMock()))
     .run(cachedOr(oneOrCurrent()));
   const postUsingBuild = await action()
-    .forInstance(postsUsingBuild[0])
+    .forInstance(new PostMock())
     .cachedOr(oneOrCurrent());
 
   expectTypeOf(postUsingFunc).toMatchTypeOf<PostMock>();
   expectTypeOf(postUsingBuild).toMatchTypeOf<PostMock>();
 
   const createdPostUsingFunc = await action()
-    .use(forInstance(postsUsingBuild[0]))
+    .use(forInstance(new PostMock()))
     .use(include('comments.postedBy'))
-    .run(when(postUsingBuild.exists, one()));
+    .run(when(new PostMock().exists, one()));
   const createdPostUsingBuild = await action()
-    .forInstance(postsUsingBuild[0])
+    .forInstance(new PostMock())
     .include('comments.postedBy')
-    .when(postUsingBuild.exists, one());
+    .when(new PostMock().exists, one());
 
   expectTypeOf(createdPostUsingFunc).toMatchTypeOf<PostMock | null | void>();
   expectTypeOf(createdPostUsingBuild).toMatchTypeOf<PostMock | null | void>();
@@ -75,4 +81,14 @@ test('Actions are type safe', async () => {
   await action().forModel(PostMock).include('unknown');
   // @ts-expect-error unknown is not a comment relation
   await action().forModel(PostMock).include('comments.unknown');
+
+  const commentsUsingFunc = await action()
+    .use(forRelation(new PostMock(), 'comments'))
+    .run(all());
+  const commentsUsingBuild = await action()
+    .forRelation(new PostMock(), 'comments')
+    .all();
+
+  expectTypeOf(commentsUsingFunc).toMatchTypeOf<CommentMock[]>();
+  expectTypeOf(commentsUsingBuild).toMatchTypeOf<CommentMock[]>();
 });

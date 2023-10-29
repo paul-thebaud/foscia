@@ -1,18 +1,16 @@
-import chalk from 'chalk';
 import isUnicodeSupported from 'is-unicode-supported';
+import pc from 'picocolors';
 
 export default isUnicodeSupported() ? {
-  foscia: chalk.magentaBright('❃'),
-  info: chalk.blue('ℹ'),
-  success: chalk.green('✔'),
-  warning: chalk.yellow('⚠'),
-  error: chalk.red('✖'),
-  cog: chalk.blue('⚙'),
+  foscia: pc.magenta('❃'),
+  info: pc.blue('ℹ'),
+  success: pc.green('✔'),
+  warning: pc.yellow('⚠'),
+  error: pc.red('✖'),
 } : {
-  foscia: chalk.magentaBright('*'),
-  info: chalk.blue('i'),
-  success: chalk.green('√'),
-  warning: chalk.yellow('!'),
-  error: chalk.red('x'),
-  cog: chalk.blue('¤'),
+  foscia: pc.magenta('*'),
+  info: pc.blue('i'),
+  success: pc.green('√'),
+  warning: pc.yellow('!'),
+  error: pc.red('x'),
 };

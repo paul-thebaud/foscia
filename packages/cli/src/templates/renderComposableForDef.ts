@@ -1,4 +1,4 @@
-import { MakeType } from '@foscia/cli/utils/makeFile';
+import { MakeType } from '@foscia/cli/utils/make';
 
 type ComposableForDefTemplateData = {
   composable: MakeType;

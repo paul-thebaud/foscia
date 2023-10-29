@@ -1,36 +1,42 @@
+import useShowable, { ShowableOptions } from '@foscia/cli/commands/composables/useShowable';
 import { Command } from '@foscia/cli/commands/types';
 import renderTransformer from '@foscia/cli/templates/renderTransformer';
-import makeFile, { MakeCommandOptions } from '@foscia/cli/utils/makeFile';
-import chalk from 'chalk';
+import useConfig from '@foscia/cli/utils/config/useConfig';
+import warnMissingDependencies from '@foscia/cli/utils/dependencies/warnMissingDependencies';
+import makeFile from '@foscia/cli/utils/makeFile';
 import { camelCase } from 'lodash-es';
+import pc from 'picocolors';
 
-export type MakeTransformerCommandOptions = MakeCommandOptions & {
+export type MakeTransformerCommandOptions = {
   name: string;
-};
+} & ShowableOptions;
+
+const [showOptions, getShow] = useShowable();
 
 export default {
   name: 'make:transformer',
   command: 'make:transformer <name>',
-  describe: chalk.dim('Create a transformer file.'),
+  describe: pc.dim('Create a transformer file.'),
   builder: (argv) => argv
-    .usage(`Usage: ${chalk.magentaBright('foscia')} ${chalk.bold('make:transformer')} <name> [options]`)
+    .usage(`Usage: ${pc.magenta('foscia')} ${pc.bold('make:transformer')} <name> [options]`)
     .example([
-      [`${chalk.magentaBright('foscia')} ${chalk.bold('make:transformer')} toDate`, chalk.dim('Initialize a toDate transformer.')],
+      [`${pc.magenta('foscia')} ${pc.bold('make:transformer')} toDate`, pc.dim('Initialize a toDate transformer.')],
     ])
     .positional('name', {
       type: 'string',
       demandOption: true,
-      description: chalk.dim('Name to use for new transformer (impacts file name).'),
+      description: pc.dim('Name to use for new transformer (impacts file name).'),
     })
-    .option('show', {
-      type: 'boolean',
-      description: chalk.dim('Show the generated code instead of writing a file.'),
-    }),
+    .options(showOptions),
   handler: async (args) => {
+    const config = await useConfig(args.config);
+    const show = getShow(args);
+    await warnMissingDependencies(config);
+
     const name = camelCase(args.name);
     const fileName = `transformers/${name}`;
-    await makeFile(args, `Transformer ${name}`, fileName, async () => renderTransformer({
-      config: args,
-    }));
+    await makeFile(config, `Transformer ${name}`, fileName, async () => renderTransformer({
+      config,
+    }), show);
   },
 } as Command<MakeTransformerCommandOptions>;

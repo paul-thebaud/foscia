@@ -1,4 +1,4 @@
-import { CLIConfig } from '@foscia/cli/config/config';
+import { CLIConfig } from '@foscia/cli/utils/config/config';
 import { sortBy, uniq } from 'lodash-es';
 
 type ImportTemplateData = {

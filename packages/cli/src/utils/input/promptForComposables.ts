@@ -1,16 +1,16 @@
-import { CLIConfig } from '@foscia/cli/config/config';
+import { CLIConfig } from '@foscia/cli/utils/config/config';
 import listFiles from '@foscia/cli/utils/files/listFiles';
 import resolvePath from '@foscia/cli/utils/files/resolvePath';
-import { MakeType } from '@foscia/cli/utils/makeFile';
 import logSymbols from '@foscia/cli/utils/output/logSymbols';
+import { MakeType } from '@foscia/cli/utils/make';
 import { checkbox } from '@inquirer/prompts';
 import { camelCase, sortBy } from 'lodash-es';
 import { sep } from 'node:path';
 
-function resolveComposables(config: CLIConfig) {
+async function resolveComposables(config: CLIConfig) {
   try {
     const rootPath = resolvePath(config, 'composables');
-    const files = listFiles(resolvePath(config, 'composables'));
+    const files = await listFiles(resolvePath(config, 'composables'));
 
     return files.map((file) => {
       const [fileName, ...dirs] = file.replace(rootPath, '').split(sep).reverse();
@@ -27,7 +27,7 @@ function resolveComposables(config: CLIConfig) {
 }
 
 export default async function promptForComposables(config: CLIConfig) {
-  const composables = resolveComposables(config);
+  const composables = await resolveComposables(config);
   if (!composables.length) {
     console.info(`${logSymbols.info} No composable found, skipping composables selection.`);
 
