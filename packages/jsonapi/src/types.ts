@@ -1,3 +1,5 @@
+import { MapRegistryConfig, MapRegistryModelsRegistration, RefsCacheConfig } from '@foscia/core';
+import { HttpAdapterConfig } from '@foscia/http';
 import { Dictionary } from '@foscia/utils';
 
 /**
@@ -101,4 +103,15 @@ export type JsonApiDocument = {
     version?: string;
     meta?: JsonApiMeta;
   };
+};
+
+/**
+ * JSON:API action factory blueprint's configuration.
+ */
+export type JsonApiConfig<Extension extends {}> = {
+  extensions?: Extension;
+  models?: MapRegistryModelsRegistration;
+  cache?: RefsCacheConfig;
+  registry?: MapRegistryConfig;
+  http?: HttpAdapterConfig;
 };

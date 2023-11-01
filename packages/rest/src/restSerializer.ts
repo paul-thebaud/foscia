@@ -9,10 +9,10 @@ export default class RestSerializer extends ObjectSerializer<Dictionary> {
   public constructor(config?: RestSerializerConfig) {
     super(config);
 
-    this.configure(config);
+    this.configure(config ?? {});
   }
 
-  public configure(config?: RestSerializerConfig, override = true) {
+  public configure(config: RestSerializerConfig, override = true) {
     applyConfig(this, config, override);
   }
 

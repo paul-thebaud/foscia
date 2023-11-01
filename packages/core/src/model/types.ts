@@ -1,77 +1,27 @@
 import { Hookable, HookCallback } from '@foscia/core/hooks/types';
-import { Normalizer } from '@foscia/core/normalization/types';
 import { ObjectTransformer } from '@foscia/core/transformers/types';
-import { Constructor, DescriptorHolder, Dictionary, Optional, Prev } from '@foscia/utils';
+import {
+  Constructor,
+  DescriptorHolder,
+  Dictionary,
+  Optional,
+  Prev,
+  Transformer,
+} from '@foscia/utils';
 
 /**
  * Configuration of a model class.
  */
 export type ModelConfig = {
-  /**
-   * Path which is used to query the model.
-   * Defaults to the model's type.
-   */
   path?: Optional<string>;
-  /**
-   * Normalize a model/relation path when injecting it inside an action context.
-   */
-  normalizePath?: Optional<Normalizer<string>>;
-  /**
-   * Normalize a model path when injecting it inside an action context.
-   * Prioritized over `normalizePath`.
-   */
-  normalizeModelPath?: Optional<Normalizer<string>>;
-  /**
-   * Normalize a relation path when injecting it inside an action context.
-   * Prioritized over `normalizePath`.
-   */
-  normalizeRelationPath?: Optional<Normalizer<string>>;
-  /**
-   * Normalize an attribute/relation key when (de)serializing for data source.
-   */
-  normalizeKey?: Optional<Normalizer<string>>;
-  /**
-   * Normalize an attribute key when (de)serializing for data source.
-   * Prioritized over `normalizeKey`.
-   */
-  normalizeAttributeKey?: Optional<Normalizer<string>>;
-  /**
-   * Normalize a relation key when (de)serializing for data source.
-   * Prioritized over `normalizeKey`.
-   */
-  normalizeRelationKey?: Optional<Normalizer<string>>;
-  /**
-   * Guess the type for a given relation.
-   */
-  guessRelationType?: Optional<ModelRelationTypeGuesser>;
-  /**
-   * Compare two values when checking model instance changed values.
-   *
-   * @param nextValue
-   * @param prevValue
-   *
-   * @see {@link changed}
-   */
-  compareValue?: Optional<((nextValue: unknown, prevValue: unknown) => boolean)>;
-  /**
-   * Clone two values when sync model instances values state.
-   *
-   * @param value
-   *
-   * @see {@link restore}
-   * @see {@link markSynced}
-   */
-  cloneValue?: Optional<(<T>(value: T) => T)>;
-  /**
-   * Dedicated base URL. Will overwrite the default base URL.
-   */
-  baseURL?: Optional<string>;
+  guessPath?: Transformer<string>;
+  guessRelationPath?: Transformer<string>;
+  guessRelationType?: (model: ModelClass, def: ModelRelation) => string;
+  normalizeKey?: Transformer<string>;
+  compareValue?: (nextValue: unknown, prevValue: unknown) => boolean;
+  cloneValue?: <T>(value: T) => T;
+  [key: string]: any;
 };
-
-/**
- * Guess a model's relation related type.
- */
-export type ModelRelationTypeGuesser = (model: ModelClass, def: ModelRelation) => Optional<string>;
 
 /**
  * Model instance ID default typing.

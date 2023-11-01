@@ -17,7 +17,7 @@ export default async function normalizeInclude(
     return normalizeDotRelations(model, include, registry);
   }
 
-  logger.info(
+  logger.warn(
     'Could not detect model for context. Skipping include normalization.',
   );
 

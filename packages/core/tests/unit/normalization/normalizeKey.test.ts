@@ -18,24 +18,7 @@ describe.concurrent('unit: normalizeKey', () => {
     expect(normalizeKey(model, 'foo')).toStrictEqual('foo');
   });
 
-  it('should normalize with dedicated normalizers', () => {
-    const attrNormalizer = (v: string) => `${v}foo`;
-    const relNormalizer = (v: string) => `${v}bar`;
-
-    const model = makeModel({
-      type: 'model',
-      normalizeAttributeKey: attrNormalizer,
-      normalizeRelationKey: relNormalizer,
-    }, {
-      foo: attr(),
-      bar: hasOne(),
-    });
-
-    expect(normalizeKey(model, 'foo')).toStrictEqual('foofoo');
-    expect(normalizeKey(model, 'bar')).toStrictEqual('barbar');
-  });
-
-  it('should not normalize with default normalizer', () => {
+  it('should not normalize with normalizer', () => {
     const normalizer = (v: string) => `${v}foo`;
 
     const model = makeModel({

@@ -17,6 +17,10 @@ export default defineConfig({
     },
   },
   plugins: [
-    typescript({ tsconfig: path.resolve(rootDirname, 'tsconfig.json') }),
+    typescript({
+      tsconfig: path.resolve(rootDirname, 'tsconfig.json'),
+      sourceMap: true,
+      inlineSources: true,
+    }),
   ],
 });

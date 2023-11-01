@@ -1,4 +1,5 @@
 const path = require('node:path');
+const entries = require('./scripts/entries.cjs');
 
 module.exports = {
   root: true,
@@ -34,15 +35,7 @@ module.exports = {
         devDependencies: ['**/*.mock.ts', '**/*.test.ts', '**/*.test-d.ts'],
         packageDir: [
           '.',
-          './packages/blueprints',
-          './packages/cli',
-          './packages/core',
-          './packages/http',
-          './packages/jsonapi',
-          './packages/object',
-          './packages/rest',
-          './packages/test',
-          './packages/utils',
+          ...entries().map((e) => path.resolve('.', 'packages', e.name)),
         ],
       },
     ],

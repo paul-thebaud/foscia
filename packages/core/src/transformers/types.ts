@@ -1,10 +1,8 @@
-import { Awaitable, Optional } from '@foscia/utils';
-
-export type FunctionTransformer<T, S> = (value: S) => Awaitable<T>;
+import { Awaitable, Optional, Transformer } from '@foscia/utils';
 
 export type ObjectTransformer<T, DS = unknown, SR = unknown> = {
-  deserialize: FunctionTransformer<T, DS>;
-  serialize: FunctionTransformer<SR, T>;
+  deserialize: Transformer<DS, Awaitable<T>>;
+  serialize: Transformer<T, Awaitable<SR>>;
 };
 
 export type ObjectTransformerFactoryOptions<N extends boolean> = {

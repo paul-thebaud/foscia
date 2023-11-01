@@ -28,6 +28,7 @@ export type HttpRequestConfig = {
   body?: unknown;
   bodyAs?: BodyAsTransformer;
   signal?: AbortSignal | null;
+  modelPaths?: boolean;
   requestTransformers?: RequestTransformer[];
   responseTransformers?: ResponseTransformer[];
   errorTransformers?: ErrorTransformer[];
@@ -40,7 +41,6 @@ export type HttpAdapterConfig = {
   fetch?: typeof fetch;
   baseURL?: string | null;
   serializeParams?: HttpParamsSerializer;
-  appendParams?: ParamsAppender | null;
   defaultHeaders?: Dictionary<string>;
   defaultBodyAs?: BodyAsTransformer | null;
   requestTransformers?: RequestTransformer[];
@@ -67,4 +67,8 @@ export type RequestTransformer = (request: HttpRequest) => Awaitable<HttpRequest
 export type ResponseTransformer = (response: Response) => Awaitable<Response>;
 export type ErrorTransformer = (error: unknown) => Awaitable<unknown>;
 export type BodyAsTransformer = (body: unknown, headers: Dictionary<string>) => Awaitable<BodyInit>;
-export type ParamsAppender = (context: HttpRequestConfig) => Awaitable<Dictionary>;
+
+export type HttpClientConfig<Extension extends {}> = {
+  extensions?: Extension;
+  http?: HttpAdapterConfig;
+};

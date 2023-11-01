@@ -59,25 +59,25 @@ describe.concurrent('unit: refsCache', () => {
 
   it('should forget if ref has expired', async () => {
     const post = new PostMock();
-    const refMode = {
+    const refManager = {
       ref: vi.fn().mockImplementation(() => post),
       value: vi.fn(),
     };
 
-    const cache = new RefsCache({ mode: refMode });
+    const cache = new RefsCache({ manager: refManager });
 
     expect(await cache.find('posts', '1')).toBeNull();
-    expect(refMode.value).not.toHaveBeenCalled();
+    expect(refManager.value).not.toHaveBeenCalled();
 
-    refMode.value.mockImplementation(() => post);
+    refManager.value.mockImplementation(() => post);
     await cache.put('posts', '1', post);
 
     expect(await cache.find('posts', '1')).toBe(post);
-    expect(refMode.value).toHaveBeenCalledOnce();
+    expect(refManager.value).toHaveBeenCalledOnce();
 
-    refMode.value.mockImplementation(() => undefined);
+    refManager.value.mockImplementation(() => undefined);
 
     expect(await cache.find('posts', '1')).toBeNull();
-    expect(refMode.value).toHaveBeenCalledTimes(2);
+    expect(refManager.value).toHaveBeenCalledTimes(2);
   });
 });

@@ -11,12 +11,13 @@ import {
   save,
   when,
 } from '@foscia/core';
+import { makeGet } from '@foscia/http';
 import { describe, expect, it, vi } from 'vitest';
 import createFetchMock from '../../../../tests/mocks/createFetchMock.mock';
 import createFetchResponse from '../../../../tests/mocks/createFetchResponse.mock';
+import makeJsonApiActionMock from '../mocks/makeJsonApiAction.mock';
 import CommentMock from '../mocks/models/comment.mock';
 import PostMock from '../mocks/models/post.mock';
-import makeJsonApiActionMock from '../mocks/makeJsonApiAction.mock';
 
 describe.concurrent('integration: JSON:API', () => {
   it('should run action: all records', async () => {
@@ -234,5 +235,43 @@ describe.concurrent('integration: JSON:API', () => {
     expect(post.title).toStrictEqual('Foo');
     expect(post.body).toStrictEqual('Foo Body');
     expect(post.comments).toBeUndefined();
+  });
+
+  it('should run action: custom', async () => {
+    const fetchMock = createFetchMock();
+    fetchMock.mockImplementationOnce(createFetchResponse().json({
+      data: [
+        {
+          type: 'posts',
+          id: '1',
+          attributes: { title: 'Foo' },
+        },
+      ],
+    }));
+
+    const action = makeJsonApiActionMock();
+
+    const [post] = await action()
+      .use(
+        forModel(PostMock),
+        makeGet('-actions/most-viewed'),
+      )
+      .run(all());
+
+    expect(fetchMock).toHaveBeenCalledOnce();
+    expect(fetchMock).toHaveBeenCalledWith('https://example.com/api/v1/posts/-actions/most-viewed', {
+      method: 'GET',
+      signal: undefined,
+      headers: {
+        Accept: 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json',
+      },
+      body: undefined,
+    });
+
+    expect(post).toBeInstanceOf(PostMock);
+    expect(post.exists).toStrictEqual(true);
+    expect(post.id).toStrictEqual('1');
+    expect(post.title).toStrictEqual('Foo');
   });
 });

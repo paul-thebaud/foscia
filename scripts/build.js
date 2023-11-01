@@ -16,6 +16,9 @@ async function run(argv) {
 
     const args = minimist(argv.slice(2));
     const execaStdio = args.verbose ? 'inherit' : undefined;
+    const options = {
+      sourceMap: args.sourcemap || args.s,
+    };
 
     const targets = await withProgress(
       'Resolving targets...',
@@ -44,7 +47,7 @@ async function run(argv) {
     await withProgress(
       'Building...',
       'Built!',
-      () => Promise.all(targets.map((target) => buildTarget(target, execaStdio))),
+      () => Promise.all(targets.map((target) => buildTarget(target, execaStdio, options))),
     );
 
     await withProgress(
@@ -82,12 +85,13 @@ async function buildDts(stdio) {
   ], { stdio });
 }
 
-async function buildTarget(target, stdio) {
+async function buildTarget(target, stdio, options) {
   await execa('rollup', [
     '-c',
     '--environment',
     [
       `TARGET:${target}`,
+      options.sourceMap ? 'SOURCE_MAP:true' : '',
     ],
   ], { stdio });
 }

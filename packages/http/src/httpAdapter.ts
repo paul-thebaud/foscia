@@ -3,8 +3,8 @@ import {
   consumeAction,
   consumeData,
   consumeId,
-  consumeModelPath,
-  consumeRelationPath,
+  consumeModel,
+  consumeRelation,
 } from '@foscia/core';
 import AbortedError from '@foscia/http/errors/abortedError';
 import ConflictError from '@foscia/http/errors/conflictError';
@@ -24,7 +24,6 @@ import {
   HttpRequest,
   HttpRequestConfig,
   HttpRequestInit,
-  ParamsAppender,
   RequestTransformer,
   ResponseTransformer,
 } from '@foscia/http/types';
@@ -41,8 +40,6 @@ export default class HttpAdapter implements AdapterI<Response> {
 
   private serializeParams: HttpParamsSerializer = paramsSerializer;
 
-  private appendParams: ParamsAppender | null = null;
-
   private defaultHeaders: Dictionary<string> = {};
 
   private defaultBodyAs: BodyAsTransformer | null = null;
@@ -54,10 +51,10 @@ export default class HttpAdapter implements AdapterI<Response> {
   private errorTransformers: ErrorTransformer[] = [];
 
   public constructor(config?: HttpAdapterConfig) {
-    this.configure(config);
+    this.configure(config ?? {});
   }
 
-  public configure(config?: HttpAdapterConfig, override = true) {
+  public configure(config: HttpAdapterConfig, override = true) {
     applyConfig(this, config, override);
   }
 
@@ -160,15 +157,25 @@ export default class HttpAdapter implements AdapterI<Response> {
   }
 
   protected async makeRequestURLEndpoint(context: HttpRequestConfig) {
-    const modelPath = consumeModelPath(context, null);
+    const model = consumeModel(context, null);
     const id = consumeId(context, null);
-    const relationPath = consumeRelationPath(context, null);
+    const relation = consumeRelation(context, null);
+
+    const modelPaths = context.modelPaths !== false ? [
+      isNil(model)
+        ? undefined
+        : (model.$config.path ?? (model.$config.guessPath ?? ((t) => t))(model.$type)),
+      isNil(id)
+        ? undefined
+        : String(id),
+      isNil(relation)
+        ? undefined
+        : (relation.path ?? (model?.$config.guessRelationPath ?? ((k) => k))(relation.key)),
+    ] : [];
 
     const requestEndpoint = optionalJoin([
-      context.baseURL ?? this.baseURL,
-      modelPath ?? undefined,
-      isNil(id) ? undefined : String(id),
-      relationPath ?? undefined,
+      context.baseURL ?? model?.$config.baseURL ?? this.baseURL,
+      ...modelPaths,
       context.path,
     ], '/');
 
@@ -180,21 +187,6 @@ export default class HttpAdapter implements AdapterI<Response> {
   }
 
   protected async makeRequestURLParams(context: HttpRequestConfig) {
-    return optionalJoin([
-      await this.makeRequestURLAdditionalParams(context),
-      await this.makeRequestURLContextParams(context),
-    ], '&');
-  }
-
-  protected async makeRequestURLAdditionalParams(context: HttpRequestConfig) {
-    const additionalParams = this.appendParams
-      ? await this.appendParams(context)
-      : {};
-
-    return this.makeRequestURLParamsFromObject(additionalParams);
-  }
-
-  protected async makeRequestURLContextParams(context: HttpRequestConfig) {
     if (typeof context.params === 'string') {
       return this.makeRequestURLParamsFromString(context.params);
     }

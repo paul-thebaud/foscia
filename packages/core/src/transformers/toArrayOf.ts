@@ -1,12 +1,12 @@
 import makeTransformer from '@foscia/core/transformers/makeTransformer';
 import {
-  FunctionTransformer,
   ObjectTransformer,
   ObjectTransformerFactoryOptions,
 } from '@foscia/core/transformers/types';
 import warnTransformingNil from '@foscia/core/transformers/warnTransformingNil';
+import { Awaitable, Transformer } from '@foscia/utils';
 
-function makeValuesMapper<T, S>(transform: FunctionTransformer<T, S>) {
+function makeValuesMapper<T, S>(transform: Transformer<S, Awaitable<T>>) {
   return (value: S[]) => {
     warnTransformingNil('toArrayOf', value);
 

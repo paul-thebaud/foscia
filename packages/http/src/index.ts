@@ -19,7 +19,8 @@ import ServerError from '@foscia/http/errors/serverError';
 import TooManyRequestsError from '@foscia/http/errors/tooManyRequestsError';
 import UnauthorizedError from '@foscia/http/errors/unauthorizedError';
 import HttpAdapter from '@foscia/http/httpAdapter';
-import appendIncludeParams from '@foscia/http/utilities/appendIncludeParams';
+import httpExtensions from '@foscia/http/httpExtensions';
+import makeHttpClient from '@foscia/http/makeHttpClient';
 import bodyAsJson from '@foscia/http/utilities/bodyAsJson';
 import deepParamsSerializer from '@foscia/http/utilities/deepParamsSerializer';
 import paramsSerializer from '@foscia/http/utilities/paramsSerializer';
@@ -27,11 +28,11 @@ import paramsSerializer from '@foscia/http/utilities/paramsSerializer';
 export * from '@foscia/http/types';
 
 export {
+  makeHttpClient,
   HttpAdapter,
   bodyAsJson,
   paramsSerializer,
   deepParamsSerializer,
-  appendIncludeParams,
   AbortedError,
   HttpAdapterError,
   InterruptedError,
@@ -52,4 +53,5 @@ export {
   abortSignal,
   param,
   consumePrevParams,
+  httpExtensions,
 };

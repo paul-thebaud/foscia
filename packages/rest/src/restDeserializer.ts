@@ -16,10 +16,10 @@ export default class RestDeserializer extends ObjectDeserializer<Response, RestN
   public constructor(config?: RestDeserializerConfig) {
     super(config);
 
-    this.configure(config);
+    this.configure(config ?? {});
   }
 
-  public configure(config?: RestDeserializerConfig, override = true) {
+  public configure(config: RestDeserializerConfig, override = true) {
     applyConfig(this, config, override);
   }
 

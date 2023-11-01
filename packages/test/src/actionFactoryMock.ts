@@ -11,8 +11,6 @@ import { sequentialTransform } from '@foscia/utils';
 
 /**
  * Mock for an action factory with mocked results and ran contexts history.
- *
- * @internal
  */
 export default class ActionFactoryMock<A extends any[], C extends {}, E extends {}> {
   /**

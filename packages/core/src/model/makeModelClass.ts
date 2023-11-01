@@ -62,7 +62,7 @@ export default function makeModelClass(type: string, config: ModelConfig) {
   Object.defineProperty(ModelClass, '$schema', { value: {} });
   Object.defineProperty(ModelClass, '$hooks', { writable: true, value: {} });
 
-  ModelClass.configure = (rawConfig?: ModelConfig, override = true) => {
+  ModelClass.configure = (rawConfig: ModelConfig, override = true) => {
     applyConfig(ModelClass.$config, rawConfig, override);
   };
 

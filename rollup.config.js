@@ -15,6 +15,8 @@ if (!targetPackage) {
 const require = createRequire(import.meta.url);
 const rootDirname = useRootDirname();
 
+const sourceMap = !!process.env.SOURCE_MAP;
+
 const packages = require('./scripts/entries.cjs')();
 const packagesDir = path.resolve(rootDirname, 'packages');
 const packageDir = path.resolve(packagesDir, targetPackage);
@@ -25,6 +27,7 @@ const packageOptions = require(packageResolve(`buildOptions.json`));
 const configs = {
   cli: {
     output: {
+      sourcemap: true,
       file: packageResolve('dist/index.cjs'),
       format: 'cjs',
       banner: '#!/usr/bin/env node',
@@ -38,18 +41,21 @@ const configs = {
   },
   esm: {
     output: {
-      file: packageResolve('dist/index.esm.js'),
+      sourcemap: true,
+      file: packageResolve('dist/index.mjs'),
       format: 'es',
     },
   },
   cjs: {
     output: {
-      file: packageResolve('dist/index.cjs.js'),
+      sourcemap: true,
+      file: packageResolve('dist/index.cjs'),
       format: 'cjs',
     },
   },
   global: {
     output: {
+      sourcemap: sourceMap,
       globals: packages.reduce((globals, p) => ({ ...globals, [p.path]: p.global }), {}),
       name: packageOptions.name,
       file: packageResolve('dist/index.global.js'),
@@ -70,7 +76,10 @@ export default packageOptions.formats.map((f) => ({
     ...configs[f].output,
   },
   plugins: [
-    typescript({ tsconfig: path.resolve(rootDirname, 'tsconfig.json') }),
+    typescript({
+      tsconfig: path.resolve(rootDirname, 'tsconfig.json'),
+      sourceMap: sourceMap,
+    }),
     json(),
     ...(configs[f].plugins ?? []),
   ],

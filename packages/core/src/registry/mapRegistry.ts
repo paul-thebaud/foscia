@@ -1,90 +1,126 @@
 import logger from '@foscia/core/logger/logger';
 import isModel from '@foscia/core/model/props/checks/isModel';
 import { Model } from '@foscia/core/model/types';
-import normalize from '@foscia/core/normalization/normalize';
-import { Normalizer } from '@foscia/core/normalization/types';
-import { MapRegistryConfig, ModelPreparator, ModelResolver } from '@foscia/core/registry/types';
-import { RegistryI } from '@foscia/core/types';
 import {
-  applyConfig,
-  ArrayableVariadic,
-  Dictionary,
-  isNil,
-  Optional,
-  wrapVariadic,
-} from '@foscia/utils';
+  MapRegistryConfig,
+  MapRegistryModelRegistration,
+  MapRegistryModelsRegistration,
+  ModelObjectResolver,
+} from '@foscia/core/registry/types';
+import { RegistryI } from '@foscia/core/types';
+import { applyConfig, Transformer, wrap } from '@foscia/utils';
 
 export default class MapRegistry implements RegistryI {
-  private modelsResolvers = new Map<string, ModelResolver>();
+  private readonly resolvers: ModelObjectResolver[] = [];
 
-  private models = new Map<string, Promise<Model>>();
+  private readonly models = new Map<string, Model>();
 
-  private normalizeType: Optional<Normalizer<string>> = null;
-
-  private prepareModel: Optional<ModelPreparator> = null;
+  private normalizeType: Transformer<string> | null = null;
 
   public constructor(config?: MapRegistryConfig) {
-    this.configure(config);
+    this.configure(config ?? {});
   }
 
-  public configure(config?: MapRegistryConfig, override = true) {
+  public configure(config: MapRegistryConfig, override = true) {
     applyConfig(this, config, override);
   }
 
   public async modelFor(rawType: string) {
-    const type = normalize(rawType, this.normalizeType);
-    const modelResolver = this.modelsResolvers.get(type)!;
-    if (!modelResolver) {
-      const registeredModels = [...this.modelsResolvers.keys()]
-        .map((t) => `- \`${t}\``)
-        .join('\n');
+    const type = this.normalizeRawType(rawType);
 
+    if (!this.models.has(type)) {
+      await this.markModelsResolved(wrap(
+        await this.resolveModelWithType(type) ?? await this.resolveModelsWithoutType(),
+      ));
+    }
+
+    const model = this.models.get(type);
+    if (!model) {
       logger.debug(
-        `Could not found model for type \`${type}\` (raw type was \`${rawType}\`). Registered models:\n${registeredModels}`,
+        `Could not found model for type \`${type}\` (normalized from \`${rawType}\`).`,
       );
 
       return null;
     }
 
-    if (!this.models.has(type)) {
-      this.models.set(type, (async () => {
-        const model = await modelResolver();
-        if (this.prepareModel) {
-          await this.prepareModel(model);
-        }
+    return model;
+  }
 
-        return model;
-      })());
+  /**
+   * Register multiple models using various registry values.
+   *
+   * @param models
+   */
+  public register(models: MapRegistryModelsRegistration) {
+    if (Array.isArray(models)) {
+      models.forEach(
+        (model) => this.registerModel(model),
+      );
+    } else {
+      Object.entries(models).forEach(
+        ([type, model]) => this.registerModel({ type, resolve: model }),
+      );
     }
-
-    return (await this.models.get(type))!;
   }
 
-  public register(...models: ArrayableVariadic<Model> | [Dictionary<ModelResolver>]) {
-    if (!isNil(models[0]) && !Array.isArray(models[0]) && !isModel(models[0])) {
-      return this.registerAsync(models[0]);
+  /**
+   * Register a model using various registry values.
+   *
+   * @param model
+   */
+  public registerModel(model: MapRegistryModelRegistration) {
+    if (isModel(model)) {
+      this.resolvers.push({
+        type: this.normalizeRawType(model.$type),
+        resolve: () => model,
+      });
+    } else if (typeof model === 'function') {
+      this.resolvers.push({
+        resolve: model,
+      });
+    } else {
+      this.resolvers.push({
+        type: model.type ? this.normalizeRawType(model.type) : undefined,
+        resolve: model.resolve,
+      });
     }
-
-    return this.registerSync(...models as ArrayableVariadic<Model>);
   }
 
-  public registerSync(...models: ArrayableVariadic<Model>) {
-    wrapVariadic(...models).forEach((model) => {
-      this.registerModel(model.$type, async () => model);
+  /**
+   * Try to resolve a model with a registered type.
+   *
+   * @param type
+   */
+  private async resolveModelWithType(type: string) {
+    const typedResolver = this.resolvers.find((r) => r.type === type);
+
+    return typedResolver ? typedResolver.resolve() : null;
+  }
+
+  /**
+   * Resolve all models.
+   */
+  private async resolveModelsWithoutType(): Promise<Model[]> {
+    return Promise.all(this.resolvers.map((r) => r.resolve()));
+  }
+
+  /**
+   * Mark the given models as resolved.
+   *
+   * @param models
+   */
+  private async markModelsResolved(models: Model[]) {
+    models.forEach((model) => {
+      this.models.set(this.normalizeRawType(model.$type), model);
     });
-
-    return this;
   }
 
-  public registerAsync(models: Dictionary<ModelResolver>) {
-    Object.entries(models).forEach(([rawType, resolver]) => {
-      this.registerModel(rawType, resolver);
-    });
-
-    return this;
-  }
-
-  private registerModel(rawType: string, resolver: ModelResolver) {
-    this.modelsResolvers.set(normalize(rawType, this.normalizeType), resolver);
+  /**
+   * Normalize the given raw type using configured normalizer.
+   *
+   * @param rawType
+   */
+  private normalizeRawType(rawType: string) {
+    return (this.normalizeType ?? ((t) => t))(rawType);
   }
 }

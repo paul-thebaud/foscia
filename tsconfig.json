@@ -22,9 +22,6 @@
       "@foscia/cli/*": [
         "packages/cli/src/*"
       ],
-      "@foscia/blueprints/*": [
-        "packages/blueprints/src/*"
-      ],
       "@foscia/core/*": [
         "packages/core/src/*"
       ],

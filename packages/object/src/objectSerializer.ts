@@ -16,10 +16,10 @@ import { applyConfig } from '@foscia/utils';
 
 export default abstract class ObjectSerializer<Data> implements SerializerI<Data> {
   public constructor(config?: ObjectSerializerConfig) {
-    this.configure(config);
+    this.configure(config ?? {});
   }
 
-  public configure(config?: ObjectSerializerConfig, override = true) {
+  public configure(config: ObjectSerializerConfig, override = true) {
     applyConfig(this, config, override);
   }
 

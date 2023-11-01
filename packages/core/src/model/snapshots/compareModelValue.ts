@@ -5,9 +5,7 @@ export default function compareModelValue(
   nextValue: unknown,
   prevValue: unknown,
 ) {
-  if (model.$config.compareValue) {
-    return model.$config.compareValue(nextValue, prevValue);
-  }
-
-  return nextValue === prevValue;
+  return model.$config.compareValue
+    ? model.$config.compareValue(nextValue, prevValue)
+    : nextValue === prevValue;
 }

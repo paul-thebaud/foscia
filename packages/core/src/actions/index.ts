@@ -8,10 +8,8 @@ import consumeId from '@foscia/core/actions/context/consumers/consumeId';
 import consumeInclude from '@foscia/core/actions/context/consumers/consumeInclude';
 import consumeInstance from '@foscia/core/actions/context/consumers/consumeInstance';
 import consumeModel from '@foscia/core/actions/context/consumers/consumeModel';
-import consumeModelPath from '@foscia/core/actions/context/consumers/consumeModelPath';
 import consumeRegistry from '@foscia/core/actions/context/consumers/consumeRegistry';
 import consumeRelation from '@foscia/core/actions/context/consumers/consumeRelation';
-import consumeRelationPath from '@foscia/core/actions/context/consumers/consumeRelationPath';
 import consumeSerializer from '@foscia/core/actions/context/consumers/consumeSerializer';
 import consumeType from '@foscia/core/actions/context/consumers/consumeType';
 import context from '@foscia/core/actions/context/enhancers/context';
@@ -30,7 +28,6 @@ import onFinally from '@foscia/core/actions/context/enhancers/hooks/onFinally';
 import onRunning from '@foscia/core/actions/context/enhancers/hooks/onRunning';
 import onSuccess from '@foscia/core/actions/context/enhancers/hooks/onSuccess';
 import include from '@foscia/core/actions/context/enhancers/include';
-import target from '@foscia/core/actions/context/enhancers/target';
 import all, { AllData } from '@foscia/core/actions/context/runners/all';
 import cached from '@foscia/core/actions/context/runners/cached';
 import cachedOr from '@foscia/core/actions/context/runners/cachedOr';
@@ -42,8 +39,13 @@ import oneOr, { OneData } from '@foscia/core/actions/context/runners/oneOr';
 import oneOrCurrent from '@foscia/core/actions/context/runners/oneOrCurrent';
 import oneOrFail from '@foscia/core/actions/context/runners/oneOrFail';
 import raw from '@foscia/core/actions/context/runners/raw';
+import coreExtensions from '@foscia/core/actions/extensions/coreExtensions';
+import crudExtensions from '@foscia/core/actions/extensions/crudExtensions';
+import hooksExtensions from '@foscia/core/actions/extensions/hooksExtensions';
 import makeEnhancersExtension from '@foscia/core/actions/extensions/makeEnhancersExtension';
 import makeRunnersExtension from '@foscia/core/actions/extensions/makeRunnersExtension';
+import readExtensions from '@foscia/core/actions/extensions/readExtensions';
+import writeExtensions from '@foscia/core/actions/extensions/writeExtensions';
 import makeActionClass from '@foscia/core/actions/makeActionClass';
 import when from '@foscia/core/actions/when';
 import detectModel from '@foscia/core/model/types/detectModel';
@@ -74,7 +76,6 @@ export {
   forInstance,
   forModel,
   forRelation,
-  target,
   include,
   instanceData,
   onRunning,
@@ -91,10 +92,8 @@ export {
   consumeInclude,
   consumeInstance,
   consumeModel,
-  consumeModelPath,
   consumeRegistry,
   consumeRelation,
-  consumeRelationPath,
   consumeSerializer,
   consumeType,
   makeEnhancersExtension,
@@ -102,4 +101,9 @@ export {
   makeActionClass,
   detectModel,
   detectRelationType,
+  coreExtensions,
+  crudExtensions,
+  hooksExtensions,
+  readExtensions,
+  writeExtensions,
 };

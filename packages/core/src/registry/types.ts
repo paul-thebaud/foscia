@@ -1,12 +1,22 @@
 import { Model } from '@foscia/core/model/types';
-import { Normalizer } from '@foscia/core/normalization/types';
-import { Awaitable, Optional } from '@foscia/utils';
+import { Awaitable, Dictionary, Optional, Transformer } from '@foscia/utils';
 
-export type ModelResolver = () => Promise<Model>;
+export type ModelFunctionResolver = () => Awaitable<Model>;
 
-export type ModelPreparator = (model: Model) => Awaitable<void>;
+export type ModelObjectResolver = {
+  type?: string;
+  resolve: ModelFunctionResolver;
+};
+
+export type MapRegistryModelRegistration =
+  | Model
+  | ModelFunctionResolver
+  | ModelObjectResolver;
+
+export type MapRegistryModelsRegistration =
+  | MapRegistryModelRegistration[]
+  | Dictionary<ModelFunctionResolver>;
 
 export type MapRegistryConfig = {
-  normalizeType?: Optional<Normalizer<string>>;
-  prepareModel?: Optional<ModelPreparator>;
+  normalizeType?: Optional<Transformer<string>>;
 };

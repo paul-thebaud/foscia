@@ -1,9 +1,7 @@
 import context from '@foscia/core/actions/context/enhancers/context';
-import target from '@foscia/core/actions/context/enhancers/target';
 import makeEnhancersExtension from '@foscia/core/actions/extensions/makeEnhancersExtension';
 import { Action, ActionParsedExtension, ConsumeModel } from '@foscia/core/actions/types';
 import { Model, ModelInstance } from '@foscia/core/model/types';
-import normalize from '@foscia/core/normalization/normalize';
 
 /**
  * Target the given model.
@@ -14,20 +12,11 @@ import normalize from '@foscia/core/normalization/normalize';
  * @category Enhancers
  */
 export default function forModel<
-  C extends {},
   D extends {},
   I extends ModelInstance<D>,
   M extends Model<D, I>,
 >(model: M) {
-  return (action: Action<C>) => action
-    .use(target<D, I, M>(model))
-    .use(context({
-      modelPath: normalize(
-        model.$config.path ?? model.$type,
-        model.$config.normalizeModelPath ?? model.$config.normalizePath,
-      ),
-      baseURL: model.$config.baseURL ?? undefined,
-    }));
+  return context({ model });
 }
 
 type EnhancerExtension = ActionParsedExtension<{

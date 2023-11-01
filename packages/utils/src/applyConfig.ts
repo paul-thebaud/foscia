@@ -2,7 +2,7 @@ import { Dictionary } from '@foscia/utils/types';
 
 export default function applyConfig(
   configurable: Record<any, any>,
-  config?: Record<any, any>,
+  config: Record<any, any>,
   override = true,
 ) {
   if (!config) {

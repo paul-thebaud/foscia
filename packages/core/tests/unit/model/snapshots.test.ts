@@ -134,8 +134,8 @@ describe.concurrent('unit: snapshots', () => {
     expect(cloneValue).toHaveBeenCalledTimes(3);
 
     PostMock.configure({
-      cloneValue: null,
-      compareValue: null,
+      cloneValue: undefined,
+      compareValue: undefined,
     });
   });
 });

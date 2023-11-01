@@ -1,6 +1,6 @@
-import { CLIConfig } from '@foscia/cli/utils/config/config';
 import renderExport from '@foscia/cli/templates/renderExport';
 import renderImport from '@foscia/cli/templates/renderImport';
+import { CLIConfig } from '@foscia/cli/utils/config/config';
 import type { ActionFactoryOptions } from '@foscia/cli/utils/input/promptForActionFactoryOptions';
 import { sortBy } from 'lodash-es';
 
@@ -10,47 +10,56 @@ type ActionFactoryTemplateData = {
   options: ActionFactoryOptions;
 };
 
-export function renderRegistryRegister({ config, options }: ActionFactoryTemplateData) {
+export function renderModelsDefinition({ config, options }: ActionFactoryTemplateData) {
   if (options.automaticRegistration === 'import.meta.glob') {
     const modelsCast = config.language === 'ts'
       ? ' as { [k: string]: Model }'
       : '';
 
     return `
-const models = import.meta.glob('./models/*.${config.language}', {
+const models = Object.values(import.meta.glob('./models/*.${config.language}', {
   import: 'default', eager: true,
-});
-registry.register(Object.values(models${modelsCast}));
+})${modelsCast});
 `.trim();
   }
 
-  return 'registry.register([/* TODO Post, Comment, [...] */]);';
+  return 'const models = [/* TODO Post, Comment, [...] */];';
 }
 
 function renderBlueprintActionFactory({ config, usage, options }: ActionFactoryTemplateData) {
   const enableModelFeatures = ['jsonapi', 'jsonrest'].indexOf(usage) !== -1;
   const factoryFunction = {
-    jsonapi: 'makeJsonApi',
-    jsonrest: 'makeJsonRest',
-    http: 'makeHttpClient',
+    jsonapi: { name: 'makeJsonApi', package: 'jsonapi' },
+    jsonrest: { name: 'makeJsonRest', package: 'rest' },
+    http: { name: 'makeHttpClient', package: 'http' },
   }[usage];
-  const factoryConfigured = Object.values(options.config ?? {})
+
+  const factoryConfiguration = {
+    ...(enableModelFeatures ? { models: '____models____' } : {}),
+    ...options.config,
+  };
+  const factoryConfigured = Object.values(factoryConfiguration)
     .filter((o) => o !== undefined)
     .length > 0;
-  const factoryConfiguration = factoryConfigured
-    ? JSON.stringify(options.config, null, config.tabSize ?? 2).replace(/"([^"]+)":/g, '$1:')
+  const factoryConfigurationJsonLiteral = factoryConfigured
+    ? JSON.stringify(factoryConfiguration, null, config.tabSize ?? 2).replace(/"([^"]+)":/g, '$1:')
     : '';
+  const factoryConfigurationLiteral = factoryConfigurationJsonLiteral
+    .replace(/"([^"]+)":/g, '$1:')
+    .replace(/"____([a-z]+)____"/, '$1')
+    .replace('models: models,', 'models,');
 
   const blueprintImportStatement = renderImport({
     config,
-    name: `{ ${factoryFunction} }`,
-    from: '@foscia/blueprints',
+    name: `{ ${factoryFunction.name} }`,
+    from: `@foscia/${factoryFunction.package}`,
   });
 
   const coreImports = [] as string[];
   if (enableModelFeatures && options.automaticRegistration) {
     coreImports.push('Model');
   }
+
   const coreImportStatement = coreImports.length
     ? `\n${renderImport({
       config,
@@ -61,9 +70,9 @@ function renderBlueprintActionFactory({ config, usage, options }: ActionFactoryT
 
   return `
 ${blueprintImportStatement}${coreImportStatement}
+${enableModelFeatures ? `\n${renderModelsDefinition({ config, usage, options })}\n` : ''}
+const { action } = ${factoryFunction.name}(${factoryConfigurationLiteral});
 
-const { action${enableModelFeatures ? ', registry' : ''} } = ${factoryFunction}(${factoryConfiguration});
-${enableModelFeatures ? `\n${renderRegistryRegister({ config, usage, options })}\n` : ''}
 ${renderExport({ config, expr: 'action' })}
 `.trim();
 }

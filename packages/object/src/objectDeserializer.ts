@@ -38,10 +38,10 @@ export default abstract class ObjectDeserializer<
   protected static NON_IDENTIFIED_LOCAL_ID = '__non_identified__';
 
   public constructor(config?: ObjectDeserializerConfig) {
-    this.configure(config);
+    this.configure(config ?? {});
   }
 
-  public configure(config?: ObjectDeserializerConfig, override = true) {
+  public configure(config: ObjectDeserializerConfig, override = true) {
     applyConfig(this, config, override);
   }
 
@@ -356,7 +356,7 @@ export default abstract class ObjectDeserializer<
     ) as Promise<Optional<Resource[] | Resource>>;
   }
 
-  protected hydratePropInInstance(
+  protected async hydratePropInInstance(
     instance: ModelInstance,
     def: ModelAttribute | ModelRelation,
     value: unknown,

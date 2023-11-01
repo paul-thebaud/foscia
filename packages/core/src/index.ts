@@ -1,6 +1,6 @@
 import normalizeInclude from '@foscia/core/actions/context/utils/normalizeInclude';
 import RefsCache from '@foscia/core/cache/refsCache';
-import weakRefCacheMode from '@foscia/core/cache/weakRefCacheMode';
+import weakRefManager from '@foscia/core/cache/weakRefManager';
 import AdapterError from '@foscia/core/errors/adapterError';
 import DeserializerError from '@foscia/core/errors/deserializerError';
 import ExpectedRunFailureError from '@foscia/core/errors/expectedRunFailureError';
@@ -32,15 +32,15 @@ import isModel from '@foscia/core/model/props/checks/isModel';
 import isPluralRelationDef from '@foscia/core/model/props/checks/isPluralRelationDef';
 import isPropDef from '@foscia/core/model/props/checks/isPropDef';
 import isRelationDef from '@foscia/core/model/props/checks/isRelationDef';
-import mapAttributes from '@foscia/core/model/props/mapAttributes';
-import mapIds from '@foscia/core/model/props/mapIds';
-import mapProps from '@foscia/core/model/props/mapProps';
-import mapRelations from '@foscia/core/model/props/mapRelations';
 import attr from '@foscia/core/model/props/factories/attr';
 import hasMany from '@foscia/core/model/props/factories/hasMany';
 import hasOne from '@foscia/core/model/props/factories/hasOne';
 import id from '@foscia/core/model/props/factories/id';
 import readOnly from '@foscia/core/model/props/factories/readOnly';
+import mapAttributes from '@foscia/core/model/props/mapAttributes';
+import mapIds from '@foscia/core/model/props/mapIds';
+import mapProps from '@foscia/core/model/props/mapProps';
+import mapRelations from '@foscia/core/model/props/mapRelations';
 import shouldSync from '@foscia/core/model/props/shouldSync';
 import loaded from '@foscia/core/model/relations/loaded';
 import makeForRelationLoader from '@foscia/core/model/relations/makeForRelationLoader';
@@ -55,18 +55,17 @@ import guessRelationType from '@foscia/core/model/types/guessRelationType';
 import normalizeDotRelations from '@foscia/core/normalization/normalizeDotRelations';
 import normalizeKey from '@foscia/core/normalization/normalizeKey';
 import MapRegistry from '@foscia/core/registry/mapRegistry';
+import makeTransformer from '@foscia/core/transformers/makeTransformer';
 import toArrayOf from '@foscia/core/transformers/toArrayOf';
 import toBoolean from '@foscia/core/transformers/toBoolean';
 import toDate from '@foscia/core/transformers/toDate';
 import toNumber from '@foscia/core/transformers/toNumber';
 import toString from '@foscia/core/transformers/toString';
-import makeTransformer from '@foscia/core/transformers/makeTransformer';
 
 export * from '@foscia/core/actions/types';
 export * from '@foscia/core/cache/types';
 export * from '@foscia/core/hooks/types';
 export * from '@foscia/core/model/types';
-export * from '@foscia/core/normalization/types';
 export * from '@foscia/core/registry/types';
 export * from '@foscia/core/transformers/types';
 export * from '@foscia/core/types';
@@ -81,7 +80,7 @@ export {
   ExpectedRunFailureError,
   MapRegistry,
   RefsCache,
-  weakRefCacheMode,
+  weakRefManager,
   attr,
   hasMany,
   hasOne,

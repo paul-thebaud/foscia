@@ -13,12 +13,10 @@ import {
   Model,
   ModelClassInstance,
   ModelInstance,
-  ModelRelation,
   ModelRelationKey,
   ModelSchema,
   ModelSchemaRelations,
 } from '@foscia/core/model/types';
-import normalize from '@foscia/core/normalization/normalize';
 
 /**
  * Target the given instance's relation.
@@ -41,10 +39,6 @@ export default function forRelation<
     return action
       .use(forInstance(instance))
       .use(context({
-        relationPath: normalize(
-          (relation as ModelRelation).path ?? relationKey,
-          instance.$model.$config.normalizeRelationPath ?? instance.$model.$config.normalizePath,
-        ),
         relation,
       }));
   };

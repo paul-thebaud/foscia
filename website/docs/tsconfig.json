@@ -15,9 +15,6 @@
     "baseUrl": "..",
     "newLine": "lf",
     "paths": {
-      "@foscia/blueprints": [
-        "packages/blueprints/dist/index.d.ts"
-      ],
       "@foscia/core": [
         "packages/core/dist/index.d.ts"
       ],

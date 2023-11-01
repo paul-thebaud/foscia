@@ -1,8 +1,0 @@
-{
-  "name": "FosciaBlueprints",
-  "formats": [
-    "esm",
-    "cjs",
-    "global"
-  ]
-}

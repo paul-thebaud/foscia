@@ -23,10 +23,10 @@
   "types": "./dist/index.d.ts",
   "unpkg": "./dist/index.global.js",
   "jsdelivr": "./dist/index.global.js",
-  "main": "./dist/index.esm.js",
+  "main": "./dist/index.mjs",
   "exports": {
-    "import": "./dist/index.esm.js",
-    "require": "./dist/index.cjs.js"
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
   },
   "dependencies": {
     "@foscia/core": "0.1.0",

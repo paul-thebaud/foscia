@@ -1,4 +1,4 @@
-import { renderRegistryRegister } from '@foscia/cli/templates/renderActionFactory';
+import { renderModelsDefinition } from '@foscia/cli/templates/renderActionFactory';
 import { CLIConfig } from '@foscia/cli/utils/config/config';
 import { input, select } from '@inquirer/prompts';
 import boxen from 'boxen';
@@ -34,7 +34,7 @@ export default async function promptForActionFactoryOptions(config: CLIConfig, u
       };
 
       return boxen(
-        highlight(renderRegistryRegister(registryRegisterData), { language: config.language }),
+        highlight(renderModelsDefinition(registryRegisterData), { language: config.language }),
         { title: 'Example of registration', titleAlignment: 'center', padding: 1 },
       );
     };

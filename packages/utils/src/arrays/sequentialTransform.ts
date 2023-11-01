@@ -1,11 +1,9 @@
-import { Awaitable } from '@foscia/utils/types';
+import { Awaitable, Transformer } from '@foscia/utils/types';
 
-export type SequentialTransform<T> = ((value: T) => Awaitable<T>);
+function sequentialTransform(transformers: Transformer<void, Awaitable<void>>[]): Promise<void>;
+function sequentialTransform<T>(transformers: Transformer<T, Awaitable<T>>[], value: T): Promise<T>;
 
-function sequentialTransform(transformers: SequentialTransform<void>[]): Promise<void>;
-function sequentialTransform<T>(transformers: SequentialTransform<T>[], value: T): Promise<T>;
-
-function sequentialTransform<T>(transformers: SequentialTransform<T>[], value?: T) {
+function sequentialTransform<T>(transformers: Transformer<T, Awaitable<T>>[], value?: T) {
   return transformers.reduce(
     async (prevValue, transformer) => transformer(await prevValue),
     Promise.resolve(value) as Promise<T>,

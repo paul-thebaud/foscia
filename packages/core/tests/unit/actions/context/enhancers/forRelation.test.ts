@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import evaluateContext from '../../../../utils/evaluateContext';
 
 describe.concurrent('unit: forRelation', () => {
-  it('should use instance without configuration', async () => {
+  it('should use instance', async () => {
     const Model = makeModel('blog-posts', {
       latestComments: hasMany(),
     });
@@ -11,52 +11,8 @@ describe.concurrent('unit: forRelation', () => {
 
     expect(await evaluateContext(forRelation(model, 'latestComments'))).toStrictEqual({
       model: Model,
-      modelPath: 'blog-posts',
-      baseURL: undefined,
       instance: model,
       id: undefined,
-      relationPath: 'latestComments',
-      relation: Model.$schema.latestComments,
-    });
-  });
-
-  it('should use instance with basic configuration', async () => {
-    const Model = makeModel({
-      type: 'blog-posts',
-      normalizePath: (v) => v.toUpperCase(),
-    }, {
-      latestComments: hasMany(),
-    });
-    const model = new Model();
-
-    expect(await evaluateContext(forRelation(model, 'latestComments'))).toStrictEqual({
-      model: Model,
-      modelPath: 'BLOG-POSTS',
-      baseURL: undefined,
-      instance: model,
-      id: undefined,
-      relationPath: 'LATESTCOMMENTS',
-      relation: Model.$schema.latestComments,
-    });
-  });
-
-  it('should use instance with advanced configuration', async () => {
-    const Model = makeModel({
-      type: 'blog-posts',
-      normalizePath: (v) => v.toUpperCase(),
-      normalizeRelationPath: (v) => v.toLowerCase(),
-    }, {
-      latestComments: hasMany({ path: 'dummyComments' }),
-    });
-    const model = new Model();
-
-    expect(await evaluateContext(forRelation(model, 'latestComments'))).toStrictEqual({
-      model: Model,
-      modelPath: 'BLOG-POSTS',
-      baseURL: undefined,
-      instance: model,
-      id: undefined,
-      relationPath: 'dummycomments',
       relation: Model.$schema.latestComments,
     });
   });

@@ -50,20 +50,20 @@ pnpm: ## Run a PNPM command (e.g. make pnpm c="update").
 lint: ## Lint.
 	@$(PNPM) lint
 
+.PHONY: typecheck
+typecheck: ## Run typecheck.
+	@$(PNPM) test:typecheck
+
 .PHONY: test-watch
 test-watch: ## Run tests (watching).
 	@$(PNPM) test:watch
-
-.PHONY: test-typecheck
-test-typecheck: ## Run typecheck tests.
-	@$(PNPM) test:typecheck
 
 .PHONY: test-coverage
 test-coverage: ## Run tests.
 	@$(PNPM) test:coverage
 
 .PHONY: test
-test: lint test-typecheck test-coverage ## Lint and run tests.
+test: lint typecheck test-coverage ## Lint and run tests.
 
 ##
 ## —— Utilities ————————————————————————————————————————————————————————————————

@@ -29,7 +29,7 @@ describe.concurrent('unit: normalizeDotRelations', () => {
     });
 
     const registry = new MapRegistry();
-    registry.register(model, subModel);
+    registry.register([model, subModel]);
 
     expect(await normalizeDotRelations(model, ['foo', 'foo.baz'], registry))
       .toStrictEqual(['bar', 'bar.foobar']);

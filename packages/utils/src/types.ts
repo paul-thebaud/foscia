@@ -19,3 +19,5 @@ export type Falsy = null | undefined | false | 0 | -0 | 0n | '';
 export type OnlyTruthy<T> = T extends Falsy ? never : T;
 
 export type OnlyFalsy<T> = T extends Falsy ? T : never;
+
+export type Transformer<T, U = T> = (value: T) => U;
