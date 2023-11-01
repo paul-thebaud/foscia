@@ -27,7 +27,7 @@ import {
   ObjectNormalizedIdentifier,
   ObjectOptionalIdentifier,
 } from '@foscia/object/types';
-import { applyConfig, IdentifiersMap, isNil, isNone, Optional, wrap } from '@foscia/utils';
+import { applyConfig, IdentifiersMap, isNil, isNone, Optional, wrap } from '@foscia/shared';
 
 export default abstract class ObjectDeserializer<
   AdapterData,

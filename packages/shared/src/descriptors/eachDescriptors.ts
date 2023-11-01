@@ -1,5 +1,5 @@
-import isDescriptorHolder from '@foscia/utils/descriptors/isDescriptorHolder';
-import isNil from '@foscia/utils/checks/isNil';
+import isDescriptorHolder from '@foscia/shared/descriptors/isDescriptorHolder';
+import isNil from '@foscia/shared/checks/isNil';
 
 export default function eachDescriptors(
   obj: object,

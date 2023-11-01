@@ -1,6 +1,6 @@
 import { ActionFactory } from '@foscia/core';
 import type ActionFactoryMock from '@foscia/test/actionFactoryMock';
-import { Awaitable } from '@foscia/utils';
+import { Awaitable } from '@foscia/shared';
 
 /**
  * Mocked action run result definition (factory function or raw value).

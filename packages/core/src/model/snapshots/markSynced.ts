@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import takeSnapshot from '@foscia/core/model/snapshots/takeSnapshot';
 import { ModelInstance, ModelKey } from '@foscia/core/model/types';
-import { ArrayableVariadic, wrapVariadic } from '@foscia/utils';
+import { ArrayableVariadic, wrapVariadic } from '@foscia/shared';
 
 export default function markSynced<I extends ModelInstance>(
   instance: I,

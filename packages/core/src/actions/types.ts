@@ -15,7 +15,7 @@ import {
   RegistryI,
   SerializerI,
 } from '@foscia/core/types';
-import { Awaitable, Constructor, DescriptorHolder } from '@foscia/utils';
+import { Awaitable, Constructor, DescriptorHolder } from '@foscia/shared';
 
 export type ActionHooksDefinition<C extends {} = any> = {
   running: HookCallback<{ context: C; runner: Function; }>;

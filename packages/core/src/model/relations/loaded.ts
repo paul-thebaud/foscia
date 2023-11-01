@@ -2,7 +2,7 @@ import logger from '@foscia/core/logger/logger';
 import isInstance from '@foscia/core/model/props/checks/isInstance';
 import isRelationDef from '@foscia/core/model/props/checks/isRelationDef';
 import { ModelInstance, ModelRelationDotKey } from '@foscia/core/model/types';
-import { ArrayableVariadic, isNone, wrapVariadic } from '@foscia/utils';
+import { ArrayableVariadic, isNone, wrapVariadic } from '@foscia/shared';
 
 export default function loaded<I extends ModelInstance>(
   instance: I,

@@ -32,7 +32,7 @@
     "@foscia/core": "0.1.0",
     "@foscia/http": "0.1.0",
     "@foscia/object": "0.1.0",
-    "@foscia/test": "0.1.0",
-    "@foscia/utils": "0.1.0"
+    "@foscia/shared": "0.1.0",
+    "@foscia/test": "0.1.0"
   }
 }

@@ -10,7 +10,7 @@ import {
 } from '@foscia/core/actions/types';
 import ExpectedRunFailureError from '@foscia/core/errors/expectedRunFailureError';
 import { DeserializedData } from '@foscia/core/types';
-import { Awaitable } from '@foscia/utils';
+import { Awaitable } from '@foscia/shared';
 
 /**
  * Run the action and deserialize one model's instance.

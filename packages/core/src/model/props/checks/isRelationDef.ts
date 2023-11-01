@@ -1,5 +1,5 @@
 import { ModelRelation } from '@foscia/core/model/types';
-import { isNil } from '@foscia/utils';
+import { isNil } from '@foscia/shared';
 
 export default function isRelationDef(
   value: unknown,

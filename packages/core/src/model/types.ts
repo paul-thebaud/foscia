@@ -7,7 +7,7 @@ import {
   Optional,
   Prev,
   Transformer,
-} from '@foscia/utils';
+} from '@foscia/shared';
 
 /**
  * Configuration of a model class.

@@ -9,7 +9,7 @@ import {
   ConsumeModel,
 } from '@foscia/core/actions/types';
 import { Model } from '@foscia/core/model/types';
-import { Awaitable } from '@foscia/utils';
+import { Awaitable } from '@foscia/shared';
 
 /**
  * Retrieve an instance from the cache.

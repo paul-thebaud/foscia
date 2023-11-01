@@ -1,7 +1,7 @@
 import executeContextThroughAdapter from '@foscia/core/actions/context/utils/executeContextThroughAdapter';
 import makeRunnersExtension from '@foscia/core/actions/extensions/makeRunnersExtension';
 import { Action, ActionParsedExtension, ConsumeAdapter } from '@foscia/core/actions/types';
-import { Awaitable } from '@foscia/utils';
+import { Awaitable } from '@foscia/shared';
 
 /**
  * Run the action and retrieve the raw adapter's data.

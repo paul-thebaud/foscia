@@ -12,7 +12,7 @@ import {
   ModelInstance,
   ModelRelation,
 } from '@foscia/core/model/types';
-import { applyConfig, eachDescriptors, isNil, value } from '@foscia/utils';
+import { applyConfig, eachDescriptors, isNil, value } from '@foscia/shared';
 
 export default function makeModelClass(type: string, config: ModelConfig) {
   const computeDefault = (instance: ModelInstance, def: ModelAttribute | ModelRelation) => {

@@ -1,4 +1,4 @@
-# @foscia/utils
+# @foscia/shared
 
 Shared utils for Foscia.
 

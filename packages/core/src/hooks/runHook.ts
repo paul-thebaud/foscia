@@ -1,5 +1,5 @@
 import { Hookable, HookCallback, HooksDefinition } from '@foscia/core/hooks/types';
-import { sequentialTransform } from '@foscia/utils';
+import { sequentialTransform } from '@foscia/shared';
 
 export default async function runHook<D extends HooksDefinition, K extends keyof D>(
   hookable: Hookable<D>,

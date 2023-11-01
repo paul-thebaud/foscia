@@ -4,7 +4,7 @@ import { ModelClass, ModelRelationDotKey, ModelRelationKey } from '@foscia/core/
 import detectModel from '@foscia/core/model/types/detectModel';
 import normalizeKey from '@foscia/core/normalization/normalizeKey';
 import { RegistryI } from '@foscia/core/types';
-import { isNone, Optional } from '@foscia/utils';
+import { isNone, Optional } from '@foscia/shared';
 
 export default function normalizeDotRelations<D extends {}>(
   model: ModelClass<D>,

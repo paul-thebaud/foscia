@@ -6,7 +6,7 @@ import {
 } from '@foscia/core';
 import { HttpAdapterConfig } from '@foscia/http';
 import { ObjectDeserializerConfig, ObjectSerializerConfig } from '@foscia/object';
-import { Awaitable, Dictionary } from '@foscia/utils';
+import { Awaitable, Dictionary } from '@foscia/shared';
 
 export type RestResourceId = ModelIdType;
 

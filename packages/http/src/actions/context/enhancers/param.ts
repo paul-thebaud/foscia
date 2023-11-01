@@ -1,6 +1,6 @@
 import { Action, ActionParsedExtension, context, makeEnhancersExtension } from '@foscia/core';
 import consumePrevParams from '@foscia/http/actions/context/consumers/consumePrevParams';
-import { Dictionary } from '@foscia/utils';
+import { Dictionary } from '@foscia/shared';
 
 /**
  * Set the given query param on the request.

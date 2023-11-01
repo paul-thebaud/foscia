@@ -1,4 +1,4 @@
-import { Dictionary } from '@foscia/utils';
+import { Dictionary } from '@foscia/shared';
 
 export default function deepParamsSerializer(params: Dictionary<any>) {
   const urlSearchParams = new URLSearchParams();

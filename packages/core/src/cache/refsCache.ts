@@ -2,7 +2,7 @@ import { RefManager, RefsCacheConfig } from '@foscia/core/cache/types';
 import weakRefManager from '@foscia/core/cache/weakRefManager';
 import { ModelIdType, ModelInstance } from '@foscia/core/model/types';
 import { CacheI } from '@foscia/core/types';
-import { applyConfig, IdentifiersMap } from '@foscia/utils';
+import { applyConfig, IdentifiersMap } from '@foscia/shared';
 
 export default class RefsCache implements CacheI {
   private readonly instances: IdentifiersMap<string, ModelIdType, unknown>;

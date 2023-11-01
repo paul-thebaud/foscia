@@ -1,4 +1,4 @@
-import { toKebabCase } from '@foscia/utils';
+import { toKebabCase } from '@foscia/shared';
 import { describe, expect, it } from 'vitest';
 
 describe.concurrent('unit: toKebabCase', () => {

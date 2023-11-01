@@ -1,4 +1,4 @@
-import { Awaitable, Dictionary } from '@foscia/utils';
+import { Awaitable, Dictionary } from '@foscia/shared';
 
 export type HookCallback<E> = (event: E) => Awaitable<void>;
 

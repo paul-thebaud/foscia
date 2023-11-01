@@ -6,7 +6,7 @@ import {
   RestDeserializerConfig,
   RestNewResource,
 } from '@foscia/rest/types';
-import { applyConfig } from '@foscia/utils';
+import { applyConfig } from '@foscia/shared';
 
 export default class RestDeserializer extends ObjectDeserializer<Response, RestNewResource> {
   private dataReader: DataReader | null = null;

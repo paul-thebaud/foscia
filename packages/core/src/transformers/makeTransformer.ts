@@ -2,7 +2,7 @@ import {
   ObjectTransformerFactoryOptions,
   ObjectTransformerFactoryResult,
 } from '@foscia/core/transformers/types';
-import { Awaitable, isNil, Optional } from '@foscia/utils';
+import { Awaitable, isNil, Optional } from '@foscia/shared';
 
 export default function makeTransformer<T, DS, SR>(
   deserializeFn: (value: DS) => Awaitable<T>,

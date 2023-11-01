@@ -7,7 +7,7 @@ import {
   InferConsumedInstance,
 } from '@foscia/core/actions/types';
 import { ModelRelationDotKey } from '@foscia/core/model/types';
-import { ArrayableVariadic, uniqueValues, wrapVariadic } from '@foscia/utils';
+import { ArrayableVariadic, uniqueValues, wrapVariadic } from '@foscia/shared';
 
 /**
  * Eager load the given relations for the current model definition. It accepts

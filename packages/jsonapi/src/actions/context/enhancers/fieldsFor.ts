@@ -7,7 +7,7 @@ import {
   normalizeKey,
 } from '@foscia/core';
 import { consumePrevParams, param } from '@foscia/http';
-import { ArrayableVariadic, optionalJoin, uniqueValues, wrapVariadic } from '@foscia/utils';
+import { ArrayableVariadic, optionalJoin, uniqueValues, wrapVariadic } from '@foscia/shared';
 
 /**
  * [Select the given JSON:API fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets)

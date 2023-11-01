@@ -1,6 +1,6 @@
 import makeExtension from '@foscia/core/actions/extensions/makeExtension';
 import { Action, ContextRunner } from '@foscia/core/actions/types';
-import { Dictionary } from '@foscia/utils';
+import { Dictionary } from '@foscia/shared';
 
 /**
  Takes a dictionary of runners and returns an extension providing

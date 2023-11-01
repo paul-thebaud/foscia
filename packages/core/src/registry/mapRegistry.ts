@@ -8,7 +8,7 @@ import {
   ModelObjectResolver,
 } from '@foscia/core/registry/types';
 import { RegistryI } from '@foscia/core/types';
-import { applyConfig, Transformer, wrap } from '@foscia/utils';
+import { applyConfig, Transformer, wrap } from '@foscia/shared';
 
 export default class MapRegistry implements RegistryI {
   private readonly resolvers: ModelObjectResolver[] = [];

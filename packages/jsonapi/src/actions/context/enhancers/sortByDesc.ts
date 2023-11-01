@@ -1,6 +1,6 @@
 import { Action, ActionParsedExtension, makeEnhancersExtension } from '@foscia/core';
 import sortBy from '@foscia/jsonapi/actions/context/enhancers/sortBy';
-import { ArrayableVariadic, wrapVariadic } from '@foscia/utils';
+import { ArrayableVariadic, wrapVariadic } from '@foscia/shared';
 
 /**
  * Shortcut for the {@link sortBy} function with a desc direction.

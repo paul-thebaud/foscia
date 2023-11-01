@@ -28,7 +28,7 @@ import {
   ResponseTransformer,
 } from '@foscia/http/types';
 import paramsSerializer from '@foscia/http/utilities/paramsSerializer';
-import { applyConfig, Dictionary, isNil, optionalJoin, sequentialTransform } from '@foscia/utils';
+import { applyConfig, Dictionary, isNil, optionalJoin, sequentialTransform } from '@foscia/shared';
 
 /**
  * Adapter implementation for HTTP interaction using fetch.

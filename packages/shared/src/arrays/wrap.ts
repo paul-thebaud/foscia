@@ -1,5 +1,5 @@
-import isNil from '@foscia/utils/checks/isNil';
-import { Arrayable, Optional } from '@foscia/utils/types';
+import isNil from '@foscia/shared/checks/isNil';
+import { Arrayable, Optional } from '@foscia/shared/types';
 
 export default function wrap<T>(value?: Optional<Arrayable<T>>): T[] {
   if (isNil(value)) {

@@ -1,5 +1,5 @@
 import isInstance from '@foscia/core/model/props/checks/isInstance';
-import { isNil } from '@foscia/utils';
+import { isNil } from '@foscia/shared';
 
 export default function isSame(
   value: unknown,

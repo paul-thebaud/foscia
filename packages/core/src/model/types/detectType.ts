@@ -1,6 +1,6 @@
 import { ModelClass, ModelRelation } from '@foscia/core/model/types';
 import detectRelationType from '@foscia/core/model/types/detectRelationType';
-import { Optional } from '@foscia/utils';
+import { Optional } from '@foscia/shared';
 
 export default function detectType(model: Optional<ModelClass>, def: Optional<ModelRelation>) {
   if (def) {

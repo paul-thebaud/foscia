@@ -1,5 +1,5 @@
 import logger from '@foscia/core/logger/logger';
-import { isNil } from '@foscia/utils';
+import { isNil } from '@foscia/shared';
 
 export default function warnTransformingNil(transformer: string, value: unknown) {
   if (isNil(value)) {

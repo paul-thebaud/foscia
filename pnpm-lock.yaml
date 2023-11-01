@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@release-it/bumper':
+        specifier: ^5.1.0
+        version: 5.1.0(release-it@16.2.1)
       '@release-it/conventional-changelog':
         specifier: ^7.0.2
         version: 7.0.2(release-it@16.2.1)
@@ -138,18 +141,18 @@ importers:
 
   packages/core:
     dependencies:
-      '@foscia/utils':
+      '@foscia/shared':
         specifier: 0.1.0
-        version: link:../utils
+        version: link:../shared
 
   packages/http:
     dependencies:
       '@foscia/core':
         specifier: 0.1.0
         version: link:../core
-      '@foscia/utils':
+      '@foscia/shared':
         specifier: 0.1.0
-        version: link:../utils
+        version: link:../shared
 
   packages/jsonapi:
     dependencies:
@@ -162,21 +165,21 @@ importers:
       '@foscia/object':
         specifier: 0.1.0
         version: link:../object
+      '@foscia/shared':
+        specifier: 0.1.0
+        version: link:../shared
       '@foscia/test':
         specifier: 0.1.0
         version: link:../test
-      '@foscia/utils':
-        specifier: 0.1.0
-        version: link:../utils
 
   packages/object:
     dependencies:
       '@foscia/core':
         specifier: 0.1.0
         version: link:../core
-      '@foscia/utils':
+      '@foscia/shared':
         specifier: 0.1.0
-        version: link:../utils
+        version: link:../shared
 
   packages/rest:
     dependencies:
@@ -189,23 +192,23 @@ importers:
       '@foscia/object':
         specifier: 0.1.0
         version: link:../object
+      '@foscia/shared':
+        specifier: 0.1.0
+        version: link:../shared
       '@foscia/test':
         specifier: 0.1.0
         version: link:../test
-      '@foscia/utils':
-        specifier: 0.1.0
-        version: link:../utils
+
+  packages/shared: {}
 
   packages/test:
     dependencies:
       '@foscia/core':
         specifier: 0.1.0
         version: link:../core
-      '@foscia/utils':
+      '@foscia/shared':
         specifier: 0.1.0
-        version: link:../utils
-
-  packages/utils: {}
+        version: link:../shared
 
   website:
     dependencies:
@@ -3249,6 +3252,22 @@ packages:
     resolution: {integrity: sha512-C16M+IYz0rgRhWZdCmK+h58JMv8vijAA61gmz2rspCSwKwzBebpdcsiUmwrtJRdphuY30i6BSLEOP8ppbNLyLg==}
     dev: false
 
+  /@release-it/bumper@5.1.0(release-it@16.2.1):
+    resolution: {integrity: sha512-mnM5QQJvK+4sqLpU7vkDbGMGh1QNwdnWNPqrkfOCyr/cKgRDvb8e+nbiNZzyI/1XsxSjnfLHDecRVuqucwE6BQ==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      release-it: ^16.0.0
+    dependencies:
+      '@iarna/toml': 2.2.5
+      detect-indent: 7.0.1
+      fast-glob: 3.3.1
+      ini: 4.1.1
+      js-yaml: 4.1.0
+      lodash-es: 4.17.21
+      release-it: 16.2.1(typescript@5.2.2)
+      semver: 7.5.4
+    dev: true
+
   /@release-it/conventional-changelog@7.0.2(release-it@16.2.1):
     resolution: {integrity: sha512-rsUKWNnU39xivgC2IanjRkEOPsTu2X2jgJGpNHF+mndpOUr1WAROmIaix1o3ne2zseT+GLyZII2NC8FgYaM7xA==}
     engines: {node: '>=16'}
@@ -5942,6 +5961,11 @@ packages:
       repeat-string: 1.6.1
     dev: false
 
+  /detect-indent@7.0.1:
+    resolution: {integrity: sha512-Mc7QhQ8s+cLrnUfU/Ji94vG/r8M26m8f++vyres4ZoojaRDpZ1eSIh/EpzLNwlWuvzSZ3UbDFspjFvTDXe6e/g==}
+    engines: {node: '>=12.20'}
+    dev: true
+
   /detect-node@2.1.0:
     resolution: {integrity: sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==}
     dev: false
@@ -7811,6 +7835,11 @@ packages:
     resolution: {integrity: sha512-7PnF4oN3CvZF23ADhA5wRaYEQpJ8qygSkbtTXWBeXWXmEVRXK+1ITciHWwHhsjv1TmW0MgacIv6hEi5pX5NQdA==}
     engines: {node: '>=10'}
 
+  /ini@4.1.1:
+    resolution: {integrity: sha512-QQnnxNyfvmHFIsj7gkPcYymR8Jdw/o7mp5ZFihxn6h8Ci6fh3Dx4E1gPjpQEpIuPo9XVNY/ZUwh4BPMjGyL01g==}
+    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
+    dev: true
+
   /inline-style-parser@0.1.1:
     resolution: {integrity: sha512-7NXolsK4CAS5+xvdj5OMMbI962hU/wvwoxk+LWR9Ek9bVtyuuYScDN6eS0rUm6TxApFpw7CX1o4uJzcd4AyD3Q==}
     dev: false
@@ -8607,7 +8636,6 @@ packages:
 
   /lodash-es@4.17.21:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
-    dev: false
 
   /lodash.capitalize@4.2.1:
     resolution: {integrity: sha512-kZzYOKspf8XVX5AvmQF94gQW0lejFVgb80G85bU4ZWzoJ6C03PQg3coYAUpSTpQWelrZELd3XWgHzw4Ck5kaIw==}

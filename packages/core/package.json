@@ -29,6 +29,6 @@
     "require": "./dist/index.cjs"
   },
   "dependencies": {
-    "@foscia/utils": "0.1.0"
+    "@foscia/shared": "0.1.0"
   }
 }

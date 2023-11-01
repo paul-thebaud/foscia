@@ -1,4 +1,4 @@
-import { Dictionary } from '@foscia/utils/types';
+import { Dictionary } from '@foscia/shared/types';
 
 export default function applyConfig(
   configurable: Record<any, any>,

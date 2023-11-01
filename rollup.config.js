@@ -27,7 +27,7 @@ const packageOptions = require(packageResolve(`buildOptions.json`));
 const configs = {
   cli: {
     output: {
-      sourcemap: true,
+      sourcemap: sourceMap,
       file: packageResolve('dist/index.cjs'),
       format: 'cjs',
       banner: '#!/usr/bin/env node',
@@ -41,14 +41,14 @@ const configs = {
   },
   esm: {
     output: {
-      sourcemap: true,
+      sourcemap: sourceMap,
       file: packageResolve('dist/index.mjs'),
       format: 'es',
     },
   },
   cjs: {
     output: {
-      sourcemap: true,
+      sourcemap: sourceMap,
       file: packageResolve('dist/index.cjs'),
       format: 'cjs',
     },
@@ -77,8 +77,8 @@ export default packageOptions.formats.map((f) => ({
   },
   plugins: [
     typescript({
+      sourceMap,
       tsconfig: path.resolve(rootDirname, 'tsconfig.json'),
-      sourceMap: sourceMap,
     }),
     json(),
     ...(configs[f].plugins ?? []),

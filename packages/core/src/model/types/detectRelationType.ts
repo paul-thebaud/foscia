@@ -1,6 +1,6 @@
 import { ModelClass, ModelRelation } from '@foscia/core/model/types';
 import guessRelationType from '@foscia/core/model/types/guessRelationType';
-import { isNil, Optional } from '@foscia/utils';
+import { isNil, Optional } from '@foscia/shared';
 
 export default function detectRelationType(
   model: Optional<ModelClass>,

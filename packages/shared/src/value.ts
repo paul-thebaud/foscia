@@ -1,4 +1,4 @@
-import { Value } from '@foscia/utils/types';
+import { Value } from '@foscia/shared/types';
 
 export default function value<T>(
   valueOrCallback: T,

@@ -8,6 +8,7 @@ import CLIError from '@foscia/cli/utils/errors/cliError';
 import cancel from '@foscia/cli/utils/output/cancel';
 import logSymbols from '@foscia/cli/utils/output/logSymbols';
 import boxen from 'boxen';
+import process from 'node:process';
 import pc from 'picocolors';
 import { hideBin } from 'yargs/helpers';
 import yargs from 'yargs/yargs';

@@ -1,6 +1,6 @@
 import { MapRegistryConfig, MapRegistryModelsRegistration, RefsCacheConfig } from '@foscia/core';
 import { HttpAdapterConfig } from '@foscia/http';
-import { Dictionary } from '@foscia/utils';
+import { Dictionary } from '@foscia/shared';
 
 /**
  * @see [JSON:API specification](https://jsonapi.org/format/#document-links)

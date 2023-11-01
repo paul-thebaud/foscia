@@ -1,4 +1,4 @@
-import { pluralize } from '@foscia/utils';
+import { pluralize } from '@foscia/shared';
 import { describe, expect, it } from 'vitest';
 
 describe.concurrent('unit: pluralize', () => {

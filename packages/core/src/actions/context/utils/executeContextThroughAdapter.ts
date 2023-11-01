@@ -1,7 +1,7 @@
 import consumeAction from '@foscia/core/actions/context/consumers/consumeAction';
 import consumeAdapter from '@foscia/core/actions/context/consumers/consumeAdapter';
 import { ConsumeAdapter } from '@foscia/core/actions/types';
-import { Awaitable } from '@foscia/utils';
+import { Awaitable } from '@foscia/shared';
 
 export default function executeContextThroughAdapter<AD>(
   context: ConsumeAdapter<AD>,

@@ -1,5 +1,6 @@
 import { context, makeActionClass } from '@foscia/core';
-import { HttpAdapter, HttpClientConfig } from '@foscia/http';
+import HttpAdapter from '@foscia/http/httpAdapter';
+import { HttpClientConfig } from '@foscia/http/types';
 import { makeActionFactoryMockable } from '@foscia/test';
 
 /**

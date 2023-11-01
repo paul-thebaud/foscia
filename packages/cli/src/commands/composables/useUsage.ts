@@ -1,5 +1,6 @@
 import { AppUsage, CONFIG_USAGES } from '@foscia/cli/utils/config/config';
 import logSymbols from '@foscia/cli/utils/output/logSymbols';
+import process from 'node:process';
 import pc from 'picocolors';
 
 export type UsageOptions = {

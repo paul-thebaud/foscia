@@ -1,5 +1,5 @@
 import { ModelId } from '@foscia/core/model/types';
-import { isNil } from '@foscia/utils';
+import { isNil } from '@foscia/shared';
 
 export default function isIdDef(
   value: unknown,

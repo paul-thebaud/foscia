@@ -1,5 +1,5 @@
 import { Model, ModelClass } from '@foscia/core/model/types';
-import { isNil } from '@foscia/utils';
+import { isNil } from '@foscia/shared';
 
 export default function isModel<M extends ModelClass | Model>(
   value: unknown,

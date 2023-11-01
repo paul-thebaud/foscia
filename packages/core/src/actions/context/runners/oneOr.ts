@@ -12,7 +12,7 @@ import {
 } from '@foscia/core/actions/types';
 import { ModelInstance } from '@foscia/core/model/types';
 import { DeserializedData } from '@foscia/core/types';
-import { Awaitable } from '@foscia/utils';
+import { Awaitable } from '@foscia/shared';
 
 export type OneData<
   AD,

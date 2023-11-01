@@ -10,7 +10,7 @@ import runHook from '@foscia/core/hooks/runHook';
 import { HooksRegistrar } from '@foscia/core/hooks/types';
 import withoutHooks from '@foscia/core/hooks/withoutHooks';
 import logger from '@foscia/core/logger/logger';
-import { Dictionary, eachDescriptors, sequentialTransform } from '@foscia/utils';
+import { Dictionary, eachDescriptors, sequentialTransform } from '@foscia/shared';
 
 export default function makeActionClass<Extension extends {} = {}>(
   extensions?: Extension & ThisType<Action<{}, Extension>>,

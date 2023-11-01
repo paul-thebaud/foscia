@@ -1,5 +1,5 @@
 import type { Model, ModelIdType, ModelInstance } from '@foscia/core/model/types';
-import type { Awaitable } from '@foscia/utils';
+import type { Awaitable } from '@foscia/shared';
 
 export type RegistryI = {
   modelFor(rawType: string): Promise<Model | null>;

@@ -1,5 +1,5 @@
 import { Hookable, registerHook, runHook, unregisterHook, withoutHooks } from '@foscia/core';
-import { Awaitable } from '@foscia/utils';
+import { Awaitable } from '@foscia/shared';
 import { describe, expect, it, vi } from 'vitest';
 
 describe.concurrent('unit: hooks', () => {

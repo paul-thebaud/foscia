@@ -11,7 +11,7 @@ import {
   ModelKey,
 } from '@foscia/core';
 import fieldsFor from '@foscia/jsonapi/actions/context/enhancers/fieldsFor';
-import { ArrayableVariadic, isNil } from '@foscia/utils';
+import { ArrayableVariadic, isNil } from '@foscia/shared';
 
 /**
  * [Select the given JSON:API fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets)

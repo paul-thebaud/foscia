@@ -1,7 +1,7 @@
 import { ModelIdType, ModelInstance, ModelRelation } from '@foscia/core';
 import { JsonApiDocument, JsonApiNewResource } from '@foscia/jsonapi/types';
 import { ObjectSerializer } from '@foscia/object';
-import { isNil, Optional } from '@foscia/utils';
+import { isNil, Optional } from '@foscia/shared';
 
 /**
  * Serializer implementation for JSON:API.

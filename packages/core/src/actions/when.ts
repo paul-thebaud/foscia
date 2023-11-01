@@ -5,7 +5,7 @@ import {
   ContextEnhancer,
   ContextRunner,
 } from '@foscia/core/actions/types';
-import { Awaitable, OnlyFalsy, OnlyTruthy, Value, value } from '@foscia/utils';
+import { Awaitable, OnlyFalsy, OnlyTruthy, Value, value } from '@foscia/shared';
 
 function when<C extends {}, E extends {}, V, TC extends {} = C>(
   expression: V,

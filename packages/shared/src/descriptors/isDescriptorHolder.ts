@@ -1,5 +1,5 @@
-import { DescriptorHolder } from '@foscia/utils/descriptors/types';
-import isNil from '@foscia/utils/checks/isNil';
+import { DescriptorHolder } from '@foscia/shared/descriptors/types';
+import isNil from '@foscia/shared/checks/isNil';
 
 export default function isDescriptorHolder(
   value: unknown,

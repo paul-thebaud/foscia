@@ -30,11 +30,11 @@
       "@foscia/rest": [
         "packages/rest/dist/index.d.ts"
       ],
+      "@foscia/shared": [
+        "packages/shared/dist/index.d.ts"
+      ],
       "@foscia/test": [
         "packages/test/dist/index.d.ts"
-      ],
-      "@foscia/utils": [
-        "packages/utils/dist/index.d.ts"
       ]
     }
   }

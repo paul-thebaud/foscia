@@ -23,7 +23,7 @@ import {
   uniqueValues,
   wrap,
   wrapVariadic,
-} from '@foscia/utils';
+} from '@foscia/shared';
 
 type IncludeLoaderOptions<
   AD,

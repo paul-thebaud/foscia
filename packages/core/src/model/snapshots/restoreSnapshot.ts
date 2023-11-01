@@ -10,7 +10,7 @@ import {
   ModelRelation,
   ModelSnapshot,
 } from '@foscia/core/model/types';
-import { ArrayableVariadic, wrapVariadic } from '@foscia/utils';
+import { ArrayableVariadic, wrapVariadic } from '@foscia/shared';
 
 export default function restoreSnapshot<I extends ModelInstance>(
   instance: I,

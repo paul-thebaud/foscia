@@ -10,7 +10,7 @@ import {
 } from '@foscia/core/actions/types';
 import ExpectedRunFailureError from '@foscia/core/errors/expectedRunFailureError';
 import { Model } from '@foscia/core/model/types';
-import { Awaitable } from '@foscia/utils';
+import { Awaitable } from '@foscia/shared';
 
 /**
  * Retrieve an instance from the cache.

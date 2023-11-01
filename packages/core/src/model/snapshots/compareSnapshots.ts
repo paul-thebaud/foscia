@@ -1,6 +1,6 @@
 import compareModelValue from '@foscia/core/model/snapshots/compareModelValue';
 import { ModelClass, ModelKey, ModelSnapshot } from '@foscia/core/model/types';
-import { ArrayableVariadic, wrapVariadic } from '@foscia/utils';
+import { ArrayableVariadic, wrapVariadic } from '@foscia/shared';
 
 export default function compareSnapshots<M extends ModelClass>(
   nextSnapshot: ModelSnapshot<M>,

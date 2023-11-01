@@ -1,4 +1,4 @@
-import { ArrayableVariadic } from '@foscia/utils/types';
+import { ArrayableVariadic } from '@foscia/shared/types';
 
 export default function wrapVariadic<T>(...values: ArrayableVariadic<T>): T[] {
   if (values.length === 1) {

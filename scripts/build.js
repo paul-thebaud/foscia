@@ -2,13 +2,15 @@ import { execa } from 'execa';
 import minimist from 'minimist';
 import { createRequire } from 'node:module';
 import path from 'node:path';
+import process from 'node:process';
+import { oraPromise } from 'ora';
 import pc from 'picocolors';
 import { rimraf } from 'rimraf';
-import { useRootDirname, withProgress } from './utils.js';
+import { useRootDirname } from './utils.js';
 
 const require = createRequire(import.meta.url);
 
-run(process.argv);
+(() => run())(process.argv);
 
 async function run(argv) {
   try {
@@ -20,45 +22,47 @@ async function run(argv) {
       sourceMap: args.sourcemap || args.s,
     };
 
-    const targets = await withProgress(
-      'Resolving targets...',
-      (targets) => `Building for: ${targets.join(', ')}.`,
-      async (stopProgress) => {
-        const targets = args._.length ? args._ : packagesNames;
-        if (targets.some((t) => packagesNames.indexOf(t) === -1)) {
-          stopProgress();
+    const targets = await oraPromise(async (loader) => {
+      const targets = args._.length ? args._ : packagesNames;
+      if (targets.some((t) => packagesNames.indexOf(t) === -1)) {
+        loader.stop();
 
-          console.error(pc.red(
-            `Given targets are invalid, valid targets are: ${packagesNames.join(', ')}`,
-          ));
+        console.error(pc.red(
+          `Given targets are invalid, valid targets are: ${packagesNames.join(', ')}`,
+        ));
 
-          process.exit(1);
-        }
+        process.exit(1);
+      }
 
-        return targets;
-      },
-    );
-
-    await withProgress('Clearing dist...', 'Cleared dist!', async () => {
-      await clearDts();
-      await clearBuild(targets);
+      return targets;
+    }, {
+      text: 'Resolving targets...',
+      successText: 'Resolved target.',
     });
 
-    await withProgress(
-      'Building...',
-      'Built!',
-      () => Promise.all(targets.map((target) => buildTarget(target, execaStdio, options))),
-    );
+    await oraPromise(async () => {
+      await clearDts();
+      await clearBuild(targets);
+    }, {
+      text: 'Clearing dist...',
+      successText: 'Cleared dist.',
+    });
 
-    await withProgress(
-      'Building DTS...',
-      'Built DTS!',
-      async () => {
-        await buildDts(execaStdio);
-        await Promise.all(targets.map((target) => moveTargetDts(target, execaStdio)));
-        await clearDts();
-      },
-    );
+    await oraPromise(async () => {
+      await Promise.all(targets.map((target) => buildTarget(target, execaStdio, options)));
+    }, {
+      text: `Building: ${targets.join(', ')}...`,
+      successText: 'Built.',
+    });
+
+    await oraPromise(async () => {
+      await buildDts(execaStdio);
+      await Promise.all(targets.map((target) => moveTargetDts(target, execaStdio)));
+      await clearDts();
+    }, {
+      text: 'Building DTS...',
+      successText: 'Built DTS.',
+    });
   } catch (e) {
     console.log(e);
     process.exit(1);

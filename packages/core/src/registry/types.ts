@@ -1,5 +1,5 @@
 import { Model } from '@foscia/core/model/types';
-import { Awaitable, Dictionary, Optional, Transformer } from '@foscia/utils';
+import { Awaitable, Dictionary, Optional, Transformer } from '@foscia/shared';
 
 export type ModelFunctionResolver = () => Awaitable<Model>;
 

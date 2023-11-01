@@ -13,7 +13,7 @@ import {
 } from '@foscia/core/actions/types';
 import loaded from '@foscia/core/model/relations/loaded';
 import { Model, ModelInstance } from '@foscia/core/model/types';
-import { Awaitable, isNil } from '@foscia/utils';
+import { Awaitable, isNil } from '@foscia/shared';
 
 export type CachedData<I extends ModelInstance> = {
   instance: I;

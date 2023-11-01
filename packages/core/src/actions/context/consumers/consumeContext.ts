@@ -1,5 +1,5 @@
 import InvalidContextError from '@foscia/core/errors/invalidContextError';
-import { isNil } from '@foscia/utils';
+import { isNil } from '@foscia/shared';
 
 export default function consumeContext<
   Context extends {},

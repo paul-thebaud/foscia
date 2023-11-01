@@ -1,5 +1,5 @@
 import { ModelInstance } from '@foscia/core/model/types';
-import { Awaitable } from '@foscia/utils';
+import { Awaitable } from '@foscia/shared';
 
 export type RefManager<R> = {
   ref(instance: ModelInstance): Awaitable<R>;

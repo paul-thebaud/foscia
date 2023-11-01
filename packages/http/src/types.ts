@@ -1,4 +1,4 @@
-import { Awaitable, Dictionary } from '@foscia/utils';
+import { Awaitable, Dictionary } from '@foscia/shared';
 
 /**
  * The HTTP method to use in request.

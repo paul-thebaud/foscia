@@ -7,7 +7,7 @@ import {
   ActionMockedRunOptions,
 } from '@foscia/test/types';
 import UnexpectedMockedRunError from '@foscia/test/unexpectedMockedRunError';
-import { sequentialTransform } from '@foscia/utils';
+import { sequentialTransform } from '@foscia/shared';
 
 /**
  * Mock for an action factory with mocked results and ran contexts history.

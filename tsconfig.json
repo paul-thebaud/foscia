@@ -37,11 +37,11 @@
       "@foscia/rest/*": [
         "packages/rest/src/*"
       ],
+      "@foscia/shared/*": [
+        "packages/shared/src/*"
+      ],
       "@foscia/test/*": [
         "packages/test/src/*"
-      ],
-      "@foscia/utils/*": [
-        "packages/utils/src/*"
       ]
     },
     "lib": [

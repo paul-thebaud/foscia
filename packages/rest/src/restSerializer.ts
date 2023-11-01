@@ -1,7 +1,7 @@
 import { ModelInstance, ModelRelation } from '@foscia/core';
 import { ObjectSerializer } from '@foscia/object';
 import { DataWrapper, RestNewResource, RestSerializerConfig } from '@foscia/rest/types';
-import { applyConfig, Dictionary } from '@foscia/utils';
+import { applyConfig, Dictionary } from '@foscia/shared';
 
 export default class RestSerializer extends ObjectSerializer<Dictionary> {
   private dataWrapper: DataWrapper | null = null;

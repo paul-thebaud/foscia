@@ -1,4 +1,4 @@
-import { Awaitable, Optional, Transformer } from '@foscia/utils';
+import { Awaitable, Optional, Transformer } from '@foscia/shared';
 
 export type ObjectTransformer<T, DS = unknown, SR = unknown> = {
   deserialize: Transformer<DS, Awaitable<T>>;

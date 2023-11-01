@@ -1,5 +1,5 @@
 import { Action, ActionParsedExtension, context, makeEnhancersExtension } from '@foscia/core';
-import { Optional } from '@foscia/utils';
+import { Optional } from '@foscia/shared';
 
 /**
  * Configure an abort signal on the request to

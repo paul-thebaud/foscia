@@ -1,4 +1,4 @@
-import { IS_DEV, IS_TEST } from '@foscia/utils';
+import { IS_DEV, IS_TEST } from '@foscia/shared';
 
 const LOGGER_LEVELS = {
   error: 'error',

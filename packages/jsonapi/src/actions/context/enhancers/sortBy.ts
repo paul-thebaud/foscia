@@ -1,6 +1,6 @@
 import { Action, ActionParsedExtension, makeEnhancersExtension } from '@foscia/core';
 import { consumePrevParams, param } from '@foscia/http';
-import { Arrayable, Dictionary, optionalJoin, uniqueValues, wrap } from '@foscia/utils';
+import { Arrayable, Dictionary, optionalJoin, uniqueValues, wrap } from '@foscia/shared';
 
 /**
  * Sort direction to apply.

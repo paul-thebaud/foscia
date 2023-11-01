@@ -6,7 +6,7 @@ import {
   JsonApiResourceIdentifier,
 } from '@foscia/jsonapi/types';
 import { ObjectDeserializer, ObjectExtractedData } from '@foscia/object';
-import { IdentifiersMap, wrap } from '@foscia/utils';
+import { IdentifiersMap, wrap } from '@foscia/shared';
 
 /**
  * Extracted data from a JSON:API backend Response object.

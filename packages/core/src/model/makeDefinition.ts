@@ -1,6 +1,6 @@
 import isPropDef from '@foscia/core/model/props/checks/isPropDef';
 import { ModelParsedDefinition } from '@foscia/core/model/types';
-import { Dictionary, eachDescriptors, makeDescriptorHolder } from '@foscia/utils';
+import { Dictionary, eachDescriptors, makeDescriptorHolder } from '@foscia/shared';
 
 export default function makeDefinition<D extends {} = {}>(definition?: D) {
   const parsedDefinition: Dictionary = {};

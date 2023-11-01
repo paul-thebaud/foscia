@@ -1,7 +1,7 @@
 import makeEnhancersExtension from '@foscia/core/actions/extensions/makeEnhancersExtension';
 import { Action, ActionParsedExtension } from '@foscia/core/actions/types';
 import registerHook from '@foscia/core/hooks/registerHook';
-import { Awaitable } from '@foscia/utils';
+import { Awaitable } from '@foscia/shared';
 
 /**
  * Register a "running" hook callback on action.

@@ -12,7 +12,7 @@ import {
   shouldSync,
 } from '@foscia/core';
 import { ObjectSerializerConfig } from '@foscia/object/types';
-import { applyConfig } from '@foscia/utils';
+import { applyConfig } from '@foscia/shared';
 
 export default abstract class ObjectSerializer<Data> implements SerializerI<Data> {
   public constructor(config?: ObjectSerializerConfig) {

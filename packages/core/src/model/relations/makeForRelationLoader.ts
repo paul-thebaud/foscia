@@ -4,7 +4,7 @@ import isPluralRelationDef from '@foscia/core/model/props/checks/isPluralRelatio
 import loadUsingValue from '@foscia/core/model/relations/loadUsingValue';
 import { ModelInstance, ModelRelationKey } from '@foscia/core/model/types';
 import { DeserializedData } from '@foscia/core/types';
-import { Arrayable, ArrayableVariadic, wrap, wrapVariadic } from '@foscia/utils';
+import { Arrayable, ArrayableVariadic, wrap, wrapVariadic } from '@foscia/shared';
 
 export default function makeForRelationLoader<
   AD,

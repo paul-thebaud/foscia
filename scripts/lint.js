@@ -1,15 +1,23 @@
 import { execa } from 'execa';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import process from 'node:process';
+import { oraPromise } from 'ora';
 import pc from 'picocolors';
-import { listFiles, useRootDirname, withProgress } from './utils.js';
+import { listFiles, useRootDirname } from './utils.js';
 
-run();
+(() => run())();
 
 async function run() {
   try {
-    await withProgress('Checking code...', 'No problem found!', check);
-    await withProgress('Linting code...', 'Code style OK!', lint);
+    await oraPromise(check, {
+      text: 'Checking code...',
+      successText: 'Checks OK.',
+    });
+    await oraPromise(lint, {
+      text: 'Linting code...',
+      successText: 'Code style OK.',
+    });
   } catch {
     process.exit(1);
   }

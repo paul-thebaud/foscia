@@ -4,7 +4,7 @@ import {
   ObjectTransformerFactoryOptions,
 } from '@foscia/core/transformers/types';
 import warnTransformingNil from '@foscia/core/transformers/warnTransformingNil';
-import { Awaitable, Transformer } from '@foscia/utils';
+import { Awaitable, Transformer } from '@foscia/shared';
 
 function makeValuesMapper<T, S>(transform: Transformer<S, Awaitable<T>>) {
   return (value: S[]) => {

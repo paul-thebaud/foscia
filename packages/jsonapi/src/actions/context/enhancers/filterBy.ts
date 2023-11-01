@@ -1,6 +1,6 @@
 import { Action, ActionParsedExtension, makeEnhancersExtension } from '@foscia/core';
 import { consumePrevParams, param } from '@foscia/http';
-import { Dictionary } from '@foscia/utils';
+import { Dictionary } from '@foscia/shared';
 
 /**
  * [Filter the JSON:API resource](https://jsonapi.org/format/#fetching-filtering)

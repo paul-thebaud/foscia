@@ -1,5 +1,5 @@
 import { ModelIdType } from '@foscia/core';
-import { Optional } from '@foscia/utils';
+import { Optional } from '@foscia/shared';
 
 export type ObjectOptionalIdentifier = {
   type?: string;

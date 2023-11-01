@@ -1,5 +1,5 @@
 import { ActionParsedExtension } from '@foscia/core/actions/types';
-import { Dictionary, eachDescriptors, makeDescriptorHolder } from '@foscia/utils';
+import { Dictionary, eachDescriptors, makeDescriptorHolder } from '@foscia/shared';
 
 export default function makeExtension<E extends {} = {}>(extension: E) {
   const parsedDefinition: Dictionary = {};
