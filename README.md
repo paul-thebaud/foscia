@@ -33,6 +33,13 @@
 </a>
 </p>
 
+## :warning: Deprecation notice
+
+This repository holds the old `foscia` package, which is deprecated:
+
+- You can find the new repository at [`foscia-dev/foscia`](https://github.com/foscia-dev/foscia).
+- You can install `@foscia/*` scoped packages instead.
+
 ## Foscia
 
 > Type safe, modular and intuitive API client.
